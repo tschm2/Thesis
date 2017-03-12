@@ -14,9 +14,7 @@ import { Keyboard } from 'ionic-native';
 })
 export class ConversationPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-      Keyboard.show();
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {
 

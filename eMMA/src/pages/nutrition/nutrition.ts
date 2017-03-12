@@ -1,7 +1,6 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { barcodeService } from '../../services/barcodeService';
-import { chmedJsonHandler } from '../../services/chmedJsonHandler';
+import { Storage } from '@ionic/storage';
 
 
 /*
@@ -17,24 +16,13 @@ import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 })
 export class NutritionPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage:Storage) {
+    this.storage.get('test2').then((val) => {
+            console.log(val);
+          })
+         }
 
-  ionViewDidLoad() {
-
-
-  /*Testing*/
-    let myScanner = new barcodeService();
-    let dummyData = myScanner.testDummyData();
-    let myChmedHandler = new chmedJsonHandler(dummyData);
-    let myDrugs: JSON = myChmedHandler.getMedicationArray();
-    console.log(myDrugs);
-    let myPatient: JSON = myChmedHandler.getPatient();
-    console.log(myPatient);
-    let obj = JSON.parse(dummyData);
-    console.log(obj);
-
-
-}
+  ionViewDidLoad() {}
 
 
 }

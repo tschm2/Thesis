@@ -17,5 +17,33 @@
 
 
 <ion-content padding>
+  <ion-card *ngFor="let drug of drugList">
+  <ion-item>
+    <img src="https://apps.hcisolutions.ch/MyProducts/picture/{{drug?.Id}}/Pharmacode/BL/Front/F" alt="Description" />
+  </ion-item>
+        <ion-card-content>
+          Verschrieben von: {{drug?.PrscbBy}}
+            Grund: {{drug?.TkgRsn}}
+            von:{{drug?.Pos[0].DtFrom}}
+            bis:{{drug?.Pos[0].DtTo}}
+            <ion-grid>
+            <ion-row>
+              <ion-col >Morgens</ion-col>
+              <ion-col >Mittags</ion-col>
+              <ion-col >Abends</ion-col>
+              <ion-col >Nächtlich</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col *ngFor="let day of drug?.Pos[0].D">{{day}}</ion-col>
+            </ion-row>
+          </ion-grid>
+
+        </ion-card-content>
+  </ion-card>
+
+
+
+
+
 
 </ion-content>

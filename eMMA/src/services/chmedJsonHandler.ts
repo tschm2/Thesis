@@ -1,8 +1,11 @@
+import { Storage } from '@ionic/storage';
 export class chmedJsonHandler {
     mediPlan: JSON;
-    constructor(mediPlan: string) {
-      this.mediPlan = JSON.parse(mediPlan);
-    }
+    constructor(mediPlan:JSON) {
+          this.mediPlan = mediPlan;
+      }
+
+    
     getMedicationArray(): JSON{
         return this.mediPlan['Medicaments'];
     }

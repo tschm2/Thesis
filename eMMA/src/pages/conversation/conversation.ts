@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { Keyboard } from 'ionic-native';
 
 /*
   Generated class for the Conversation page.
@@ -13,9 +14,12 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class ConversationPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+      Keyboard.show();
+  }
 
   ionViewDidLoad() {
+
     console.log('ionViewDidLoad ConversationPage');
   }
 

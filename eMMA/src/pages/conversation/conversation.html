@@ -30,4 +30,19 @@
       </ion-row>
     </ion-grid>
   </ion-list>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col width-80>
+        <ion-item>
+          <ion-input type="text" #input [(ngModel)]="myReply" class="input-message" placeholder="Message"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <button ion-button icon-only (click)="sendMessage(input)" [disabled]="!myReply || myReply === ''">
+        <ion-icon name="arrow-dropleft-circle"></ion-icon>
+      </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-footer>

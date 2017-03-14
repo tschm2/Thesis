@@ -52,7 +52,16 @@ export class ConversationPage {
         callFunction: eval("function" + i)
       });
     }
+  }
 
+  sendMessage(myReply) {
+    console.log(myReply);
+    this.messages.push({
+      text: myReply.value,
+      identity: 'user'
+    })
+    myReply.value = null;
+    this.content.scrollToBottom();
   }
 
 

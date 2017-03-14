@@ -18,37 +18,31 @@ import { Storage } from '@ionic/storage'
 export class MyMedicationPage {
   drugList:JSON;
   patient:JSON;
-  test:string;
+  parsedData:JSON;
+  perDay:String[];
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
-    this.storage.ready().then(() => {
-      this.storage.set('test', 'das');
-    })
-
+    this.perDay = ['Morgen','Mittag','Abend','zur Nacht'];
   }
 
   ionViewDidLoad() {
-
-  this.storage.get('test').then((val) => {
-          console.log(this.test = val);
-        })
+  this.storage.ready().then(() => {
 
     let myScanner = new barcodeService(this.storage);
-    let dummyData:JSON = myScanner.testDummyData();
-    // Data Generiert
+    myScanner.testDummyData();
 
-    let myChmedHandler = new chmedJsonHandler(dummyData);
+    this.storage.get('parsedData').then((val) => {
+        this.parsedData=val;
+        let myChmedHandler = new chmedJsonHandler(this.parsedData);
+        this.drugList = myChmedHandler.getMedicationArray();
+        console.log(this.drugList);
 
-    this.drugList = myChmedHandler.getMedicationArray();
-    console.log(this.drugList);
-    this.patient = myChmedHandler.getPatient();
-    console.log(this.patient);
-      this.storage.ready().then(() => {
-      this.storage.get('test2').then((val) => {
-              console.log(this.test = val);
-            })
-          })
+      })
 
 
+
+
+
+})
   }
 
 

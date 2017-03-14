@@ -1,6 +1,4 @@
-<ion-content padding>
-
-</ion-content>
+<ion-content padding></ion-content>
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
@@ -17,12 +15,10 @@
 
     <ion-card *ngFor="let message of messages" class={{message.identity}}>
       <p>{{message.text}}</p>
-
     </ion-card>
 
   </ion-list>
 </ion-content>
-
 
 <ion-footer keyboard-attach>
   <ion-list>
@@ -33,6 +29,5 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-
   </ion-list>
 </ion-footer>

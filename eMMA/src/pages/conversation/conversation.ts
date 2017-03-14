@@ -2,6 +2,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Keyboard } from 'ionic-native';
 import {ViewChild, Component, ElementRef} from '@angular/core';
 import {Content} from 'ionic-angular/index';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-conversation',
@@ -10,52 +11,49 @@ import {Content} from 'ionic-angular/index';
 
 export class ConversationPage {
 
-    @ViewChild(Content)
-    content: Content;
-    messages: any[];
-    preAnswers: any[];
+  @ViewChild(Content)  content: Content;
+  messages: any[];
+  preAnswers: any[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  this.messages = [];
-  this.preAnswers = [];
-  for (let i = 0; i < 2; i++) {
-    this.preAnswers.push({
-      text: 'Answer ' + i,
-      id: i,
-      doFunction:"doSomething(answer)"
-    });
-  }
-  console.log(this.preAnswers);
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage) {
+    this.messages = [];
+    this.preAnswers = [];
+
   }
 
   ionViewDidLoad() {
+    this.OverrideAnswerButtons("hello", "doSomething", "hello2", "doSomething")
+  }
+  reply(answer) {
 
+    this.messages.push({
+      text: answer.text,
+      identity: 'user'
+    })
+
+    this[answer.callFunction]();
+    this.OverrideAnswerButtons("hello", "doSomething", "hello2", "doSomething")
+    this.content.scrollToBottom();
+  }
+  doSomething() {
+    this.storage.ready().then(() => {
+      this.storage.set('test', 'das');
+    })
+    this.storage.get('test').then((val) => {
+            console.log(val);
+          })
+  }
+  OverrideAnswerButtons(text1: String, function1: String, text2: String, function2: String) {
+    this.preAnswers = [];
+    for (let i = 1; i <= 2; i++) {
+      this.preAnswers.push({
+        text: eval("text" + i),
+        id: i,
+        callFunction: eval("function" + i)
+      });
     }
-    reply(answer) {
-      this.messages.push({
-        text: answer.text,
-        identity: 'user'
-
-      })
-      this.content.scrollToBottom();
-        this.preAnswers = [];
-        this.preAnswers.push({
-          text: 'Neui ANtwort',
-          id:2,
-          doFunction:"doSomething(answer)"
-
-        })
-        this.preAnswers.push({
-          text: 'Neui ANtwort2',
-          id:2,
-          doFunction:"doSomething(answer)"
-
-        })
-    }
-    doSomething(answer){
-      this.reply(answer);
-    }
-    
-
 
   }
+
+
+}

@@ -1,4 +1,5 @@
 import { Storage } from '@ionic/storage';
+
 export class chmedJsonHandler {
     mediPlan: JSON;
     constructor(mediPlan:JSON) {

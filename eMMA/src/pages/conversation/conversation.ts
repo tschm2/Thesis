@@ -3,6 +3,9 @@ import { Keyboard } from 'ionic-native';
 import {ViewChild, Component, ElementRef} from '@angular/core';
 import {Content} from 'ionic-angular/index';
 import { Storage } from '@ionic/storage';
+import { eMMAText } from '../../pages/conversation/eMMA';
+
+
 
 @Component({
   selector: 'page-conversation',
@@ -14,36 +17,80 @@ export class ConversationPage {
   @ViewChild(Content)  content: Content;
   messages: any[];
   preAnswers: any[];
-
+  sendButton: String;
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage) {
     this.messages = [];
     this.preAnswers = [];
 
   }
-
+  eMMA = new eMMAText();
   ionViewDidLoad() {
-    this.OverrideAnswerButtons("hello", "doSomething", "hello2", "doSomething")
-  }
-  reply(answer) {
 
-    this.messages.push({
-      text: answer.text,
-      identity: 'user'
-    })
 
-    this[answer.callFunction]();
-    this.OverrideAnswerButtons("hello", "doSomething", "hello2", "doSomething")
-    this.content.scrollToBottom();
+    var storageEmpty = "True";
+    if(storageEmpty == "True"){
+      this.firstAppStart();
+    }
+    else{
+      this.normalAppStart();
+    }
   }
-  doSomething() {
-    this.storage.ready().then(() => {
-      this.storage.set('test', 'das');
-    })
-    this.storage.get('test').then((val) => {
-            console.log(val);
-          })
+
+  firstAppStart() {
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello);
+    this.overrideSendbutton("questionPinNecessary");
   }
-  OverrideAnswerButtons(text1: String, function1: String, text2: String, function2: String) {
+  questionPinNecessary(input:String){
+    this.sendEmmaText("Hallo " + input+ "\n"+ this.eMMA.messageEMMA_FirstStart_questionPin);
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionPin_Yes,"inputPin",this.eMMA.messageEMMA_FirstStart_questionPin_No,"questionAthlete");
+  }
+  inputPin(){
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Pin);
+    this.overrideSendbutton("questionAthlete");
+  }
+  questionAthlete(input:String){
+    if(input != this.eMMA.messageEMMA_FirstStart_questionPin_No)
+    {
+      //save pin to storage
+    }
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionAthlete);
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionAthlete_Yes,"questionDriver",this.eMMA.messageEMMA_FirstStart_questionAthlete_No,"questionDriver");
+  }
+  questionDriver(input:String){
+    //save input to storage athleth
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionDriver);
+    this.overrideAnswerButtons("Ja","questionMediplan","Nein","questionMediplan");
+  }
+  questionMediplan(input:String)
+  {
+    //save input to storage driver
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImportMediplan);
+    this.overrideAnswerButtons("Ja","questionEHealth","Nein","questionEHealth");
+  }
+  questionEHealth(input:String){
+    if(input == "Ja, ich möchte einen eMedikationsplan")
+    {
+      //save pin to storage
+    }
+  }
+
+
+  normalAppStart() {
+    //Show Correct Awnsers
+    //this.overrideAnswerButtons("hello", "doSomething", "hello2", "doSomething")
+  }
+  sendEmmaText(message:String){
+//Püntkli azeige
+  setTimeout(() => this.messages.push({
+      text: 'eMMA schreibt....',
+      identity: 'emma'
+    }), 500)
+    setTimeout(() => this.messages[this.messages.length-1].text = message, 2000)
+
+
+  }
+  overrideAnswerButtons(text1: String, function1: String, text2: String, function2: String) {
+    //ausblenden Texteingabe
     this.preAnswers = [];
     for (let i = 1; i <= 2; i++) {
       this.preAnswers.push({
@@ -53,16 +100,30 @@ export class ConversationPage {
       });
     }
   }
+  overrideSendbutton(newfunction:String){
+    //Aussblenden der buttons
+    this.sendButton = newfunction;
+  }
+  reply(answer) {
+    this.messages.push({
+      text: answer.text,
+      identity: 'user'
+    })
+    this[answer.callFunction](answer.text);
+    this.content.scrollToBottom();
+  }
 
-  sendMessage(myReply) {
-    console.log(myReply);
+  sendMessage(myReply, myFunc) {
     this.messages.push({
       text: myReply.value,
       identity: 'user'
     })
+    console.log(myFunc);
+    this[myFunc](myReply.value);
     myReply.value = null;
     this.content.scrollToBottom();
   }
-
-
+  delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }

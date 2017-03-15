@@ -14,7 +14,8 @@
   <ion-list>
 
     <ion-card *ngFor="let message of messages" class={{message.identity}}>
-      <p>{{message.text}}</p>
+      <p class="test2">{{message.text}} </p>
+
     </ion-card>
 
   </ion-list>
@@ -25,7 +26,7 @@
     <ion-grid ref="bux" class="buttons">
       <ion-row>
         <ion-col *ngFor="let answer of preAnswers" width-45>
-          <button ion-button full (click)="reply(answer)"></button>
+          <button ion-button full (click)="reply(answer)">{{answer.text}}</button>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -39,7 +40,7 @@
         </ion-item>
       </ion-col>
       <ion-col>
-        <button ion-button icon-only (click)="sendMessage(input)" [disabled]="!myReply || myReply === ''">
+        <button ion-button icon-only (click)="sendMessage(input,sendButton)" [disabled]="!myReply || myReply === ''">
         <ion-icon name="arrow-dropleft-circle"></ion-icon>
       </button>
       </ion-col>

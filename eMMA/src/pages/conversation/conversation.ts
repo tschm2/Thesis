@@ -59,19 +59,21 @@ export class ConversationPage {
   questionDriver(input:String){
     //save input to storage athleth
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionDriver);
-    this.overrideAnswerButtons("Ja","questionMediplan","Nein","questionMediplan");
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionDriver_Yes,"questionMediplan",this.eMMA.messageEMMA_FirstStart_questionDriver_No,"questionMediplan");
   }
   questionMediplan(input:String)
   {
     //save input to storage driver
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImportMediplan);
-    this.overrideAnswerButtons("Ja","questionEHealth","Nein","questionEHealth");
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImportMediplan_Yes,"questionEHealth",this.eMMA.messageEMMA_FirstStart_questionImportMediplan_No,"questionEHealth");
   }
   questionEHealth(input:String){
-    if(input == "Ja, ich möchte einen eMedikationsplan")
+    if(input == this.eMMA.messageEMMA_FirstStart_questionImportMediplan_Yes)
     {
-      //save pin to storage
+      //open view eMediplan
     }
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImportMediplan);
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImportMediplan_Yes,"eMMADemo",this.eMMA.messageEMMA_FirstStart_questionImportMediplan_No,"eMMADemo");
   }
 
 
@@ -91,15 +93,18 @@ export class ConversationPage {
   }
   overrideAnswerButtons(text1: String, function1: String, text2: String, function2: String) {
     //ausblenden Texteingabe
-    this.preAnswers = [];
-    for (let i = 1; i <= 2; i++) {
-      this.preAnswers.push({
-        text: eval("text" + i),
-        id: i,
-        callFunction: eval("function" + i)
-      });
-    }
+    setTimeout(() =>   {
+      this.preAnswers = []
+          for (let i = 1; i <= 2; i++) {
+            this.preAnswers.push({
+              text: eval("text" + i),
+              id: i,
+              callFunction: eval("function" + i)
+            })
+          }
+      }  , 2000);
   }
+
   overrideSendbutton(newfunction:String){
     //Aussblenden der buttons
     this.sendButton = newfunction;

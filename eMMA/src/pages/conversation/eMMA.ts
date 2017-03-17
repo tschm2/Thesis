@@ -13,9 +13,17 @@ export class eMMAText {
   messageEMMA_FirstStart_questionAthlete_No = "uuuh nein, dass ist nicht für mich";
   messageEMMA_FirstStart_questionAthlete_Yes = "Ja, ich bin Leistungssportler";
   messageEMMA_FirstStart_questionDriver = "Besitzt du einen Führerausweis?"
+  messageEMMA_FirstStart_questionDriver_Yes = "Ja, ich fahre Auto";
+  messageEMMA_FirstStart_questionDriver_No = "Nein, ich fahre nicht";
   messageEMMA_FirstStart_questionImportMediplan = "Willst du einen eMediplan Importieren?";
+  messageEMMA_FirstStart_questionImportMediplan_Yes = "Ja, importiere bitte beine Daten";
+  messageEMMA_FirstStart_questionImportMediplan_No = "Ich habe leider keinen";
   messageEMMA_FirstStart_questionImporteHealth = "Willst du dein Elektronisches Patientendossier verbinden?";
+  messageEMMA_FirstStart_questionImporteHealth_Yes = "Ja gerne würde mich anmelden"
+  messageEMMA_FirstStart_questionImporteHealth_No = "Nein, ich besitze kein Dossier"
   messageEMMA_FirstStart_questionDatasecurity = "Willst du von mir noch etwas über die Datenschutzbestimmungen wissen?"
+  messageEMMA_FirstStart_questionDatasecurity_Yes = "Ja, zeigt mir bitte mehr";
+  messageEMMA_FirstStart_questionDatasecurity_No =  "Nein, gerade nicht danke";
   messageEMMA_FirstStart_Datasecurity = "BlaBlaDatenschutz wichtig BlaBla\n du findest die Datenschutzbestimmungen auch im Impressum wieder.\n gehe dafür einfach im Menü auf Über eMMA"
   messageEMMA_FirstStart_Tourtorial = "Bitte sei immer offen und ehrlich zu mir. So kann ich deine Medikamenten Einnahme optimal unersützen";
 }

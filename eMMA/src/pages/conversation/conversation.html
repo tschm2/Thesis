@@ -22,15 +22,7 @@
 </ion-content>
 
 <ion-footer keyboard-attach>
-  <ion-list>
-    <ion-grid ref="bux" class="buttons">
-      <ion-row>
-        <ion-col *ngFor="let answer of preAnswers" width-45>
-          <button ion-button full (click)="reply(answer)">{{answer.text}}</button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-list>
+
 
   <ion-grid>
     <ion-row>
@@ -46,4 +38,13 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-list>
+    <ion-grid ref="bux" class="buttons">
+      <ion-row>
+        <ion-col *ngFor="let answer of preAnswers" width-45>
+          <button ion-button full (click)="reply(answer)">{{answer.text}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
 </ion-footer>

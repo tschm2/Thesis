@@ -22,7 +22,7 @@ export class MyMedicationPage {
   perDay:String[];
   toggleObject:number;
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
-    this.perDay = ['Morgen','Mittag','Abend','zur Nacht'];
+    this.perDay = ['Morgen','Mittag','Abend','Nacht'];
   }
 
   ionViewDidLoad() {
@@ -46,6 +46,9 @@ export class MyMedicationPage {
 })
   }
   toggleContent(numb){
+    if (this.toggleObject == numb)
+    this.toggleObject = 0
+    else
     this.toggleObject = numb;
     }
 

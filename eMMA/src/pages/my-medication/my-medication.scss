@@ -8,3 +8,33 @@ page-my-medication {}
 .hidden {
   display: none;
 }
+
+.medItem {
+  margin-top: 10px;
+}
+
+.drugImage {
+  height: 129px;
+}
+
+.nextToImage {
+  padding-left: 20px;
+  background-color: #DDD;
+}
+
+.card-content {
+  padding: 10px;
+}
+
+.perDayItem {
+  background-color: #A3C1D6;
+  text-align: center;
+}
+
+.manualItem {
+  background-color: #DDD;
+}
+
+.prescItem {
+  background-color: #A3C1D6;
+}

@@ -15,22 +15,25 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-card (click)="toggleContent(1)">
     <ion-card-header class="clickAbleHeader">
-      Meine bisherigen Medikamente
+      Meine momentanen Medikamente
     </ion-card-header>
 
 
     <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
-      <div *ngFor="let drug of drugList">
+      <div class="medItem" *ngFor="let drug of drugList">
       <ion-grid>
         <ion-row>
-          <ion-col col-6><img src="https://apps.hcisolutions.ch/MyProducts/picture/{{drug?.Id}}/Pharmacode/BL/Front/F" alt="Description"/></ion-col>
-          <ion-col col-6>
-            Name:
-            {{drug.Id}}
-            <br>
+          <ion-col>
+            <b>Dafalgan xy1 20mg
+            {{drug.Id}}</b>
+          </ion-col>
+          </ion-row>
+          <ion-row>
+          <ion-col col-5  ><img src="https://index.hcisolutions.ch/files/pics/{{drug?.Id}}_PIF_F.jpg?px=128&key=Pharmacode" alt="Description"/></ion-col>
+          <ion-col class="nextToImage" col-7>
             Grund:
             {{drug.TkgRsn}}
             <br>
@@ -41,14 +44,18 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col *ngFor="let day of drug?.Pos[0].D; let i = index">{{perDay[i]}}:
+          <ion-col class="perDayItem" *ngFor="let day of drug?.Pos[0].D; let i = index">{{perDay[i]}}:
             {{day}}</ion-col>
         </ion-row>
         <ion-row>
+          <ion-col class="manualItem">
           Anleitung: {{drug.AppInstr}}
+        </ion-col>
         </ion-row>
         <ion-row>
-          Verschrieben von:{{drug.PrscbBy}}
+          <ion-col class="prescItem">
+          Verschrieben von: {{drug.PrscbBy}}
+        </ion-col>
         </ion-row>
 
       </ion-grid>

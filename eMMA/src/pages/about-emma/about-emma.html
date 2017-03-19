@@ -17,5 +17,16 @@
 
 
 <ion-content padding>
-
+  <ion-card (click)="toggleContent(1)">
+    <ion-card-header class="clickAbleHeader">
+      Impressum
+    </ion-card-header>
+    <ion-card-content [ngClass]="{'hidden': toggleObject != 1}"></ion-card-content>
+  </ion-card>
+  <ion-card (click)="toggleContent(2)">
+    <ion-card-header class="clickAbleHeader">
+      Datenschutz
+    </ion-card-header>
+    <ion-card-content [ngClass]="{'hidden': toggleObject != 2}"></ion-card-content>
+  </ion-card>
 </ion-content>

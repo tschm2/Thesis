@@ -12,11 +12,15 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'about-emma.html'
 })
 export class AboutEmmaPage {
+  toggleObject:number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AboutEmmaPage');
   }
+  toggleContent(numb){
+    this.toggleObject = numb;
+    }
 
 }

@@ -12,11 +12,16 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'update.html'
 })
 export class UpdatePage {
-
+  toggleObject:number;
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UpdatePage');
   }
+
+  toggleContent(numb){
+    this.toggleObject = numb;
+    }
+
 
 }

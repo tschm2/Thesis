@@ -20,6 +20,7 @@ export class MyMedicationPage {
   patient:JSON;
   parsedData:JSON;
   perDay:String[];
+  toggleObject:number;
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
     this.perDay = ['Morgen','Mittag','Abend','zur Nacht'];
   }
@@ -44,6 +45,9 @@ export class MyMedicationPage {
 
 })
   }
+  toggleContent(numb){
+    this.toggleObject = numb;
+    }
 
 
 }

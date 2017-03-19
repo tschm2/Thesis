@@ -16,14 +16,15 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card>
-    <ion-card-header>
+  <ion-card (click)="toggleContent(1)">
+    <ion-card-header class="clickAbleHeader">
       Meine bisherigen Medikamente
     </ion-card-header>
 
-    <ion-card-content *ngFor="let drug of drugList">
-      <ion-grid>
 
+    <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
+      <div *ngFor="let drug of drugList">
+      <ion-grid>
         <ion-row>
           <ion-col col-6><img src="https://apps.hcisolutions.ch/MyProducts/picture/{{drug?.Id}}/Pharmacode/BL/Front/F" alt="Description"/></ion-col>
           <ion-col col-6>
@@ -51,20 +52,22 @@
         </ion-row>
 
       </ion-grid>
+    </div>
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
-    <ion-card-header>
+  <ion-card (click)="toggleContent(2)">
+    <ion-card-header class="clickAbleHeader">
       Neues Medikament erfassen
     </ion-card-header>
-    <ion-card-content></ion-card-content>
+    <ion-card-content [ngClass]="{'hidden': toggleObject != 2}"></ion-card-content>
   </ion-card>
-  <ion-card>
-    <ion-card-header>
+  <ion-card (click)="toggleContent(3)">
+    <ion-card-header class="clickAbleHeader">
       Einstellungen
     </ion-card-header>
-    <ion-card-content></ion-card-content>
+    <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
+    </ion-card-content>
   </ion-card>
 
 </ion-content>

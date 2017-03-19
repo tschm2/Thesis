@@ -20,6 +20,9 @@ export class AboutEmmaPage {
     console.log('ionViewDidLoad AboutEmmaPage');
   }
   toggleContent(numb){
+    if (this.toggleObject == numb)
+    this.toggleObject = 0
+    else
     this.toggleObject = numb;
     }
 

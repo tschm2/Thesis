@@ -18,6 +18,7 @@ export class ConversationPage {
   messages: any[];
   preAnswers: any[];
   sendButton: String;
+  toggleObject:number;
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage) {
     this.messages = [];
     this.preAnswers = [];
@@ -25,7 +26,7 @@ export class ConversationPage {
   }
   eMMA = new eMMAText();
   ionViewDidLoad() {
-    var Start = "reminder";
+    var Start = "First";
     if(Start == "First"){
       this.firstAppStart();
     }
@@ -216,33 +217,32 @@ quesiton(input:String){
     setTimeout(() => this.messages[this.messages.length-1].text = message, 2000)
   }
   overrideAnswerButtons(text1: String, function1: String, text2: String, function2: String) {
-    //ausblenden Texteingabe
-    setTimeout(() =>   {
-      this.preAnswers = []
-          for (let i = 1; i <= 2; i++) {
-            this.preAnswers.push({
-              text: eval("text" + i),
-              id: i,
-              callFunction: eval("function" + i)
-            })
-          }
-      }  , 2000);
+    this.toggleObject = 0;
+    setTimeout(() => this.toggleObject = 2 , 2000);
+    this.preAnswers = []
+      for (let i = 1; i <= 2; i++) {
+        this.preAnswers.push({
+          text: eval("text" + i),
+          id: i,
+          callFunction: eval("function" + i)
+        })
+      }
   }
   overrideAnswerButtons_Four(text1: String, function1: String, text2: String, function2: String, text3: String, function3: String, text4: String, function4: String) {
-    //ausblenden Texteingabe
-    setTimeout(() =>   {
-      this.preAnswers = []
-          for (let i = 1; i <= 4; i++) {
-            this.preAnswers.push({
-              text: eval("text" + i),
-              id: i,
-              callFunction: eval("function" + i)
-            })
-          }
-      }  , 2000);
+    this.toggleObject = 0;
+    setTimeout(() =>   this.toggleObject = 2 , 2000);
+    this.preAnswers = []
+      for (let i = 1; i <= 4; i++) {
+        this.preAnswers.push({
+          text: eval("text" + i),
+          id: i,
+          callFunction: eval("function" + i)
+        })
+      }
   }
   overrideSendbutton(newfunction:String){
-    //Aussblenden der buttons
+
+    setTimeout(() => this.toggleObject = 1,2000);
     this.sendButton = newfunction;
   }
   reply(answer) {

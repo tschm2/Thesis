@@ -18,23 +18,36 @@
 
 <ion-content padding>
 
-  <ion-card (click)="toggleContent(1)">
-    <ion-card-header class="clickAbleHeader">
+  <ion-card >
+    <ion-card-header (click)="toggleContent(1)" class="clickAbleHeader">
       eMediplan einscannen
     </ion-card-header>
-    <ion-card-content [ngClass]="{'hidden': toggleObject != 1}"></ion-card-content>
+    <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            Mediplan QR-Code: <br>
+            Stand: 28.12.2016
+          </ion-col>
+          <ion-col>
+          </ion-col>
+        </ion-row>
+          <ion-row>
+            <ion-col>
+              Neuer Code Einlese:
+            </ion-col>
+            <ion-col>
+              <button ion-button (click)="scanQRcode()">QR-Code einscannen</button>
+            </ion-col>
+          </ion-row>
+      </ion-grid>
+    </ion-card-content>
   </ion-card>
   <ion-card (click)="toggleContent(2)">
     <ion-card-header class="clickAbleHeader">
       Elektronisches Dossier abrufen
     </ion-card-header>
     <ion-card-content [ngClass]="{'hidden': toggleObject != 2}"></ion-card-content>
-  </ion-card>
-  <ion-card (click)="toggleContent(3)">
-    <ion-card-header class="clickAbleHeader">
-      QR-Code generieren
-    </ion-card-header>
-    <ion-card-content [ngClass]="{'hidden': toggleObject != 3}"></ion-card-content>
   </ion-card>
 
 </ion-content>

@@ -67,7 +67,18 @@
     <ion-card-header class="clickAbleHeader">
       Neues Medikament erfassen
     </ion-card-header>
-    <ion-card-content [ngClass]="{'hidden': toggleObject != 2}"></ion-card-content>
+    <ion-card-content [ngClass]="{'hidden': toggleObject != 2}">
+      <ion-grid>
+          <ion-row>
+            <ion-col>
+              Scannen Sie den Barcode des Medikamentes ein:
+            </ion-col>
+            <ion-col>
+              <button ion-button (click)="scanMedBox()">StrichCode Scannen</button>
+            </ion-col>
+          </ion-row>
+      </ion-grid>
+    </ion-card-content>
   </ion-card>
   <ion-card (click)="toggleContent(3)">
     <ion-card-header class="clickAbleHeader">

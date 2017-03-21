@@ -16,35 +16,29 @@ import { Storage } from '@ionic/storage'
   templateUrl: 'my-medication.html',
 })
 export class MyMedicationPage {
-  drugList:JSON;
-  patient:JSON;
   parsedData:JSON;
   perDay:String[];
   toggleObject:number;
+  chmedHandler: chmedJsonHandler;
+  barcodeService: barcodeService;
+  // DOM ELEMENTS
+  drugList:JSON;
+  patient:JSON;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
     this.perDay = ['Morgen','Mittag','Abend','Nacht'];
+    this.chmedHandler = new chmedJsonHandler(this.storage)
+    this.barcodeService = new barcodeService(this.storage);
   }
 
   ionViewDidLoad() {
-  this.storage.ready().then(() => {
-
-    let myScanner = new barcodeService(this.storage);
-    myScanner.testDummyData();
-
-    this.storage.get('parsedData').then((val) => {
-        this.parsedData=val;
-        let myChmedHandler = new chmedJsonHandler(this.parsedData);
-        this.drugList = myChmedHandler.getMedicationArray();
-        console.log(this.drugList);
-
+    this.storage.ready().then(()=>{
+      this.chmedHandler.getChmedJson().then((res) => {
+      this.drugList = this.chmedHandler.getMedicationArray(res)
       })
-
-
-
-
-
-})
+  })
   }
+  // Togglerone
   toggleContent(numb){
     if (this.toggleObject == numb)
     this.toggleObject = 0

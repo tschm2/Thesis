@@ -11,16 +11,12 @@
 
 <ion-content>
   <ion-list>
-
     <ion-card *ngFor="let message of messages" class={{message.identity}}>
       <p class="test2">{{message.text}} </p>
-
     </ion-card>
-
   </ion-list>
 </ion-content>
-
-<ion-footer keyboard-attach>
+<ion-footer>
 
   <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
     <ion-grid>
@@ -42,7 +38,7 @@
     <ion-list>
       <ion-grid ref="bux" class="buttons">
         <ion-row>
-          <ion-col *ngFor="let answer of preAnswers" width-45>
+          <ion-col *ngFor="let answer of preAnswers" col-6>
             <button ion-button full (click)="reply(answer)">{{answer.text}}</button>
           </ion-col>
         </ion-row>

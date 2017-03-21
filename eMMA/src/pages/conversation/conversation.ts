@@ -14,7 +14,7 @@ var eMMAWaitingTime = 800;
 var eMMAWaitingTimeDouble = 1600;
 
 var showNothing = 0;
-var showTextfiled = 1;
+var showTextfield = 1;
 var showButtons = 2;
 var showPasswordField = 4;
 var showNumberField = 3
@@ -36,10 +36,12 @@ export class ConversationPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage) {
     this.messages = [];
     this.preAnswers = [];
+    this.toggleObject = showTextfield;
   }
 
   eMMA = new eMMAText();
   ionViewDidLoad() {
+    this.toggleObject = showTextfield;
     var Start = "First";
     if(Start == "First"){
       this.firstAppStart();
@@ -286,7 +288,7 @@ export class ConversationPage {
   }
   overrideSendbutton(newfunction:String){
     this.toggleObject = showNothing;
-    setTimeout(() => this.toggleObject = showTextfiled,eMMAWaitingTime);
+    setTimeout(() => this.toggleObject = showTextfield,eMMAWaitingTime);
     this.sendButton = newfunction;
   }
   overridePasswordSendButton(newfunction:String){

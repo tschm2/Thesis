@@ -24420,6 +24420,10 @@ page-conversation .test {
   width: 20px;
 }
 
+page-conversation .test2 {
+  white-space: pre-line;
+}
+
 page-conversation .emma {
   background-color: #FFF;
   width: 70%;
@@ -24439,7 +24443,46 @@ page-conversation .user {
 
 page-conversation .buttons button {
   background-color: #DCF8C7;
-  font-size: 0.6em;
+  font-size: 1.7em;
   text-transform: inherit;
   color: #333;
+}
+
+.clickAbleHeader {
+  background-color: #5893C1;
+  color: #FFF;
+}
+
+.hidden {
+  display: none;
+}
+
+.medItem {
+  margin-top: 10px;
+}
+
+.drugImage {
+  height: 129px;
+}
+
+.nextToImage {
+  padding-left: 20px;
+  background-color: #DDD;
+}
+
+.card-content {
+  padding: 10px;
+}
+
+.perDayItem {
+  background-color: #A3C1D6;
+  text-align: center;
+}
+
+.manualItem {
+  background-color: #DDD;
+}
+
+.prescItem {
+  background-color: #A3C1D6;
 }

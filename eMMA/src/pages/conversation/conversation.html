@@ -1,4 +1,3 @@
-<ion-content padding></ion-content>
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
@@ -49,5 +48,37 @@
         </ion-row>
       </ion-grid>
     </ion-list>
+  </ion-card-content>
+  <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
+    <ion-grid>
+      <ion-row>
+        <ion-col width-80>
+          <ion-item>
+            <ion-input type="number" #inputNumber [(ngModel)]="numberinput" class="input-message" placeholder="Message"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-only (click)="sendMessage(inputNumber,sendButtonNumber)" [disabled]="!numberinput || numberinput === ''">
+          <ion-icon name="arrow-dropleft-circle"></ion-icon>
+        </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+  <ion-card-content [ngClass]="{'hidden': toggleObject != 4}">
+    <ion-grid>
+      <ion-row>
+        <ion-col width-80>
+          <ion-item>
+            <ion-input type="password" #inputPW [(ngModel)]="password" class="input-message" placeholder="Message"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-only (click)="sendMessage(inputPW,sendButtonPW)" [disabled]="!password || password === ''">
+          <ion-icon name="arrow-dropleft-circle"></ion-icon>
+        </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-card-content>
 </ion-footer>

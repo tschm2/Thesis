@@ -274,11 +274,9 @@ export class ConversationPage {
       identity: 'emma'
     }),
     this.content.scrollToBottom(),
-     eMMAWaitingTimeShort)
-    setTimeout(() => this.messages[this.messages.length-1].text = message, eMMAWaitingTime)
-    setTimeout(()=> this.content.scrollToBottom())
-
-  }
+    setTimeout(() => this.messages[this.messages.length-1].text = message, eMMAWaitingTime),
+    setTimeout(()=> this.content.scrollToBottom(),eMMAWaitingTime+50)
+  )}
   overrideAnswerButtons(text1: String, function1: String, text2: String, function2: String) {
     this.toggleObject = showNothing;
     setTimeout(() => this.toggleObject = showButtons , eMMAWaitingTime);

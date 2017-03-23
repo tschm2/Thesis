@@ -318,7 +318,7 @@ export class ConversationPage {
   {
       this.content.scrollToBottom();
   },
-40);
+50);
   }
   sendMessage(myReply, myFunc) {
     this.messages.push({
@@ -327,5 +327,12 @@ export class ConversationPage {
     })
     this[myFunc](myReply.value);
     myReply.value = null;
+
+    setTimeout(() =>
+  {
+      this.content.scrollToBottom();
+  },
+50);
+  
   }
 }

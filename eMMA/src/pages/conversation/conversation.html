@@ -17,7 +17,6 @@
   </ion-list>
 </ion-content>
 <ion-footer>
-
   <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
     <ion-grid>
       <ion-row>
@@ -34,17 +33,11 @@
       </ion-row>
     </ion-grid>
   </ion-card-content>
-  <ion-card-content [ngClass]="{'hidden': toggleObject != 2}">
-    <ion-list>
-      <ion-grid ref="bux" class="buttons">
-        <ion-row>
-          <ion-col *ngFor="let answer of preAnswers" col-6>
+  <div class=buttonsDiv [ngClass]="{'hidden': toggleObject != 2}">
+          <div class="buttons" *ngFor="let answer of preAnswers" >
             <button ion-button full (click)="reply(answer)">{{answer.text}}</button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-list>
-  </ion-card-content>
+          </div>
+  </div>
   <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
     <ion-grid>
       <ion-row>

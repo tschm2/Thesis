@@ -24441,11 +24441,30 @@ page-conversation .user {
   height: 25%;
 }
 
+page-conversation .buttonsDiv {
+  height: 100%;
+}
+
+page-conversation .buttons {
+  height: 100%;
+  width: 45%;
+  float: left;
+}
+
 page-conversation .buttons button {
   background-color: #DCF8C7;
-  font-size: 1.7em;
+  font-size: 0.9em;
   text-transform: inherit;
   color: #333;
+  height: 80%;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+page-conversation .footer {
+  height: 10%;
+  bottom: 0px;
+  position: absolute;
 }
 
 .clickAbleHeader {

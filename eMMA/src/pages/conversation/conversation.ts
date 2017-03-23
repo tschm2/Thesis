@@ -268,11 +268,16 @@ export class ConversationPage {
   }
   sendEmmaText(message:String){
     //Püntkli azeige
-  setTimeout(() => this.messages.push({
+  setTimeout(() =>
+  this.messages.push({
       text: 'eMMA schreibt....',
       identity: 'emma'
-    }), eMMAWaitingTimeShort)
+    }),
+    this.content.scrollToBottom(),
+     eMMAWaitingTimeShort)
     setTimeout(() => this.messages[this.messages.length-1].text = message, eMMAWaitingTime)
+    setTimeout(()=> this.content.scrollToBottom())
+
   }
   overrideAnswerButtons(text1: String, function1: String, text2: String, function2: String) {
     this.toggleObject = showNothing;
@@ -290,16 +295,19 @@ export class ConversationPage {
     this.toggleObject = showNothing;
     setTimeout(() => this.toggleObject = showTextfield,eMMAWaitingTime);
     this.sendButton = newfunction;
+
   }
   overridePasswordSendButton(newfunction:String){
     this.toggleObject = showNothing;
     setTimeout(() => this.toggleObject = showPasswordField,eMMAWaitingTime);
     this.sendButtonPW = newfunction;
+
   }
   overrideNumberSendButton(newfunction:String){
     this.toggleObject = showNothing;
     setTimeout(() => this.toggleObject = showNumberField,eMMAWaitingTime);
     this.sendButtonNumber = newfunction;
+
   }
   reply(answer) {
     this.messages.push({
@@ -307,7 +315,12 @@ export class ConversationPage {
       identity: 'user'
     })
     this[answer.callFunction](answer.text);
-    this.content.scrollToBottom();
+
+    setTimeout(() =>
+  {
+      this.content.scrollToBottom();
+  },
+40);
   }
   sendMessage(myReply, myFunc) {
     this.messages.push({
@@ -316,6 +329,5 @@ export class ConversationPage {
     })
     this[myFunc](myReply.value);
     myReply.value = null;
-    this.content.scrollToBottom();
   }
 }

@@ -44,7 +44,7 @@ json:JSON;
       //console.log(api);
       var keytype = keyT
       //console.log(keytype);
-      var key = id;
+      var key = 7680475040157;
       //console.log(key);
       var index = 'hospINDEX';
       //console.log(index);

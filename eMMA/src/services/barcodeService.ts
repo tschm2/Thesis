@@ -5,10 +5,11 @@ import { HCIService } from './HCIService';
 import { Http, Headers, RequestOptions } from '@angular/http';
 
 export class barcodeService {
-storage:Storage
 
-      constructor(storage: Storage, public http: Http) {
-        this.storage = storage;
+
+
+      constructor(public storage: Storage, public http: Http) {
+
         }
     scanQRcodeForJSON(){
         BarcodeScanner.scan().then((barcodeData) => {
@@ -66,8 +67,7 @@ storage:Storage
       }
 
       getNamesFromID(medData){
-
-        var hciS = new HCIService(this.http)
+     var hciS = new HCIService(this.http)
         for (let medi of medData['Medicaments']){
           hciS.getHCIData(medi.Id,"phar").then(function(response) {
           if(Number(medi.Id)){
@@ -81,15 +81,51 @@ storage:Storage
         else{
         medi.description = medi.Id
           medi.title = medi.Id
-
-        }
-
-
-
-      })
-
-
+            }
+        })
+      }
     }
 
+       scanMediCode(medData){
+              var hciS = new HCIService(this.http)
+                 BarcodeScanner.scan().then((barcodeData) => {
+                   console.log(barcodeData.text)
+                  hciS.getHCIData(barcodeData.text,"ARTBAR").then(function(response) {
+                  var tempData = JSON.parse(response._body);
+                  var desc = tempData.article[0].dscrd;
+                  var title = desc.split(" ")[0];
+                  var tempObj = ({
+                    "AppInstr":"Arzt oder Apotheker fragen.",
+                    "AutoMed":"1",
+                    "Id":tempData.article[0].phar,
+                    "IdType":"3",
+                    "description":desc,
+                    "title":title,
+                    "PrscbBy":"mir als Patient",
+                    "Pos":[{
+                      "D":[
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "DtFrom":"TodaysDate"
+                    }]
+                  })
+                  console.log(medData)
+                  console.log(tempObj)
+                  medData.push(tempObj)
+                  })
+
+                 }, (err) => {
+
+                      })
+       }
+
+       testShizzle(){
+              var hciS = new HCIService(this.http)
+         hciS.getHCIData(7680475040157,"ARTBAR").then(function(response) {
+         console.log(response);
+         })
        }
 }

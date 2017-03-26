@@ -40,6 +40,7 @@ export class MyMedicationPage {
   }
 
   ionViewDidLoad() {
+    this.barcodeService.testDummyData()
     this.storage.ready().then(()=>{
       this.storage.get('medicationData').then((res)=>{
         this.drugList = res;
@@ -60,6 +61,11 @@ export class MyMedicationPage {
     this.toggleObject = numb;
     }
 
+  scanMedBox(){
+    this.barcodeService.scanMediCode(this.drugList);
+
+  //  this.barcodeService.scanMediCode();
+  }
     test(artbar) {
     // preparing variables
     var api = 'http://www.laettere.ch/carole/mina/getArticle.php';

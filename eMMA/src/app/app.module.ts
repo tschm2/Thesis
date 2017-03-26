@@ -10,6 +10,7 @@ import { ConversationPage } from '../pages/conversation/conversation';
 import { MyMedicationPage } from '../pages/my-medication/my-medication';
 import { UpdatePage } from '../pages/update/update';
 import { Storage } from '@ionic/storage';
+import { HttpModule, JsonpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { Storage } from '@ionic/storage';
   ],
   imports: [
     IonicModule.forRoot(MyApp),
+    HttpModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { barcodeService } from '../../services/barcodeService';
 import { Storage } from '@ionic/storage'
+import { Http, Headers, RequestOptions } from '@angular/http';
+
 /*
   Generated class for the Update page.
 
@@ -16,9 +18,9 @@ export class UpdatePage {
   toggleObject:number;
   barcodeService: barcodeService;
   storage:Storage
-  constructor(public navCtrl: NavController, public navParams: NavParams, storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, storage:Storage, public http:Http) {
   this.storage = storage;
-  this.barcodeService = new barcodeService(this.storage)
+  this.barcodeService = new barcodeService(this.storage, this.http)
   }
 
   ionViewDidLoad() {

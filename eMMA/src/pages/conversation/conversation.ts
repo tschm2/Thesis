@@ -8,6 +8,7 @@ import { Page1 } from '../../pages/page1/page1';
 import { UpdatePage } from '../../pages/update/update';
 import { barcodeService } from '../../services/barcodeService';
 import { AlertController } from 'ionic-angular';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 var eMMAWaitingTimeShort = 200;
 var eMMAWaitingTime = 800;
@@ -33,7 +34,7 @@ export class ConversationPage {
   sendButtonPW: String;
   sendButtonNumber: String;
   toggleObject:number;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, public http:Http) {
     this.messages = [];
     this.preAnswers = [];
     this.toggleObject = showTextfield;
@@ -110,7 +111,7 @@ export class ConversationPage {
   mediplanImport(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_OpenScanner);
     setTimeout(() => {
-      let scanner = new barcodeService(this.storage)
+      let scanner = new barcodeService(this.storage, this.http)
       scanner.scanQRcodeForJSON();
       this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_sucsess);
       }, 4000);
@@ -333,6 +334,6 @@ export class ConversationPage {
       this.content.scrollToBottom();
   },
 50);
-  
+
   }
 }

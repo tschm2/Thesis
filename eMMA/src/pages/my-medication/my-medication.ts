@@ -2,8 +2,15 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { barcodeService } from '../../services/barcodeService';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
+import { HCIService } from '../../services/HCIService';
 import { Storage } from '@ionic/storage'
-
+import {Request, RequestMethod,Response} from '@angular/http';
+import {Injectable} from '@angular/core';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
+import {Observable} from 'rxjs/Observable';
+import myPako from "../../node_modules/pako"
 
 /*
   Generated class for the MyMedication page.
@@ -25,18 +32,25 @@ export class MyMedicationPage {
   drugList:JSON;
   patient:JSON;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public http: Http) {
     this.perDay = ['Morgen','Mittag','Abend','Nacht'];
-    this.chmedHandler = new chmedJsonHandler(this.storage)
-    this.barcodeService = new barcodeService(this.storage);
+    this.chmedHandler = new chmedJsonHandler(this.storage, this.http)
+    this.barcodeService = new barcodeService(this.storage, this.http);
   }
 
   ionViewDidLoad() {
     this.storage.ready().then(()=>{
-      this.chmedHandler.getChmedJson().then((res) => {
-      this.drugList = this.chmedHandler.getMedicationArray(res)
+      this.storage.get('medicationData').then((res)=>{
+        this.drugList = res;
+        for (let drug of res){
+          drug.title = "This is a Title"
+        }
+        })
       })
-  })
+
+
+
   }
   // Togglerone
   toggleContent(numb){
@@ -45,6 +59,26 @@ export class MyMedicationPage {
     else
     this.toggleObject = numb;
     }
+
+    test(artbar) {
+    // preparing variables
+    var api = 'http://www.laettere.ch/carole/mina/getArticle.php';
+    //console.log(api);
+    var keytype = 'ARTBAR';
+    //console.log(keytype);
+    var key = artbar;
+    //console.log(key);
+    var index = 'hospINDEX';
+    //console.log(index);
+
+    // concat uri
+    var uri = api + '?keytype=' + keytype + '&key=' + key + '&index=' + index;
+
+    return this.http.get(uri).toPromise().then(function(response){
+      return response;
+    })
+  }
+
 
 
 }

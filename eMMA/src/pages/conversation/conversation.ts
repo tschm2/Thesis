@@ -54,7 +54,11 @@ export class ConversationPage {
       this.normalAppStart();
     }
   }
+  /*****************************************************************************
 
+  Normal App start
+
+  *****************************************************************************/
   firstAppStart() {
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello);
     this.overrideSendbutton("questionPinNecessary");
@@ -96,8 +100,7 @@ export class ConversationPage {
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionDriver);
     this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionDriver_Yes,"questionMediplan",this.eMMA.messageEMMA_FirstStart_questionDriver_No,"questionMediplan");
   }
-  questionMediplan(input:String)
-  {
+  questionMediplan(input:String){
     if(input == this.eMMA.messageEMMA_FirstStart_questionDriver_Yes ){
       this.storage.set('driver', true)
     }
@@ -113,14 +116,14 @@ export class ConversationPage {
     setTimeout(() => {
       let scanner = new barcodeService(this.storage, this.http)
       scanner.scanQRcodeForJSON();
-      this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_sucsess);
-      }, 4000);
-      console.log("Works")
+      //this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_sucsess);
       this.questionEHealth();
+      }, 4000);
+
   }
   questionEHealth(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImporteHealth);
-    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImporteHealth_Yes,"eHealthUsername",this.eMMA.messageEMMA_FirstStart_questionImporteHealth_No,"morningTime");
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImporteHealth_Yes,"eHealthUsername",this.eMMA.messageEMMA_FirstStart_questionImporteHealth_No,"eMMATourtorial");
   }
   eHealthUsername(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questioneHalthUsername);
@@ -133,65 +136,21 @@ export class ConversationPage {
   testUsernamePassword(){
     //ifLoginPossible
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_eHealthCorrect)
-    setTimeout(() => this.morningTime(),eMMAWaitingTime);
+    setTimeout(() => this.eMMATourtorial(),eMMAWaitingTime);
     //else
     //this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_eHealthWrong);
     //this.eHealthUsername
   }
-  morningTime(){
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Einnahmezeit0800);
-    this.overrideAnswerButtons(this.eMMA.messageEMMA_answer_Yes,"changeMorningTime",this.eMMA.messageEMMA_answer_No,"noonTime");
-  }
-  changeMorningTime(){
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_newTime);
-    this.overrideSendbutton("noonTime");
-  }
-  noonTime(input:String){
-    if(input != this.eMMA.messageEMMA_answer_No)
-    {
-      this.storage.set('morningTime', input)
-    }
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Einnahmezeit1200);
-    this.overrideAnswerButtons(this.eMMA.messageEMMA_answer_Yes,"changeNoonTime",this.eMMA.messageEMMA_answer_No,"eveningTime");
-  }
-  changeNoonTime(){
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_newTime);
-    this.overrideSendbutton("eveningTime");
-  }
-  eveningTime(input:String){
-    if(input != this.eMMA.messageEMMA_answer_No)
-    {
-      this.storage.set('noonTime', input)
-    }
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Einnahmezeit1800);
-    this.overrideAnswerButtons(this.eMMA.messageEMMA_answer_Yes,"changeEveningTime",this.eMMA.messageEMMA_answer_No,"nightTime");
-  }
-  changeEveningTime(){
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_newTime);
-    this.overrideSendbutton("eveningTime");
-  }
-  nightTime(input:String){
-    if(input != this.eMMA.messageEMMA_answer_No)
-    {
-      this.storage.set('eveningTime', input)
-    }
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Einnahmezeit2200);
-    this.overrideAnswerButtons(this.eMMA.messageEMMA_answer_Yes,"changeNightTime",this.eMMA.messageEMMA_answer_No,"eMMATourtorial");
-  }
-  changeNightTime(){
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_newTime);
-    this.overrideSendbutton("eMMATourtorial");
-  }
-  eMMATourtorial(input:String){
-    if(input != this.eMMA.messageEMMA_answer_No)
-    {
-      this.storage.set('nightTime', input)
-    }
+  eMMATourtorial(){
     this.storage.set('FirstStartComplet', true)
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Tourtorial);
     this.overrideSendbutton("question");
   }
-//Reminder Functions for eMMA
+  /*****************************************************************************
+
+  Reminder for eMMA
+
+  *****************************************************************************/
   reminderAppStart(){
     this.storage.get('Pin').then((Pin)=>{
     var tempPin = Pin;
@@ -203,7 +162,6 @@ export class ConversationPage {
       this.overrideNumberSendButton("checkPin");
     }
   })
-
   }
   checkPin(input: String){
     this.storage.get('Pin').then((Pin)=>{
@@ -249,11 +207,12 @@ export class ConversationPage {
     //Save Not SPecified to Compliance
     this.finishReminder();
   }
-  finishReminderSick(input:String){
-    //Save Sick to Compliance
-    this.finishReminder();
-  }
-//Question functions for eMMA (Normal App Start)
+
+  /*****************************************************************************
+
+  Question for eMMA
+
+  *****************************************************************************/
   normalAppStart() {
     var Name = "Max"; //get Name from storage
     this.sendEmmaText(this.eMMA.messageEMMA_Normal_Start_1 + Name + this.eMMA.messageEMMA_Normal_Start_2);
@@ -267,6 +226,12 @@ export class ConversationPage {
       this.reminderAppStart()
     }
   }
+  /*****************************************************************************
+
+  Funtions for Conversation.ts
+
+  *****************************************************************************/
+
   sendEmmaText(message:String){
     //Püntkli azeige
   setTimeout(() =>
@@ -294,19 +259,16 @@ export class ConversationPage {
     this.toggleObject = showNothing;
     setTimeout(() => this.toggleObject = showTextfield,eMMAWaitingTime);
     this.sendButton = newfunction;
-
   }
   overridePasswordSendButton(newfunction:String){
     this.toggleObject = showNothing;
     setTimeout(() => this.toggleObject = showPasswordField,eMMAWaitingTime);
     this.sendButtonPW = newfunction;
-
   }
   overrideNumberSendButton(newfunction:String){
     this.toggleObject = showNothing;
     setTimeout(() => this.toggleObject = showNumberField,eMMAWaitingTime);
     this.sendButtonNumber = newfunction;
-
   }
   reply(answer) {
     this.messages.push({
@@ -314,13 +276,8 @@ export class ConversationPage {
       identity: 'user'
     })
     this[answer.callFunction](answer.text);
-
-    setTimeout(() =>
-  {
-      this.content.scrollToBottom();
-  },
-50);
-  }
+    setTimeout(() =>{  this.content.scrollToBottom();},50);
+    }
   sendMessage(myReply, myFunc) {
     this.messages.push({
       text: myReply.value,
@@ -328,12 +285,6 @@ export class ConversationPage {
     })
     this[myFunc](myReply.value);
     myReply.value = null;
-
-    setTimeout(() =>
-  {
-      this.content.scrollToBottom();
-  },
-50);
-
+    setTimeout(() =>{ this.content.scrollToBottom();}, 50);
   }
 }

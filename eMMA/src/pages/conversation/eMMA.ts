@@ -23,8 +23,8 @@ export class eMMAText {
 
   //Messages used in the First App Start
   messageEMMA_FirstStart_NoName = "Du hast leider keinen Namen eingegeben.\nBitte versuche es erneut"
-  messageEMMA_FirstStart_Hello="Hallo! Mein Name ist eMMA. Ich werde dich bei deiner Medikaiton untersützen. Bitte trage deinen Vornamen im Feld unten ein. Klicke dafür einfach in das leere Feld.";
-  messageEMMA_FirstStart_questionPin = "Ich werde dir als erstes einige Fragen stellen um die App vollständig einzurichten. Möchtest du deine App mit einem Pin schützen?\nDie App könte für dich persöhliche Daten enthalten.";
+  messageEMMA_FirstStart_Hello="Hallo! Mein Name ist eMMA. Ich werde dich bei deiner Medikaiton untersützen.\n Wie heisst du?";
+  messageEMMA_FirstStart_questionPin = "Ich werde dir als erstes einige Fragen stellen um die App vollständig einzurichten. Möchtest du deine App mit einem Pin schützen?";
   messageEMMA_FirstStart_questionPin_Yes = "Ja, gerne";
   messageEMMA_FirstStart_questionPin_No = "Nein, ich will keinen Pin";
   messageEMMA_FirstStart_Pin = "Gib nun bitte den Pin ein! Du kannst ihn jederzeit unter den Einstellungen ändern.";
@@ -51,12 +51,7 @@ export class eMMAText {
   messageEMMA_FirstStart_questionDatasecurity_Yes = "Ja, zeigt mir bitte mehr";
   messageEMMA_FirstStart_questionDatasecurity_No =  "Nein, gerade nicht danke";
   messageEMMA_FirstStart_Datasecurity = "BlaBlaDatenschutz wichtig BlaBla\n du findest die Datenschutzbestimmungen auch im Impressum wieder.\n gehe dafür einfach im Menü auf Über eMMA"
-  messageEMMA_FirstStart_Einnahmezeit0800 = "Möchtest du die Morgentliche Einnahmezeit von 08:00 ändern?"
-  messageEMMA_FirstStart_Einnahmezeit1200 = "Möchtest du die Morgentliche Einnahmezeit von 12:00 ändern?"
-  messageEMMA_FirstStart_Einnahmezeit1800 = "Möchtest du die Morgentliche Einnahmezeit von 18:00 ändern?"
-  messageEMMA_FirstStart_Einnahmezeit2200 = "Möchtest du die Morgentliche Einnahmezeit von 22:00 ändern?"
-  messageEMMA_FirstStart_newTime = "Bitte gibt die neue Zeit ein an der ich dich erinnern soll, deine Medikamente zu nehmen?"
-  messageEMMA_FirstStart_Tourtorial = "Bitte sei immer offen und ehrlich zu mir. So kann ich deine Medikamenten Einnahme optimal unersützen. \n Du bist nun im Fragemodus. Du kannst immer auf diesen Dialog zurückkehren um mir Fragen zustellen. Du kannst jetzt die restliche App Erkunden. Dort findest du folgende Funktionen:";
+  messageEMMA_FirstStart_Tourtorial = "Du bist nun im Fragemodus. Du kannst immer auf diesen Dialog zurückkehren um mir Fragen zustellen. Du kannst jetzt die restliche App Erkunden. Dort findest du folgende Funktionen:";
 
 
   //Messages used in the normal App Start
@@ -73,13 +68,9 @@ export class eMMAText {
   messageEMMA_reminderAppStart_show_Medication = "Ich Zeige dir nun deine Aktuelle Medikation \n Bitte wähle aus welche du nich eingenommen hast"
   messageEMMA_reminderAppStart_why_1 = "Folgende Medikamente hast du nicht genommen:"
   messageEMMA_reminderAppStart_why_2 = "Kannst du mir den Grund dafür nennen?"
-  messageEMMA_reminderAppStart_why_sick ="Mir ist gerade nicht wohl"
-  messageEMMA_reminderAppStart_why_sideEffect ="Auf Grund von Nebenwirkungne"
-  messageEMMA_reminderAppStart_why_Note = "Es hatte einen Anderen Grund"
+  messageEMMA_reminderAppStart_why_Note = "Notiz hinterlassen"
   messageEMMA_reminderAppStart_why_notSpecified = "Das möchte ich nicht sagen"
   messageEMMA_reminderAppStart_why_LeaveNote = "Bitte hinterlasse mir eine Notiz"
-  messageEMMA_reminderAppStart_why_sideEffectMayInclude_1 = "Folgende Nebenwirkungen können bei deiner Medikation auftreten."
-  messageEMMA_reminderAppStart_why_sideEffectMayInclude_2 ="Hast du eine oder mehrere dieser Nebenwirkungen?"
 
 
 

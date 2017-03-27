@@ -284,7 +284,7 @@ export class ConversationPage {
       identity: 'user'
     })
     this[myFunc](myReply.value);
-    myReply.value = null;
+    myReply.value = "";
     setTimeout(() =>{ this.content.scrollToBottom();}, 50);
   }
 }

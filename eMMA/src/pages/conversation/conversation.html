@@ -11,15 +11,21 @@
 
 <ion-content>
   <ion-list>
-    <ion-card *ngFor="let message of messages" class={{message.identity}}>
+    <div class="hiddenSpacer{{message.identity}}" *ngFor="let message of messages" >
+    <ion-card class={{message.identity}}>
       <p class="test2">{{message.text}} </p>
+      <div class="showTime">
+        13:37 PM
+      </div>
     </ion-card>
+  </div>
   </ion-list>
 </ion-content>
+
 <ion-footer>
   <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
     <ion-item style="width:80%;float:left;">
-      <ion-input type="text" #input [(ngModel)]="myReply" class="input-message" placeholder="Message"></ion-input>
+      <ion-input style="color:#FFF;" type="text" #input [(ngModel)]="myReply" class="input-message" placeholder="deine Nachricht"></ion-input>
     </ion-item>
     <button style="width:15%; float:right;" ion-button icon-only (click)="sendMessage(input,sendButton)" [disabled]="!myReply || myReply === ''">
       <ion-icon name="arrow-dropleft-circle"></ion-icon>
@@ -32,7 +38,7 @@
   </div>
   <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
     <ion-item style="width:80%;float:left;">
-      <ion-input type="number" #inputNumber [(ngModel)]="numberinput" class="input-message" placeholder="Message"></ion-input>
+      <ion-input style="color:#FFF;" type="number" #inputNumber [(ngModel)]="numberinput" class="input-message" placeholder="deine Nachricht"></ion-input>
     </ion-item>
     <button style="width:15%; float:right;" ion-button icon-only (click)="sendMessage(inputNumber,sendButtonNumber)" [disabled]="!numberinput || numberinput === ''">
         <ion-icon name="arrow-dropleft-circle"></ion-icon>
@@ -40,7 +46,7 @@
   </ion-card-content>
   <ion-card-content [ngClass]="{'hidden': toggleObject != 4}">
     <ion-item style="width:80%;float:left;">
-      <ion-input type="password" #inputPW [(ngModel)]="password" class="input-message" placeholder="Message"></ion-input>
+      <ion-input style="color:#FFF;" type="password" #inputPW [(ngModel)]="password" class="input-message" placeholder="deine Nachricht"></ion-input>
   </ion-item>
       <button style="width:15%; float:right;" ion-button icon-only (click)="sendMessage(inputPW,sendButtonPW)" [disabled]="!password || password === ''">
           <ion-icon name="arrow-dropleft-circle"></ion-icon>

@@ -1,6 +1,5 @@
 page-conversation {
 	.scroll-content {
-
 		background-size: 100% 100%;
 	}
 
@@ -10,34 +9,54 @@ page-conversation {
 		width: 20px;
 	}
 	.test2{
+		padding: 0;
+		margin-top:0px;
 		white-space: pre-line;
 	}
+	.hiddenSpaceremma{
+		float:left;
+		width:70%;
+	}
+	.hiddenSpaceruser{
+		float:right;
+		width:70%;
+	}
+	.showTime{
+		display:block;
+		text-align:right;
+		font-size:0.8em;
+		color:#A4A4A4;
 
+	}
 	.emma {
 		background-color: #FFF;
-		width: 70%;
-		height: 25%;
+		width: auto;
+		max-width:100%;
+		height: 50%;
 		float: left;
 		padding: 10px;
 		color: #333;
-		margin-top:8px;
-		border-radius: 18px;
+		margin-bottom:5px;
+		margin-top:5px;
+		border-radius: 5px;
 		margin-left:10px;
 		}
 
 	.user {
+		min-width:30%;
 		background-color: #DCF8C7;
 		padding: 10px;
-		width: 70%;
+		width: auto;
+		max-width:100%;
 		float: right;
 		height: 25%;
-		margin-top:8px;
+		margin-top:5px;
+		margin-bottom:5px;
 		margin-right:10px;
-		border-radius: 18px;
+		border-radius: 5px;
 	}
 
-
-		.buttonsDiv{
+	.buttonsDiv{
 			height:100%;
 			background-color:#EFF
 		}
@@ -47,15 +66,10 @@ page-conversation {
 		width:45%;
 		float:left;
 		margin-left:3.5%;
-		margin-top:1%;
-
-
-
 	}
 
-
 	.buttons button {
-				border-radius:18px;
+		border-radius:5px;
 		background-color: #DCF8C7;
 		font-size: 0.9em;
 		text-transform: inherit;
@@ -69,10 +83,16 @@ page-conversation {
 		height:10%;
 		bottom:0px;
 		position:absolute;
-		background-color:#EFF
+		padding-top:1%;
+		background-color:#EEE;
 	}
+
+	.item-block{
+		background-color:#DCF8C7;
+	}
+
 	.footer input{
-		color: #FFF;
+		color: #333;
 	}
 
 }

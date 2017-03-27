@@ -20,7 +20,10 @@ page-conversation {
 		float: left;
 		padding: 10px;
 		color: #333;
-	}
+		margin-top:8px;
+		border-radius: 18px;
+		margin-left:10px;
+		}
 
 	.user {
 		background-color: #DCF8C7;
@@ -28,23 +31,31 @@ page-conversation {
 		width: 70%;
 		float: right;
 		height: 25%;
+		margin-top:8px;
+		margin-right:10px;
+		border-radius: 18px;
 	}
 
 
 		.buttonsDiv{
 			height:100%;
+			background-color:#EFF
 		}
 
 	.buttons {
 		height:100%;
 		width:45%;
 		float:left;
+		margin-left:3.5%;
+		margin-top:1%;
+
 
 
 	}
 
 
 	.buttons button {
+				border-radius:18px;
 		background-color: #DCF8C7;
 		font-size: 0.9em;
 		text-transform: inherit;
@@ -52,14 +63,16 @@ page-conversation {
 		height:80%;
 		word-wrap: break-word !important;
 		white-space: normal !important;
-
-
 	}
 
 	.footer {
 		height:10%;
 		bottom:0px;
 		position:absolute;
+		background-color:#EFF
+	}
+	.footer input{
+		color: #FFF;
 	}
 
 }

@@ -40,11 +40,10 @@ export class MyMedicationPage {
   }
 
   ionViewDidLoad() {
-    this.barcodeService.testDummyData()
     this.storage.ready().then(()=>{
       this.storage.get('medicationData').then((res)=>{
         this.drugList = res;
-        
+
         })
       })
 

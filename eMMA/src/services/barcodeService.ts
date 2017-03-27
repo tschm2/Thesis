@@ -6,7 +6,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 
 export class barcodeService {
 
-
+      private list: Array<any>;
 
       constructor(public storage: Storage, public http: Http) {
 
@@ -61,32 +61,46 @@ export class barcodeService {
       this.storage.ready().then(() => {
         var mediPlan = JSON.parse(strData2)
         this.storage.set("mediPlan", mediPlan);
-        this.storage.set("medicationData", mediPlan['Medicaments']);
+
+        this.getNamesFromID(mediPlan).then((res) => {
+          console.log(res)
+            this.storage.set("medicationData", res);
+        });
       })
 
       }
 
       getNamesFromID(medData){
-     var hciS = new HCIService(this.http)
+        this.list = new Array<any>();
+        var hciS = new HCIService(this.http);
+        console.log(medData['Medicaments']);
         for (let medi of medData['Medicaments']){
-          hciS.getHCIData(medi.Id,"phar").then(function(response) {
-          if(Number(medi.Id)){
-          var result = JSON.parse(response._body);
-          var desc = result.article[0].dscrd;
-          var title = desc.split(" ")[0];
-          medi.description = desc
-          medi.title = title
+          var l = hciS.getHCIData(medi.Id,"phar").then(function(response) {
+            console.log(response)
+              if(Number(medi.Id)){
+                var result = JSON.parse(response._body);
+                var desc = result.article[0].dscrd;
+                var title = desc.split(" ")[0];
+                medi.description = desc
+                medi.title = title
+              }
+              else{
+                medi.description = medi.Id
+                medi.title = medi.Id
+              }
+          });
 
+          this.list.push(l);
+          }
+
+          return Promise.all(this.list).then((res) => {
+            return medData['Medicaments'];
+          });
         }
-        else{
-        medi.description = medi.Id
-          medi.title = medi.Id
-            }
-        })
-      }
-    }
 
-       scanMediCode(medData){
+
+
+        scanMediCode(medData){
               var hciS = new HCIService(this.http)
                  BarcodeScanner.scan().then((barcodeData) => {
                    console.log(barcodeData.text)

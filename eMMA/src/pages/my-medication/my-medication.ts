@@ -44,9 +44,7 @@ export class MyMedicationPage {
     this.storage.ready().then(()=>{
       this.storage.get('medicationData').then((res)=>{
         this.drugList = res;
-        for (let drug of res){
-          drug.title = "This is a Title"
-        }
+        
         })
       })
 

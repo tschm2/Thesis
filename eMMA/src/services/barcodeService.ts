@@ -61,7 +61,7 @@ export class barcodeService {
       this.storage.ready().then(() => {
         var mediPlan = JSON.parse(strData2)
         this.storage.set("mediPlan", mediPlan);
-
+        console.log(mediPlan)
         this.getNamesFromID(mediPlan).then((res) => {
           console.log(res)
             this.storage.set("medicationData", res);

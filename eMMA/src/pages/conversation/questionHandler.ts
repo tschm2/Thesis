@@ -17,12 +17,15 @@ export class questionHandler {
       }
       else{
         if(this.messageEMMA_Not_Understand_temp.length == 0){
-          this.messageEMMA_Not_Understand_temp = this.messageEMMA_Not_Understand;
+          for (var name in this.messageEMMA_Not_Understand) {
+            this.messageEMMA_Not_Understand_temp[name] = this.messageEMMA_Not_Understand[name];
+}
+          console.log("neu")
         }
-
-        let random = math.random(0, this.messageEMMA_Not_Understand_temp.length);
-        let retVal =  this.messageEMMA_Not_Understand_temp.findIndex(random);
-        //delet index
+        console.log(this.messageEMMA_Not_Understand_temp.length)
+        let random = Math.random()*this.messageEMMA_Not_Understand_temp.length;
+        console.log(this.messageEMMA_Not_Understand_temp.length)
+        let retVal =  this.messageEMMA_Not_Understand_temp.splice(random,1)
         return retVal;
 
       }

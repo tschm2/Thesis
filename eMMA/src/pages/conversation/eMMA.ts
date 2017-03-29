@@ -1,6 +1,6 @@
 
 
-export class eMMAText {
+export class eMMA{
   constructor(){
 
   }
@@ -9,13 +9,7 @@ export class eMMAText {
   messageEMMA_answer_No_Thanks = "Nein, danke";
   messageEMMA_answer_Yes = "Ja"
   messageEMMA_answer_No = "Nein"
-  messageEMMA_Not_Understand = [
-  "Entschuldigung, ich habe dich leider nicht verstanden",
-  "Sorry das habe ich verpasst. Bitte stelle eine andere Frage",
-  "Diese Frage verstehe ich leider nicht. Kannst du es mit einer Anderen Frage versuchen",
-  "Ich Verstehe das leider nicht",
-  "Diese Frage kann ich leider nicht beantworten"
-  ];
+
   messageEMMA_EnterPassword = "Bitte gib deinen Pin ein"
   messageEMMA_WrongPin = "Das war der flasche Pin. Versuche es bitte erneut"
   messageEMMA_ask_Possible_Question = "Für eine Übersicht was du mich alles fragen kannst, schreibe einfach ein Fragezeichen(?) in das Textfeld "

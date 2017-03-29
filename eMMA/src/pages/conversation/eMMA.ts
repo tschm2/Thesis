@@ -38,7 +38,7 @@ export class eMMAText {
   messageEMMA_FirstStart_questionImportMediplan_Yes = "Ja, importiere bitte meine Daten";
   messageEMMA_FirstStart_questionImportMediplan_No = "Ich habe leider keinen";
   messageEMMA_FirstStart_ImportMediplan_OpenScanner = "Ich öffne nun den Scanner für dich"
-  messageEMMA_FirstStart_ImportMediplan_sucsess = "Dein Medikaiton wurde erfasst"
+  messageEMMA_FirstStart_ImportMediplan_success = "Dein Medikaiton wurde erfasst"
   messageEMMA_FirstStart_ImportMediplan_Error = "Bitte versuche erneut deine Medikation einzuscannen"
   messageEMMA_FirstStart_questionImporteHealth = "Willst du dein Elektronisches Patientendossier verbinden?";
   messageEMMA_FirstStart_questionImporteHealth_Yes = "Ja gerne würde mich anmelden"

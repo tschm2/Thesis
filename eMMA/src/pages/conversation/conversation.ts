@@ -3,7 +3,8 @@ import { Keyboard } from 'ionic-native';
 import {ViewChild, Component, ElementRef} from '@angular/core';
 import {Content} from 'ionic-angular/index';
 import { Storage } from '@ionic/storage';
-import { eMMAText } from '../../pages/conversation/eMMA';
+import { eMMA} from '../../pages/conversation/eMMA';
+import { questionHandler } from '../../pages/conversation/questionHandler';
 import { Page1 } from '../../pages/page1/page1';
 import { UpdatePage } from '../../pages/update/update';
 import { barcodeService } from '../../services/barcodeService';
@@ -39,20 +40,22 @@ export class ConversationPage {
     this.preAnswers = [];
     this.toggleObject = showTextfield;
   }
-
-  eMMA = new eMMAText();
+  eMMA = new eMMA();
+  questionhandler = new questionHandler();
   ionViewDidLoad() {
     this.toggleObject = showTextfield;
-    var Start = "First";
-    if(Start == "First"){
-      this.firstAppStart();
-    }
-    else if("reminder"){
-     this.reminderAppStart();
-    }
-    else{
-      this.normalAppStart();
-    }
+    this.storage.get('FirstStartComplet').then((terminated)=>{
+      var FirstStartComplet = terminated;
+      if(FirstStartComplet == true){
+        this.firstAppStart();
+      }
+      else if("reminder"){
+       this.reminderAppStart();
+      }
+      else{
+        this.normalAppStart();
+      }
+    })
   }
   /*****************************************************************************
 
@@ -88,26 +91,31 @@ export class ConversationPage {
       this.storage.set('Pin', null);
     }
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionAthlete);
-    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionAthlete_Yes,"questionDriver",this.eMMA.messageEMMA_FirstStart_questionAthlete_No,"questionDriver");
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionAthlete_Yes,"saveAthlete",this.eMMA.messageEMMA_FirstStart_questionAthlete_No,"saveAthlete");
   }
-  questionDriver(input:String){
+  saveAthlete(input: String){
     if(input == this.eMMA.messageEMMA_FirstStart_questionAthlete_Yes ){
       this.storage.set('athlete', true)
     }
     else{
       this.storage.set('athlete', false)
     }
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionDriver);
-    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionDriver_Yes,"questionMediplan",this.eMMA.messageEMMA_FirstStart_questionDriver_No,"questionMediplan");
+    this.questionDriver();
   }
-  questionMediplan(input:String){
+  questionDriver(){
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionDriver);
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionDriver_Yes,"saveDriver",this.eMMA.messageEMMA_FirstStart_questionDriver_No,"saveDriver");
+  }
+  saveDriver(input:String){
     if(input == this.eMMA.messageEMMA_FirstStart_questionDriver_Yes ){
       this.storage.set('driver', true)
     }
-    else{
+    else {
       this.storage.set('driver', false)
     }
-
+    this.questionMediplan();
+  }
+  questionMediplan(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImportMediplan);
     this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImportMediplan_Yes,"mediplanImport",this.eMMA.messageEMMA_FirstStart_questionImportMediplan_No,"questionEHealth");
   }
@@ -115,11 +123,17 @@ export class ConversationPage {
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_OpenScanner);
     setTimeout(() => {
       let scanner = new barcodeService(this.storage, this.http)
-      scanner.scanQRcodeForJSON();
+      var success = scanner.scanQRcodeForJSON();
+      if(success){
+        this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_success)
+        setTimeout(() => this.questionEHealth() , eMMAWaitingTime);
+      }
+      else{
+        this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_Error)
+        setTimeout(() => this.questionMediplan() , eMMAWaitingTime);
+      }
       //this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_sucsess);
-      this.questionEHealth();
       }, 4000);
-
   }
   questionEHealth(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImporteHealth);
@@ -214,16 +228,19 @@ export class ConversationPage {
 
   *****************************************************************************/
   normalAppStart() {
-    var Name = "Max"; //get Name from storage
+    this.storage.get('name').then((name)=>{
+    var Name = name;
     this.sendEmmaText(this.eMMA.messageEMMA_Normal_Start_1 + Name + this.eMMA.messageEMMA_Normal_Start_2);
     this.overrideSendbutton("question");
+  })
   }
   question(input:String){
-    if(input == "Nahrung"){
-      this.sendEmmaText("Du möchtest etwas über die Nahrung wissen")
-    }
-    if(input == "Reminder"){
+    var answereMMA = this.questionhandler.returnAnswer(input);
+    if(answereMMA == "Reminder"){
       this.reminderAppStart()
+    }
+    else{
+      this.sendEmmaText(answereMMA)
     }
   }
   /*****************************************************************************
@@ -232,17 +249,19 @@ export class ConversationPage {
 
   *****************************************************************************/
 
-  sendEmmaText(message:String){
+  sendEmmaText(message:String):any{
     //Püntkli azeige
-  setTimeout(() =>
-  this.messages.push({
-      text: 'eMMA schreibt....',
-      identity: 'emma'
-    }),
-    this.content.scrollToBottom(),
-    setTimeout(() => this.messages[this.messages.length-1].text = message, eMMAWaitingTime),
-    setTimeout(()=> this.content.scrollToBottom(),eMMAWaitingTime+50)
-  )}
+    setTimeout(() =>
+    this.messages.push({
+        text: 'eMMA schreibt....',
+        identity: 'emma'
+      }),
+      this.content.scrollToBottom(),
+      setTimeout(() => this.messages[this.messages.length-1].text = message, eMMAWaitingTime),
+      setTimeout(()=> this.content.scrollToBottom(),eMMAWaitingTime+50)
+      )
+      return true;
+  }
   overrideAnswerButtons(text1: String, function1: String, text2: String, function2: String) {
     this.toggleObject = showNothing;
     setTimeout(() => this.toggleObject = showButtons , eMMAWaitingTime);

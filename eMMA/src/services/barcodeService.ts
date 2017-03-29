@@ -11,8 +11,8 @@ export class barcodeService {
       constructor(public storage: Storage, public http: Http) {
 
         }
-    scanQRcodeForJSON(){
-        BarcodeScanner.scan().then((barcodeData) => {
+    scanQRcodeForJSON():any{
+        let l = BarcodeScanner.scan().then((barcodeData) => {
           var b64Data  =   barcodeData.text.substring(9);
           // Decode base64 (convert ascii to binary)
           var strData     = atob(b64Data);
@@ -29,12 +29,14 @@ export class barcodeService {
             var mediPlan = JSON.parse(strData2)
             this.storage.set("mediPlan", mediPlan);
             this.storage.set("medicationData", mediPlan['Medicaments']);
+            return true;
           })
 
      // Success! Barcode data is here
    }, (err) => {
      alert("Woops falscher QR-Code, zu Testzwecken wurde DummyData gespeichert");
        this.testDummyData()
+       return false;
     }
 )
 

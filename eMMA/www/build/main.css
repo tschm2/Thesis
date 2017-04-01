@@ -4776,6 +4776,10 @@ textarea::-webkit-input-placeholder {
   padding-left: 2px;
 }
 
+textarea::-moz-placeholder {
+  padding-left: 2px;
+}
+
 textarea:-ms-input-placeholder {
   padding-left: 2px;
 }
@@ -24417,37 +24421,70 @@ page-conversation .test {
 }
 
 page-conversation .test2 {
+  padding: 0;
+  margin-top: 0px;
   white-space: pre-line;
+}
+
+page-conversation .hiddenSpaceremma {
+  float: left;
+  width: 70%;
+}
+
+page-conversation .hiddenSpaceruser {
+  float: right;
+  width: 70%;
+}
+
+page-conversation .showTime {
+  display: block;
+  text-align: right;
+  font-size: 0.8em;
+  color: #A4A4A4;
 }
 
 page-conversation .emma {
   background-color: #FFF;
-  width: 70%;
-  height: 25%;
+  width: auto;
+  max-width: 100%;
+  height: 50%;
   float: left;
   padding: 10px;
   color: #333;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  border-radius: 5px;
+  margin-left: 10px;
 }
 
 page-conversation .user {
+  min-width: 30%;
   background-color: #DCF8C7;
   padding: 10px;
-  width: 70%;
+  width: auto;
+  max-width: 100%;
   float: right;
   height: 25%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  border-radius: 5px;
 }
 
 page-conversation .buttonsDiv {
   height: 100%;
+  background-color: #EFF;
 }
 
 page-conversation .buttons {
   height: 100%;
   width: 45%;
   float: left;
+  margin-left: 3.5%;
 }
 
 page-conversation .buttons button {
+  border-radius: 5px;
   background-color: #DCF8C7;
   font-size: 0.9em;
   text-transform: inherit;
@@ -24461,6 +24498,16 @@ page-conversation .footer {
   height: 10%;
   bottom: 0px;
   position: absolute;
+  padding-top: 1%;
+  background-color: #EEE;
+}
+
+page-conversation .item-block {
+  background-color: #DCF8C7;
+}
+
+page-conversation .footer input {
+  color: #333;
 }
 
 .clickAbleHeader {

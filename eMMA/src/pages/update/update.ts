@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { barcodeService } from '../../services/barcodeService';
 import { Storage } from '@ionic/storage'
 import { Http, Headers, RequestOptions } from '@angular/http';
+import {Component, OnInit} from '@angular/core';
+//import {QRCodeComponent} from 'ng2-qrcode'
+import {QRCodeComponent} from 'angular2-qrcode';
 
 /*
   Generated class for the Update page.
@@ -12,12 +14,14 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 */
 @Component({
   selector: 'page-update',
-  templateUrl: 'update.html'
+  templateUrl: 'update.html',
+  entryComponents:[QRCodeComponent]
 })
 export class UpdatePage {
   toggleObject:number;
   barcodeService: barcodeService;
-  storage:Storage
+  storage:Storage;
+  qrCode:QRCodeComponent;
   constructor(public navCtrl: NavController, public navParams: NavParams, storage:Storage, public http:Http) {
   this.storage = storage;
   this.barcodeService = new barcodeService(this.storage, this.http)
@@ -25,6 +29,7 @@ export class UpdatePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UpdatePage 1234234');
+    this.qrCode.value="Hello12312edwakmfawemfaowiejfoaiwejfiaowejfoiawjgaowiejfoiwaefioawejfoiwfe";
 
   }
 

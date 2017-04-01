@@ -30,13 +30,13 @@
           </ion-col>
           <ion-col>
             <div>
-        <qr-code [value]="'This is the QR Code'" [size]="150"></qr-code>
+        <qr-code #qrCode [value]="'This is the QR Code'" [size]="150"></qr-code>
   </div>
           </ion-col>
         </ion-row>
           <ion-row>
             <ion-col>
-              Neuer Code Einlese:
+              Neuer Code einlesen:
             </ion-col>
             <ion-col>
               <button ion-button (click)="scanQRcode()">QR-Code einscannen</button>

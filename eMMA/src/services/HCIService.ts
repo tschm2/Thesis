@@ -57,61 +57,29 @@ json:JSON;
       });
     }
 
+  getHCI(key,keyType) {
+  let email = 'EPN236342@hcisolutions.ch';
+  let password = 'UMPbDJu7!W';
 
-//Post JSON in Angular 2
+  let reqHeader = 'Basic '+btoa(email+':'+password);
 
-      POST(url, data) {
+  var xhr = new XMLHttpRequest();
+  var method = "GET";
+  var url = "https://index.hcisolutions.ch/index/current/get.aspx?schema=ARTICLE&keytype="+keyType+"&key="+key+"&index=hospINDEX";
 
-        let test_this = { "search": "person" };
-        let headers2 = new Headers ({ 'Content-Type': 'application/x-www-form-urlencoded' });
-        let options = new RequestOptions({ headers: headers, method: "post" });
+  xhr.open(method, url);
 
-        this.http.post(this.url, test_this, options)
+  xhr.setRequestHeader('Authorization',reqHeader);
 
-
-
-        var headers = new Headers(), authtoken = localStorage.getItem('authtoken');
-        headers.append("Content-Type", 'application/json');
-
-        if (authtoken) {
-        headers.append("Authorization", 'Token ' + authtoken)
-        }
-        headers.append("Accept", 'application/json');
-
-        var requestoptions = new RequestOptions({
-            method: RequestMethod.Post,
-            url: this.apiURL + url,
-            headers: headers,
-            body: data
-        })
-
-
-        return this.http.request(new Request(requestoptions))
-        .map((res: Response) => {
-            if (res) {
-                return { status: res.status, json: res.json() }
-            }
-        });
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      console.log(xhr.responseText);
+    } else {
+      console.log("Error!");
     }
+  };
 
+  xhr.send();
+}
 
-        /*  createAuthorizationHeader(headers: Headers) {
-            headers.append('Authorization', 'Basic ' +
-              btoa('username:password'));
-          }
-          get(url) {
-          let headers = new Headers();
-          this.createAuthorizationHeader(headers);
-          return this.http.get(url, {
-            headers: headers
-          });
-          }
-
-          post(url, data) {
-          let headers = new Headers();
-          this.createAuthorizationHeader(headers);
-          return this.http.post(url, data, {
-            headers: headers
-          });
-        }*/
 }

@@ -41,21 +41,25 @@ export class ConversationPage {
     this.toggleObject = showTextfield;
   }
   eMMA = new eMMA();
-  questionhandler = new questionHandler();
+  questionhandler = new questionHandler(this.storage);
   ionViewDidLoad() {
     this.toggleObject = showTextfield;
-    this.storage.get('FirstStartComplet').then((terminated)=>{
-      var FirstStartComplet = terminated;
-      if(FirstStartComplet == true){
-        this.firstAppStart();
-      }
-      else if("reminder"){
+    // this.storage.get('FirstStartComplet').then((terminated)=>{
+    //   var FirstStartComplet = terminated;
+    //   if(FirstStartComplet == false){
+    //     this.firstAppStart();
+    //   }
+    let start = "reminder"
+      if(start == "normal"){
+         this.firstAppStart();
+       }
+      else if(start == "reminder"){
        this.reminderAppStart();
       }
       else{
         this.normalAppStart();
       }
-    })
+    // })
   }
   /*****************************************************************************
 
@@ -157,6 +161,8 @@ export class ConversationPage {
   }
   eMMATourtorial(){
     this.storage.set('FirstStartComplet', true)
+    let tempTakingTime = ["08:00","12:00","18:00","22:00"]
+    this.storage.set('takingTime',tempTakingTime)
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Tourtorial);
     this.overrideSendbutton("question");
   }

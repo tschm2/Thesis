@@ -11,6 +11,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import {Observable} from 'rxjs/Observable';
 import myPako from "../../node_modules/pako"
+import { AlertController } from 'ionic-angular';
+
 
 /*
   Generated class for the MyMedication page.
@@ -33,7 +35,7 @@ export class MyMedicationPage {
   patient:JSON;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public http: Http) {
+  constructor(private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public http: Http) {
     this.perDay = ['Morgen','Mittag','Abend','Nacht'];
     this.chmedHandler = new chmedJsonHandler(this.storage, this.http)
     this.barcodeService = new barcodeService(this.storage, this.http);
@@ -43,25 +45,80 @@ export class MyMedicationPage {
     this.storage.ready().then(()=>{
       this.storage.get('medicationData').then((res)=>{
         this.drugList = res;
-
+        console.log(this.drugList)
+        this.storage.get('mediPlan').then((res)=>{
+          console.log(res)
+        })
         })
       })
 
 
 
   }
-  // Togglerone
-  toggleContent(numb){
-    if (this.toggleObject == numb)
-    this.toggleObject = 0
-    else
-    this.toggleObject = numb;
-    }
+
 
   scanMedBox(){
     this.barcodeService.scanMediCode(this.drugList);
+    this.storage.ready().then(()=>{
+          this.storage.get('mediPlan').then((res)=>{
+            // NO NID GUET res.put('Medicaments', this.drugList)
+
+              res['Medicaments'] = this.drugList
+              console.log(res)
+
+            this.storage.set('mediPlan', JSON.parse(JSON.stringify(res)))
+            this.storage.set("medicationData", JSON.parse(JSON.stringify(this.drugList)));
+            })
+    })
 
   //  this.barcodeService.scanMediCode();
+  }
+  deleteDrug(id){
+    console.log(id)
+    let alert = this.alertCtrl.create({
+    title: 'Selbstmedikation löschen',
+    message: 'Sind Sie sicher, dass sie '+id+' löschen möchten?',
+    buttons: [
+      {
+        text: 'Nein',
+        role: 'Nein',
+        handler: () => {
+          console.log('Nein clicked');
+        }
+      },
+      {
+        text: 'Ja',
+        handler: () => {
+          for(var k in this.drugList) {
+            console.log("WTF"+this.drugList)
+            removeEmpty(this.drugList)
+            console.log("WTF"+this.drugList)
+             if(this.drugList[k].Id == id){
+              console.log(delete this.drugList[k])
+              console.log(this.drugList)
+              console.log(k)
+                this.storage.ready().then(()=>{
+                  this.drugList = JSON.parse(JSON.stringify(this.drugList))
+                  this.storage.set("medicationData", this.drugList);
+                  this.storage.get('mediPlan').then((res)=>{
+                    removeEmpty(res['Medicaments'])
+                    res['Medicaments'] = this.drugList
+                    console.log(res)
+                    this.storage.set('mediPlan', res)
+                  })
+                })
+            }
+        }
+        }
+      }
+    ]
+  });
+  alert.present();
+
+  const removeEmpty = (obj) => {
+  Object.keys(obj).forEach((key) => (obj[key] == null) && delete obj[key]);
+  return obj;
+  }
   }
     test(artbar) {
     // preparing variables
@@ -82,6 +139,13 @@ export class MyMedicationPage {
     })
   }
 
+  // Togglerone
+  toggleContent(numb){
+    if (this.toggleObject == numb)
+    this.toggleObject = 0
+    else
+    this.toggleObject = numb;
+    }
 
 
 }

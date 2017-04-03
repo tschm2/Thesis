@@ -42,6 +42,7 @@ export class MyMedicationPage {
   }
 
   ionViewDidLoad() {
+    this.barcodeService.analyseCHMED();
     this.storage.ready().then(()=>{
       this.storage.get('medicationData').then((res)=>{
         this.drugList = res;
@@ -61,8 +62,6 @@ export class MyMedicationPage {
     this.barcodeService.scanMediCode(this.drugList);
     this.storage.ready().then(()=>{
           this.storage.get('mediPlan').then((res)=>{
-            // NO NID GUET res.put('Medicaments', this.drugList)
-
               res['Medicaments'] = this.drugList
               console.log(res)
 
@@ -89,36 +88,23 @@ export class MyMedicationPage {
       {
         text: 'Ja',
         handler: () => {
-          for(var k in this.drugList) {
-            console.log("WTF"+this.drugList)
-            removeEmpty(this.drugList)
-            console.log("WTF"+this.drugList)
-             if(this.drugList[k].Id == id){
-              console.log(delete this.drugList[k])
-              console.log(this.drugList)
-              console.log(k)
-                this.storage.ready().then(()=>{
-                  this.drugList = JSON.parse(JSON.stringify(this.drugList))
-                  this.storage.set("medicationData", this.drugList);
-                  this.storage.get('mediPlan').then((res)=>{
-                    removeEmpty(res['Medicaments'])
-                    res['Medicaments'] = this.drugList
-                    console.log(res)
-                    this.storage.set('mediPlan', res)
-                  })
-                })
-            }
-        }
+        var tempList:any[];
+        var i:number = 0;
+        console.log("________________________________-")
+     this.drugList = this.chmedHandler.deleteDrugFromArray(this.drugList,id)
+          this.storage.ready().then(()=>{
+          this.storage.set("medicationData", this.drugList);
+          this.storage.get('mediPlan').then((res)=>{
+            res['Medicaments'] = this.drugList
+
+            this.storage.set('mediPlan', res)
+          })
+        })
         }
       }
     ]
   });
   alert.present();
-
-  const removeEmpty = (obj) => {
-  Object.keys(obj).forEach((key) => (obj[key] == null) && delete obj[key]);
-  return obj;
-  }
   }
     test(artbar) {
     // preparing variables

@@ -49,6 +49,16 @@ export class chmedJsonHandler {
     return medData['Medicaments'];
 
   }
+  deleteDrugFromArray(drugList,id):any{
+    var tempList = new Array();
+    for(var k in drugList) {
+       if(drugList[k].Id != id){
+         var tempDrug = (drugList[k])
+          tempList.push(tempDrug)
+        }
+    }
+    return tempList;
+  }
 
     getPatient(medData:JSON): JSON{
             return medData['Patient'];

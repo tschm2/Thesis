@@ -41,6 +41,32 @@ export class barcodeService {
 )
 
 }
+    analyseCHMED(){
+      var testData = "CHMED16A1H4sIAAAAAAAAA61VzXLiOBB+lR5fxxBJNmBzIyHZdQ0ECjyZqt3KQRgBWmyZkuWpmaTyNvMYc8s77XlbVpwwWZK9bBXGbfWP9H39uX3vjWqz84beoE8oIQEjYdwbeL43NrjICO13KOnQKKXRkAbDIPhI2JAQDEjWGLAKg03cX2064SZinVDEq07MV1Enzki2iTZRj8e22FSs0+8H4Q1pY8uMF0KZyhv+ee+NDodEVUZjNcWzHaxFAZdVJVS7RxjGlAZuS1cl8L156bLH+E994uN1aw99pcuiPTiJ8ddAScujNRp7Dxg711W2Ov+OjrHuwnVp4EpzdefbWy3URuRrzF2UHCPmMzTT/XZRKXxK0Lk3srQn/KykJWqZfsKHtagyLQ+Na+idjy7SRTKFTamNgJSvcogIOaN9UmyBEliaPeYYaXLxEu09+PcONosoCfrh+7DJKdhBh9ATEEf6zsDvXFU+TB9/qmwn1I7XjuhTMM9zVEaZ7da6zvbvQ72YdcbJ7GZ0DVcyL4yFijDPKOv2AMGy6BXY5/gXuDRmg5C902XyVpf/J7gXuzIXlRFaKgzaC/0+5OVskSbLF7yMWKTB67a6sAbmsdBrDbJbdH2w1rrWqHtpfbUUVixzoatSCfWhfQcYpVEYvE0OO6mFXodS5OcEOZffeHHIBXziOvfhy+MPtZXPvKAKj2UgdL2T21ptXwiZTv7Fx81oknyeQqL+gsnfldV3sT1jRd7gPJPdr13owag4AIMiPyLI5SFBqs7zX1layQruaij4ty6EeMvBPP7Y5hLJos37JAxyJaRSYlc0fcVZVuJ8aeaMmx2DfkCDwRvEnZwWiVqIqqmQpi6sdGHk4fZXIl+PzFOqWmZ4NH0n/mNWzEfXo/FsAkeC6pFGUey1op5CXVO5kThIveG9d94MbBqHQdN0ihkX0thjfuH52pJmXAuvrnH42jrCNBr/Tag1Ghbw5Mk1rSvnm2AGCubSjXC7zXhSmamwR27WuGPyebg7iMz3bniOMRFtlO/crHXT1k0j0sBYZE2VxDVugQ+9weC2HQ2sNYLWCFuj1xr9No1ijx6QmB2+PrjDx5DCIAbKAgh70LddWhothHHC3qLQOH5rgNo5+4c84HLMYvxAYL1ib7ELDU8sg6wMfC0LsF+wPbedqw45V7ASWyEtY+aD9/APcU6IyFEHAAA="
+
+      var b64Data  =   testData.substring(9);
+
+      // Decode base64 (convert ascii to binary)
+      var strData     = atob(b64Data);
+
+      // Convert binary string to character-number array
+      var charData    = strData.split('').map(function(x){return x.charCodeAt(0);});
+
+      // Turn number array into byte-array
+      var binData     = new Uint8Array(charData);
+
+      // Pako magic makeing
+      var data        = myPako.inflate(binData);
+
+      // Convert gunzipped byteArray back to ascii string:
+
+
+      let strData2: string  = String.fromCharCode.apply(null, new Uint16Array(data));
+
+      var mediPlan = JSON.parse(strData2)
+
+      console.log(mediPlan);
+    }
     testDummyData(){
       var testData = "CHMED16A1H4sIAAAAAAAEAK1UzW7aQBB+lY2vsaNd24DNLQmhRQktIrSRWuWwtge8wl6j9bpNQLxNHqO3vFhn7TglAXKqhPF4Z3bmm29+NtZ5pVOrb/W6lFHqudQPOz3LtgYaD13Kug6jDgtmLOgzr+95p9TtU4oGowQNIt+bh91o7vjzwHV8CCMn5FHghDGN58E86PDQOBtDMntcgdVntSxinoPUpdX/ubHOV6uRLLVCb5LHKUkgJ1dlCbKN4fshY14TsvHi2dakaG4P8J/Z1Mbn3oAeqiJvgdMQf3Uqs2LnjIXWFm0nqoyji0dUDNQZ+VJoMlRcrm3zqkDOIUvw7rTgaDH5iuJsuZiWEr9GqFxqURiE36QwRN3Orq2tvWkAuwGjXtf/GDA9BNhzKDsA7lytNfnMZWmT8fMfGacgU141FB0CeJFhTYs4TVQVL4+AZKHb890PWKXHWP1PIC/TIoNSgxISjZag9oHutkaliDjLz2xipKRS2CnC6CoBSgOZgCoLCfKk7RqXscD3jqfnHqxBx2EMMzyQ3tUDz1cZkGuuMpvcPT/JhXjNbDR+Qz+oKhWLSi7+pTS+eZ9RBIJcQMLVHK1wCAscjHpAavg4AWLxW8RLyHZyYPslOthHL40/klNAa2ayeUU3FBDtku3sARMlWVck5w9nxMdXRvTz0yITyDgjMx5loJFwEFJCmtfl3UPv97oe83pH2P8QKyKdNWZFY0a392+r8X5THWqu2xihqTW8H1HjiGuBy8fqb6yLesmx0PfqsjM0vhTaxLjjWWIy1k0Rh19wYZkgoGvqPoFMUDBob15U46psdDd4A1vmqll7JszgptRjMLDqM97Q8FrRBp9rW995hjYBqwvSqN1WzVo1C2idxjSuvYwa1qf40en17tvxdlvBawW/FTqt0G2vMSR4i8SkOEAY4dRnpBcS5nrE75CuofhWKwDdtPYCu4TjfibMbLgfYoXHoRviUkV/+dLkDoq8sExEqcmvIidm6y+5WZrlKuOSRLAAYRjTJ9b2LyrDpWuFBgAA"
       var b64Data  =   testData.substring(9);
@@ -95,7 +121,7 @@ export class barcodeService {
           });
 
           this.list.push(l);
-          }
+        }
 
           return Promise.all(this.list).then((res) => {
             return medData['Medicaments'];
@@ -143,7 +169,9 @@ export class barcodeService {
        getCHMEDString():any{
 
               return this.storage.get("mediPlan").then((res) => {
+              console.log(res);
               var strData2 = JSON.stringify(res)
+              console.log(strData2);
               var data2 = strData2.split ('').map (function (c) { return c.charCodeAt (0); })
               var str = myPako.gzip(data2, { to: 'string' })
               var b64Data = btoa(str)

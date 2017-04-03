@@ -5,7 +5,7 @@ export class questionHandler {
   messageEMMA_Not_Understand = [
   "Entschuldigung, ich habe dich leider nicht verstanden",
   "Sorry das habe ich verpasst. Bitte stelle eine andere Frage",
-  "Diese Frage verstehe ich leider nicht. Kannst du es mit einer Anderen Frage versuchen",
+  "Diese Frage verstehe ich leider nicht. Kannst du es mit einer anderen Frage versuchen",
   "Ich Verstehe das leider nicht",
   "Diese Frage kann ich leider nicht beantworten"
   ];
@@ -16,24 +16,23 @@ export class questionHandler {
   drugList:JSON;
   takingTime:String[];
   constructor(private storage:Storage){
-
     }
     returnAnswer(question: String):any{
-      let retVal = "";
+      var retVal:any = "";
+      var list = new Array<any>()
       question = question.toUpperCase();
-      this.storage.ready().then(()=>{
-        this.storage.get('takingTime').then((takingtimes)=>{
+        var l = this.storage.get('takingTime').then((takingtimes)=>{
           this.takingTime = takingtimes;
-          this.storage.get('medicationData').then((res)=>{
+        })
+        list.push(l)
+        var l2 = this.storage.get('medicationData').then((res)=>{
             this.drugList = res;
-            console.log(this.drugList)
             for(var pos in this.drugList){
               if(question.includes(this.drugList[pos].title)){
 
                 if(question.includes("WANN")||question.includes("ZEIT")||question.includes("UHR")){
-                  retVal = retVal + "du solltest " + this.drugList[pos].title +" an folgenden Uhrzeiten einnehmen:\n"
+                  retVal = retVal + "Du solltest " + this.drugList[pos].title +" an folgenden Uhrzeiten einnehmen:\n"
                   for(var time in this.drugList[pos].Pos[0].D){
-                    console.log(this.drugList[pos].Pos[0].D[time])
                     if(this.drugList[pos].Pos[0].D[time]){
                       retVal = retVal + this.messageEMMA_TakingTime[time]  + this.takingTime[time] + "Uhr, " + this.drugList[pos].Pos[0].D[time] + " "+ this.drugList[pos].Unit + "\n"
                     }
@@ -60,7 +59,7 @@ export class questionHandler {
                 }
                 if(question.includes("LANGE")||question.includes("DAUER")){
                   if(this.drugList[pos].Pos[0].DtFrom && this.drugList[pos].Pos[0].DtTo){
-                    retVal = retVal + "Du solltes" + this.drugList[pos].title + "an folgendne Daten einnehmen:\n" + "vom: " + this.drugList[pos].Pos[0].DtFrom + " bis " + this.drugList[pos].Pos[0].DtTo +"\n";
+                    retVal = retVal + "Du solltes " + this.drugList[pos].title + " an folgenden Daten einnehmen:\n" + "vom: " + this.drugList[pos].Pos[0].DtFrom + " bis " + this.drugList[pos].Pos[0].DtTo +"\n";
                   }
                   else{
                     retVal = retVal + "Ich habe leider keine Informationen über die Einnahmedauer von: " + this.drugList[pos].title + "\n";
@@ -71,7 +70,6 @@ export class questionHandler {
                 }
               }
             }
-            console.log(retVal)
             if(retVal == ""){
               if(question.includes("NAHRUNG")||(question.includes("ESSEN")&&question.includes("NICHT"))){
                 retVal =  "Folgende dinge darfts du zu deiner aktuellen Medikation nicht essen\n"
@@ -83,16 +81,19 @@ export class questionHandler {
                   }
                 }
                 let random = Math.random()*this.messageEMMA_Not_Understand_temp.length;
-                let retVal2 =  this.messageEMMA_Not_Understand_temp.splice(random,1)
-                console.log(retVal2)
-                return  retVal2;
+                retVal = this.messageEMMA_Not_Understand_temp.splice(random,1)
 
               }
             }
-            return retVal
+
 
             })
+            list.push(l2)
+
+          return Promise.all(list).then(()=>{
+            return retVal
           })
-        })
+
       }
+
 }

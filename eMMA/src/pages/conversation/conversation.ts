@@ -241,13 +241,16 @@ export class ConversationPage {
   })
   }
   question(input:String){
-    var answereMMA = this.questionhandler.returnAnswer(input);
-    if(answereMMA == "Reminder"){
-      this.reminderAppStart()
-    }
-    else{
-      this.sendEmmaText(answereMMA)
-    }
+    this.questionhandler.returnAnswer(input).then((res)=>{
+      var answereMMA:String = res
+      if(answereMMA == "Reminder"){
+        this.reminderAppStart()
+      }
+      else{
+        this.sendEmmaText(answereMMA)
+      }
+    });
+
   }
   /*****************************************************************************
 

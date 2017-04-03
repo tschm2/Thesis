@@ -10,7 +10,7 @@ export class questionHandler {
   "Diese Frage kann ich leider nicht beantworten"
   ];
   messageEMMA_Not_Understand_temp = new Array<any>();
-  messageEMMA_TakingTime = [ "Morgnes um ", "Mittag um  ", "Abends um ", "In der Nacht um "
+  messageEMMA_TakingTime = [ "mogens um ", "mittags um  ", "abends um ", "In der Nacht um "
   ];
 
   drugList:JSON;
@@ -34,6 +34,7 @@ export class questionHandler {
                   retVal = retVal + "Du solltest " + this.drugList[pos].title +" an folgenden Uhrzeiten einnehmen:\n"
                   for(var time in this.drugList[pos].Pos[0].D){
                     if(this.drugList[pos].Pos[0].D[time]){
+                      console.log(this.takingTime[time]);
                       retVal = retVal + this.messageEMMA_TakingTime[time]  + this.takingTime[time] + "Uhr, " + this.drugList[pos].Pos[0].D[time] + " "+ this.drugList[pos].Unit + "\n"
                     }
                   }

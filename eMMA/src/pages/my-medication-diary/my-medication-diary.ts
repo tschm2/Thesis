@@ -17,6 +17,53 @@ export class MyMedicationDiaryPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyMedicationDiaryPage');
+
+    var tempObj = ({
+      "ID":"1",
+      "Date":"dateOfMediplan",
+      "DrugList":{
+        "NameVonMedikament1":{
+          "Dates":[{
+            "Date":"27.04.2016",
+            "D":[
+            0,
+            1,
+            null,
+            null
+            ]
+          },{
+            "Date":"28.04.2016",
+            "D":[
+            1,
+            null,
+            1,
+            1
+            ]
+          }]
+        },
+        "NameVonMedikament2":{
+          "Dates":[{
+            "Date":"27.04.2016",
+            "D":[
+            0,
+            1,
+            null,
+            null
+            ]
+          },{
+            "Date":"28.04.2016",
+            "D":[
+            1,
+            null,
+            1,
+            1
+            ]
+          }]
+        }
+      }
+    })
+    console.log(tempObj);
+
   }
 
 }

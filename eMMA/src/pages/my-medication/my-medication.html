@@ -24,36 +24,38 @@
 
     <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
       <div class="medItem" *ngFor="let drug of drugList">
-      <ion-grid>
+      <ion-grid *ngIf=drug?.Id>
         <ion-row>
           <ion-col>
-            <b>{{drug.title}}</b>
+            <b>{{drug?.title}}</b>
           </ion-col>
           </ion-row>
           <ion-row>
           <ion-col col-5  ><img src="https://index.hcisolutions.ch/files/pics/{{drug?.Id}}_PIF_F.jpg?px=128&key=Pharmacode" alt="Description"/></ion-col>
           <ion-col class="nextToImage" col-7>
-            Grund:
-            {{drug.TkgRsn}}
+            <span *ngIf=drug?.TkgRsn>Grund:
+            {{drug.TkgRsn}}</span>
             <br>
-            von: {{drug.Pos[0].DtFrom}}
+            <span *ngIf=drug?.Pos[0].DtFrom>von: {{drug.Pos[0].DtFrom}}</span>
             <br>
-            bis: {{drug.Pos[0].DtTo}}<br>
+            <span *ngIf=drug?.Pos[0].DtTo>bis: {{drug.Pos[0].DtTo}}</span><br>
 
           </ion-col>
+
         </ion-row>
         <ion-row>
           <ion-col class="perDayItem" *ngFor="let day of drug?.Pos[0].D; let i = index">{{perDay[i]}}:
             {{day}}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col class="manualItem">
+          <ion-col *ngIf=drug?.AppInstr class="manualItem">
           Anleitung: {{drug.AppInstr}}
         </ion-col>
         </ion-row>
         <ion-row>
           <ion-col class="prescItem">
-          Verschrieben von: {{drug.PrscbBy}}
+          Verschrieben von: {{drug?.PrscbBy}}
+          <div class="delete" (click)="deleteDrug(drug.Id)" *ngIf="drug?.AutoMed"></div>
         </ion-col>
         </ion-row>
 

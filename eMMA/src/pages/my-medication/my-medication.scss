@@ -38,3 +38,12 @@ page-my-medication {}
 .prescItem {
   background-color: #A3C1D6;
 }
+
+.delete {
+  width: 25px;
+  height: 25px;
+  background-color: #542341;
+  float: right;
+  background-image: url('../images/del.png');
+  background-size: 100% 100%;
+}

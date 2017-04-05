@@ -59,7 +59,7 @@ json:JSON;
       });
     }
 
-    hciquery(key: string, index?: string, keyType?: string) {
+    hciquery(key: string, keyType: string,callback) {
 
       var key = key; // queried barcode
       var index = 'hospINDEX'; // TODO: Default
@@ -90,7 +90,6 @@ json:JSON;
         xhr.onreadystatechange = () => {
           if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
             console.log(xhr.responseText);
-
                 var xml =  xhr.responseXML;
                 var art = xml.getElementsByTagName("ART");
                 var desc = xml.getElementsByTagName("DSCRD");
@@ -99,6 +98,7 @@ json:JSON;
 
                 var title = desc.split(" ")[0];
                 console.log(title)
+                callback.apply(xhr)
           } else {
             console.log("Error!");
           }

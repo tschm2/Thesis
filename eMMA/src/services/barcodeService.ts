@@ -130,13 +130,34 @@ export class barcodeService {
         getNamesFromIDrealHCI(medData){
           this.list = new Array<any>();
           var hciS = new HCIService(this.http);
+          var i = 0;
           for (let medi of medData['Medicaments']){
           if(Number(medi.Id)){
-          hciS.hciquery(medi.Id,"hospIndex","phar")
+           hciS.hciquery(medi.Id,"phar",function() {
+             var xml =  this.responseXML;
+             var art = xml.getElementsByTagName("ART");
+             var desc = xml.getElementsByTagName("DSCRD");
+             var desc = art[0].getElementsByTagName("DSCRD")[0].textContent
+             console.log(desc)
 
+             var title = desc.split(" ")[0];
+             console.log(title)
+             console.log(this.responseXML)
+             medi.description = desc
+             medi.title = title
+             i++;
+          })
+          }
+          else{
+          medi.description = medi.Id
+          medi.title = medi.Id
+          i++;
+          }
 
-
-          }}
+          }
+          if(i == medData['Medicaments'].length){
+          console.log(medData['Medicaments'])
+          }
             /*console.log(response)
                 var xml =  response;
                 var art = xml.getElementsByTagName("ART");

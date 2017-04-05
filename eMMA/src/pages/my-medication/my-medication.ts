@@ -46,9 +46,7 @@ export class MyMedicationPage {
     this.storage.ready().then(()=>{
       this.storage.get('medicationData').then((res)=>{
         this.drugList = res;
-        console.log(this.drugList)
         this.storage.get('mediPlan').then((res)=>{
-          console.log(res)
         })
         })
       })

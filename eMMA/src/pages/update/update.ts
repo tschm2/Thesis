@@ -46,9 +46,11 @@ export class UpdatePage {
 
 
   scanQRcode(){
+    /*
   this.storage.ready().then(()=>{
     this.barcodeService.scanQRcodeForJSON();
-    })
+  })*/
+  this.barcodeService.testDummyData();
   }
   toggleContent(numb){
     if (this.toggleObject == numb)

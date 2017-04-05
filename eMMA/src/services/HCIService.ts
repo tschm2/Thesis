@@ -3,8 +3,10 @@ import {Injectable} from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-import {Observable} from 'rxjs/Observable';
 import myPako from "../../node_modules/pako"
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/operator/map';
 
 export class HCIService {
 apiURL:string;
@@ -57,29 +59,51 @@ json:JSON;
       });
     }
 
-  getHCI(key,keyType) {
-  let email = 'EPN236342@hcisolutions.ch';
-  let password = 'UMPbDJu7!W';
+    hciquery(key: string, index?: string, keyType?: string) {
 
-  let reqHeader = 'Basic '+btoa(email+':'+password);
+      var key = key; // queried barcode
+      var index = 'hospINDEX'; // TODO: Default
+      var keyType = keyType; // TODO: Default
 
-  var xhr = new XMLHttpRequest();
-  var method = "GET";
-  var url = "https://index.hcisolutions.ch/index/current/get.aspx?schema=ARTICLE&keytype="+keyType+"&key="+key+"&index=hospINDEX";
 
-  xhr.open(method, url);
+      var username = 'EPN236342@hcisolutions.ch';
+      var password = 'UMPbDJu7!W';
 
-  xhr.setRequestHeader('Authorization',reqHeader);
+      var xhr = new XMLHttpRequest(),
+        method = "GET",
+        url = `https://index.hcisolutions.ch/index/current/get.aspx?schema=ARTICLE&keytype=${keyType}&key=${key}&index=${index}`;
 
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      console.log(xhr.responseText);
-    } else {
-      console.log("Error!");
+      xhr.open(method, url, true);
+
+
+      var reqHeader = {'Authorization': 'Basic ' + btoa(`${username}:${password}`)};
+
+      console.log(reqHeader);
+
+      if (reqHeader) {
+          Object.keys(reqHeader).forEach((key) => {
+            console.log("sadfkj");
+            xhr.setRequestHeader(key, reqHeader[key]);
+          });
+        }
+
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            console.log(xhr.responseText);
+
+                var xml =  xhr.responseXML;
+                var art = xml.getElementsByTagName("ART");
+                var desc = xml.getElementsByTagName("DSCRD");
+                var desc = art[0].getElementsByTagName("DSCRD")[0].textContent
+                console.log(desc)
+
+                var title = desc.split(" ")[0];
+                console.log(title)
+          } else {
+            console.log("Error!");
+          }
+        };
+
+        xhr.send();
+      }
     }
-  };
-
-  xhr.send();
-}
-
-}

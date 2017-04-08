@@ -59,12 +59,13 @@ json:JSON;
       });
     }
 
-    hciquery(key: string, keyType: string): Promise<any> {
-      let p = new Promise(function(resolve,reject){
-
-      var key = key; // queried barcode
+    hciquery(aKey: string, aKeyType: string): Promise<any> {
+      var key = aKey; // queried barcode
       var index = 'hospINDEX'; // TODO: Default
-      var keyType = keyType; // TODO: Default
+      var keyType = aKeyType; // TODO: Default
+
+      console.log(key,index,keyType)
+      let p = new Promise(function(resolve,reject){
 
       var username = 'EPN236342@hcisolutions.ch';
       var password = 'UMPbDJu7!W';
@@ -87,18 +88,10 @@ json:JSON;
           });
         }
 
-        xhr.onreadystatechange = () => {
+        xhr.onload = () => {
           if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            console.log(xhr.responseText);
-            console.log(xhr.responseXML);
-                var xml =  xhr.responseXML;
-                var art = xml.getElementsByTagName("ART");
-                var desc = art[0].getElementsByTagName("DSCRD")[0].textContent
-                console.log(desc)
-                var title = desc.split(" ")[0];
-                console.log(title)
+            resolve(xhr.responseXML);
 
-                resolve(desc);
 
           } else {
             console.log("Error!");

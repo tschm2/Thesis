@@ -46,8 +46,7 @@ export class MyMedicationPage {
     this.storage.ready().then(()=>{
       this.storage.get('medicationData').then((res)=>{
         this.drugList = res;
-        this.storage.get('mediPlan').then((res)=>{
-        })
+        console.log(res)
         })
       })
 
@@ -94,6 +93,7 @@ export class MyMedicationPage {
           this.storage.set("medicationData", this.drugList);
           this.storage.get('mediPlan').then((res)=>{
             res['Medicaments'] = this.drugList
+
 
             this.storage.set('mediPlan', res)
           })

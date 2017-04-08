@@ -29,9 +29,9 @@ export class barcodeService {
           this.storage.ready().then(() => {
             var mediPlan = JSON.parse(strData2)
             this.storage.set("mediPlan", mediPlan);
-            this.getNamesFromIDrealHCI(mediPlan)
-                this.storage.set("medicationData", mediPlan['Medication']);
-
+            this.getNamesFromIDrealHCI(mediPlan).then((res) => {
+                this.storage.set("medicationData", res);
+            });
             return true;
           })
 
@@ -93,50 +93,22 @@ export class barcodeService {
       this.storage.ready().then(() => {
         var mediPlan = JSON.parse(strData2)
         this.storage.set("mediPlan", mediPlan);
-        this.getNamesFromIDrealHCI(mediPlan)
-        this.getNamesFromID(mediPlan).then((res) => {
+        this.getNamesFromIDrealHCI(mediPlan).then((res) => {
             this.storage.set("medicationData", res);
         });
       })
 
       }
 
-      getNamesFromID(medData){
-        this.list = new Array<any>();
-        var hciS = new HCIService(this.http);
-        for (let medi of medData['Medicaments']){
-          var l = hciS.getHCIData(medi.Id,"phar").then(function(response) {
-                if(Number(medi.Id)){
-                var result = JSON.parse(response._body);
-                var desc = result.article[0].dscrd;
-                var title = desc.split(" ")[0];
-                medi.description = desc
-                medi.title = title
-              }
-              else{
-                medi.description = medi.Id
-                medi.title = medi.Id
-              }
-          });
-
-          this.list.push(l);
-        }
-
-          return Promise.all(this.list).then((res) => {
-            return medData['Medicaments'];
-          });
-        }
-
         getNamesFromIDrealHCI(medData){
           this.list = new Array<any>();
           var hciS = new HCIService(this.http);
-
           for (let medi of medData['Medicaments']){
             if(Number(medi.Id)){
               var l = hciS.hciquery(medi.Id,"phar").then((responseXML)=>{
                 console.log(responseXML);
                 console.log(l);
-              /*  var xml =  responseXML;
+                var xml =  responseXML;
                 var art = xml.getElementsByTagName("ART");
                 var desc = art[0].getElementsByTagName("DSCRD")[0].textContent
                 console.log(desc)
@@ -145,7 +117,7 @@ export class barcodeService {
                 console.log(title)
                 console.log(responseXML)
                 medi.description = desc
-                medi.title = title*/
+                medi.title = title
               });
             }
             else{
@@ -156,47 +128,26 @@ export class barcodeService {
           }
 
           return Promise.all(this.list).then((res) => {
-            console.log(medData['Medicaments']);
+            console.log(medData['Medicaments'])
+            return(medData['Medicaments']);
           });
-            /*console.log(response)
-                var xml =  response;
-                var art = xml.getElementsByTagName("ART");
-                if(Number(medi.Id)){
-                for(var i = 0; i < art[0].children.length; i++) {
-                if(art[0].children[i].nodeName === "DSCRD")
-                var desc = art[0].children[i].innerHTML;
-                console.log(desc)
-                var title = desc.split(" ")[0];
-                console.log(title)
-                medi.description = desc
-                medi.title = title
-              };
-                        }
 
-
-                else{
-                  medi.description = medi.Id
-                  medi.title = medi.Id
-                }
-                */
-          }
-
-
-
+      }
 
 
         scanMediCode(medData){
               var hciS = new HCIService(this.http)
                  BarcodeScanner.scan().then((barcodeData) => {
                    console.log(barcodeData.text)
-                  hciS.getHCIData(barcodeData.text,"ARTBAR").then(function(response) {
-                    var tempData = JSON.parse(response._body);
-                    var desc = tempData.article[0].dscrd;
+                  hciS.hciquery(barcodeData.text,"ARTBAR").then(function(response) {
+                    var xml =  response;
+                    var art = xml.getElementsByTagName("ART");
+                    var desc = art[0].getElementsByTagName("DSCRD")[0].textContent
                     var title = desc.split(" ")[0];
                     var tempObj = ({
                       "AppInstr":"Arzt oder Apotheker fragen.",
                       "AutoMed":"1",
-                      "Id":tempData.article[0].phar,
+                      "Id":art[0].getElementsByTagName("PHAR")[0].textContent,
                       "IdType":"3",
                       "description":desc,
                       "title":title,
@@ -267,5 +218,33 @@ export class barcodeService {
 
 
   }
+
+  /*
+        getNamesFromID(medData){
+          this.list = new Array<any>();
+          var hciS = new HCIService(this.http);
+          for (let medi of medData['Medicaments']){
+            var l = hciS.getHCIData(medi.Id,"phar").then(function(response) {
+                  if(Number(medi.Id)){
+                  var result = JSON.parse(response._body);
+                  var desc = result.article[0].dscrd;
+                  var title = desc.split(" ")[0];
+                  medi.description = desc
+                  medi.title = title
+                }
+                else{
+                  medi.description = medi.Id
+                  medi.title = medi.Id
+                }
+            });
+
+            this.list.push(l);
+          }
+
+            return Promise.all(this.list).then((res) => {
+              return medData['Medicaments'];
+            });
+          }
+  */
 
 }

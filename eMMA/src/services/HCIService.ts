@@ -59,12 +59,12 @@ json:JSON;
       });
     }
 
-    hciquery(key: string, keyType: string,callback) {
+    hciquery(key: string, keyType: string): Promise<any> {
+      let p = new Promise(function(resolve,reject){
 
       var key = key; // queried barcode
       var index = 'hospINDEX'; // TODO: Default
       var keyType = keyType; // TODO: Default
-
 
       var username = 'EPN236342@hcisolutions.ch';
       var password = 'UMPbDJu7!W';
@@ -90,20 +90,24 @@ json:JSON;
         xhr.onreadystatechange = () => {
           if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
             console.log(xhr.responseText);
+            console.log(xhr.responseXML);
                 var xml =  xhr.responseXML;
                 var art = xml.getElementsByTagName("ART");
-                var desc = xml.getElementsByTagName("DSCRD");
                 var desc = art[0].getElementsByTagName("DSCRD")[0].textContent
                 console.log(desc)
-
                 var title = desc.split(" ")[0];
                 console.log(title)
-                callback.apply(xhr)
+
+                resolve(desc);
+
           } else {
             console.log("Error!");
           }
         };
 
         xhr.send();
+      });
+
+      return p;
       }
     }

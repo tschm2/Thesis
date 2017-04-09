@@ -10,10 +10,8 @@ import { ConversationPage } from '../pages/conversation/conversation';
 import { MyMedicationPage } from '../pages/my-medication/my-medication';
 import { UpdatePage } from '../pages/update/update';
 import { Storage } from '@ionic/storage';
-import { HttpModule, JsonpModule } from '@angular/http';
-//import {QRCodeComponent} from 'ng2-qrcode'
+import { HttpModule } from '@angular/http';
 import { QRCodeModule } from 'angular2-qrcode';
-import { QRCodeComponent } from 'angular2-qrcode';
 
 @NgModule({
   declarations: [

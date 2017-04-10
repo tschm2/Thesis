@@ -21,12 +21,16 @@ export class questionHandler {
       var retVal:any = "";
       var list = new Array<any>()
       question = question.toUpperCase();
+      //return
         var l = this.storage.get('takingTime').then((takingtimes)=>{
           this.takingTime = takingtimes;
+          //return getMediDataFromStorage
         })
-        list.push(l)
+        list.push(l) //raus
+        /*Ab it function und return not var*/
         var l2 = this.storage.get('medicationData').then((res)=>{
             this.drugList = res;
+            console.log(this.drugList);
             for(var pos in this.drugList){
               if(question.includes(this.drugList[pos].title)){
 
@@ -75,6 +79,14 @@ export class questionHandler {
               if(question.includes("NAHRUNG")||(question.includes("ESSEN")&&question.includes("NICHT"))){
                 retVal =  "Folgende dinge darfts du zu deiner aktuellen Medikation nicht essen\n"
               }
+              else if(question.includes("SELBSTMEDIKATION")||(question.includes("MEDIKAMENT")&&(question.includes("ZUSÄTZLICH")||(question.includes("ERFASSEN")))))
+              {
+                retVal = "Ich öffne die Selbstmedikation für dich"
+              }
+              else if(question.includes("REMINDER"))
+              {
+                retVal = "Du möchtest also die Erinnerungsfunktion testen"
+              }
               else{
                 if(this.messageEMMA_Not_Understand_temp.length == 0){
                   for (var name in this.messageEMMA_Not_Understand) {
@@ -86,11 +98,9 @@ export class questionHandler {
 
               }
             }
-
-
             })
-            list.push(l2)
-
+            list.push(l2) //To delete
+ /* To delete*/
           return Promise.all(list).then(()=>{
             return retVal
           })

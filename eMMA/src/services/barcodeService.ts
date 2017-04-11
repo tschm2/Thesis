@@ -72,10 +72,12 @@ private list: Array<any>;
   }
 
 
-  scanMediCode(medData){
+  scanMediCode(medData):Promise<any>{
+
     var hciS = new HCIService()
-    BarcodeScanner.scan().then((barcodeData) => {
-      hciS.hciquery(barcodeData.text,"ARTBAR").then(function(response) {
+    return BarcodeScanner.scan().then((barcodeData) => {
+      return hciS.hciquery(barcodeData.text,"ARTBAR").then(function(response) {
+        console.log(response);
         var xml =  response;
         var art = xml.getElementsByTagName("ART");
         var desc = art[0].getElementsByTagName("DSCRD")[0].textContent
@@ -99,14 +101,7 @@ private list: Array<any>;
           }]
         })
         medData.push(tempObj)
-
-        this.storage.ready().then(()=>{
-          this.storage.get('mediPlan').then((res)=>{
-            res['Medicaments'] = medData
-            this.storage.set('mediPlan', res)
-            this.storage.set("medicationData", medData);
-          })
-        })
+        return medData
       })
       }, (err) => {
         console.log(err)

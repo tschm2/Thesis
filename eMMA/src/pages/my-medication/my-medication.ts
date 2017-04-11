@@ -42,7 +42,20 @@ export class MyMedicationPage {
     }
 
   scanMedBox(){
-    this.barcodeService.scanMediCode(this.drugList)
+    this.barcodeService.scanMediCode(this.drugList).then((res)=>{
+      console.log(res)
+      this.storage.ready().then(()=>{
+        this.storage.get('mediPlan').then((res)=>{
+
+          res['Medicaments'] = this.drugList
+          this.storage.set('mediPlan', res)
+          this.storage.set("medicationData", this.drugList);
+        })
+      })
+
+    })
+
+
     }
 
   deleteDrug(id){

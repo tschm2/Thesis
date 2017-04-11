@@ -148,7 +148,7 @@ export class MyMedicationDiaryPage {
 
     }
     Values.push(100)
-
+/*
     this.barChart = new Chart(this.barCanvas.nativeElement, {
 
             type: 'bar',
@@ -219,7 +219,7 @@ export class MyMedicationDiaryPage {
                 ]
             }
 
-        });
+        });*/
   }
 
 }

@@ -2,11 +2,12 @@ import { BarcodeScanner } from 'ionic-native';
 import myPako from "../../node_modules/pako"
 import { Storage } from '@ionic/storage';
 import { HCIService } from './HCIService';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 export class barcodeService {
 private list: Array<any>;
 
-  constructor(public storage: Storage) {
+  constructor(public http: Http, public storage: Storage) {
 
   }
 
@@ -24,10 +25,13 @@ private list: Array<any>;
       var data        = myPako.inflate(binData);
       // Convert gunzipped byteArray back to ascii string:
       let strData2: string  = String.fromCharCode.apply(null, new Uint16Array(data));
+
       this.storage.ready().then(() => {
+
         var mediPlan = JSON.parse(strData2)
         this.storage.set("mediPlan", mediPlan);
       this.IdHCIQuery(mediPlan).then((res) => {
+
           this.storage.set("medicationData", res);
       });
       return true;
@@ -95,6 +99,14 @@ private list: Array<any>;
           }]
         })
         medData.push(tempObj)
+
+        this.storage.ready().then(()=>{
+          this.storage.get('mediPlan').then((res)=>{
+            res['Medicaments'] = medData
+            this.storage.set('mediPlan', res)
+            this.storage.set("medicationData", medData);
+          })
+        })
       })
       }, (err) => {
         console.log(err)
@@ -188,11 +200,36 @@ private list: Array<any>;
     this.storage.ready().then(() => {
       var mediPlan = JSON.parse(strData2)
       this.storage.set("mediPlan", mediPlan);
-      this.IdHCIQuery(mediPlan).then((res) => {
+      this.getNamesFromID(mediPlan).then((res) => {
           this.storage.set("medicationData", res);
       });
     })
 
     }
 
+    getNamesFromID(medData){
+             this.list = new Array<any>();
+             var hciS = new HCIService();
+             for (let medi of medData['Medicaments']){
+               var l = hciS.getHCIData(this.http,medi.Id,"phar").then(function(response) {
+                     if(Number(medi.Id)){
+                     var result = JSON.parse(response._body);
+                     var desc = result.article[0].dscrd;
+                     var title = desc.split(" ")[0];
+                     medi.description = desc
+                     medi.title = title
+                   }
+                   else{
+                     medi.description = medi.Id
+                     medi.title = medi.Id
+                   }
+               });
+
+               this.list.push(l);
+             }
+
+               return Promise.all(this.list).then((res) => {
+                 return medData['Medicaments'];
+               });
+             }
 }

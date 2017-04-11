@@ -1,17 +1,18 @@
-/*import {Request, RequestMethod,Response} from '@angular/http';
+import {Request, RequestMethod,Response} from '@angular/http';
 import {Injectable} from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+
 import 'rxjs/add/operator/toPromise';
 import myPako from "../../node_modules/pako"
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/map';*/
+import 'rxjs/add/operator/map';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 export class HCIService {
 apiURL:string;
 url:string;
 json:JSON;
-
+http:Http
   constructor() { }
 
   hciquery(aKey: string, aKeyType: string): Promise<any> {
@@ -45,5 +46,25 @@ json:JSON;
     });
 
     return p;
+    }
+
+  //testDummyData
+   getHCIData(http,id,keyT):any {
+      // preparing variables
+      var api = 'http://www.laettere.ch/carole/mina/getArticle.php';
+      //console.log(api);
+      var keytype = keyT
+      //console.log(keytype);
+      var key = id;
+      //console.log(key);
+      var index = 'hospINDEX';
+      //console.log(index);
+
+      // concat uri
+      var uri = api + '?keytype=' + keytype + '&key=' + key + '&index=' + index;
+
+      return http.get(uri).toPromise().then(function(response){
+        return response;
+      });
     }
   }

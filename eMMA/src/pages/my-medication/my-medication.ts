@@ -4,6 +4,7 @@ import { barcodeService } from '../../services/barcodeService';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 import { Storage } from '@ionic/storage'
 import { AlertController } from 'ionic-angular';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 /*
 
@@ -26,14 +27,13 @@ export class MyMedicationPage {
   patient:JSON;
 
 
-  constructor(private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
+  constructor(public http:Http, private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
     this.perDay = ['Morgen','Mittag','Abend','Nacht'];
     this.chmedHandler = new chmedJsonHandler(this.storage)
-    this.barcodeService = new barcodeService(this.storage);
+    this.barcodeService = new barcodeService(http, this.storage);
   }
 
   ionViewDidLoad() {
-    this.barcodeService.analyseCHMED();
       this.storage.ready().then(()=>{
         this.storage.get('medicationData').then((res)=>{
           this.drugList = res;
@@ -42,15 +42,8 @@ export class MyMedicationPage {
     }
 
   scanMedBox(){
-    this.barcodeService.scanMediCode(this.drugList);
-      this.storage.ready().then(()=>{
-        this.storage.get('mediPlan').then((res)=>{
-          res['Medicaments'] = this.drugList
-          this.storage.set('mediPlan', JSON.parse(JSON.stringify(res)))
-          this.storage.set("medicationData", JSON.parse(JSON.stringify(this.drugList)));
-        })
-      })
-  }
+    this.barcodeService.scanMediCode(this.drugList)
+    }
 
   deleteDrug(id){
     let alert = this.alertCtrl.create({

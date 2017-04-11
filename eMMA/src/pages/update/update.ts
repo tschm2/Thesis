@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage'
 import {Component} from '@angular/core';
 import {QRCodeComponent} from 'angular2-qrcode';
 import {ViewChild} from '@angular/core';
-
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 /*
 
@@ -24,9 +24,9 @@ export class UpdatePage {
   barcodeService: barcodeService;
   storage:Storage;
   test:String;
-  constructor(public navCtrl: NavController, public navParams: NavParams, storage:Storage) {
+  constructor(public http:Http, public navCtrl: NavController, public navParams: NavParams, storage:Storage) {
     this.storage = storage;
-    this.barcodeService = new barcodeService(this.storage)
+    this.barcodeService = new barcodeService(this.http, this.storage)
   }
 
   ionViewDidLoad() {

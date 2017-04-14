@@ -1,6 +1,6 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
+  "name": "eMMA",
+  "author": "Mauro Tschanz, Tim Dorner",
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {

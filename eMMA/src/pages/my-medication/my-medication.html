@@ -64,20 +64,50 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card (click)="toggleContent(2)">
-    <ion-card-header class="clickAbleHeader">
+  <ion-card>
+    <ion-card-header class="clickAbleHeader"  (click)="toggleContent(2)">
       Neues Medikament erfassen
     </ion-card-header>
+
     <ion-card-content [ngClass]="{'hidden': toggleObject != 2}">
+
+
+      <h3 style="margin-top:10px;">Um welche Uhrzeiten möchten Sie erinnert werden?</h3>
+
+      <ion-item>
+
+
+        <ion-label>Morgens um: {{Placeholder}}</ion-label>
+        <ion-checkbox color="" checked="false"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>Mittags um: {{Placeholder}}</ion-label>
+        <ion-checkbox color="" checked="false"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>Abends um: </ion-label>
+        <ion-checkbox color="" checked="false"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>Vor zu Bett gehen: </ion-label>
+        <ion-checkbox color="dark" checked="false"></ion-checkbox>
+      </ion-item>
+            <h3 style="margin-top:10px;">Scannen Sie den Barcode des Medikamentes ein:</h3>
       <ion-grid>
-          <ion-row>
-            <ion-col>
-              Scannen Sie den Barcode des Medikamentes ein:
-            </ion-col>
-            <ion-col>
-              <button ion-button (click)="scanMedBox()">StrichCode Scannen</button>
-            </ion-col>
-          </ion-row>
+
+            <ion-row>
+          <ion-col>
+            <button ion-button full (click)="scanMedBox()">StrichCode Scannen</button>
+          </ion-col>
+            </ion-row>
+      </ion-grid>
+      <h3 style="margin-top:10px;">  Oder erfassen sie das Medikament ohne Barcode:</h3>
+      <ion-grid>
+            <ion-row>
+          <ion-col>
+            <button ion-button full (click)="scanMedBox()">ohne Scanning erfassen</button>
+          </ion-col>
+            </ion-row>
       </ion-grid>
     </ion-card-content>
   </ion-card>

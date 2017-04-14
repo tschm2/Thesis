@@ -23,33 +23,39 @@
 </ion-content>
 
 <ion-footer>
+  <form (ngSubmit)="sendMessage(input,sendButton)">
   <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
     <ion-item style="width:80%;float:left;">
-      <ion-input style="color:#FFF;" type="text" #input [(ngModel)]="myReply" class="input-message" placeholder="deine Nachricht"></ion-input>
+      <ion-input style="color:#FFF;" type="text" #input [ngModelOptions]="{standalone: true}" [(ngModel)]="myReply" class="input-message" placeholder="deine Nachricht"></ion-input>
     </ion-item>
-    <button style="width:15%; float:right;" ion-button icon-only (click)="sendMessage(input,sendButton)" [disabled]="!myReply || myReply === ''">
+    <button type="submit" ion-button icon-only style="width:15%; float:right;" [disabled]="!myReply || myReply === ''">
       <ion-icon name="arrow-dropleft-circle"></ion-icon>
     </button>
   </ion-card-content>
+</form>
   <div class=buttonsDiv [ngClass]="{'hidden': toggleObject != 2}">
     <div class="buttons" *ngFor="let answer of preAnswers">
       <button ion-button full (click)="reply(answer)">{{answer.text}}</button>
     </div>
   </div>
+  <form (ngSubmit)="sendMessage(inputNumber,sendButtonNumber)">
   <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
     <ion-item style="width:80%;float:left;">
-      <ion-input style="color:#FFF;" type="number" #inputNumber [(ngModel)]="numberinput" class="input-message" placeholder="deine Nachricht"></ion-input>
+      <ion-input style="color:#FFF;" type="number" #inputNumber [ngModelOptions]="{standalone: true}" [(ngModel)]="numberinput" class="input-message" placeholder="deine Nachricht"></ion-input>
     </ion-item>
-    <button style="width:15%; float:right;" ion-button icon-only (click)="sendMessage(inputNumber,sendButtonNumber)" [disabled]="!numberinput || numberinput === ''">
+    <button type="submit" style="width:15%; float:right;" ion-button icon-only [disabled]="!numberinput || numberinput === ''">
         <ion-icon name="arrow-dropleft-circle"></ion-icon>
     </button>
   </ion-card-content>
+</form>
+<form (ngSubmit)="sendMessage(inputPW,sendButtonPW)">
   <ion-card-content [ngClass]="{'hidden': toggleObject != 4}">
     <ion-item style="width:80%;float:left;">
-      <ion-input style="color:#FFF;" type="password" #inputPW [(ngModel)]="password" class="input-message" placeholder="deine Nachricht"></ion-input>
-  </ion-item>
-      <button style="width:15%; float:right;" ion-button icon-only (click)="sendMessage(inputPW,sendButtonPW)" [disabled]="!password || password === ''">
-          <ion-icon name="arrow-dropleft-circle"></ion-icon>
-        </button>
+      <ion-input style="color:#FFF;" type="password" #inputPW [ngModelOptions]="{standalone: true}" [(ngModel)]="password" class="input-message" placeholder="deine Nachricht"></ion-input>
+    </ion-item>
+    <button type="submit" style="width:15%; float:right;" ion-button icon-only [disabled]="!numberinput || numberinput === ''">
+        <ion-icon name="arrow-dropleft-circle"></ion-icon>
+    </button>
   </ion-card-content>
+</form>
 </ion-footer>

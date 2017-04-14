@@ -8,91 +8,94 @@ page-conversation {
 		height: 20px;
 		width: 20px;
 	}
-	.test2{
+
+	.test2 {
 		padding: 0;
-		margin-top:0px;
+		margin-top: 0;
 		white-space: pre-line;
 	}
-	.hiddenSpaceremma{
-		float:left;
-		width:70%;
-	}
-	.hiddenSpaceruser{
-		float:right;
-		width:70%;
-	}
-	.showTime{
-		display:block;
-		text-align:right;
-		font-size:0.8em;
-		color:#A4A4A4;
 
+	.hiddenSpaceremma {
+		float: left;
+		width: 70%;
 	}
+
+	.hiddenSpaceruser {
+		float: right;
+		width: 70%;
+	}
+
+	.showTime {
+		display: block;
+		text-align: right;
+		font-size: 0.8em;
+		color: #A4A4A4;
+	}
+
 	.emma {
 		background-color: #FFF;
 		width: auto;
-		max-width:100%;
+		max-width: 100%;
 		height: 50%;
 		float: left;
 		padding: 10px;
 		color: #333;
-		margin-bottom:5px;
-		margin-top:5px;
+		margin-bottom: 5px;
+		margin-top: 5px;
 		border-radius: 5px;
-		margin-left:10px;
-		}
+		margin-left: 10px;
+	}
 
 	.user {
-		min-width:30%;
+		min-width: 30%;
 		background-color: #DCF8C7;
 		padding: 10px;
 		width: auto;
-		max-width:100%;
+		max-width: 100%;
 		float: right;
 		height: 25%;
-		margin-top:5px;
-		margin-bottom:5px;
-		margin-right:10px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		margin-right: 10px;
 		border-radius: 5px;
 	}
 
-	.buttonsDiv{
-			height:100%;
-			background-color:#EFF
-		}
+	.buttonsDiv {
+		height: 100%;
+		background-color: #EFF;
+	}
 
 	.buttons {
-		height:100%;
-		width:45%;
-		float:left;
-		margin-left:3.5%;
+		height: 100%;
+		width: 45%;
+		float: left;
+		margin-left: 3.5%;
 	}
 
 	.buttons button {
-		border-radius:5px;
+		border-radius: 5px;
 		background-color: #DCF8C7;
 		font-size: 0.9em;
 		text-transform: inherit;
 		color: #333;
-		height:80%;
+		height: 80%;
 		word-wrap: break-word !important;
 		white-space: normal !important;
 	}
 
 	.footer {
-		height:10%;
-		bottom:0px;
-		position:absolute;
-		padding-top:1%;
-		background-color:#EEE;
+		padding-top: 1%;
+		bottom: 0;
+		position: absolute;
+		padding-bottom: 10px;
+		background-color: #EEE;
 	}
 
-	.item-block{
-		background-color:#DCF8C7;
+	.item-block {
+		background-color: #DCF8C7;
 	}
 
-	.footer input{
+	.footer input {
 		color: #333;
 	}
-
 }

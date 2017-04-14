@@ -10,6 +10,7 @@ import { barcodeService } from '../../services/barcodeService';
 import { AlertController } from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 
+
 var eMMAWaitingTimeShort = 200;
 var eMMAWaitingTime = 800;
 var eMMAWaitingTimeDouble = 1600;
@@ -34,7 +35,7 @@ export class ConversationPage {
   sendButtonPW: String;
   sendButtonNumber: String;
   toggleObject:number;
-  constructor(public http:Http, public navCtrl: NavController, public navParams: NavParams, private storage:Storage) {
+  constructor(public http:Http,public navCtrl: NavController, public navParams: NavParams, private storage:Storage) {
     this.messages = [];
     this.preAnswers = [];
     this.toggleObject = showTextfield;
@@ -43,22 +44,20 @@ export class ConversationPage {
   questionhandler = new questionHandler(this.storage);
   ionViewDidLoad() {
     this.toggleObject = showTextfield;
-    // this.storage.get('FirstStartComplet').then((terminated)=>{
-    //   var FirstStartComplet = terminated;
-    //   if(FirstStartComplet == false){
-    //     this.firstAppStart();
-    //   }
-    let start = "reminder"
-      if(start == "normal"){
-         this.firstAppStart();
-       }
-      else if(start == "reminder"){
+    this.storage.get('FirstStartComplet').then((terminated)=>{
+      var FirstStartComplet = terminated;
+      console.log(FirstStartComplet)
+            var reminder = 0;
+      if(FirstStartComplet == null){
+        this.firstAppStart();
+      }
+      else if(reminder){
        this.reminderAppStart();
       }
       else{
         this.normalAppStart();
       }
-    // })
+     })
   }
   /*****************************************************************************
 
@@ -66,7 +65,9 @@ export class ConversationPage {
 
   *****************************************************************************/
   firstAppStart() {
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello);
+     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_1)
+    setTimeout(()=> this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_2),eMMAWaitingTimeDouble);
+
     this.overrideSendbutton("questionPinNecessary");
   }
   questionPinNecessary(input:String){
@@ -164,6 +165,7 @@ export class ConversationPage {
     this.storage.set('takingTime',tempTakingTime)
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Tourtorial);
     this.overrideSendbutton("question");
+    this.eMMANewComplianceObj();
   }
   /*****************************************************************************
 
@@ -242,8 +244,12 @@ export class ConversationPage {
   question(input:String){
     this.questionhandler.returnAnswer(input).then((res)=>{
       var answereMMA:String = res
-      if(answereMMA == "Reminder"){
+      if(answereMMA == "Du möchtest also die Erinnerungsfunktion testen"){
         this.reminderAppStart()
+      }
+      else if(answereMMA == "OOOOPs: ich habe gerade den Specher gelöscht, Sorry -.-"){
+        this.storage.clear();
+        this.sendEmmaText(answereMMA)
       }
       else{
         this.sendEmmaText(answereMMA)
@@ -256,8 +262,28 @@ export class ConversationPage {
   Funtions for Conversation.ts
 
   *****************************************************************************/
+  eMMANewComplianceObj(){
+    this.storage.ready().then(()=>{
+      this.storage.get('medicationData').then((res)=>{
+      var tempMedicationData = res;
+      console.log(tempMedicationData)
+      var complianceObj = ({
+      "ID":"1",
+      "Date":"dateOfMediplan",
+      "DrugList":[]
+      })
+      for(var pos in tempMedicationData){
+        complianceObj.DrugList.push({
+          "Name":tempMedicationData[pos].title,
+          "Compliance":[]
+        })
+      }
+     this.storage.set('ComplianceData',complianceObj)
+    })
+  })
+  }
+  sendEmmaText(message:String){
 
-  sendEmmaText(message:String):any{
     //Püntkli azeige
     setTimeout(() =>
     this.messages.push({
@@ -268,7 +294,7 @@ export class ConversationPage {
       setTimeout(() => this.messages[this.messages.length-1].text = message, eMMAWaitingTime),
       setTimeout(()=> this.content.scrollToBottom(),eMMAWaitingTime+50)
       )
-      return true;
+
   }
   overrideAnswerButtons(text1: String, function1: String, text2: String, function2: String) {
     this.toggleObject = showNothing;

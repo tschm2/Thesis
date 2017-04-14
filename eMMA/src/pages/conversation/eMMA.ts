@@ -17,7 +17,8 @@ export class eMMA{
 
   //Messages used in the First App Start
   messageEMMA_FirstStart_NoName = "Du hast leider keinen Namen eingegeben.\nBitte versuche es erneut"
-  messageEMMA_FirstStart_Hello="Hallo! Mein Name ist eMMA. Ich werde dich bei deiner Medikaiton untersützen.\n Wie heisst du?";
+  messageEMMA_FirstStart_Hello_1="Hallo! Mein Name ist eMMA."
+  messageEMMA_FirstStart_Hello_2 = "Wie heisst du?";
   messageEMMA_FirstStart_questionPin = "Ich werde dir als erstes einige Fragen stellen um die App vollständig einzurichten. Möchtest du deine App mit einem Pin schützen?";
   messageEMMA_FirstStart_questionPin_Yes = "Ja, gerne";
   messageEMMA_FirstStart_questionPin_No = "Nein, ich will keinen Pin";
@@ -49,8 +50,8 @@ export class eMMA{
 
 
   //Messages used in the normal App Start
-  messageEMMA_Normal_Start_1 = "Hallo" //Name des Benuters
-  messageEMMA_Normal_Start_2 = "Gerade stehen keine Erinnerungen an. Hast du irgendwelche Fragen an mich?";
+  messageEMMA_Normal_Start_1 = "Hallo " //Name des Benuters
+  messageEMMA_Normal_Start_2 = " Gerade stehen keine Erinnerungen an. Hast du irgendwelche Fragen an mich?";
 
   //Messages used for a reminder
   messageEMMA_reminderAppStart_questionAll_1 = "Hallo " //Name des Benuters

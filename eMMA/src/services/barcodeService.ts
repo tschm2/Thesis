@@ -72,7 +72,16 @@ private list: Array<any>;
   }
 
 
-  scanMediCode(medData):Promise<any>{
+  scanMediCode(medData,morning,midday,evening,night,reason):Promise<any>{
+
+    if(morning==true)morning=1
+    else morning = 0
+    if(midday==true)midday=1
+    else midday = 0
+    if(evening==true)evening=1
+    else evening = 0
+    if(night==true)night=1
+    else night = 0
 
     var hciS = new HCIService()
     return BarcodeScanner.scan().then((barcodeData) => {
@@ -82,8 +91,22 @@ private list: Array<any>;
         var art = xml.getElementsByTagName("ART");
         var desc = art[0].getElementsByTagName("DSCRD")[0].textContent
         var title = desc.split(" ")[0];
+        var today:any = new Date();
+        var dd:any = today.getDate();
+        var mm:any = today.getMonth()+1; //January is 0!
+        var yyyy:any = today.getFullYear();
+        if(dd<10) {
+            dd='0'+dd
+        }
+
+        if(mm<10) {
+            mm='0'+mm
+        }
+        today = yyyy+'-'+dd+'-'+mm;
+
         var tempObj = ({
           "AppInstr":"Arzt oder Apotheker fragen.",
+          "TkgRsn":reason,
           "AutoMed":"1",
           "Id":art[0].getElementsByTagName("PHAR")[0].textContent,
           "IdType":"3",
@@ -92,12 +115,12 @@ private list: Array<any>;
           "PrscbBy":"mir als Patient",
           "Pos":[{
             "D":[
-              0,
-              0,
-              0,
-              0
+              morning,
+              midday,
+              evening,
+              night
             ],
-            "DtFrom":"TodaysDate"
+            "DtFrom":today
           }]
         })
         medData.push(tempObj)

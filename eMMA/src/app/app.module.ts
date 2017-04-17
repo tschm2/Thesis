@@ -8,6 +8,7 @@ import { AboutEmmaPage } from '../pages/about-emma/about-emma';
 import { MyMedicationDiaryPage } from '../pages/my-medication-diary/my-medication-diary';
 import { ConversationPage } from '../pages/conversation/conversation';
 import { MyMedicationPage } from '../pages/my-medication/my-medication';
+import { MedicationReminderViewPage } from '../pages/medication-reminder-view/medication-reminder-view';
 import { UpdatePage } from '../pages/update/update';
 import { Storage } from '@ionic/storage';
 import { HttpModule } from '@angular/http';
@@ -24,6 +25,7 @@ import { QRCodeModule } from 'angular2-qrcode';
     ConversationPage,
     MyMedicationPage,
     UpdatePage,
+    MedicationReminderViewPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -40,7 +42,8 @@ import { QRCodeModule } from 'angular2-qrcode';
     MyMedicationDiaryPage,
     ConversationPage,
     MyMedicationPage,
-    UpdatePage
+    UpdatePage,
+    MedicationReminderViewPage
   ],
   providers: [Storage,{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

@@ -10,6 +10,7 @@ import { MyMedicationDiaryPage } from '../pages/my-medication-diary/my-medicatio
 import { ConversationPage } from '../pages/conversation/conversation';
 import { MyMedicationPage } from '../pages/my-medication/my-medication';
 import { UpdatePage } from '../pages/update/update';
+import { MedicationReminderViewPage } from '../pages/medication-reminder-view/medication-reminder-view';
 
 @Component({
   templateUrl: 'app.html'
@@ -32,6 +33,7 @@ export class MyApp {
       { title: 'Nahrungsmittel Informationen', component: NutritionPage },
       { title: 'Mein Medikationstagebuch', component: MyMedicationDiaryPage },
       { title: 'Über eMMA', component: AboutEmmaPage },
+      { title: 'reminderView', component: MedicationReminderViewPage },
     ];
 
   }

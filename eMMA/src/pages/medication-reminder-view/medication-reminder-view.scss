@@ -1,0 +1,46 @@
+page-medication-reminder-view {
+  * {}
+
+  .reminderItem {
+    width: 47%;
+    height: 17%;
+    background-color: #FFF;
+    float: left;
+    position: relative;
+    margin-left: 2%;
+    margin-top: 3%;
+  }
+
+  .imagePlaceholder {
+    width: 128px;
+    min-height: 71px;
+    background-color: #FFF;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .status0 {
+    width: 25px;
+    height: 25px;
+    background-color: #542341;
+    position: absolute;
+    right: 0;
+    background-image: url('../images/2.png');
+    background-size: 100% 100%;
+  }
+
+  .status1 {
+    width: 25px;
+    height: 25px;
+    background-color: #542341;
+    position: absolute;
+    right: 0;
+    background-image: url('../images/1.png');
+    background-size: 100% 100%;
+  }
+
+  .description {
+    text-align: center;
+    width: 100%;
+  }
+}

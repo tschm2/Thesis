@@ -1,6 +1,13 @@
 import { Storage } from '@ionic/storage';
 
 export class questionHandler {
+  messageEMMA_Reminder = "Du möchtest also die Erinnerungsfunktion testen"
+  messageEMMA_Delete_Storage = "OOOOPs: ich habe gerade den Specher gelöscht, Sorry -.-"
+  messageEMMA_About = "Du möchtest also etwas über eMMA wissen."
+  messageEMMA_Selfmedication = "Ich öffne die Selbstmedikation für dich"
+  messageEMMA_Compliance = "Gerne zeige ich dir dein Medikationstagebuch an"
+  messageEMMA_Nutrition = "Ich zeige dir, welche Nahrungsmittel du im momment nicht essen darfts."
+
 
   messageEMMA_Not_Understand = [
   "Entschuldigung, ich habe dich leider nicht verstanden",
@@ -77,15 +84,39 @@ export class questionHandler {
             }
             if(retVal == ""){
               if(question.includes("NAHRUNG")||(question.includes("ESSEN")&&question.includes("NICHT"))){
-                retVal =  "Folgende dinge darfts du zu deiner aktuellen Medikation nicht essen\n"
+                retVal =  this.messageEMMA_Nutrition;
               }
               else if(question.includes("SELBSTMEDIKATION")||(question.includes("MEDIKAMENT")&&(question.includes("ZUSÄTZLICH")||(question.includes("ERFASSEN")))))
               {
-                retVal = "Ich öffne die Selbstmedikation für dich"
+                retVal = this.messageEMMA_Selfmedication;
               }
               else if(question.includes("REMINDER"))
               {
-                retVal = "Du möchtest also die Erinnerungsfunktion testen"
+                retVal = this.messageEMMA_Reminder
+              }
+              else if(question.includes("ÜBER"))
+              {
+                retVal = this.messageEMMA_About
+              }
+              else if(question.includes("DELETE"))
+              {
+                retVal = this.messageEMMA_Delete_Storage;
+              }
+              else if(question.includes("AUSWERTUNG")||(question.includes("WELCHE")&&question.includes("NICHT")&&question.includes("EINGENOMMEN")))
+              {
+                retVal = this.messageEMMA_Compliance;
+              }
+              else if(question.includes("HALLO")||question.includes("HUHU"))
+              {
+                retVal = "Hallo, was möchtest du wissen?"
+              }
+              else if(question.includes("WER")&&question.includes("DU"))
+              {
+                retVal = "Ich bin eMMA. Deine Persöhliche elektronische Medikations Management Assistentin"
+              }
+              else if(question.includes("BEREITS")&&question.includes("GENOMMEN"))
+              {
+                retVal = "Ich verstehe. Ich werde dich also an die nächste Medikation nicht erinnern"
               }
               else{
                 if(this.messageEMMA_Not_Understand_temp.length == 0){

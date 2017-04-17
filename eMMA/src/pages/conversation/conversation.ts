@@ -2,19 +2,27 @@ import { NavController, NavParams } from 'ionic-angular';
 import {ViewChild, Component} from '@angular/core';
 import {Content} from 'ionic-angular/index';
 import { Storage } from '@ionic/storage';
+//Inport conversation methodes
 import { eMMA} from '../../pages/conversation/eMMA';
 import { questionHandler } from '../../pages/conversation/questionHandler';
+//Import other Pages
 import { Page1 } from '../../pages/page1/page1';
 import { UpdatePage } from '../../pages/update/update';
+import { NutritionPage } from '../../pages/nutrition/nutrition';
+import { AboutEmmaPage } from '../../pages/about-emma/about-emma';
+import { MyMedicationDiaryPage } from '../../pages/my-medication-diary/my-medication-diary';
+import { MyMedicationPage } from '../../pages/my-medication/my-medication';
+//Import Services
 import { barcodeService } from '../../services/barcodeService';
 import { AlertController } from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 
-
+//Initalize eMMA Waiting Time
 var eMMAWaitingTimeShort = 200;
 var eMMAWaitingTime = 800;
 var eMMAWaitingTimeDouble = 1600;
 
+//Initalize Numbers for Buttons
 var showNothing = 0;
 var showTextfield = 1;
 var showButtons = 2;
@@ -199,12 +207,15 @@ export class ConversationPage {
     this.storage.get('name').then((name)=>{
     var Name = name;
     var Time = "12:00";
+    var myDate: String = new Date().toISOString();
+    console.log(myDate);
     this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_questionAll_1 + Name + this.eMMA.messageEMMA_reminderAppStart_questionAll_2 + Time + this.eMMA.messageEMMA_reminderAppStart_questionAll_3);
     this.overrideAnswerButtons(this.eMMA.messageEMMA_reminderAppStart_questionAll_Yes,"finishReminder",this.eMMA.messageEMMA_reminderAppStart_questionAll_No,"reminderNo");
   })
   }
   finishReminder(){
     this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_finish);
+
     this.overrideSendbutton("question");
   }
   reminderNo(){
@@ -244,16 +255,28 @@ export class ConversationPage {
   question(input:String){
     this.questionhandler.returnAnswer(input).then((res)=>{
       var answereMMA:String = res
-      if(answereMMA == "Du möchtest also die Erinnerungsfunktion testen"){
-        this.reminderAppStart()
+      this.sendEmmaText(answereMMA)
+      setTimeout(() => {
+        if(answereMMA == this.questionhandler.messageEMMA_Reminder){
+          this.reminderAppStart()
+        }
+        else if(answereMMA == this.questionhandler.messageEMMA_Delete_Storage){
+          this.storage.clear();
+        }
+        else if(answereMMA == this.questionhandler.messageEMMA_Nutrition){
+          this.navCtrl.push(NutritionPage)
+        }
+        else if(answereMMA == this.questionhandler.messageEMMA_Compliance){
+          this.navCtrl.push(MyMedicationDiaryPage)
+        }
+        else if(answereMMA == this.questionhandler.messageEMMA_Selfmedication){
+          this.navCtrl.push(MyMedicationPage)
+        }
+        else if(answereMMA == this.questionhandler.messageEMMA_About){
+          this.navCtrl.push(AboutEmmaPage)
+        }
       }
-      else if(answereMMA == "OOOOPs: ich habe gerade den Specher gelöscht, Sorry -.-"){
-        this.storage.clear();
-        this.sendEmmaText(answereMMA)
-      }
-      else{
-        this.sendEmmaText(answereMMA)
-      }
+      ,eMMAWaitingTimeDouble);
     });
 
   }
@@ -339,5 +362,7 @@ export class ConversationPage {
     this[myFunc](myReply.value);
     myReply.value = "";
     setTimeout(() =>{ this.content.scrollToBottom();}, 50);
+  }
+  addComplianceInformation(information:String){
   }
 }

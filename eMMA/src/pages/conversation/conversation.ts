@@ -308,10 +308,14 @@ export class ConversationPage {
   sendEmmaText(message:String){
 
     //Püntkli azeige
+    var myHour: Number = (new Date().getUTCHours()+2)
+    var myMinute: Number = new Date().getUTCMinutes()
     setTimeout(() =>
+
     this.messages.push({
         text: 'eMMA schreibt....',
-        identity: 'emma'
+        identity: 'emma',
+        time: myHour + ":"+myMinute
       }),
       this.content.scrollToBottom(),
       setTimeout(() => this.messages[this.messages.length-1].text = message, eMMAWaitingTime),
@@ -347,17 +351,23 @@ export class ConversationPage {
     this.sendButtonNumber = newfunction;
   }
   reply(answer) {
+    var myHour: Number = (new Date().getUTCHours()+2)
+    var myMinute: Number = new Date().getUTCMinutes()
     this.messages.push({
       text: answer.text,
-      identity: 'user'
+      identity: 'user',
+      time: myHour + ":"+myMinute
     })
     this[answer.callFunction](answer.text);
     setTimeout(() =>{  this.content.scrollToBottom();},50);
     }
   sendMessage(myReply, myFunc) {
+    var myHour: Number = (new Date().getUTCHours()+2)
+    var myMinute: Number = new Date().getUTCMinutes()
     this.messages.push({
       text: myReply.value,
-      identity: 'user'
+      identity: 'user',
+      time: myHour + ":"+myMinute
     })
     this[myFunc](myReply.value);
     myReply.value = "";

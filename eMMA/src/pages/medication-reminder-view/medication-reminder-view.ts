@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage'
+import { UpdatePage } from '../../pages/update/update';
 /*
   Generated class for the MedicationReminderView page.
 
@@ -12,7 +13,7 @@ import { Storage } from '@ionic/storage'
   templateUrl: 'medication-reminder-view.html'
 })
 export class MedicationReminderViewPage {
-  drugList:any;
+  complianceMedication:any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
 
   }
@@ -21,7 +22,7 @@ export class MedicationReminderViewPage {
     this.storage.ready().then(()=>{
       this.storage.get('medicationData').then((res)=>{
 
-        var magicN = "0" // Die Nummere mues übergäh wärdä
+        var magicN = this.navParams.get("state");
         var tempList = new Array();
         for(var i = 0; i < res.length; i++) {
           try {
@@ -36,7 +37,7 @@ export class MedicationReminderViewPage {
                 "position":tempList.length
               })
               tempList.push(tempObj)
-              this.drugList = tempList;
+              this.complianceMedication = tempList;
             }
           }
           catch(e){
@@ -49,7 +50,7 @@ export class MedicationReminderViewPage {
               "position":tempList.length
             })
             tempList.push(tempObj2)
-            this.drugList = tempList;
+            this.complianceMedication = tempList;
           }
         }
       })
@@ -60,16 +61,22 @@ export class MedicationReminderViewPage {
   if(target.classList.contains("status1")){
   target.classList.remove("status1")
   target.classList.add("status0")
-  this.drugList[pos].taken = 0
+  this.complianceMedication[pos].taken = 0
 
   }
   else{
   target.classList.remove("status0")
   target.classList.add("status1")
-  this.drugList[pos].taken = 1
+  this.complianceMedication[pos].taken = 1
   }
-  console.log(this.drugList);
+  console.log(this.complianceMedication);
   }
+
+  onPop(){
+    this.navParams.get('resolve')(this.complianceMedication);
+    this.navCtrl.pop();
+  }
+
 
 
 

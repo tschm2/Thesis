@@ -40,7 +40,9 @@ Stand: {{mediplanTime}}</p>
     <ion-card-header class="clickAbleHeader">
       Elektronisches Dossier abrufen
     </ion-card-header>
-    <ion-card-content [ngClass]="{'hidden': toggleObject != 2}"></ion-card-content>
+    <ion-card-content [ngClass]="{'hidden': toggleObject != 2}">
+      <button ion-button full (click)="navParam()"></button>
+    </ion-card-content>
   </ion-card>
 
 </ion-content>

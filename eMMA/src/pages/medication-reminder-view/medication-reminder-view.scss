@@ -22,7 +22,7 @@ page-medication-reminder-view {
   .status0 {
     width: 25px;
     height: 25px;
-    background-color: #542341;
+    background-color: red;
     position: absolute;
     right: 0;
     background-image: url('../images/2.png');
@@ -32,7 +32,7 @@ page-medication-reminder-view {
   .status1 {
     width: 25px;
     height: 25px;
-    background-color: #542341;
+    background-color: green;
     position: absolute;
     right: 0;
     background-image: url('../images/1.png');

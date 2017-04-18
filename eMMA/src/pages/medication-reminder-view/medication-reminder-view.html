@@ -15,7 +15,7 @@
 
 <ion-content>
 
-    <div class="reminderItem" *ngFor="let drug of drugList">
+    <div class="reminderItem" *ngFor="let drug of complianceMedication">
       <div class=status{{drug?.taken}} (click)="changeState($event, drug?.position)"></div>
       <div class="imagePlaceholder"><img src="https://index.hcisolutions.ch/files/pics/{{drug?.Id}}_PIF_F.jpg?px=128&key=Pharmacode" alt="Description" /></div>
       <div class="description"> {{drug?.dosage}} {{drug?.unit}} - <b>{{drug?.title}}</b></div>
@@ -24,5 +24,5 @@
 </ion-content>
 
 <ion-footer>
-    <button ion-button full >Erinnerung abschliessen</button>
+    <button ion-button full (click)="onPop()" >Erinnerung abschliessen</button>
 </ion-footer>

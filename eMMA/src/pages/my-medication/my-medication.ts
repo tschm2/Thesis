@@ -118,14 +118,14 @@ export class MyMedicationPage {
           if(mm<10) {
               mm='0'+mm
           }
-          today = yyyy+'-'+dd+'-'+mm;
-
+          today = yyyy+'-'+mm+'-'+dd;
           var tempObj = ({
             "AppInstr":"Arzt oder Apotheker fragen.",
             "TkgRsn":this.reason,
             "AutoMed":"1",
             "Id":data.name,
-            "IdType":"3",
+            "IdType":"1",
+            "Unit":"-",
             "description":data.name,
             "title":data.name,
             "PrscbBy":"mir als Patient",
@@ -139,6 +139,7 @@ export class MyMedicationPage {
               "DtFrom":today
             }]
           })
+          
           var tempList:any = this.drugList;
           tempList.push(tempObj)
           this.storage.ready().then(()=>{

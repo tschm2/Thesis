@@ -23,14 +23,21 @@ export class UpdatePage {
   toggleObject:number;
   barcodeService: barcodeService;
   storage:Storage;
-  test:String;
+  mediplanTime:String;
   constructor(public http:Http, public navCtrl: NavController, public navParams: NavParams, storage:Storage) {
     this.storage = storage;
     this.barcodeService = new barcodeService(this.http, this.storage)
   }
 
   ionViewDidLoad() {
-    this.barcodeService.getCHMEDString().then((chmed16) => {
+    this.mediplanTime = "test";
+    this.storage.ready().then(()=>{
+      this.storage.get('mediPlan').then((res)=>{
+        var tempDate = new Date(res["Dt"].substring(0, 10))
+        this.mediplanTime = tempDate.toLocaleDateString()
+      })
+    })
+      this.barcodeService.getCHMEDString().then((chmed16) => {
       this.qrCode.value = chmed16
       this.qrCode.generate();
     })

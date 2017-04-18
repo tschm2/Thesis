@@ -22,24 +22,15 @@
       eMediplan einscannen
     </ion-card-header>
     <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            Mediplan QR-Code: <br>
-            Stand: 28.12.2016
-          </ion-col>
-          <ion-col>
-            <div>
-        <qr-code #qrCode [value]="'This is the QR Code'" [size]="150"></qr-code>
-  </div>
-          </ion-col>
-        </ion-row>
+                <p class="time"><ion-icon ios="ios-information-circle" md="md-information-circle"></ion-icon> &nbsp;
+Stand: {{mediplanTime}}</p>
+
+
+        <qr-code #qrCode [value]="'This is the QR Code'" [size]="280"></qr-code>
+<ion-grid>
           <ion-row>
-            <ion-col>
-              Neuer Code einlesen:
-            </ion-col>
-            <ion-col>
-              <button ion-button (click)="scanQRcode()">QR-Code einscannen</button>
+                  <ion-col>
+              <button ion-button full (click)="scanQRcode()">neuer QR-Code einlesen</button>
             </ion-col>
           </ion-row>
       </ion-grid>

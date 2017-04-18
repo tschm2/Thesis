@@ -34,6 +34,7 @@ export class MyMedicationPage {
   sMidday:any;
   sEvening:any;
   sNight:any;
+  sound:any;
 
 
 
@@ -44,13 +45,20 @@ export class MyMedicationPage {
   }
 
   ionViewDidLoad() {
-    this.sMorning = "08:00"
-    this.sMidday = "12:00"
-    this.sEvening = "18:08"
-    this.sNight = "24:00"
+
       this.storage.ready().then(()=>{
         this.storage.get('medicationData').then((res)=>{
           this.drugList = res;
+        })
+        this.storage.get('takingTime').then((res)=>{
+          console.log(res)
+          this.sMorning = res[0]
+          this.sMidday = res[1]
+          this.sEvening = res[2]
+          this.sNight = res[3]
+        })
+        this.storage.get('sound').then((res)=>{
+          this.sound = res;
         })
       })
     }
@@ -184,6 +192,13 @@ export class MyMedicationPage {
         ]
       });
     alert.present();
+  }
+
+  saveTakingTimes(){
+    let tempTakingTime = [this.sMorning,this.sMidday,this.sEvening,this.sNight]
+    this.storage.set('takingTime',tempTakingTime)
+    this.storage.set('sound', this.sound)
+    this.toggleObject = 0
   }
 
   toggleContent(numb){

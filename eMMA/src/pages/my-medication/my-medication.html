@@ -16,8 +16,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-card (click)="toggleContent(1)">
-    <ion-card-header class="clickAbleHeader">
+  <ion-card>
+    <ion-card-header (click)="toggleContent(1)" class="clickAbleHeader">
       Meine momentanen Medikamente
     </ion-card-header>
 
@@ -72,23 +72,23 @@
       <h3 style="margin-top:10px;">Warum nimmst du dieses Medikament?</h3>
       <ion-item>
         <ion-label color="primary">dein Grund:</ion-label>
-        <ion-input [(ngModel)]="reason" placeholder="Kopfschmerzen?"></ion-input>
+        <ion-input [(ngModel)]="reason" placeholder="Beispiel"></ion-input>
       </ion-item>
       <h3 style="margin-top:10px;">Um welche Uhrzeiten möchten Sie erinnert werden?</h3>
       <ion-item>
-        <ion-label>Morgens um: {{Placeholder}}</ion-label>
+        <ion-label>Morgens um: {{sMorning}}</ion-label>
         <ion-checkbox [(ngModel)]="morning" color="" checked="false"></ion-checkbox>
       </ion-item>
       <ion-item>
-        <ion-label>Mittags um: {{Placeholder}}</ion-label>
+        <ion-label>Mittags um: {{sMidday}}</ion-label>
         <ion-checkbox [(ngModel)]="midday" color="" checked="false"></ion-checkbox>
       </ion-item>
       <ion-item>
-        <ion-label>Abends um: </ion-label>
+        <ion-label>Abends um: {{sEvening}} </ion-label>
         <ion-checkbox [(ngModel)]="evening" color="" checked="false"></ion-checkbox>
       </ion-item>
       <ion-item>
-        <ion-label>Vor zu Bett gehen: </ion-label>
+        <ion-label>Vor zu Bett gehen:{{sNight}} </ion-label>
         <ion-checkbox [(ngModel)]="night" color="" checked="false"></ion-checkbox>
       </ion-item>
       <h3 style="margin-top:10px;">Scannen Sie den Barcode des Medikamentes ein:</h3>
@@ -110,8 +110,8 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card (click)="toggleContent(3)">
-    <ion-card-header class="clickAbleHeader">
+  <ion-card >
+    <ion-card-header class="clickAbleHeader" (click)="toggleContent(3)">
       Einstellungen
     </ion-card-header>
     <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
@@ -144,7 +144,7 @@
     </ion-list>
 
 
-    <button ion-button full>Einstellungen Speichern</button>
+    <button ion-button full (click)=saveTakingTimes()>Einstellungen Speichern</button>
     </ion-card-content>
   </ion-card>
 

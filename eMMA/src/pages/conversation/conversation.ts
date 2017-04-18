@@ -56,23 +56,9 @@ export class ConversationPage {
     this.toggleObject = showTextfield;
     this.storage.get('FirstStartComplet').then((terminated)=>{
       var FirstStartComplet = terminated;
-      console.log("all triggered",LocalNotifications.getTriggeredIds())
-      let adfasf = true
-      if(adfasf){
-
+      if(FirstStartComplet == "reminder"){
+        this.reminderAppStart();
       }
-      // if(LocalNotifications.isTriggered(1)){
-      //   console.log("triggered")
-      //   var tempnotification:LocalNotifications = LocalNotifications.get(1)
-      //   console.log(tempnotification)
-      //   var status = tempnotification['id']
-      //   console.log(status)
-      //   this.reminderAppStart();
-      //   if(status == 3){
-      //     status = 0
-      //   }
-      //   this.addlocalnotification(10,45,status++)
-      // }
       else if(FirstStartComplet == null){
         this.firstAppStart();
       }
@@ -195,6 +181,7 @@ export class ConversationPage {
 
   *****************************************************************************/
   reminderAppStart(){
+    this.storage.set('FirstStartComplet', true)
     this.storage.get('Pin').then((Pin)=>{
     var tempPin = Pin;
     if(tempPin == null){
@@ -272,8 +259,10 @@ export class ConversationPage {
       this.sendEmmaText(answereMMA)
       setTimeout(() => {
         if(answereMMA == this.questionhandler.messageEMMA_Reminder){
-          this.addlocalnotification(10,38,5)
-          this.reminderAppStart()
+          var myDate = new Date();
+          var myHour: Number = myDate.getUTCHours()+2
+          var myMinute: Number = myDate.getUTCMinutes()+1
+          this.addlocalnotification(myHour,myMinute,1)
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Delete_Storage){
           this.storage.clear();
@@ -394,33 +383,47 @@ export class ConversationPage {
     firstNotificationTime.setMinutes(minutes)
 
       let notification = {
-          id: 1,
-          status: status,
+          id: status,
           title: 'eMMA hat dir geschrieben',
           text: 'Es ist jetzt dr tim muess no dr storage usläse',
           at: firstNotificationTime,
       };
-     this.notifications.push(notification);
-    console.log("Notifications to be scheduled: ", this.notifications);
+
 
     if(this.platform.is('cordova')){
 
     // Cancel any existing notifications
     LocalNotifications.cancelAll().then(() => {
 
-        // Schedule the new notifications
-    LocalNotifications.schedule(this.notifications);
+      // Schedule the new notifications
+    LocalNotifications.schedule(notification);
 
-    this.notifications = [];
-
+    console.log(this.notifications)
     let alert = this.alertCtrl.create({
-        title: 'Notifications set',
+        title: 'Notifications set'+ hours +"Stundne " + minutes + "minuten",
         buttons: ['Ok']
     });
 
     alert.present();
 
 });
+LocalNotifications.on("trigger", (event)=>{
+
+   var myDate = new Date();
+   var myHour: Number = myDate.getUTCHours()+2
+   var myMinute: Number = myDate.getUTCMinutes()+1
+
+  this.storage.set('FirstStartComplet', "reminder")
+  console.log("triggered")
+  console.log(event.id)
+  let id = 1
+  if(id== 4){
+    id = 0
+  }
+  id++
+  console.log(id)
+  //setTimeout(()=> this.addlocalnotification(myHour,myMinute,id),4000)
+})
 
 }
   }

@@ -12,6 +12,7 @@ import { NutritionPage } from '../../pages/nutrition/nutrition';
 import { AboutEmmaPage } from '../../pages/about-emma/about-emma';
 import { MyMedicationDiaryPage } from '../../pages/my-medication-diary/my-medication-diary';
 import { MyMedicationPage } from '../../pages/my-medication/my-medication';
+import { MedicationReminderViewPage } from '../../pages/medication-reminder-view/medication-reminder-view';
 //Import Services
 import { barcodeService } from '../../services/barcodeService';
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -44,6 +45,7 @@ export class ConversationPage {
   sendButtonNumber: String;
   toggleObject:number;
   notifications: any[] = [];
+  complianceData:any;
 
   constructor(public http:Http,public navCtrl: NavController, public navParams: NavParams, private storage:Storage, public platform: Platform, public alertCtrl: AlertController) {
     this.messages = [];
@@ -207,10 +209,11 @@ export class ConversationPage {
   reminderAppStartAfterPin(){
     this.storage.get('name').then((name)=>{
     var Name = name;
-    var Time = "12:00";
-    var myDate: String = new Date().toISOString();
-    console.log(myDate);
-    this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_questionAll_1 + Name + this.eMMA.messageEMMA_reminderAppStart_questionAll_2 + Time + this.eMMA.messageEMMA_reminderAppStart_questionAll_3);
+    var myDate = new Date()
+    let myHours = myDate.getUTCHours()+2
+    let myMinute = myDate.getUTCMinutes()
+    let time = myHours + ":"+ myMinute;
+    this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_questionAll_1 + Name + this.eMMA.messageEMMA_reminderAppStart_questionAll_2 + time +this.eMMA.messageEMMA_reminderAppStart_questionAll_3);
     this.overrideAnswerButtons(this.eMMA.messageEMMA_reminderAppStart_questionAll_Yes,"finishReminder",this.eMMA.messageEMMA_reminderAppStart_questionAll_No,"reminderNo");
   })
   }
@@ -221,11 +224,24 @@ export class ConversationPage {
   }
   reminderNo(){
     this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_show_Medication);
-    setTimeout(() => this.navCtrl.push(Page1),eMMAWaitingTimeDouble);
+    setTimeout(() =>   new Promise((resolve, reject) => {
+      this.navCtrl.push(MedicationReminderViewPage,
+        {state: 0, resolve: resolve});
+      }).then(data => {
+        this.complianceData=data;
+        console.log(data);
+        this.returnFromMedication()
+      }),eMMAWaitingTimeDouble);
+
   }
   returnFromMedication(){
-  var Medication = "-Sortis \n-Dafalgan"
-  this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_why_1 + Medication + this.eMMA.messageEMMA_reminderAppStart_why_2)
+  let medicationNotTaken = "";
+  for(let pos in this.complianceData){
+    if(this.complianceData[pos].taken == 0){
+      medicationNotTaken = medicationNotTaken +  this.complianceData[pos].title + "\n"
+    }
+  }
+  this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_why_1 + "\n" + medicationNotTaken + this.eMMA.messageEMMA_reminderAppStart_why_2)
   this.overrideAnswerButtons(this.eMMA.messageEMMA_reminderAppStart_why_Note,"leaveNote",this.eMMA.messageEMMA_reminderAppStart_why_notSpecified,"finishReminderNotSpecified")
   }
   leaveNote(){
@@ -240,7 +256,6 @@ export class ConversationPage {
     //Save Not SPecified to Compliance
     this.finishReminder();
   }
-
   /*****************************************************************************
 
   Question for eMMA
@@ -261,7 +276,7 @@ export class ConversationPage {
         if(answereMMA == this.questionhandler.messageEMMA_Reminder){
           var myDate = new Date();
           var myHour: Number = myDate.getUTCHours()+2
-          var myMinute: Number = myDate.getUTCMinutes()+1
+          var myMinute: Number = myDate.getUTCMinutes()
           this.addlocalnotification(myHour,myMinute,1)
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Delete_Storage){
@@ -400,7 +415,7 @@ export class ConversationPage {
 
     console.log(this.notifications)
     let alert = this.alertCtrl.create({
-        title: 'Notifications set'+ hours +"Stundne " + minutes + "minuten",
+        title: 'Notifications set'+ hours +":" + minutes + "Uhr",
         buttons: ['Ok']
     });
 

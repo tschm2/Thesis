@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage'
-import { UpdatePage } from '../../pages/update/update';
 /*
   Generated class for the MedicationReminderView page.
 

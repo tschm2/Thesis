@@ -23,6 +23,8 @@ var eMMAWaitingTimeShort = 200;
 var eMMAWaitingTime = 800;
 var eMMAWaitingTimeDouble = 1600;
 
+var notificationSingelton = true;
+
 //Initalize Numbers for Buttons
 var showNothing = 0;
 var showTextfield = 1;
@@ -219,7 +221,7 @@ export class ConversationPage {
   }
   finishReminder(){
     this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_finish);
-
+    this.addComplianceInformation("dfsdf");
     this.overrideSendbutton("question");
   }
   reminderNo(){
@@ -283,7 +285,8 @@ export class ConversationPage {
           this.storage.clear();
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Nutrition){
-          this.navCtrl.push(NutritionPage)
+          let lastNotification:any = LocalNotifications.getTriggered(1);
+          //this.navCtrl.push(NutritionPage)
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Compliance){
           this.navCtrl.push(MyMedicationDiaryPage)
@@ -391,55 +394,69 @@ export class ConversationPage {
     setTimeout(() =>{ this.content.scrollToBottom();}, 50);
   }
   addComplianceInformation(information:String){
-  }
-  addlocalnotification(hours:any,minutes:any,status:any){
-    let firstNotificationTime  = new Date()
-    firstNotificationTime.setHours(hours)
-    firstNotificationTime.setMinutes(minutes)
 
-      let notification = {
-          id: status,
-          title: 'eMMA hat dir geschrieben',
-          text: 'Es ist jetzt dr tim muess no dr storage usläse',
-          at: firstNotificationTime,
-      };
-
-
-    if(this.platform.is('cordova')){
-
-    // Cancel any existing notifications
-    LocalNotifications.cancelAll().then(() => {
-
-      // Schedule the new notifications
-    LocalNotifications.schedule(notification);
-
-    console.log(this.notifications)
-    let alert = this.alertCtrl.create({
-        title: 'Notifications set'+ hours +":" + minutes + "Uhr",
-        buttons: ['Ok']
+    let triggeredNotifications = LocalNotifications.getTriggered(1).then(()=>{
+      console.log(triggeredNotifications[0].__zone_symbol__value["0"].data);
     });
 
-    alert.present();
+    let adtrue = true;
 
-});
-LocalNotifications.on("trigger", (event)=>{
+    // var complianceObj;
+    // this.storage.ready().then(()=>{
+    //   this.storage.get('ComplianceData').then((res)=>{
+    //     complianceObj = res;
+    //
+    //
+    //
+    //   })
+    // })
 
-   var myDate = new Date();
-   var myHour: Number = myDate.getUTCHours()+2
-   var myMinute: Number = myDate.getUTCMinutes()+1
-
-  this.storage.set('FirstStartComplet', "reminder")
-  console.log("triggered")
-  console.log(event.id)
-  let id = 1
-  if(id== 4){
-    id = 0
   }
-  id++
-  console.log(id)
-  //setTimeout(()=> this.addlocalnotification(myHour,myMinute,id),4000)
-})
+  addlocalnotification(hours:any,minutes:any,timeOfDay:any){
+    let firstNotificationTime  = new Date()
+    firstNotificationTime.setHours(hours)
+    LocalNotifications.clearAll()
+    firstNotificationTime.setMinutes(minutes)
+      let notification = {
+          id: 1,
+          title: 'eMMA hat dir geschrieben',
+          text: 'Es ist jetzt dr tim muess no dr storage usläse',
+          data: timeOfDay,
+          at: firstNotificationTime,
+      };
+    if(this.platform.is('cordova')){
+        // Cancel any existing notifications
+        LocalNotifications.cancelAll().then(() => {
+          // Schedule the new notifications
+          LocalNotifications.schedule(notification);
+          let alert = this.alertCtrl.create({
+              title: 'Notifications set\n'+ hours +":" + minutes + "Uhr",
+              buttons: ['Ok']
+          });
+          alert.present();
+        });
+      }
+      if(notificationSingelton){
+        notificationSingelton = false;
+        this.triggerNotification()
+      }
+  }
+  triggerNotification(){
+    LocalNotifications.on("trigger", (event)=>{
+       var myDate = new Date();
+       var myHour: Number = myDate.getUTCHours()+2
+       var myMinute: Number = myDate.getUTCMinutes()+1
 
-}
+      this.storage.set('FirstStartComplet', "reminder")
+      console.log("triggered")
+      console.log(event.data)
+      let id = event.data
+      if(id== 4){
+        id = 0
+      }
+      id++
+      this.content.resize();
+      //setTimeout(()=> this.addlocalnotification(myHour,myMinute,id),4000)
+    })
   }
 }

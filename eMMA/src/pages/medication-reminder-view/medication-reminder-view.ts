@@ -20,7 +20,6 @@ export class MedicationReminderViewPage {
     ionViewDidLoad() {
     this.storage.ready().then(()=>{
       this.storage.get('medicationData').then((res)=>{
-
         var magicN = this.navParams.get("state");
         var tempList = new Array();
         for(var i = 0; i < res.length; i++) {
@@ -55,8 +54,8 @@ export class MedicationReminderViewPage {
       })
     })
   }
-  changeState(event, pos){
-  var target = event.srcElement;
+  changeState(pos){
+  var target = document.getElementById(pos)
   if(target.classList.contains("status1")){
   target.classList.remove("status1")
   target.classList.add("status0")

@@ -22,8 +22,9 @@ page-medication-reminder-view {
   .status0 {
     width: 25px;
     height: 25px;
-    background-color: red;
     position: absolute;
+    margin-top: 5px;
+    margin-right: 5px;
     right: 0;
     background-image: url('../images/2.png');
     background-size: 100% 100%;
@@ -32,8 +33,9 @@ page-medication-reminder-view {
   .status1 {
     width: 25px;
     height: 25px;
-    background-color: green;
     position: absolute;
+    margin-top: 5px;
+    margin-right: 5px;
     right: 0;
     background-image: url('../images/1.png');
     background-size: 100% 100%;

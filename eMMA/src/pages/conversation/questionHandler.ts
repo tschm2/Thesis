@@ -1,7 +1,10 @@
 import { Storage } from '@ionic/storage';
 
 export class questionHandler {
-  messageEMMA_Reminder = "Du möchtest also die Erinnerungsfunktion testen"
+  messageEMMA_Reminder_Morning = "Du möchtest also die Erinnerungsfunktion am Morgen testen"
+  messageEMMA_Reminder_Midday = "Du möchtest also die Erinnerungsfunktion am Mittag testen"
+  messageEMMA_Reminder_Evening = "Du möchtest also die Erinnerungsfunktion am Abend testen"
+  messageEMMA_Reminder_Night = "Du möchtest also die Erinnerungsfunktion in der Nacht testen"
   messageEMMA_Delete_Storage = "OOOOPs: ich habe gerade den Specher gelöscht, Sorry -.-"
   messageEMMA_About = "Du möchtest also etwas über eMMA wissen."
   messageEMMA_Selfmedication = "Ich öffne die Selbstmedikation für dich"
@@ -92,7 +95,17 @@ export class questionHandler {
               }
               else if(question.includes("REMINDER"))
               {
-                retVal = this.messageEMMA_Reminder
+                if(question.includes("MORGEN")){
+                  retVal = this.messageEMMA_Reminder_Morning
+                }
+                else if(question.includes("MITTAG")){
+                  retVal = this.messageEMMA_Reminder_Midday
+                }
+                else if(question.includes("ABEND")){
+                  retVal = this.messageEMMA_Reminder_Evening
+                }else{
+                  retVal = this.messageEMMA_Reminder_Night
+                }
               }
               else if(question.includes("ÜBER"))
               {

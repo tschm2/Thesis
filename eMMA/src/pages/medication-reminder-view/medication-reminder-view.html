@@ -14,7 +14,14 @@
 
 
 <ion-content>
-
+  <div class="hiddenSpacerEmma">
+  <ion-card class=emma>
+    <p class="messageBlock">Hoi Da dini Medikämänt</p>
+    <div class="showTime">
+      13:37
+    </div>
+  </ion-card>
+  </div>
     <div class="reminderItem" (click)="changeState(drug?.position)" *ngFor="let drug of complianceMedication">
       <div class="status{{drug?.taken}}" id="{{drug?.position}}" ></div>
       <div class="imagePlaceholder"><img src="https://index.hcisolutions.ch/files/pics/{{drug?.Id}}_PIF_F.jpg?px=128&key=Pharmacode" alt="Description" /></div>

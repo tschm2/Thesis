@@ -71,13 +71,14 @@ export class MyMedicationPage {
           res['Medicaments'] = this.drugList
           this.storage.set('mediPlan', res)
           this.storage.set("medicationData", this.drugList);
+          this.editComplianceData(res['Medicaments'][res['Medicaments'].length-1].title)
         })
       })
     this.toggleObject = 0
     })
+
   }
   setMedicationWithoutScanning(){
-
   let alert = this.alertCtrl.create({
     title: 'Name des Arztneimittels erfassen',
     inputs: [
@@ -108,7 +109,8 @@ export class MyMedicationPage {
           else this.night = 0
 
           var today:any = new Date();
-          var dd:any = today.getDate();
+          console.log(today);
+          var dd:any = today.getDate()
           var mm:any = today.getMonth()+1; //January is 0!
           var yyyy:any = today.getFullYear();
           if(dd<10) {
@@ -125,7 +127,7 @@ export class MyMedicationPage {
             "AutoMed":"1",
             "Id":data.name,
             "IdType":"1",
-            "Unit":"-",
+            "Unit":"",
             "description":data.name,
             "title":data.name,
             "PrscbBy":"mir als Patient",
@@ -139,7 +141,7 @@ export class MyMedicationPage {
               "DtFrom":today
             }]
           })
-          
+
           var tempList:any = this.drugList;
           tempList.push(tempObj)
           this.storage.ready().then(()=>{
@@ -147,8 +149,10 @@ export class MyMedicationPage {
               res['Medicaments'] = this.drugList
               this.storage.set('mediPlan', res)
               this.storage.set("medicationData", this.drugList);
+              this.editComplianceData(data.name)
             })
-          })
+
+        })
 
           let alert = this.alertCtrl.create({
             title: 'Arztneimittel erfassen',
@@ -200,6 +204,17 @@ export class MyMedicationPage {
     this.storage.set('takingTime',tempTakingTime)
     this.storage.set('sound', this.sound)
     this.toggleObject = 0
+  }
+
+  editComplianceData(name){
+    this.storage.get('ComplianceData').then((res)=>{
+      res.DrugList.push({
+        "Name":name,
+        "Compliance":[]
+      })
+
+   this.storage.set('ComplianceData',res)
+    })
   }
 
   toggleContent(numb){

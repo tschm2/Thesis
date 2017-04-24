@@ -16,51 +16,55 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
+  <ion-card style="background-color: transparent;">
     <ion-card-header (click)="toggleContent(1)" class="clickAbleHeader">
       Meine momentanen Medikamente
     </ion-card-header>
-
-
     <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
       <div class="medItem" *ngFor="let drug of drugList">
-        <ion-grid *ngIf=drug?.Id>
-          <ion-row>
-            <ion-col>
-              <b>{{drug?.title}}</b>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col col-5><img src="https://index.hcisolutions.ch/files/pics/{{drug?.Id}}_PIF_F.jpg?px=128&key=Pharmacode" alt="Description" /></ion-col>
-            <ion-col class="nextToImage" col-7>
-              <span *ngIf=drug?.TkgRsn>Grund:
-            {{drug.TkgRsn}}</span>
-              <br>
-              <span *ngIf=drug?.Pos[0].DtFrom>von: {{drug.Pos[0].DtFrom}}</span>
-              <br>
-              <span *ngIf=drug?.Pos[0].DtTo>bis: {{drug.Pos[0].DtTo}}</span><br>
+        <div *ngIf=drug?.Id class="cardContent">
 
-            </ion-col>
+            <div class="maxHeight">
+              <h2>{{drug?.title}}</h2>
+              <img src="https://index.hcisolutions.ch/files/pics/{{drug?.Id}}_PIF_F.jpg?px=128&key=Pharmacode" alt="Description" />
+            </div>
 
-          </ion-row>
-          <ion-row>
-            <ion-col class="perDayItem" *ngFor="let day of drug?.Pos[0].D; let i = index">{{perDay[i]}}: {{day}}
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col *ngIf=drug?.AppInstr class="manualItem">
-              Anleitung: {{drug.AppInstr}}
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col class="prescItem">
-              Verschrieben von: {{drug?.PrscbBy}}
-              <div class="delete" (click)="deleteDrug(drug.Id)" *ngIf="drug?.AutoMed"></div>
-            </ion-col>
-          </ion-row>
 
-        </ion-grid>
+            <div class="maxHeight" class="nextToImage">
+              <div *ngFor="let day of drug?.Pos[0].D; let i = index">{{perDay[i]}}: <span>{{day}} {{drug?.Unit}}</span>
+              </div>
+            </div>
+
+
+          <table>
+
+              <tr *ngIf=drug?.TkgRsn>
+                <td>
+                <span><b>Grund:</b> {{drug.TkgRsn}}</span>
+              </td>
+              </tr>
+                        <tr *ngIf=drug?.AppInstr>
+              <td>
+                <b>Anleitung:</b> {{drug.AppInstr}}
+              </td>
+            </tr>
+            <tr *ngIf=drug?.Pos[0].DtFrom>
+              <td>
+                <span><b>von:</b> {{drug.Pos[0].DtFrom}}</span>
+                <span *ngIf=drug?.Pos[0].DtTo> | <b>bis:</b> {{drug.Pos[0].DtTo}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>Verschrieben von:</b> {{drug?.PrscbBy}}
+                <div class="delete" (click)="deleteDrug(drug.Id)" *ngIf="drug?.AutoMed"></div>
+              </td>
+            </tr>
+          </table>
+
       </div>
+    </div>
+  
     </ion-card-content>
   </ion-card>
   <!--......................MEDIKAMENT NEU ERFASSEN.......................-->
@@ -110,41 +114,41 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card >
+  <ion-card>
     <ion-card-header class="clickAbleHeader" (click)="toggleContent(3)">
       Einstellungen
     </ion-card-header>
     <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
-    <ion-item>
-      <ion-label>Morgens um:</ion-label>
-      <ion-datetime displayFormat="HH:mm" [(ngModel)]="sMorning"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-label>Mittags um:</ion-label>
-      <ion-datetime displayFormat="HH:mm" [(ngModel)]="sMidday"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-label>Abends um:</ion-label>
-      <ion-datetime displayFormat="HH:mm" [(ngModel)]="sEvening"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-label>Nachts um:</ion-label>
-      <ion-datetime displayFormat="HH:mm" [(ngModel)]="sNight"></ion-datetime>
-    </ion-item>
-
-    <ion-list>
       <ion-item>
-        <ion-label>Ton</ion-label>
-        <ion-select [(ngModel)]="sound">
-          <ion-option value="1">Android Standart</ion-option>
-          <ion-option value="2">Vogelgezwischer</ion-option>
-          <ion-option value="3">Muh</ion-option>
-        </ion-select>
+        <ion-label>Morgens um:</ion-label>
+        <ion-datetime displayFormat="HH:mm" [(ngModel)]="sMorning"></ion-datetime>
       </ion-item>
-    </ion-list>
+      <ion-item>
+        <ion-label>Mittags um:</ion-label>
+        <ion-datetime displayFormat="HH:mm" [(ngModel)]="sMidday"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Abends um:</ion-label>
+        <ion-datetime displayFormat="HH:mm" [(ngModel)]="sEvening"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Nachts um:</ion-label>
+        <ion-datetime displayFormat="HH:mm" [(ngModel)]="sNight"></ion-datetime>
+      </ion-item>
+
+      <ion-list>
+        <ion-item>
+          <ion-label>Ton</ion-label>
+          <ion-select [(ngModel)]="sound">
+            <ion-option value="1">Android Standart</ion-option>
+            <ion-option value="2">Vogelgezwischer</ion-option>
+            <ion-option value="3">Muh</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
 
 
-    <button ion-button full (click)=saveTakingTimes()>Einstellungen Speichern</button>
+      <button ion-button full (click)=saveTakingTimes()>Einstellungen Speichern</button>
     </ion-card-content>
   </ion-card>
 

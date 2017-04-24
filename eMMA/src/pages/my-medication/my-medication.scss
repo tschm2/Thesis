@@ -13,13 +13,17 @@ page-my-medication {}
   margin-top: 10px;
 }
 
-.drugImage {
-  height: 129px;
+.nextToImage {
+  width: 30%;
+  font-size: 1.2em;
+  float: right;
+  margin: 10px;
 }
 
-.nextToImage {
-  padding-left: 20px;
-  background-color: #DDD;
+.nextToImage span {
+  text-transform: lowercase;
+  float: right;
+  margin-right: 5%;
 }
 
 .card-content {
@@ -46,4 +50,45 @@ page-my-medication {}
   float: right;
   background-image: url('../images/del.png');
   background-size: 100% 100%;
+}
+
+.card-md h2 {
+  font-size: 1.3em;
+  color: #3a65a9;
+}
+
+.maxHeight {
+  max-height: 128px;
+  width: 50%;
+  float: left;
+  margin: 10px;
+}
+
+img {
+  height: 70%;
+  width: 70%;
+}
+
+.cardContent {
+  background-color: #FFF;
+  height: auto;
+  width: auto;
+  padding: 7px;
+}
+
+table {
+  width: 100%;
+}
+
+table td {
+  padding: 10px;
+  font-size: 1.3em;
+}
+
+table tr:nth-child(odd) {
+  background-color: #DDD;
+}
+
+table tr:nth-child(even) {
+  background-color: #A3C1D6;
 }

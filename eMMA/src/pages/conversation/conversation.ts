@@ -47,7 +47,7 @@ export class ConversationPage {
   sendButtonNumber: String;
   toggleObject:number;
   notifications: any[] = [];
-  complianceData:any;
+  returnvaluePatientCompliance:any;
 
   constructor(public http:Http,public navCtrl: NavController, public navParams: NavParams, private storage:Storage, public platform: Platform, public alertCtrl: AlertController) {
     this.messages = [];
@@ -221,26 +221,28 @@ export class ConversationPage {
   }
   finishReminder(){
     this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_finish);
-    this.addComplianceInformation("dfsdf");
+    this.addComplianceInformation("");
     this.overrideSendbutton("question");
   }
   reminderNo(){
     this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_show_Medication);
-    setTimeout(() =>   new Promise((resolve, reject) => {
-      this.navCtrl.push(MedicationReminderViewPage,
-        {state: 0, resolve: resolve});
-      }).then(data => {
-        this.complianceData=data;
-        console.log(data);
-        this.returnFromMedication()
-      }),eMMAWaitingTimeDouble);
-
+    LocalNotifications.getTriggered(1).then((res)=>{
+      let dayTime = res["0"].data;
+      setTimeout(() =>   new Promise((resolve, reject) => {
+        this.navCtrl.push(MedicationReminderViewPage,
+          {state: dayTime, resolve: resolve});
+        }).then(data => {
+          this.returnvaluePatientCompliance=data;
+          console.log(data);
+          this.returnFromMedication()
+        }),eMMAWaitingTimeDouble);
+    })
   }
   returnFromMedication(){
   let medicationNotTaken = "";
-  for(let pos in this.complianceData){
-    if(this.complianceData[pos].taken == 0){
-      medicationNotTaken = medicationNotTaken +  this.complianceData[pos].title + "\n"
+  for(let pos in this.returnvaluePatientCompliance){
+    if(this.returnvaluePatientCompliance[pos].taken == 0){
+      medicationNotTaken = medicationNotTaken +  this.returnvaluePatientCompliance[pos].title + "\n"
     }
   }
   this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_why_1 + "\n" + medicationNotTaken + this.eMMA.messageEMMA_reminderAppStart_why_2)
@@ -252,10 +254,11 @@ export class ConversationPage {
   }
   finishReminderNote(input:String){
     //Save Note to Compliance
+    this.addComplianceInformation(input);
     this.finishReminder();
   }
   finishReminderNotSpecified(input:String){
-    //Save Not SPecified to Compliance
+    this.addComplianceInformation("0");
     this.finishReminder();
   }
   /*****************************************************************************
@@ -275,18 +278,36 @@ export class ConversationPage {
       var answereMMA:String = res
       this.sendEmmaText(answereMMA)
       setTimeout(() => {
-        if(answereMMA == this.questionhandler.messageEMMA_Reminder){
+        if(answereMMA == this.questionhandler.messageEMMA_Reminder_Morning){
+          var myDate = new Date();
+          var myHour: Number = myDate.getUTCHours()+2
+          var myMinute: Number = myDate.getUTCMinutes()
+          this.addlocalnotification(myHour,myMinute,0)
+        }
+        else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Midday){
           var myDate = new Date();
           var myHour: Number = myDate.getUTCHours()+2
           var myMinute: Number = myDate.getUTCMinutes()
           this.addlocalnotification(myHour,myMinute,1)
         }
+        else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Evening){
+          var myDate = new Date();
+          var myHour: Number = myDate.getUTCHours()+2
+          var myMinute: Number = myDate.getUTCMinutes()
+          this.addlocalnotification(myHour,myMinute,2)
+        }
+        else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Night){
+          var myDate = new Date();
+          var myHour: Number = myDate.getUTCHours()+2
+          var myMinute: Number = myDate.getUTCMinutes()
+          this.addlocalnotification(myHour,myMinute,3)
+        }
         else if(answereMMA == this.questionhandler.messageEMMA_Delete_Storage){
           this.storage.clear();
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Nutrition){
-          let lastNotification:any = LocalNotifications.getTriggered(1);
-          //this.navCtrl.push(NutritionPage)
+
+          this.navCtrl.push(NutritionPage)
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Compliance){
           this.navCtrl.push(MyMedicationDiaryPage)
@@ -394,22 +415,89 @@ export class ConversationPage {
     setTimeout(() =>{ this.content.scrollToBottom();}, 50);
   }
   addComplianceInformation(information:String){
+    let compliance;
+    if(information = "0"){
+      compliance = 0;
+    }else{
+      compliance = information;
+    }
 
-    let triggeredNotifications = LocalNotifications.getTriggered(1).then(()=>{
-      console.log(triggeredNotifications[0].__zone_symbol__value["0"].data);
+    LocalNotifications.getTriggered(1).then((res)=>{
+      let dayTime = res["0"].data;
+      console.log(res["0"].data);
+      var complianceObj;
+      this.storage.ready().then(()=>{
+        this.storage.get('ComplianceData').then((res)=>{
+          complianceObj = res;
+          console.log(res)
+
+          //Add Date
+          let todayDate = new Date();
+          let actualYear = todayDate.getFullYear();
+          let actualMonth;
+          let actualDay;
+          //Add Month
+          if(todayDate.getUTCMonth() < 10){
+            actualMonth = "0" + todayDate.getUTCMonth();
+          }else{
+            actualMonth = todayDate.getUTCMonth()
+          }
+          //Add Day
+          if(todayDate.getUTCDay() < 10){
+            actualDay = "0" + todayDate.getUTCDay();
+          }else{
+            actualDay = todayDate.getUTCDay()
+          }
+          //Create time format for today
+          let complianceDate = actualDay + "." + actualMonth +"."+actualYear;
+          console.log(complianceDate);
+          console.log(complianceObj)
+          for(let pos in this.returnvaluePatientCompliance){
+            for(var posComliance in complianceObj.DrugList){
+              if(complianceObj.DrugList[posComliance].Name == this.returnvaluePatientCompliance[pos].title){
+
+                let posOfLastEntry = complianceObj.DrugList[posComliance].Compliance.length
+                console.log(complianceDate);
+                //console.log(complianceObj.DrugList[posComliance].Compliance[posOfLastEntry].Date);
+
+                if(complianceObj.DrugList[posComliance].Compliance[posOfLastEntry] && complianceObj.DrugList[posComliance].Compliance[posOfLastEntry].Date == complianceDate){
+                  console.log("sameDate")
+                }
+                //if there is no existing compliance OBJ at the Actual Day
+                else{
+                  console.log("notSameDate")
+                  complianceObj.DrugList[posComliance].Compliance.push({
+                  "Date": complianceDate,
+                  "D":[
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined
+                    ]
+                  })
+                }
+
+
+                if(this.returnvaluePatientCompliance[pos].taken == 0){
+                  complianceObj.DrugList[posComliance].Compliance[posOfLastEntry].D[dayTime] = compliance;
+                }else{
+                  complianceObj.DrugList[posComliance].Compliance[posOfLastEntry].D[dayTime] = 1;
+                }
+
+
+              }
+            }
+          }
+          this.storage.set('ComplianceData',complianceObj)
+          console.log(complianceObj)
+
+        })
+      })
+
     });
 
-    let adtrue = true;
 
-    // var complianceObj;
-    // this.storage.ready().then(()=>{
-    //   this.storage.get('ComplianceData').then((res)=>{
-    //     complianceObj = res;
-    //
-    //
-    //
-    //   })
-    // })
+
 
   }
   addlocalnotification(hours:any,minutes:any,timeOfDay:any){

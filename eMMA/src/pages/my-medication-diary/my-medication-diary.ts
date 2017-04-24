@@ -38,9 +38,9 @@ export class MyMedicationDiaryPage {
       for (var posDrug in complianceObj.DrugList)
       {
         for(var m = 1; m<=12;m++){
-          for(var i = 0; i<31;i++){
+          for(var i = 1; i<31;i++){
             complianceObj.DrugList[posDrug].Compliance.push({
-            "Date": i+".0" + m +".2016",
+            "Date": i+".0" + m +".2017",
             "D":[
               Math.round(Math.random()),
               Math.round(Math.random()),
@@ -93,6 +93,7 @@ export class MyMedicationDiaryPage {
       }
       //monthvalues.push(0,100)
       //Values.push(100)
+      this.storage.set('ComplianceData',complianceObj)
       this.barChart = new Chart(this.barCanvas.nativeElement, {
 
               type: 'bar',

@@ -19,9 +19,11 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { LocalNotifications } from 'ionic-native';
 
 //Initalize eMMA Waiting Time
-var eMMAWaitingTimeShort = 200;
 var eMMAWaitingTime = 800;
-var eMMAWaitingTimeDouble = 1600;
+var eMMAWaitingTimeDouble = 2*eMMAWaitingTime;
+var eMMAWaitingTimeShort = 200;
+
+
 
 var notificationSingelton = true;
 
@@ -139,17 +141,20 @@ export class ConversationPage {
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_OpenScanner);
     setTimeout(() => {
       let scanner = new barcodeService(this.http, this.storage)
-      var success = scanner.scanQRcodeForJSON();
-      if(success){
-        this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_success)
-        setTimeout(() => this.questionEHealth() , eMMAWaitingTime);
-      }
-      else{
-        this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_Error)
-        setTimeout(() => this.questionMediplan() , eMMAWaitingTime);
-      }
-      //this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_sucsess);
-      }, 4000);
+      var success = scanner.scanQRcodeForJSON().then(()=>{
+        if(success){
+          this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_success)
+          setTimeout(() => this.questionEHealth() , eMMAWaitingTime);
+        }
+        else{
+          this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_Error)
+          setTimeout(() =>{
+            this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImportMediplanAgain);
+            this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImportMediplan_Yes,"mediplanImport",this.eMMA.messageEMMA_FirstStart_questionImportMediplan_No,"questionEHealth")
+            }, eMMAWaitingTime);
+        }
+      })
+    }, eMMAWaitingTimeDouble);
   }
   questionEHealth(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImporteHealth);
@@ -328,7 +333,6 @@ export class ConversationPage {
       }
       ,eMMAWaitingTimeDouble);
     });
-
   }
   /*****************************************************************************
 

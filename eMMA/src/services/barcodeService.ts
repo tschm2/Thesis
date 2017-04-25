@@ -13,7 +13,7 @@ private list: Array<any>;
 
   scanQRcodeForJSON():any{
 
-    BarcodeScanner.scan().then((barcodeData) => {
+  var l = BarcodeScanner.scan().then((barcodeData) => {
       var b64Data  =   barcodeData.text.substring(9);
       // Decode base64 (convert ascii to binary)
       var strData     = atob(b64Data);
@@ -43,6 +43,7 @@ private list: Array<any>;
       this.testDummyData()
       return false;
     })
+    return l
   }
 
   IdHCIQuery(medData){

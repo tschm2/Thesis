@@ -49,7 +49,9 @@ export class UpdatePage {
 
   scanQRcode(){
     this.storage.ready().then(()=>{
-      this.barcodeService.scanQRcodeForJSON();
+      this.barcodeService.scanQRcodeForJSON().then((res)=>{
+          console.log(res)
+      });
     })
   }
 

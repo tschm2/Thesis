@@ -46,7 +46,7 @@ export class eMMA{
   messageEMMA_FirstStart_questionDatasecurity_Yes = "Ja, zeigt mir bitte mehr";
   messageEMMA_FirstStart_questionDatasecurity_No =  "Nein, gerade nicht danke";
   messageEMMA_FirstStart_Datasecurity = "BlaBlaDatenschutz wichtig BlaBla\n du findest die Datenschutzbestimmungen auch im Impressum wieder.\n gehe dafür einfach im Menü auf Über eMMA"
-  messageEMMA_FirstStart_Tourtorial = "Du bist nun im Fragemodus. Du kannst immer auf diesen Dialog zurückkehren um mir Fragen zustellen. Du kannst jetzt die restliche App Erkunden. Dort findest du folgende Funktionen:";
+  messageEMMA_FirstStart_Tourtorial = "Du bist nun im Fragemodus. Du kannst immer auf diesen Dialog zurückkehren um mir Fragen zustellen.";
 
 
   //Messages used in the normal App Start
@@ -56,15 +56,17 @@ export class eMMA{
   //Messages used for a reminder
   messageEMMA_reminderAppStart_questionAll_1 = "Hallo " //Name des Benuters
   messageEMMA_reminderAppStart_questionAll_2 = "\nEs ist jetzt "
-  messageEMMA_reminderAppStart_questionAll_3 = "Uhr \nHast du deine Medikamente schon eingenommen?"
-  messageEMMA_reminderAppStart_questionAll_Yes = "Ja, das habe ich"
-  messageEMMA_reminderAppStart_questionAll_No = "Nein, habe ich nicht"
-  messageEMMA_reminderAppStart_finish = "Vielen Dank für die Antwort.  Du bist nun wieder im Fragemodus."
+  messageEMMA_reminderAppStart_questionAll_3 = "Uhr \nBitte trage ein ob du deine Medikamente genommen hast"
+  messageEMMA_reminderAppStart_showMedication = "Zeige mir meine Medikation"
+  messageEMMA_reminderAppStart_TakenAll = "Sehr gut du hast alle eingenommen. Ich habe das so eingetragen"
+  messageEMMA_reminderAppStart_NotTakenAll = "Nein, habe ich nicht"
+  messageEMMA_reminderAppStart_finish = "Vielen Dank für die Antwort. Ich habe deine Infromationen gespeichert.\n Du bist nun wieder im Fragemodus."
+  messageEMMA_reminderAppStart_finishNachBedarf = "Sehr gut, du hast nur Medikamente nach Bedarf nicht eingenommen Ich habe deine Infromationen gespeichert.\n Du bist nun wieder im Fragemodus."
   messageEMMA_reminderAppStart_show_Medication = "Ich Zeige dir nun deine Aktuelle Medikation \n Bitte wähle aus welche du nich eingenommen hast"
   messageEMMA_reminderAppStart_why_1 = "Folgende Medikamente hast du nicht genommen:"
   messageEMMA_reminderAppStart_why_2 = "Kannst du mir den Grund dafür nennen?"
   messageEMMA_reminderAppStart_why_Note = "Notiz hinterlassen"
-  messageEMMA_reminderAppStart_why_notSpecified = "Das möchte ich nicht sagen"
+  messageEMMA_reminderAppStart_why_notSpecified = "Ich möchte keinen Grund nennen"
   messageEMMA_reminderAppStart_why_LeaveNote = "Bitte hinterlasse mir eine Notiz"
 
 

@@ -12,8 +12,8 @@ private list: Array<any>;
   }
 
   scanQRcodeForJSON():any{
-
-  var l = BarcodeScanner.scan().then((barcodeData) => {
+try{
+  return BarcodeScanner.scan().then((barcodeData) => {
       var b64Data  =   barcodeData.text.substring(9);
       // Decode base64 (convert ascii to binary)
       var strData     = atob(b64Data);
@@ -34,16 +34,20 @@ private list: Array<any>;
 
           this.storage.set("medicationData", res);
       });
-      return true;
-      })
 
+      })
+      return true
       // Success! Barcode data is here
     }, (err) => {
       alert("Woops falscher QR-Code, zu Testzwecken wurde DummyData gespeichert");
       this.testDummyData()
-      return false;
+      return false
+
     })
-    return l
+    }
+    catch (e){
+        return false
+    }
   }
 
   IdHCIQuery(medData){

@@ -30,6 +30,7 @@ export class eMMA{
   messageEMMA_FirstStart_questionDriver_Yes = "Ja, ich fahre Auto";
   messageEMMA_FirstStart_questionDriver_No = "Nein, ich fahre nicht";
   messageEMMA_FirstStart_questionImportMediplan = "Willst du einen eMediplan Importieren?";
+  messageEMMA_FirstStart_questionImportMediplanAgain = "Willst du es nocheinmal versuchen?";
   messageEMMA_FirstStart_questionImportMediplan_Yes = "Ja, importiere bitte meine Daten";
   messageEMMA_FirstStart_questionImportMediplan_No = "Ich habe leider keinen";
   messageEMMA_FirstStart_ImportMediplan_OpenScanner = "Ich öffne nun den Scanner für dich"

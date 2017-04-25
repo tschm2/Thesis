@@ -12,7 +12,7 @@ private list: Array<any>;
   }
 
   scanQRcodeForJSON():any{
-try{
+
   return BarcodeScanner.scan().then((barcodeData) => {
       var b64Data  =   barcodeData.text.substring(9);
       // Decode base64 (convert ascii to binary)
@@ -44,10 +44,8 @@ try{
       return false
 
     })
-    }
-    catch (e){
-        return false
-    }
+
+
   }
 
   IdHCIQuery(medData){

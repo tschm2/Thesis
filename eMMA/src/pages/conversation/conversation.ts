@@ -58,14 +58,14 @@ export class ConversationPage {
   }
   eMMA = new eMMA();
   questionhandler = new questionHandler(this.storage);
+
   ionViewDidLoad() {
     this.toggleObject = showTextfield;
     this.storage.get('FirstStartComplet').then((terminated)=>{
-      var FirstStartComplet = terminated;
-      if(FirstStartComplet == "reminder"){
+      if(terminated == "reminder"){
         this.reminderAppStart();
       }
-      else if(FirstStartComplet == null){
+      else if(terminated == null){
         this.firstAppStart();
       }
       else{
@@ -74,27 +74,25 @@ export class ConversationPage {
      })
   }
   /*****************************************************************************
+  First App start
 
-  Normal App start
+  Ablauf welcher Aufgerufen wird, wenn die App das erste Mal gestartet wird. Hier
+  werden die Stammdaten für den User erhoben.
 
   *****************************************************************************/
   firstAppStart() {
      this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_1)
     setTimeout(()=> this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_2),eMMAWaitingTimeDouble);
-
     this.overrideSendbutton("questionPinNecessary");
   }
-  questionPinNecessary(input:String){
-    if(input == null){
+  questionPinNecessary(name:String){
+    if(name == null){
       this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_NoName);
     }
     else{
-      this.storage.set('name', input).then(()=>{
-      this.storage.get('name').then((name)=>{
-      var tempName = name;
-      this.sendEmmaText("Hallo " + tempName+ "\n"+ this.eMMA.messageEMMA_FirstStart_questionPin);
+      this.storage.set('name',name )
+      this.sendEmmaText("Hallo " + name+ "\n"+ this.eMMA.messageEMMA_FirstStart_questionPin);
       this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionPin_Yes,"inputPin",this.eMMA.messageEMMA_FirstStart_questionPin_No,"questionAthlete");
-    })})
     }
   }
   inputPin(){
@@ -137,21 +135,22 @@ export class ConversationPage {
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImportMediplan);
     this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImportMediplan_Yes,"mediplanImport",this.eMMA.messageEMMA_FirstStart_questionImportMediplan_No,"questionEHealth");
   }
+  questionMediplanAgain(){
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImportMediplanAgain);
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImportMediplan_Yes,"mediplanImport",this.eMMA.messageEMMA_FirstStart_questionImportMediplan_No,"questionEHealth");
+  }
   mediplanImport(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_OpenScanner);
     setTimeout(() => {
       let scanner = new barcodeService(this.http, this.storage)
-      var success = scanner.scanQRcodeForJSON().then(()=>{
+      scanner.scanQRcodeForJSON().then((success)=>{
         if(success){
           this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_success)
-          setTimeout(() => this.questionEHealth() , eMMAWaitingTime);
+          setTimeout(() => this.questionEHealth() , eMMAWaitingTimeDouble);
         }
         else{
           this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_Error)
-          setTimeout(() =>{
-            this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImportMediplanAgain);
-            this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImportMediplan_Yes,"mediplanImport",this.eMMA.messageEMMA_FirstStart_questionImportMediplan_No,"questionEHealth")
-            }, eMMAWaitingTime);
+          setTimeout(() => this.questionMediplanAgain(), eMMAWaitingTime);
         }
       })
     }, eMMAWaitingTimeDouble);
@@ -178,7 +177,12 @@ export class ConversationPage {
   }
   eMMATourtorial(){
     this.storage.set('FirstStartComplet', true)
-    let tempTakingTime = ["08:00","12:00","18:00","22:00"]
+    let tempTakingTime = ["11:10","11:11","11:12","11:13"]
+    let newTime:String = tempTakingTime[0];
+    let myHour = newTime.substr(0,2)
+    let myMinute = newTime.substr(3,2)
+    this.addlocalnotification(myHour,myMinute,0,false)
+
     this.storage.set('takingTime',tempTakingTime)
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Tourtorial);
     this.overrideSendbutton("question");
@@ -216,9 +220,8 @@ export class ConversationPage {
   reminderAppStartAfterPin(){
     this.storage.get('name').then((name)=>{
     var Name = name;
-    var myDate = new Date()
-    let myHours = myDate.getUTCHours()+2
-    let myMinute = myDate.getUTCMinutes()
+    let myHours = this.getLocalHour();
+    let myMinute = this.getLocalMinute();
     let time = myHours + ":"+ myMinute;
     this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_questionAll_1 + Name + this.eMMA.messageEMMA_reminderAppStart_questionAll_2 + time +this.eMMA.messageEMMA_reminderAppStart_questionAll_3);
     this.overrideAnswerButtonsOneButton(this.eMMA.messageEMMA_reminderAppStart_showMedication,"AwnswerReminder")
@@ -227,14 +230,27 @@ export class ConversationPage {
   AwnswerReminder(){
     LocalNotifications.getTriggered(1).then((res)=>{
       let dayTime = res["0"].data;
+      console.log(dayTime)
+      this.storage.get('takingTime').then((takingtimes)=>{
+      let takingTime = takingtimes;
+      let newTime:String = takingTime[dayTime]
+      let myHour = newTime.substr(0,2)
+      let myMinute = newTime.substr(3,2)
+      let dayoffset = false
       setTimeout(() =>   new Promise((resolve, reject) => {
         this.navCtrl.push(MedicationReminderViewPage,
           {state: dayTime, resolve: resolve});
         }).then(data => {
           this.returnvaluePatientCompliance=data;
-          console.log(data);
           this.returnFromMedication()
+          dayTime =dayTime + 1;
+          if(dayTime == 4){
+            dayTime = 0;
+            dayoffset = true;
+          }
+          this.addlocalnotification(myHour,myMinute,dayTime,dayoffset)
         }),eMMAWaitingTimeDouble);
+        })
     })
   }
   finishReminder(input:String){
@@ -298,27 +314,25 @@ export class ConversationPage {
       var answereMMA:String = res
       this.sendEmmaText(answereMMA)
       setTimeout(() => {
-        var myDate = new Date();
-        var myHour: Number = myDate.getUTCHours()+2
-        var myMinute: Number = myDate.getUTCMinutes()
-        if(answereMMA == this.questionhandler.messageEMMA_Reminder_Morning){
-          this.addlocalnotification(myHour,myMinute,0)
-        }
-        else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Midday){
-          this.addlocalnotification(myHour,myMinute,1)
+        var myHour: Number = this.getLocalHour()
+        var myMinute: Number = this.getLocalMinute()
+        if(answereMMA == this.questionhandler.messageEMMA_Reminder_Night){
+          this.addlocalnotification(myHour,myMinute,3,false)
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Evening){
-          this.addlocalnotification(myHour,myMinute,2)
+          this.addlocalnotification(myHour,myMinute,2,false)
         }
-        else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Night){
-          this.addlocalnotification(myHour,myMinute,3)
+        else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Midday){
+          this.addlocalnotification(myHour,myMinute,1,false)
+        }
+        else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Morning){
+          this.addlocalnotification(myHour,myMinute,0,false)
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Delete_Storage){
           this.storage.clear();
-          this.content.resize();
+          setTimeout(() => this.ionViewDidLoad(),eMMAWaitingTime)
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Nutrition){
-
           this.navCtrl.push(NutritionPage)
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Compliance){
@@ -343,7 +357,7 @@ export class ConversationPage {
     this.storage.ready().then(()=>{
       this.storage.get('medicationData').then((res)=>{
       var tempMedicationData = res;
-      console.log(tempMedicationData)
+      console.log("Medikationsdaten",tempMedicationData)
       var complianceObj = ({
       "ID":"1",
       "Date":"dateOfMediplan",
@@ -361,9 +375,8 @@ export class ConversationPage {
   }
   sendEmmaText(message:String){
     //Püntkli azeige
-    var myDate = new Date();
-    var myHour: Number = myDate.getUTCHours()+2
-    var myMinute: Number = myDate.getUTCMinutes()
+    var myHour = this.getLocalHour();
+    var myMinute = this.getLocalMinute();
 
     this.messages.push({
         text: 'eMMA schreibt....',
@@ -412,8 +425,8 @@ export class ConversationPage {
     this.sendButtonNumber = newfunction;
   }
   reply(answer) {
-    var myHour: Number = (new Date().getUTCHours()+2)
-    var myMinute: Number = new Date().getUTCMinutes()
+    var myHour = this.getLocalHour();
+    var myMinute = this.getLocalMinute();
     this.messages.push({
       text: answer.text,
       identity: 'user',
@@ -423,8 +436,9 @@ export class ConversationPage {
     setTimeout(() =>{  this.content.scrollToBottom();},50);
     }
   sendMessage(myReply, myFunc) {
-    var myHour: Number = (new Date().getUTCHours()+2)
-    var myMinute: Number = new Date().getUTCMinutes()
+    var myHour = this.getLocalHour();
+    console.log(myHour);
+    var myMinute = this.getLocalMinute();
     this.messages.push({
       text: myReply.value,
       identity: 'user',
@@ -441,7 +455,6 @@ export class ConversationPage {
     }else{
       compliance = information;
     }
-
     LocalNotifications.getTriggered(1).then((res)=>{
       let dayTime = res["0"].data;
       var complianceObj;
@@ -503,15 +516,22 @@ export class ConversationPage {
       })
     });
   }
-  addlocalnotification(hours:any,minutes:any,timeOfDay:any){
+  addlocalnotification(hours:any,minutes:any,timeOfDay:any,DayOffset:any){
     let firstNotificationTime  = new Date()
     firstNotificationTime.setHours(hours)
-    LocalNotifications.clearAll()
     firstNotificationTime.setMinutes(minutes)
+    if(DayOffset){
+      firstNotificationTime.setDate(firstNotificationTime.getDate()+1)
+    }
+    console.log(timeOfDay)
+    LocalNotifications.clearAll()
+    let myHour = this.getLocalHour;
+    let myMinute = this.getLocalMinute;
+    let time = myHour + ":" + myMinute;
       let notification = {
           id: 1,
           title: 'eMMA hat dir geschrieben',
-          text: 'Es ist jetzt dr tim muess no dr storage usläse',
+          text: 'Es ist jetzt ' + time+"es ist widermal Zeit :)",
           data: timeOfDay,
           at: firstNotificationTime,
       };
@@ -534,20 +554,34 @@ export class ConversationPage {
   }
   triggerNotification(){
     LocalNotifications.on("trigger", (event)=>{
-       var myDate = new Date();
-       var myHour: Number = myDate.getUTCHours()+2
-       var myMinute: Number = myDate.getUTCMinutes()+1
-
       this.storage.set('FirstStartComplet', "reminder")
-      console.log("triggered")
-      console.log(event.data)
-      let id = event.data
-      if(id== 4){
-        id = 0
-      }
-      id++
-      this.content.resize();
-      //setTimeout(()=> this.addlocalnotification(myHour,myMinute,id),4000)
+      //setTimeout(() => this.ionViewDidLoad(),eMMAWaitingTime)
+      // let id = event.data
+      // this.storage.get('takingTime').then((takingtimes)=>{
+      //   let takingTime = takingtimes;
+      //   let newTime:String = takingTime[id]
+      //   let myHour = newTime.substr(0,2)
+      //   let myMinute = newTime.substr(3,2)
+      //  this.addlocalnotification(myHour,myMinute,id,true)
+      //})
     })
+  }
+  getLocalHour(){
+    var myDate = new Date();
+    console.log(myDate)
+    var myHour: any = myDate.getHours();
+    if(myHour<10){
+      myHour = "0" + myHour;
+    }
+    console.log(myHour)
+    return myHour;
+  }
+  getLocalMinute(){
+    var myDate = new Date();
+    var myMinute:any = myDate.getMinutes();
+    if(myMinute<10){
+      myMinute = "0" + myMinute;
+    }
+    return myMinute;
   }
 }

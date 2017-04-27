@@ -95,8 +95,9 @@ export class questionHandler {
               }
               else if(question.includes("REMINDER"))
               {
-                if(question.includes("MORGEN")){
-                  retVal = this.messageEMMA_Reminder_Morning
+                if(question.includes("NACHT")){
+                  retVal = this.messageEMMA_Reminder_Night
+
                 }
                 else if(question.includes("MITTAG")){
                   retVal = this.messageEMMA_Reminder_Midday
@@ -104,7 +105,7 @@ export class questionHandler {
                 else if(question.includes("ABEND")){
                   retVal = this.messageEMMA_Reminder_Evening
                 }else{
-                  retVal = this.messageEMMA_Reminder_Night
+                  retVal = this.messageEMMA_Reminder_Morning
                 }
               }
               else if(question.includes("ÜBER"))
@@ -130,6 +131,9 @@ export class questionHandler {
               else if(question.includes("BEREITS")&&question.includes("GENOMMEN"))
               {
                 retVal = "Ich verstehe. Ich werde dich also an die nächste Medikation nicht erinnern"
+              }
+              else if(question.includes("OK")||question.includes("DANKE")||question.includes("SUPER")||question.includes("TOLL")){
+                retVal = "Freut mich dass ich dir helfen konnte"
               }
               else{
                 if(this.messageEMMA_Not_Understand_temp.length == 0){

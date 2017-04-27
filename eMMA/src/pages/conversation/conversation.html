@@ -53,7 +53,7 @@
     <ion-item style="width:80%;float:left;">
       <ion-input style="color:#FFF;" type="password" #inputPW [ngModelOptions]="{standalone: true}" [(ngModel)]="password" class="input-message" placeholder="deine Nachricht"></ion-input>
     </ion-item>
-    <button type="submit" style="width:15%; float:right;" ion-button icon-only [disabled]="!numberinput || numberinput === ''">
+    <button type="submit" style="width:15%; float:right;" ion-button icon-only [disabled]="!password || password === ''">
         <ion-icon name="arrow-dropleft-circle"></ion-icon>
     </button>
   </ion-card-content>

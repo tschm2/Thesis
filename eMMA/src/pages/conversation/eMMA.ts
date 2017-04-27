@@ -52,7 +52,7 @@ export class eMMA{
 
   //Messages used in the normal App Start
   messageEMMA_Normal_Start_1 = "Hallo " //Name des Benuters
-  messageEMMA_Normal_Start_2 = " Gerade stehen keine Erinnerungen an. Hast du irgendwelche Fragen an mich?";
+  messageEMMA_Normal_Start_2 = " gerade stehen keine Erinnerungen an. Hast du irgendwelche Fragen an mich?";
 
   //Messages used for a reminder
   messageEMMA_reminderAppStart_questionAll_1 = "Hallo " //Name des Benuters

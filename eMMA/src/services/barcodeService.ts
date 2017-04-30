@@ -217,9 +217,10 @@ private list: Array<any>;
 
 
     let strData2: string  = String.fromCharCode.apply(null, new Uint16Array(data));
-
+    console.log(strData2)
     this.storage.ready().then(() => {
       var mediPlan = JSON.parse(strData2)
+      console.log(mediPlan)
       this.storage.set("mediPlan", mediPlan);
       this.getNamesFromID(mediPlan).then((res) => {
           this.storage.set("medicationData", res);

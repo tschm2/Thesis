@@ -6,6 +6,8 @@ import {QRCodeComponent} from 'angular2-qrcode';
 import {ViewChild} from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { MedicationReminderViewPage } from '../../pages/medication-reminder-view/medication-reminder-view';
+import { AlertController } from 'ionic-angular';
+
 /*
 
 
@@ -25,7 +27,7 @@ export class UpdatePage {
   storage:Storage;
   mediplanTime:String;
   test:any;
-  constructor(public http:Http, public navCtrl: NavController, public navParams: NavParams, storage:Storage) {
+  constructor(public http:Http, private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, storage:Storage) {
     this.storage = storage;
     this.barcodeService = new barcodeService(this.http, this.storage)
   }
@@ -50,7 +52,16 @@ export class UpdatePage {
   scanQRcode(){
     this.storage.ready().then(()=>{
       this.barcodeService.scanQRcodeForJSON().then((res)=>{
-          console.log(res)
+          if(res){
+            let alert = this.alertCtrl.create({
+            title: 'Erfolgreich',
+            subTitle: 'Der Medikationsplan wurde erfolgreich eingelesen. Unter meine Medikation sind nun alle deine Medikamente aufgelistet.',
+            buttons: ['Ok']
+          });
+          }
+          else{
+            console.log("something went WRONG");
+          }
       });
     })
   }

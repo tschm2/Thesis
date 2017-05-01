@@ -3,54 +3,99 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { HciHospAPI } from 'hci-hospindex-api';
 import  * as  HCITypes from 'hci-hospindex-api/src/api';
-/*
-  Generated class for the Nutrition page.
+import { barcodeService } from '../../services/barcodeService';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { AlertController } from 'ionic-angular';
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-nutrition',
   templateUrl: 'nutrition.html',
 
 })
 export class NutritionPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage:Storage) {
-
+  barcodeService: barcodeService;
+  drugList:any;
+  checkList:any;
+  checkStatus:any = {
+    dRem: <string> null,
+    dRlv: <string> null,
+    nRem: <string> null,
+    nRlv: <string> null,
+  }
+  constructor(public http:Http, private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public storage:Storage) {
+    this.barcodeService = new barcodeService(this.http, this.storage)
          }
 
   ionViewDidLoad() {
-
-    let grouping:HCITypes.grouping = "byCheck"
-    let extent:HCITypes.extent  = 'full';
-
-        let checks=[];
-    let stringChecks = [];
-    stringChecks.push("doping", "nutrition")
-
-    let checkType:HCITypes.checkType = "doping" // Default / if empty or missing: error
-   for (var item of stringChecks) {
-
-      let tempCheck:HCITypes.checkType = item
-      let tCheck = {
-        check:tempCheck
-      } as HCITypes.check
-      checks.push(tCheck)
-}
-  console.log(checks)
-
-
-    let medication = "CHMED16A1H4sIAAAAAAAAA61V0XKbOhD9FZXXgkcCbMBPTeqk9TTuTR3f25neyYOABTTGwiPEtE3Gf9PPuG/5sbsSxY1dx08de9CiXWnPWa0Oj85Fpytn6rS6y0Hq9k1aVKOsclxnpnHapyzyaOj50Yqxqe9Pqf+a4pNiwDzHgDQMimSSFl5YxL4XQpJ6CU9jL8loVsRFPOZJhLELyFfft+BMmbVFxjcmmzP999G52G7nstUKdxOSIAqy6GROJFQYQ6wpskqTh460WSWhrs1Yd5CtQQ44wsSP4nFkX/tMgevcNn2GGT6Za3/3hti1ajYH5CzdVbOfizyfOjuMvVVtll5+R8enjreCXKgHTVZiQ2aNkqBw3bLh6L37hOZqXS5biW9fvoIqQVa80KJcg9Do/FsKU9C71Qdn5x6QljyrkPaGXLXtM0JhwlhAzxGiSIgeEZp4NMH/ASE7x5IjQjM1Ih8bTa4Vlw+uGTqQBdT5ntTtX89JzdG51qKRv5OxgP2Y0WASngdMTwEOPMpOgLO1fs9l65LF038yq0xFu75EpwBe1tjKTVblqsvWL4Bk2Cahf6aq9KWq/iGQb6umhlaDEhKD1raFzrRGp4gYbUYuMVbeKewUYXydAKWB3IJqGwny1dA1PmNxGLxMzz95BmOPMWR4gt7VN77Z1kA+cFW75PPTD1mKPbP54qD8oLpKlJ0sf1Fa3BwzSkGQS8i5KjAKtadBNbCqYOHjDRDlV4EXu37Ggf1+RCf76Gfjz+USMJoZNnt01wLS58X20MyhzZTY2p4+zq2FruFo9piKaI0mbfi3EQlxqIl++lHWqFWEkRVPa9B4RCBkr2Sn+IbRJGDBS6p1lh1yW/VhTR9Gd/eH5xdNKKM08GmYWGE81Y53GUJTD3B8qc1GXAvUaGf66FzabwFLwsA2CsPgt0KbHJ95nRvGuj/264+o6yYJaFvsdyBzNAzam5+uRdf2vhtcgU121X8dTJrZTasXYGDZOd6XYd8DPT7fdf7hNcbEzB5I7/YHNxvcLO4VfJnZXeZ91Zf4Mo6i+0EQ/MEIBiMcjPFgTIZlDAu8w8JUeOUww+uQkSghzA9IOCYTU+I7rQB0fxlK7BKOik6Y0cQvYovTiZ+gDON+m7Xh3myFLDXKgbP7H9Txj/uJBwAA"
-
-    let hciCdsCheckRequest = {
-       medication: medication,
-       extent: extent,
-       grouping: grouping,
-       checks: checks
-    } as HCITypes.hciCdsCheckRequest;
-    console.log(HciHospAPI.hciCdsCheck(hciCdsCheckRequest))
+      console.log(this.checkStatus)
+        this.storage.get('checks').then((res)=>{
+        console.log(res)
+        this.makeNutritionObject(res);
+      });
   }
 
+makeNutritionObject(checks){
+  this.storage.get('medicationData').then((medData)=>{
+    var tempCheck = checks.body.checks
 
+    this.checkStatus.nRem = tempCheck[1].rem
+    this.checkStatus.nRlv = tempCheck[1].rlv
+    if(tempCheck[0].rlv != 99){
+    this.checkStatus.dRlv = tempCheck[0].rlv
+    this.checkStatus.dRem = tempCheck[0].rem
+    }
+
+
+    console.log(this.checkStatus)
+    checks = checks.body.medicaments
+    this.drugList = medData;
+    console.log(checks)
+    console.log(this.drugList)
+    this.checkList = [];
+    checks.forEach((item,index) => {
+      var drug = {
+          name: <string> null,
+          doping: <string> null,
+          nutrition: <string> null,
+          nFull: <string> null,
+          nRelevance: <boolean> null,
+          dRelevance: <boolean> null,
+          nInfo: <string> null
+      }
+      drug.name = this.drugList[index].title;
+      drug.doping = item.checks["0"].rem
+      var tempString = item.checks["1"].rem
+      if(item.checks["0"].rlv == 99){
+        drug.dRelevance = false
+      }
+      else{
+        drug.dRelevance = true
+      }
+
+      if(tempString.search(" - ") == -1){
+        drug.nutrition = item.checks["1"].rem
+        drug.nRelevance = false;
+      }
+      else{
+          drug.nutrition = tempString.slice(tempString.indexOf(" - ")+3)
+          drug.nFull = drug.nutrition.slice(drug.nutrition.indexOf(",")+1)
+          drug.nutrition = drug.nutrition.slice(0,drug.nutrition.indexOf(","))
+          console.log(drug.nutrition)
+          drug.nRelevance = true;
+      }
+      this.checkList.push(drug)
+
+    })
+    console.log(this.checkList)
+  })
+}
+showDetails(index){
+  let alert = this.alertCtrl.create({
+  title: 'Informationen zu '+this.checkList[index].name,
+  subTitle: this.checkList[index].nFull,
+  buttons: ['Ok']
+});
+alert.present();
+
+}
 }

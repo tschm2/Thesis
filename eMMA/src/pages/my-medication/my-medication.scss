@@ -14,16 +14,30 @@ page-my-medication {}
 }
 
 .nextToImage {
-  width: 30%;
-  font-size: 1.2em;
+  width: 40%;
+  font-size: 1.3em;
   float: right;
-  margin: 10px;
+  margin-right: 10px;
 }
 
 .nextToImage span {
   text-transform: lowercase;
   float: right;
   margin-right: 5%;
+}
+
+.image {
+  float: left;
+}
+
+ion-card img {
+  width: 100%;
+}
+
+.maxHeight {
+  width: 100%;
+  float: left;
+  margin: 10px;
 }
 
 .card-content {
@@ -55,18 +69,6 @@ page-my-medication {}
 .card-md h2 {
   font-size: 1.3em;
   color: #3a65a9;
-}
-
-.maxHeight {
-  max-height: 128px;
-  width: 50%;
-  float: left;
-  margin: 10px;
-}
-
-img {
-  height: 70%;
-  width: 70%;
 }
 
 .cardContent {

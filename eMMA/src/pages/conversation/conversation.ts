@@ -526,13 +526,13 @@ export class ConversationPage {
     }
     console.log(timeOfDay)
     LocalNotifications.clearAll()
-    let myHour = this.getLocalHour;
-    let myMinute = this.getLocalMinute;
+    let myHour = this.getLocalHour();
+    let myMinute = this.getLocalMinute();
     let time = myHour + ":" + myMinute;
       let notification = {
           id: 1,
           title: 'eMMA hat dir geschrieben',
-          text: 'Es ist jetzt ' + time+"es ist widermal Zeit :)",
+          text: 'Es ist jetzt ' + time+" es ist widermal Zeit :)",
           data: timeOfDay,
           at: firstNotificationTime,
       };

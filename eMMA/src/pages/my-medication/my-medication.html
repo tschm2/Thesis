@@ -25,6 +25,7 @@
         <div *ngIf=drug?.Id class="cardContent">
 
             <div class="maxHeight">
+              <div class="image">
               <h2>{{drug?.title}}</h2>
               <img src="https://index.hcisolutions.ch/files/pics/{{drug?.Id}}_PIF_F.jpg?px=128&key=Pharmacode" alt="Description" />
             </div>
@@ -34,7 +35,7 @@
               <div *ngFor="let day of drug?.Pos[0].D; let i = index">{{perDay[i]}}: <span>{{day}} {{drug?.Unit}}</span>
               </div>
             </div>
-
+          </div>
 
           <table>
 
@@ -57,14 +58,14 @@
             <tr>
               <td>
                 <b>Verschrieben von:</b> {{drug?.PrscbBy}}
-                <div class="delete" (click)="deleteDrug(drug.Id)" *ngIf="drug?.AutoMed"></div>
+                <div class="delete" (click)="deleteDrug(drug.title, drug.Id)" *ngIf="drug?.AutoMed"></div>
               </td>
             </tr>
           </table>
 
       </div>
     </div>
-  
+
     </ion-card-content>
   </ion-card>
   <!--......................MEDIKAMENT NEU ERFASSEN.......................-->

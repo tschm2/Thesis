@@ -3,6 +3,8 @@ import myPako from "../../node_modules/pako"
 import { Storage } from '@ionic/storage';
 import { HCIService } from './HCIService';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { HciHospAPI } from 'hci-hospindex-api';
+import  * as  HCITypes from 'hci-hospindex-api/src/api';
 
 export class barcodeService {
 private list: Array<any>;
@@ -29,9 +31,10 @@ private list: Array<any>;
       this.storage.ready().then(() => {
 
         var mediPlan = JSON.parse(strData2)
-        this.storage.set("mediPlan", mediPlan);
+      this.storage.set("mediPlan", mediPlan).then(()=>{
+        this.doChecksWithCurrentMedication()
+      });
       this.IdHCIQuery(mediPlan).then((res) => {
-
           this.storage.set("medicationData", res);
       });
 
@@ -145,6 +148,37 @@ private list: Array<any>;
     })
   }
 
+  doChecksWithCurrentMedication(){
+        let grouping:HCITypes.grouping = "byProduct"
+        let extent:HCITypes.extent  = 'full';
+        let checks=[];
+        let stringChecks = [];
+        stringChecks.push("doping", "nutrition")
+
+        for (var item of stringChecks) {
+          let tempCheck:HCITypes.checkType = item
+          let tCheck = {
+            check:tempCheck
+          } as HCITypes.check
+          checks.push(tCheck)
+        }
+
+        this.getCHMEDString().then((chmed16) => {
+          console.log(chmed16)
+        let medication = chmed16
+        let hciCdsCheckRequest = {
+           medication: medication,
+           extent: extent,
+           grouping: grouping,
+           checks: checks
+        } as HCITypes.hciCdsCheckRequest;
+
+        HciHospAPI.hciCdsCheck(hciCdsCheckRequest).then((res)=>{
+          this.storage.set("checks", res);
+        })
+      })
+  }
+
 
 /* To Be Deleted */
 
@@ -198,7 +232,7 @@ private list: Array<any>;
     console.log(mediPlan)
   }
   testDummyData(){
-    var testData = "CHMED16A1H4sIAAAAAAAEAK1UzW7aQBB+lY2vsaNd24DNLQmhRQktIrSRWuWwtge8wl6j9bpNQLxNHqO3vFhn7TglAXKqhPF4Z3bmm29+NtZ5pVOrb/W6lFHqudQPOz3LtgYaD13Kug6jDgtmLOgzr+95p9TtU4oGowQNIt+bh91o7vjzwHV8CCMn5FHghDGN58E86PDQOBtDMntcgdVntSxinoPUpdX/ubHOV6uRLLVCb5LHKUkgJ1dlCbKN4fshY14TsvHi2dakaG4P8J/Z1Mbn3oAeqiJvgdMQf3Uqs2LnjIXWFm0nqoyji0dUDNQZ+VJoMlRcrm3zqkDOIUvw7rTgaDH5iuJsuZiWEr9GqFxqURiE36QwRN3Orq2tvWkAuwGjXtf/GDA9BNhzKDsA7lytNfnMZWmT8fMfGacgU141FB0CeJFhTYs4TVQVL4+AZKHb890PWKXHWP1PIC/TIoNSgxISjZag9oHutkaliDjLz2xipKRS2CnC6CoBSgOZgCoLCfKk7RqXscD3jqfnHqxBx2EMMzyQ3tUDz1cZkGuuMpvcPT/JhXjNbDR+Qz+oKhWLSi7+pTS+eZ9RBIJcQMLVHK1wCAscjHpAavg4AWLxW8RLyHZyYPslOthHL40/klNAa2ayeUU3FBDtku3sARMlWVck5w9nxMdXRvTz0yITyDgjMx5loJFwEFJCmtfl3UPv97oe83pH2P8QKyKdNWZFY0a392+r8X5THWqu2xihqTW8H1HjiGuBy8fqb6yLesmx0PfqsjM0vhTaxLjjWWIy1k0Rh19wYZkgoGvqPoFMUDBob15U46psdDd4A1vmqll7JszgptRjMLDqM97Q8FrRBp9rW995hjYBqwvSqN1WzVo1C2idxjSuvYwa1qf40en17tvxdlvBawW/FTqt0G2vMSR4i8SkOEAY4dRnpBcS5nrE75CuofhWKwDdtPYCu4TjfibMbLgfYoXHoRviUkV/+dLkDoq8sExEqcmvIidm6y+5WZrlKuOSRLAAYRjTJ9b2LyrDpWuFBgAA"
+    var testData = "CHMED16A1H4sIAAAAAAAAA61Vy3LTMBT9FeEtdkbyI46zok/I0JROGmAGpgvZvok1seWMLENpJzu+gRXLfgMrGBb5IH6BK7subZp0xUwSX+teSeec+8i1tVfrzBpala5TkLp6Ec+yXpJZtnWocdmlLHRo4FA2ZcEwCIcBe07dIaUYMEoxIPa9WdSPZ44/G7iOD1HsRDweOFFCk9lgNgh4FGLsGNLplyVYQ9bYIuGFuc0afry29pbLkay0wtMkTzKSQkGOqgokWf8g659kfUPW38j6O1l/7W71/YgxrwXRnuvZ1lnZnneIv8ymNn4vDI1jVRYtlb5DI/w05KblvTUWWSuMPVNVEu9/Qceh6pHTUpNjxeWVbR41yBnkKe6dlBwjzt6gOV3MJ5XEtxE6F1qUEhffSmGkO5++tlb2dQvYHTDq9f2nAdNtgD3Ufgu4PXWlySsuK5uM//z+JZMMZMZrVG0Hwv0cE10mWarqZLEDJYvc0HefkJXukvV/oTzIyhwqDUpIDFqAeoz0frnUiohe0bOJsdJaYfUI46sFKA3kDFRVSpDPurpxGRv43m5+7tYsBA5jSHELv6NLXixzIK+5ym3yfn0j5+KO2Wj8QH9QdSbmtZz/ozQ+2WQUgyD7kHI1wyhszRKbpWmaBj52hZh/FskC8nsc2OMcba2k29IfyQlgNDNs7tAdC4jvi+2gmUKVKLFsqnrzbi10Dhurm1RERa5qUvDLHvHxkRO9vpnnAnPEyJTHOWhMEQgpISuagnjE1w/7HvPCHfl6kh1ym7ZhZRtGVxcP8xf2KaPUc6kfBeGOcjxPEJq6gs22NgdxLXCEWcNra78ZlSzyvaZQGAYfCG3ueM/z1DDWbdqPT3HsmUtAN2K/BJmiYdCe3LrGddX6TnAHFtlROzzNNYcnlR6DgdWs8VaGuxpo8bm29Y7nGDNgTUJat9u5WedmA9rQmCTNKaNW9Qm+BGF40U0EtzO8zvA7I+iMfreNocArFCbDlsMbnvuMhBFhrkf8gPSNxOdaAei2GeZYJRynPGFmKn4QS1yO3AgHMZ5XLAx3UORWZSIqTT6VBTH/HQtuSrJa5lySGOYgjGL6mbX6CwnYZkPNBgAA"
     var b64Data  =   testData.substring(9);
 
     // Decode base64 (convert ascii to binary)
@@ -209,17 +243,21 @@ private list: Array<any>;
 
     // Turn number array into byte-array
     var binData     = new Uint8Array(charData);
-
     // Pako magic makeing
     var data        = myPako.inflate(binData);
 
     // Convert gunzipped byteArray back to ascii string:
 
+    let strData2: string  = String.fromCharCode.apply(null, new Uint8Array(data));
 
-    let strData2: string  = String.fromCharCode.apply(null, new Uint16Array(data));
-
+/*    var  re = /[ÀÁÂÃÄÅ]/g;
+strData2 =  strData2.replace(re,"A");*/
+    console.log(strData2)
+  strData2 = this.convert_accented_characters(strData2)
+    console.log(strData2)
     this.storage.ready().then(() => {
       var mediPlan = JSON.parse(strData2)
+      console.log(mediPlan)
       this.storage.set("mediPlan", mediPlan);
       this.getNamesFromID(mediPlan).then((res) => {
           this.storage.set("medicationData", res);
@@ -253,4 +291,21 @@ private list: Array<any>;
                  return medData['Medicaments'];
                });
              }
+
+   convert_accented_characters(str){
+    var conversions = new Object();
+
+    conversions['ü'] = 'Ã¼|ï¿½';
+    conversions['ä'] = 'Ã¤';
+    conversions['ö'] = 'Ã¶';
+    conversions['Ö'] = 'Ã';
+    conversions['Ü'] = 'Ã';
+    conversions['Ä'] = 'Ã';
+    for(var i in conversions){
+        var re = new RegExp(conversions[i],"g");
+        str = str.replace(re,i);
+    }
+
+    return str;
+}
 }

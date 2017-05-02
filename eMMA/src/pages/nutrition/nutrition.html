@@ -16,5 +16,66 @@
 
 
 <ion-content padding>
-
+  <ion-card>
+    <ion-card-header>
+      <h2>Zu vermeidende Nahrungsmittel</h2>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+          <ion-row>
+            <ion-col>
+            <u>Name</u>
+            </ion-col>
+            <ion-col>
+              <u>
+                Nahrungsmittel
+              </u>
+            </ion-col>
+            <ion-col>
+            <u>Auswirkungen</u>
+            </ion-col>
+          </ion-row>
+          <ion-row class="rowHeight" *ngFor="let check of checkList; let i = index">
+            <ion-col *ngIf=check.nRelevance>
+              {{check.name}}
+            </ion-col>
+            <ion-col *ngIf=check.nRelevance>
+              <b>{{check.nutrition}}</b>
+            </ion-col>
+            <ion-col col-2 *ngIf=check.nRelevance>
+              <button ion-button icon-only (click)="showDetails(i)">
+                <ion-icon name="add"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf=checkStatus.dRlv>
+  <ion-card-header>
+    Dopingrelevanz
+  </ion-card-header>
+  <ion-card-content>
+    <ion-grid>
+        <ion-row>
+          <ion-col>
+          <u>Name</u>
+          </ion-col>
+          <ion-col>
+            <u>
+              Relevanz
+            </u>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let check of checkList; let i = index">
+          <ion-col *ngIf=check.dRelevance >
+            {{check.name}}
+          </ion-col>
+          <ion-col *ngIf=check.dRelevance>
+            <b>{{check.doping}}</b>
+          </ion-col>
+          </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>
 </ion-content>

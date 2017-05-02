@@ -66,10 +66,17 @@ export class MyMedicationPage {
   scanMedBox(){
     this.barcodeService.scanMediCode(this.drugList,this.morning,this.midday,this.evening,this.night,this.reason).then((res)=>{
       console.log(res)
+      let alert = this.alertCtrl.create({
+        title: 'Arztneimittel erfasst!',
+        subTitle: 'Das Arztneimittel wurde erfolgreich erfasst',
+        buttons: ['Ok']
+      });
       this.storage.ready().then(()=>{
         this.storage.get('mediPlan').then((res)=>{
           res['Medicaments'] = this.drugList
-          this.storage.set('mediPlan', res)
+          this.storage.set('mediPlan', res).then(()=>{
+            this.barcodeService.doChecksWithCurrentMedication();
+          })
           this.storage.set("medicationData", this.drugList);
           this.editComplianceData(res['Medicaments'][res['Medicaments'].length-1].title)
         })
@@ -141,7 +148,6 @@ export class MyMedicationPage {
               "DtFrom":today
             }]
           })
-
           var tempList:any = this.drugList;
           tempList.push(tempObj)
           this.storage.ready().then(()=>{
@@ -169,10 +175,10 @@ export class MyMedicationPage {
 }
 
 
-  deleteDrug(id){
+  deleteDrug(title,id){
     let alert = this.alertCtrl.create({
       title: 'Selbstmedikation löschen',
-      message: 'Sind Sie sicher, dass sie '+id+' löschen möchten?',
+      message: 'Sind Sie sicher, dass sie <b>'+title+'</b> löschen möchten?',
         buttons: [
           {
             text: 'Nein',
@@ -190,6 +196,7 @@ export class MyMedicationPage {
                   this.storage.get('mediPlan').then((res)=>{
                   res['Medicaments'] = this.drugList
                   this.storage.set('mediPlan', res)
+
                   })
               })
             }

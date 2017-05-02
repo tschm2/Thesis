@@ -54,13 +54,13 @@ export class ConversationPage {
   constructor(public http:Http,public navCtrl: NavController, public navParams: NavParams, private storage:Storage, public platform: Platform, public alertCtrl: AlertController) {
     this.messages = [];
     this.preAnswers = [];
-    this.toggleObject = showNothing;
+    this.toggleObject = showTextfield;
   }
   eMMA = new eMMA();
   questionhandler = new questionHandler(this.storage);
 
   ionViewDidLoad() {
-    this.toggleObject = showNothing;
+    this.toggleObject = showTextfield;
     this.storage.get('FirstStartComplet').then((terminated)=>{
       if(terminated == "reminder"){
         this.reminderAppStart();
@@ -178,11 +178,12 @@ export class ConversationPage {
   }
   eMMATourtorial(){
     this.storage.set('FirstStartComplet', true)
-    let tempTakingTime = ["11:10","11:11","11:12","11:13"]
+    let tempTakingTime = ["08:00","12:00","18:00","22:00"]
     let newTime:String = tempTakingTime[0];
     let myHour = newTime.substr(0,2)
     let myMinute = newTime.substr(3,2)
-    this.addlocalnotification(myHour,myMinute,0,false)
+    setTimeout(() => this.addlocalnotification(myHour,myMinute,0,false),eMMAWaitingTimeDouble);
+
 
     this.storage.set('takingTime',tempTakingTime)
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Tourtorial);
@@ -230,8 +231,15 @@ export class ConversationPage {
   }
   AwnswerReminder(){
     LocalNotifications.getTriggered(1).then((res)=>{
-      let dayTime = res["0"].data;
-      console.log(dayTime)
+      let dayTime:any
+      try{
+        dayTime = res["0"].data;
+      }
+      catch(e){
+        dayTime = 0;
+        console.log("fehler daytime nicht definiert")
+      }
+      console.log("Daytime für Reminder",dayTime)
       this.storage.get('takingTime').then((takingtimes)=>{
       let takingTime = takingtimes;
       let newTime:String = takingTime[dayTime]
@@ -249,7 +257,7 @@ export class ConversationPage {
             dayTime = 0;
             dayoffset = true;
           }
-          this.addlocalnotification(myHour,myMinute,dayTime,dayoffset)
+          //this.addlocalnotification(myHour,myMinute,dayTime,dayoffset)
         }),eMMAWaitingTimeDouble);
         })
     })
@@ -438,7 +446,6 @@ export class ConversationPage {
     }
   sendMessage(myReply, myFunc) {
     var myHour = this.getLocalHour();
-    console.log(myHour);
     var myMinute = this.getLocalMinute();
     this.messages.push({
       text: myReply.value,
@@ -524,7 +531,6 @@ export class ConversationPage {
     if(DayOffset){
       firstNotificationTime.setDate(firstNotificationTime.getDate()+1)
     }
-    console.log(timeOfDay)
     LocalNotifications.clearAll()
     let myHour = this.getLocalHour();
     let myMinute = this.getLocalMinute();
@@ -569,12 +575,10 @@ export class ConversationPage {
   }
   getLocalHour(){
     var myDate = new Date();
-    console.log(myDate)
     var myHour: any = myDate.getHours();
     if(myHour<10){
       myHour = "0" + myHour;
     }
-    console.log(myHour)
     return myHour;
   }
   getLocalMinute(){

@@ -178,7 +178,7 @@ export class MyMedicationPage {
   deleteDrug(title,id){
     let alert = this.alertCtrl.create({
       title: 'Selbstmedikation löschen',
-      message: 'Sind Sie sicher, dass sie <b>'+title+'</b> löschen möchten?',
+      message: 'Bist du sicher, dass du <b>'+title+'</b> löschen möchten?',
         buttons: [
           {
             text: 'Nein',

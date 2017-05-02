@@ -27,12 +27,12 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Sprich mit eMMA', component: ConversationPage },
-      { title: 'Meine Medikation', component: MyMedicationPage },
-      { title: 'Aktualisieren', component: UpdatePage },
-      { title: 'Nahrungsmittel Informationen', component: NutritionPage },
+      { title: 'Konversation mit eMMA', component: ConversationPage },
+      { title: 'Zu meiner Medikation', component: MyMedicationPage },
+      { title: 'Gesammte Medikation aktualisieren', component: UpdatePage },
+      { title: 'Das gilt es zu beachten!', component: NutritionPage },
       { title: 'Mein Medikationstagebuch', component: MyMedicationDiaryPage },
-      { title: 'Über eMMA', component: AboutEmmaPage },
+      { title: 'Wer ist eMMA', component: AboutEmmaPage },
       { title: 'reminderView', component: MedicationReminderViewPage },
     ];
 

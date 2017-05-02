@@ -18,19 +18,20 @@ private list: Array<any>;
   return BarcodeScanner.scan().then((barcodeData) => {
       var b64Data  =   barcodeData.text.substring(9);
       // Decode base64 (convert ascii to binary)
-      var strData     = atob(b64Data);
+      var stData     = atob(b64Data);
       // Convert binary string to character-number array
-      var charData    = strData.split('').map(function(x){return x.charCodeAt(0);});
+      var charData    = stData.split('').map(function(x){return x.charCodeAt(0);});
       // Turn number array into byte-array
       var binData     = new Uint8Array(charData);
       // Pako magic
       var data        = myPako.inflate(binData);
       // Convert gunzipped byteArray back to ascii string:
-      let strData2: string  = String.fromCharCode.apply(null, new Uint16Array(data));
+      let strData: string  = String.fromCharCode.apply(null, new Uint16Array(data));
+      strData = this.convert_accented_characters(strData)
 
       this.storage.ready().then(() => {
 
-        var mediPlan = JSON.parse(strData2)
+      var mediPlan = JSON.parse(strData)
       this.storage.set("mediPlan", mediPlan).then(()=>{
         this.doChecksWithCurrentMedication()
       });

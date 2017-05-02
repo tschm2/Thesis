@@ -58,4 +58,19 @@
     </button>
   </ion-card-content>
 </form>
+<form (ngSubmit)="sendMessage(input,sendButton)">
+<ion-card-content [ngClass]="{'hidden': toggleObject != 5}">
+  <ion-item style="width:80%;float:left;">
+    <ion-input style="color:#FFF;" type="text" #inputSingle [ngModelOptions]="{standalone: true}" [(ngModel)]="mySingleReply" class="input-message" placeholder="deine Nachricht"></ion-input>
+  </ion-item>
+  <button type="submit" ion-button icon-only style="width:15%; float:right;" [disabled]="!mySingleReply || mySingleReply === ''">
+    <ion-icon name="arrow-dropleft-circle"></ion-icon>
+  </button>
+</ion-card-content>
+</form>
+<div class=buttonsDiv [ngClass]="{'hidden': toggleObject != 5}">
+  <div class="singleButton" *ngFor="let answer of preAnswers">
+    <button ion-button full (click)="reply(answer)">{{answer.text}}</button>
+  </div>
+</div>
 </ion-footer>

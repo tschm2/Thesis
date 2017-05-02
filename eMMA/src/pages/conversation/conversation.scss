@@ -71,6 +71,22 @@ page-conversation {
 		float: left;
 		margin-left: 3.5%;
 	}
+	.singleButton{
+		height: 90%;
+		width: 90%;
+		float: left;
+		margin-left: 5%;
+	}
+	.singleButton button{
+		border-radius: 5px;
+		background-color: #DCF8C7;
+		font-size: 0.9em;
+		text-transform: inherit;
+		color: #333;
+		height: 80%;
+		word-wrap: break-word !important;
+		white-space: normal !important;
+	}
 
 	.buttons button {
 		border-radius: 5px;

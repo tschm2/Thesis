@@ -54,13 +54,13 @@ export class ConversationPage {
   constructor(public http:Http,public navCtrl: NavController, public navParams: NavParams, private storage:Storage, public platform: Platform, public alertCtrl: AlertController) {
     this.messages = [];
     this.preAnswers = [];
-    this.toggleObject = showTextfield;
+    this.toggleObject = showNothing;
   }
   eMMA = new eMMA();
   questionhandler = new questionHandler(this.storage);
 
   ionViewDidLoad() {
-    this.toggleObject = showTextfield;
+    this.toggleObject = showNothing;
     this.storage.get('FirstStartComplet').then((terminated)=>{
       if(terminated == "reminder"){
         this.reminderAppStart();
@@ -92,6 +92,7 @@ export class ConversationPage {
     else{
       this.storage.set('name',name )
       this.sendEmmaText("Hallo " + name+ "\n"+ this.eMMA.messageEMMA_FirstStart_questionPin);
+      setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionPin2),eMMAWaitingTime);
       this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionPin_Yes,"inputPin",this.eMMA.messageEMMA_FirstStart_questionPin_No,"questionAthlete");
     }
   }

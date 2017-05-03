@@ -3,7 +3,8 @@ page-medication-reminder-view {
 
   .reminderItem {
     width: 47%;
-    height: 25%;
+    height: 27%;
+    max-height: 150px;
     background-color: #FFF;
     float: left;
     position: relative;
@@ -12,23 +13,25 @@ page-medication-reminder-view {
   }
 
   .imagePlaceholder {
-    width: 100%;
-    height: 80%;
+    text-align: center;
+    width: 80%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
     background-color: #FFF;
   }
 
   .imagePlaceholder img {
-    float: left;
-    margin-top: 10%;
-    margin-left: 5%;
+    max-height: 70px;
   }
 
   .status0 {
     width: 25px;
     height: 25px;
-    margin-top: 5px;
-    margin-right: 5px;
-    float: right;
+    right: 5px;
+    top: 5px;
+    position: absolute;
     background-image: url('../images/2.png');
     background-size: 100% 100%;
   }
@@ -36,17 +39,19 @@ page-medication-reminder-view {
   .status1 {
     width: 25px;
     height: 25px;
-    margin-top: 5px;
-    margin-right: 5px;
-    float: right;
+    right: 5px;
+    top: 5px;
+    position: absolute;
     background-image: url('../images/1.png');
     background-size: 100% 100%;
   }
 
   .description {
     text-align: center;
-    width: 100%;
-    height: 10%;
+    width: 90%;
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .hiddenSpaceremma {

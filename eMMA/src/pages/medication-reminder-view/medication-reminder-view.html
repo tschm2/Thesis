@@ -16,7 +16,7 @@
 <ion-content>
   <div class="hiddenSpacerEmma">
   <ion-card class=emma>
-    <p class="messageBlock">Hoi Da dini Medikämänt</p>
+    <p class="messageBlock">Folgende Medikamente solltest du jetzt einnehmen.</p>
     <div class="showTime">
       13:37
     </div>
@@ -24,7 +24,7 @@
   </div>
     <div class="reminderItem" (click)="changeState(drug?.position)" *ngFor="let drug of complianceMedication">
 
-      <div class="imagePlaceholder"><img height="100%" width="100%" src="https://index.hcisolutions.ch/files/pics/{{drug?.Id}}_PIF_F.jpg?px=128&key=Pharmacode"/><div class="status{{drug?.taken}}" id="{{drug?.position}}"></div></div>
+      <div class="imagePlaceholder"><img src="https://index.hcisolutions.ch/files/pics/{{drug?.Id}}_PIF_F.jpg?px=128&key=Pharmacode"/><div class="status{{drug?.taken}}" id="{{drug?.position}}"></div></div>
       <div class="description"> {{drug?.dosage}} {{drug?.unit}} - <b>{{drug?.title}}</b></div>
     </div>
 

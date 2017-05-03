@@ -30,6 +30,7 @@ page-conversation {
 		text-align: right;
 		font-size: 0.8em;
 		color: #A4A4A4;
+		margin-top: -6%;
 	}
 
 	.emma {
@@ -44,10 +45,11 @@ page-conversation {
 		margin-top: 5px;
 		border-radius: 5px;
 		margin-left: 10px;
+		font-size: 1.1em;
 	}
 
 	.user {
-		min-width: 30%;
+		min-width: 45%;
 		background-color: #DCF8C7;
 		padding: 10px;
 		width: auto;
@@ -58,10 +60,11 @@ page-conversation {
 		margin-bottom: 5px;
 		margin-right: 10px;
 		border-radius: 5px;
+		font-size: 1.1em;
 	}
 
 	.buttonsDiv {
-		background-color: #EFF;
+		//background-color: #EFF;
 		height: 50px;
 	}
 
@@ -71,19 +74,21 @@ page-conversation {
 		float: left;
 		margin-left: 3.5%;
 	}
-	.singleButton{
+
+	.singleButton {
 		height: 90%;
 		width: 90%;
 		float: left;
 		margin-left: 5%;
 	}
-	.singleButton button{
+
+	.singleButton button {
 		border-radius: 5px;
 		background-color: #DCF8C7;
-		font-size: 0.9em;
+		font-size: 1.1em;
 		text-transform: inherit;
 		color: #333;
-		height: 80%;
+		height: 85%;
 		word-wrap: break-word !important;
 		white-space: normal !important;
 	}
@@ -91,10 +96,10 @@ page-conversation {
 	.buttons button {
 		border-radius: 5px;
 		background-color: #DCF8C7;
-		font-size: 0.9em;
+		font-size: 1.1em;
 		text-transform: inherit;
 		color: #333;
-		height: 80%;
+		height: 85%;
 		word-wrap: break-word !important;
 		white-space: normal !important;
 	}

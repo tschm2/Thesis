@@ -70,14 +70,14 @@
   </ion-card>
   <!--......................MEDIKAMENT NEU ERFASSEN.......................-->
   <ion-card>
-    <ion-card-header class="clickAbleHeader" (click)="toggleContent(2)">
+    <ion-card-header class="clickAbleHeader" (click)="toggleContent(2); focusReason(rInput)">
       Neues Medikament erfassen
     </ion-card-header>
     <ion-card-content [ngClass]="{'hidden': toggleObject != 2}">
       <h3 style="margin-top:10px;">Bitte nenne einen Einnahmegrund für das neue Medikament ein?</h3>
       <ion-item>
         <ion-label color="primary">Dein Grund:</ion-label>
-        <ion-input [(ngModel)]="reason" placeholder="Beispiel"></ion-input>
+        <ion-input #rInput autofocus [(ngModel)]="reason" placeholder="Beispiel"></ion-input>
       </ion-item>
       <h3 style="margin-top:10px;">Um welche Uhrzeiten möchtest du erinnert werden?</h3>
       <ion-item>

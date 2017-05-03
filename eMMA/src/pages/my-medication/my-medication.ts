@@ -230,4 +230,10 @@ export class MyMedicationPage {
     else
       this.toggleObject = numb;
   }
+  focusReason(el){
+    setTimeout(() => {
+        el.setFocus();
+      },150); 
+
+  }
 }

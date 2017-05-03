@@ -409,7 +409,7 @@ export class ConversationPage {
       }
   }
   overrideAnswerButtonsOneButton(text1: String, function1: String) {
-    this.toggleObject = showNothing;
+    this.toggleObject = 5;
     setTimeout(() => this.toggleObject = showButtons , eMMAWaitingTime);
     this.preAnswers = [];
     this.preAnswers.push({
@@ -588,5 +588,9 @@ export class ConversationPage {
       myMinute = "0" + myMinute;
     }
     return myMinute;
+  }
+  scrollToBottomOnFocus(){
+    console.log("hello")
+    setTimeout(() => this.content.scrollToBottom(), eMMAWaitingTime)
   }
 }

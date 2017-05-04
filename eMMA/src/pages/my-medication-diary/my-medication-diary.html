@@ -18,31 +18,29 @@
 
 <ion-content padding>
   <ion-card>
-        <ion-card-header>
-          Medikationstreue
-        </ion-card-header>
-        <ion-card-content>
+    <ion-card-header (click)="toggleContent(1)" class="clickAbleHeader">
+      Medikationstreue insgesammt
+    </ion-card-header>
+          <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
           <canvas #barCanvas></canvas>
         </ion-card-content>
       </ion-card>
       <ion-card>
-      <ion-card-header>
-        Line Chart
+      <ion-card-header (click)="toggleContent(2)" class="clickAbleHeader">
+        Medikationstreue Verlauf
       </ion-card-header>
-      <ion-card-content>
+      <ion-card-content [ngClass]="{'hidden': toggleObject != 2}">
         <canvas #lineCanvas></canvas>
       </ion-card-content>
     </ion-card>
     <ion-card>
-      <ion-card-header>
-        <h2>Gründe für Nichteinnahme</h2>
+      <ion-card-header (click)="toggleContent(3)" class="clickAbleHeader">
+        Gründe für Nichteinnahme
       </ion-card-header>
-      <ion-card-content>
-        <ion-grid>
+      <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
+          <ion-grid  *ngFor="let drug of ComplianceListDescription; let i = index">
+          {{drug.name}}
             <ion-row>
-              <ion-col>
-              <u>Name</u>
-              </ion-col>
               <ion-col>
                 <u>Datum</u>
               </ion-col>
@@ -53,20 +51,17 @@
               <u>Grund</u>
               </ion-col>
             </ion-row>
-            <ion-row class="rowHeight" *ngFor="let messages of ComplianceListDescription; let i = index">
-              <ion-col>
-                {{messages.name}}
-              </ion-col>
-              <ion-col>
-                {{messages.date}}
-              </ion-col>
-              <ion-col>
-                {{messages.dayTime}}
-              </ion-col>
-              <ion-col>
-                {{messages.description}}
-              </ion-col>
-            </ion-row>
+                 <ion-row class="rowHeight" *ngFor="let messages of drug.data; let k = index">
+                <ion-col>
+                  {{messages.date}}
+                </ion-col>
+                <ion-col>
+                  {{messages.dayTime}}
+                </ion-col>
+                <ion-col>
+                  {{messages.description}}
+                </ion-col>
+              </ion-row>
         </ion-grid>
       </ion-card-content>
     </ion-card>

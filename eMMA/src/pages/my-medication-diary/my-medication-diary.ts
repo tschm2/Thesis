@@ -23,6 +23,7 @@ export class MyMedicationDiaryPage {
   barChart: any;
   lineChart: any;
   ComplianceListDescription:any;
+  toggleObject:number;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public storage: Storage) {}
@@ -33,6 +34,7 @@ export class MyMedicationDiaryPage {
 
     this.ComplianceListDescription = [];
     var complianceObj;
+    let messages = [];
 
     this.storage.ready().then(()=>{
       this.storage.get('ComplianceData').then((res)=>{
@@ -88,20 +90,25 @@ export class MyMedicationDiaryPage {
                     tempMonthObj.DrugList[pos].Months[ArryValue-1].Values[1]++
                   temptaken++;
                   if(complianceObj.DrugList[pos].Compliance[value].D[taken] != 1){
-                      let messages = {
-                        name:   labelNames[pos],
+                        messages.push({
                         date: complianceObj.DrugList[pos].Compliance[value].Date,
                         dayTime: this.takenStrings[taken],
                         description: complianceObj.DrugList[pos].Compliance[value].D[taken]
-                      }
-                      this.ComplianceListDescription.push(messages)
+                      })
                   }
+
                 }
               }
             }
           }
+          this.ComplianceListDescription.push({
+            data: messages,
+            name: labelNames[pos]
+          })
+          messages = [];
         Values[pos] = temptaken/tempMax * 100;
       }
+      console.log(this.ComplianceListDescription)
       console.log("Month",tempMonthObj)
       console.log("Compliane",complianceObj)
       console.log("description",this.ComplianceListDescription)
@@ -196,5 +203,10 @@ export class MyMedicationDiaryPage {
     })
 
   }
-
+  toggleContent(numb){
+    if (this.toggleObject == numb)
+      this.toggleObject = 0
+    else
+      this.toggleObject = numb;
+  }
 }

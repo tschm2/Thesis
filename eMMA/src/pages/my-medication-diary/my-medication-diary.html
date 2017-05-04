@@ -33,4 +33,40 @@
         <canvas #lineCanvas></canvas>
       </ion-card-content>
     </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <h2>Gründe für Nichteinnahme</h2>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+            <ion-row>
+              <ion-col>
+              <u>Name</u>
+              </ion-col>
+              <ion-col>
+                <u>
+                  Datum
+                </u>
+              </ion-col>
+              <ion-col>
+              <u>Grund</u>
+              </ion-col>
+            </ion-row>
+            <ion-row class="rowHeight" *ngFor="let messages of ComplianceListDescription; let i = index">
+              <ion-col>
+                {{messages.name}}
+              </ion-col>
+              <ion-col>
+                {{messages.date}}
+              </ion-col>
+              <ion-col>
+                {{messages.dayTime}}
+              </ion-col>      
+              <ion-col>
+                {{messages.description}}
+              </ion-col>
+            </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
 </ion-content>

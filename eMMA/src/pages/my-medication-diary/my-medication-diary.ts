@@ -19,13 +19,19 @@ export class MyMedicationDiaryPage {
 
   months = ["Januar", "Februar", "März", "April", "Mai" , "Juni" , "Juli", "August" ,"September", "Oktober", "November" , "Dezember"]
   drugs = ["Sortis", "Davalgan"]
+  takenStrings = ["Morgen","Mittag","Abend","Nacht"]
   barChart: any;
   lineChart: any;
+  ComplianceListDescription:any;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public storage: Storage) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyMedicationDiaryPage');
+
+
+    this.ComplianceListDescription = [];
     var complianceObj;
 
     this.storage.ready().then(()=>{
@@ -37,19 +43,18 @@ export class MyMedicationDiaryPage {
       })
       for (var posDrug in complianceObj.DrugList)
       {
-        for(var m = 1; m<=12;m++){
-          for(var i = 1; i<31;i++){
+        for(var m = 1; m<=6;m++){
+          for(var i = 1; i<2;i++){
             complianceObj.DrugList[posDrug].Compliance.push({
             "Date": i+".0" + m +".2017",
             "D":[
               Math.round(Math.random()),
               Math.round(Math.random()),
               Math.round(Math.random()),
-              Math.round(Math.random())
+              "Niiiiicht eingenommen"
               ]
             })
-        }
-
+          }
         }
         tempMonthObj.DrugList.push({
           "Name": complianceObj.DrugList[posDrug].Name,
@@ -61,7 +66,9 @@ export class MyMedicationDiaryPage {
          })
         }
       }
+      console.log("Dummy daten erstellt", tempMonthObj)
 
+      let choosenMedicin = "SORTIS"
 
       let labelNames = new Array<any>()
       var Values = new Array<any>()
@@ -76,24 +83,43 @@ export class MyMedicationDiaryPage {
             for(var taken in complianceObj.DrugList[pos].Compliance[value].D){
               if(complianceObj.DrugList[pos].Compliance[value].D[taken] != undefined){
                 tempMax++;
-                tempMonthObj.DrugList[pos].Months[ArryValue-1].Values[0]++
-                if(complianceObj.DrugList[pos].Compliance[value].D[taken] == 1){
-                  tempMonthObj.DrugList[pos].Months[ArryValue-1].Values[1]++
+                  tempMonthObj.DrugList[pos].Months[ArryValue-1].Values[0]++
+                if(complianceObj.DrugList[pos].Compliance[value].D[taken] != 0){
+                    tempMonthObj.DrugList[pos].Months[ArryValue-1].Values[1]++
                   temptaken++;
+                  if(complianceObj.DrugList[pos].Compliance[value].D[taken] != 1){
+                      let messages = {
+                        name:   labelNames[pos],
+                        date: complianceObj.DrugList[pos].Compliance[value].Date,
+                        dayTime: this.takenStrings[taken],
+                        description: complianceObj.DrugList[pos].Compliance[value].D[taken]
+                      }
+                      this.ComplianceListDescription.push(messages)
+                  }
                 }
               }
             }
           }
         Values[pos] = temptaken/tempMax * 100;
       }
-
+      console.log("Month",tempMonthObj)
+      console.log("Compliane",complianceObj)
+      console.log("description",this.ComplianceListDescription)
       var monthvalues = new Array<any>()
-      for (var pos in tempMonthObj.DrugList[0].Months){
-        monthvalues.push(tempMonthObj.DrugList[0].Months[pos].Values[1]/tempMonthObj.DrugList[0].Months[pos].Values[0]*100)
+      for(var drugpos in tempMonthObj.DrugList){
+        if(tempMonthObj.DrugList[drugpos].Name == choosenMedicin||choosenMedicin == "all"){
+          for (var pos in tempMonthObj.DrugList[0].Months){
+            if(tempMonthObj.DrugList[0].Months[pos].Values[0] == 0){
+              monthvalues.push(0)
+            }else{
+              monthvalues.push(tempMonthObj.DrugList[0].Months[pos].Values[1]/tempMonthObj.DrugList[0].Months[pos].Values[0]*100)
+            }
+          }
+        }
       }
       //monthvalues.push(0,100)
       //Values.push(100)
-      this.storage.set('ComplianceData',complianceObj)
+      //this.storage.set('ComplianceData',complianceObj)
       this.barChart = new Chart(this.barCanvas.nativeElement, {
 
               type: 'bar',

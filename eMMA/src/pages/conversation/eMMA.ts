@@ -50,7 +50,6 @@ export class eMMA{
   messageEMMA_FirstStart_Datasecurity = "BlaBlaDatenschutz wichtig BlaBla\n du findest die Datenschutzbestimmungen auch im Impressum wieder.\n gehe dafür einfach im Menü auf Über eMMA"
   messageEMMA_FirstStart_Tourtorial = "Du bist nun im Fragemodus. Hier kannst du Fragen zu deiner Medikation stellen";
 
-
   //Messages used in the normal App Start
   messageEMMA_Normal_Start_1 = "Hallo " //Name des Benuters
   messageEMMA_Normal_Start_2 = " gerade stehen keine Erinnerungen an. Hast du irgendwelche Fragen an mich?";

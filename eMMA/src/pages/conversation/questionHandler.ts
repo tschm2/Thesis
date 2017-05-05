@@ -10,6 +10,8 @@ export class questionHandler {
   messageEMMA_Selfmedication = "Ich öffne die Selbstmedikation für dich"
   messageEMMA_Compliance = "Gerne zeige ich dir dein Medikationstagebuch an"
   messageEMMA_Nutrition = "Ich zeige dir, welche Nahrungsmittel du im momment nicht essen darfts."
+  messageEMMA_InformationQuestion = "Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein + die Frage die du hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen must."
+  messageEMMA_TooMutchInformation = "Huch, das war etwas viel auf Einmal. Bitte versuche es mit einer kürzeren Frage"
 
 
   messageEMMA_Not_Understand = [
@@ -28,6 +30,12 @@ export class questionHandler {
   constructor(private storage:Storage){
     }
     returnAnswer(question: String):any{
+      if(question == "?"){
+        return this.messageEMMA_InformationQuestion;
+      }
+      if(question.length > 50){
+        return this.messageEMMA_TooMutchInformation;
+      }
       var retVal:any = "";
       var list = new Array<any>()
       question = question.toUpperCase();
@@ -43,7 +51,6 @@ export class questionHandler {
             console.log(this.drugList);
             for(var pos in this.drugList){
               if(question.includes(this.drugList[pos].title)){
-
                 if(question.includes("WANN")||question.includes("ZEIT")||question.includes("UHR")){
                   retVal = retVal + "Du solltest " + this.drugList[pos].title +" an folgenden Uhrzeiten einnehmen:\n"
                   for(var time in this.drugList[pos].Pos[0].D){
@@ -97,7 +104,6 @@ export class questionHandler {
               {
                 if(question.includes("NACHT")){
                   retVal = this.messageEMMA_Reminder_Night
-
                 }
                 else if(question.includes("MITTAG")){
                   retVal = this.messageEMMA_Reminder_Midday
@@ -120,7 +126,7 @@ export class questionHandler {
               {
                 retVal = this.messageEMMA_Compliance;
               }
-              else if(question.includes("HALLO")||question.includes("HUHU"))
+              else if(question.includes("HALLO")||question.includes("HUHU")||question.includes("GUGUS"))
               {
                 retVal = "Hallo, was möchtest du wissen?"
               }
@@ -143,7 +149,6 @@ export class questionHandler {
                 }
                 let random = Math.random()*this.messageEMMA_Not_Understand_temp.length;
                 retVal = this.messageEMMA_Not_Understand_temp.splice(random,1)
-
               }
             }
             })

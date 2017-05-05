@@ -157,7 +157,7 @@ export class ConversationPage {
   }
   questionEHealth(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImporteHealth);
-    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImporteHealth_Yes,"eHealthUsername",this.eMMA.messageEMMA_FirstStart_questionImporteHealth_No,"eMMATourtorial");
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImporteHealth_Yes,"eHealthUsername",this.eMMA.messageEMMA_FirstStart_questionImporteHealth_No,"questionDataSecurity");
   }
   eHealthUsername(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questioneHalthUsername);
@@ -170,10 +170,18 @@ export class ConversationPage {
   testUsernamePassword(){
     //ifLoginPossible
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_eHealthCorrect)
-    setTimeout(() => this.eMMATourtorial(),eMMAWaitingTime);
+    setTimeout(() => this.questionDataSecurity(),eMMAWaitingTime);
     //else
     //this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_eHealthWrong);
     //this.eHealthUsername
+  }
+  questionDataSecurity(){
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionDatasecurity)
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionDatasecurity_Yes,"DataSecurity",this.eMMA.messageEMMA_FirstStart_questionDatasecurity_No,"eMMATourtorial");
+  }
+  DataSecurity(){
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Datasecurity)
+    setTimeout(() => this.eMMATourtorial(),eMMAWaitingTime);
   }
   eMMATourtorial(){
     this.storage.set('FirstStartComplet', true)

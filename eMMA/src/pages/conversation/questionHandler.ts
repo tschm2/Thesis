@@ -30,12 +30,6 @@ export class questionHandler {
   constructor(private storage:Storage){
     }
     returnAnswer(question: String):any{
-      if(question == "?"){
-        return this.messageEMMA_InformationQuestion;
-      }
-      if(question.length > 50){
-        return this.messageEMMA_TooMutchInformation;
-      }
       var retVal:any = "";
       var list = new Array<any>()
       question = question.toUpperCase();
@@ -63,7 +57,7 @@ export class questionHandler {
                     retVal = retVal + "jeweils" + this.drugList[pos].AppInstr + "\n"
                   }
                 }
-                if((question.includes("WIE")&& !question.includes("LANGE"))||question.includes("EINNAHME")){
+                if((question.includes("WIE ")&& !question.includes("LANGE"))||question.includes("EINNAHME")){
                   if(this.drugList[pos].AppInstr){
                       retVal = retVal + "Du solltest " + this.drugList[pos].title + " " + this.drugList[pos].AppInstr  + " einnehmen\n";
                   }
@@ -73,7 +67,7 @@ export class questionHandler {
                 }
                 if(question.includes("WIESO")||question.includes("GRUND")){
                   if(this.drugList[pos].TkgRsn){
-                    retVal = retVal + "Als Anwendungsgrund von  " + this.drugList[pos].title + " habe ich " + this.drugList[pos].TkgRsn  + " eingetragen\n";
+                    retVal = retVal + "Als Grund für die Einnahme von " + this.drugList[pos].title + " habe ich " + this.drugList[pos].TkgRsn  + " eingetragen\n";
                   }
                   else{
                     retVal = retVal + "Ich habe leider keine Informationen über den Grund der einnahme von " + this.drugList[pos].title; "\n" + "soll ich für dich Googeln?\n"
@@ -92,7 +86,13 @@ export class questionHandler {
                 }
               }
             }
-            if(retVal == ""){
+            if(question === "?"){
+              retVal = this.messageEMMA_InformationQuestion
+              }
+            else if(question.length > 50){
+              retVal = this.messageEMMA_TooMutchInformation
+            }
+            else if(retVal == ""){
               if(question.includes("NAHRUNG")||(question.includes("ESSEN")&&question.includes("NICHT"))){
                 retVal =  this.messageEMMA_Nutrition;
               }
@@ -130,7 +130,7 @@ export class questionHandler {
               {
                 retVal = "Hallo, was möchtest du wissen?"
               }
-              else if(question.includes("WER")&&question.includes("DU"))
+              else if(question.includes("WER")&&question.includes("Du"))
               {
                 retVal = "Ich bin eMMA. Deine Persöhliche elektronische Medikations Management Assistentin"
               }

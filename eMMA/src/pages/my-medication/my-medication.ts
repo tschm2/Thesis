@@ -45,13 +45,14 @@ export class MyMedicationPage {
   }
 
   ionViewDidLoad() {
-
+    this.chmedHandler.getPatient();
+    this.chmedHandler.setAthletic();
+    this.chmedHandler.setPatientFName("Wurst");
       this.storage.ready().then(()=>{
         this.storage.get('medicationData').then((res)=>{
           this.drugList = res;
         })
         this.storage.get('takingTime').then((res)=>{
-          console.log(res)
           this.sMorning = res[0]
           this.sMidday = res[1]
           this.sEvening = res[2]
@@ -233,7 +234,7 @@ export class MyMedicationPage {
   focusReason(el){
     setTimeout(() => {
         el.setFocus();
-      },150); 
+      },150);
 
   }
 }

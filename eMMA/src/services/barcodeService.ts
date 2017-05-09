@@ -5,32 +5,21 @@ import { HCIService } from './HCIService';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { HciHospAPI } from 'hci-hospindex-api';
 import  * as  HCITypes from 'hci-hospindex-api/src/api';
+import { chmedJsonHandler } from '../services/chmedJsonHandler';
 
 export class barcodeService {
 private list: Array<any>;
+private chmedHandler: chmedJsonHandler;
 
   constructor(public http: Http, public storage: Storage) {
-
+    var chmedHandler = new chmedJsonHandler(this.storage)
   }
 
   scanQRcodeForJSON():any{
 
   return BarcodeScanner.scan().then((barcodeData) => {
-      var b64Data  =   barcodeData.text.substring(9);
-      // Decode base64 (convert ascii to binary)
-      var stData     = atob(b64Data);
-      // Convert binary string to character-number array
-      var charData    = stData.split('').map(function(x){return x.charCodeAt(0);});
-      // Turn number array into byte-array
-      var binData     = new Uint8Array(charData);
-      // Pako magic
-      var data        = myPako.inflate(binData);
-      // Convert gunzipped byteArray back to ascii string:
-      let strData: string  = String.fromCharCode.apply(null, new Uint16Array(data));
-      strData = this.convert_accented_characters(strData)
-
+    let strData: string = this.chmedHandler.chmedToString(barcodeData)
       this.storage.ready().then(() => {
-
       var mediPlan = JSON.parse(strData)
       this.storage.set("mediPlan", mediPlan).then(()=>{
         this.doChecksWithCurrentMedication()
@@ -46,10 +35,7 @@ private list: Array<any>;
       alert("Woops falscher QR-Code, zu Testzwecken wurde DummyData gespeichert");
       this.testDummyData()
       return false
-
     })
-
-
   }
 
   IdHCIQuery(medData){
@@ -77,7 +63,6 @@ private list: Array<any>;
       return(medData['Medicaments']);
     });
   }
-
 
   scanMediCode(medData,morning,midday,evening,night,reason):Promise<any>{
 
@@ -138,17 +123,6 @@ private list: Array<any>;
       })
   }
 
-  getCHMEDString():any{
-    return this.storage.get("mediPlan").then((res) => {
-      var strData2 = JSON.stringify(res)
-      var data2 = strData2.split ('').map (function (c) { return c.charCodeAt (0); })
-      var str = myPako.gzip(data2, { to: 'string' })
-      var b64Data = btoa(str)
-      var chmed16 = "CHMED16A1"+b64Data;
-      return chmed16
-    })
-  }
-
   doChecksWithCurrentMedication(){
         let grouping:HCITypes.grouping = "byProduct"
         let extent:HCITypes.extent  = 'full';
@@ -164,7 +138,7 @@ private list: Array<any>;
           checks.push(tCheck)
         }
 
-        this.getCHMEDString().then((chmed16) => {
+        this.chmedHandler.getCHMEDString().then((chmed16) => {
           console.log(chmed16)
         let medication = chmed16
         let hciCdsCheckRequest = {

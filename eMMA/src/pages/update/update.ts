@@ -7,12 +7,10 @@ import {ViewChild} from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { MedicationReminderViewPage } from '../../pages/medication-reminder-view/medication-reminder-view';
 import { AlertController } from 'ionic-angular';
-
-/*
-
+import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 
 
-*/
+
 @Component({
   selector: 'page-update',
   templateUrl: 'update.html',
@@ -24,12 +22,14 @@ export class UpdatePage {
   @ViewChild("qrCode") qrCode:QRCodeComponent;
   toggleObject:number;
   barcodeService: barcodeService;
+  chmedHandler: chmedJsonHandler;
   storage:Storage;
   mediplanTime:String;
-  test:any;
+
   constructor(public http:Http, private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, storage:Storage) {
     this.storage = storage;
     this.barcodeService = new barcodeService(this.http, this.storage)
+    this.chmedHandler = new chmedJsonHandler(this.storage)
   }
 
   ionViewDidLoad() {
@@ -41,7 +41,7 @@ export class UpdatePage {
         console.log(res)
       })
     })
-      this.barcodeService.getCHMEDString().then((chmed16) => {
+      this.chmedHandler.getCHMEDString().then((chmed16) => {
       this.qrCode.value = chmed16
       console.log(chmed16)
       this.qrCode.generate();

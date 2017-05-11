@@ -69,6 +69,7 @@ export class eMMA{
   messageEMMA_reminderAppStart_why_Note = "Notiz hinterlassen"
   messageEMMA_reminderAppStart_why_notSpecified = "Ich möchte keinen Grund nennen"
   messageEMMA_reminderAppStart_why_LeaveNote = "Bitte hinterlasse mir eine Notiz"
+  messageEMMA_reminderAppStart_finishNotTaken = "Vielen Dank für die Antwort. Bitte versuche das nächste mal alle einzunehmen. Aus folgenden Gründen sind deine Medikamente wichtig für dich:\n"
 
 
 

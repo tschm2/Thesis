@@ -12,7 +12,7 @@ private list: Array<any>;
 private chmedHandler: chmedJsonHandler;
 
   constructor(public http: Http, public storage: Storage) {
-    var chmedHandler = new chmedJsonHandler(this.storage)
+    this.chmedHandler = new chmedJsonHandler(this.storage)
   }
 
   scanQRcodeForJSON():any{

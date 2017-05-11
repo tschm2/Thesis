@@ -23,8 +23,6 @@ var eMMAWaitingTime = 800;
 var eMMAWaitingTimeDouble = 2*eMMAWaitingTime;
 var eMMAWaitingTimeShort = 200;
 
-
-
 var notificationSingelton = true;
 
 //Initalize Numbers for Buttons
@@ -310,12 +308,36 @@ export class ConversationPage {
   finishReminderNote(input:String){
     //Save Note to Compliance
     this.addComplianceInformation(input);
-    this.finishReminder("");
+    this.finishReminderNotTaken();
   }
   finishReminderNotSpecified(input:String){
     //Save not specified to Compliance
     this.addComplianceInformation(0);
-    this.finishReminder("");
+    this.finishReminderNotTaken();
+  }
+  finishReminderNotTaken(){
+    let output = this.eMMA.messageEMMA_reminderAppStart_finishNotTaken;
+    let medication = "";
+    this.storage.get('returnvaluePatientCompliance').then((res)=>{
+      let returnvaluePatientCompliance = res;
+      for(let pos in returnvaluePatientCompliance){
+        if(returnvaluePatientCompliance[pos].taken == 0){
+          if(returnvaluePatientCompliance[pos].dosage != "nach Bedarf"){
+            medication = medication +  returnvaluePatientCompliance[pos].title + " "
+          }
+        }
+      }
+      this.storage.get('medicationData').then((res)=>{
+          let drugList = res;
+          console.log(drugList);
+          for(var pos in drugList){
+            if(medication.includes(drugList[pos].title)){
+              output = output + "Als Grund für die Einnahme von " + drugList[pos].title + " habe ich " + drugList[pos].TkgRsn  + " eingetragen\n";
+            }
+          }
+        this.sendEmmaText(output);
+      })
+    })
   }
   /*****************************************************************************
 
@@ -572,15 +594,6 @@ export class ConversationPage {
   triggerNotification(){
     LocalNotifications.on("trigger", (event)=>{
       this.storage.set('FirstStartComplet', "reminder")
-      //setTimeout(() => this.ionViewDidLoad(),eMMAWaitingTime)
-      // let id = event.data
-      // this.storage.get('takingTime').then((takingtimes)=>{
-      //   let takingTime = takingtimes;
-      //   let newTime:String = takingTime[id]
-      //   let myHour = newTime.substr(0,2)
-      //   let myMinute = newTime.substr(3,2)
-      //  this.addlocalnotification(myHour,myMinute,id,true)
-      //})
     })
   }
   getLocalHour(){
@@ -600,7 +613,6 @@ export class ConversationPage {
     return myMinute;
   }
     scrollToBottomOnFocus(){
-    console.log("hello")
     setTimeout(() => this.content.scrollToBottom(), eMMAWaitingTime)
   }
 }

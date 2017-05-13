@@ -1,4 +1,3 @@
-import { NavController, NavParams } from 'ionic-angular';
 import { barcodeService } from '../../services/barcodeService';
 import { Storage } from '@ionic/storage'
 import {Component} from '@angular/core';
@@ -9,7 +8,16 @@ import { MedicationReminderViewPage } from '../../pages/medication-reminder-view
 import { AlertController } from 'ionic-angular';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 
+/*----------------------------------------------------------------------------*/
+/* UpdatePage
+/* tschm2
+/* This is the TypescriptFile of the UpdatePage
+/* scanQRCode() is used to call the QRCode Function on Pressing the button
+/* checkMidata() is used to get the CHMED16 String on Midata!
 
+/* entryComponents include the QRCodeComponent This includes the QR-Code generting function
+/* angular2-qrCode Library is used to handle the QR-Code genereting functions
+/*----------------------------------------------------------------------------*/
 
 @Component({
   selector: 'page-update',
@@ -19,68 +27,75 @@ import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 
 export class UpdatePage {
 
+  /* The Link to the QR-Code element in the HTML */
   @ViewChild("qrCode") qrCode:QRCodeComponent;
+  /* Using toggleObject to access the accordion */
   toggleObject:number;
+  /* Calling the barcodeService */
   barcodeService: barcodeService;
+  /* chmedJsonHandler to handle the JSON */
   chmedHandler: chmedJsonHandler;
+  /* the Storage */
   storage:Storage;
+  /* The Time of the actually Mediplan */
   mediplanTime:String;
 
-  constructor(public http:Http, private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, storage:Storage) {
+  /**
+     * @param  {Storage}               publicstorage    ionic storage from phone
+     * @param  {AlertController}       publicalertCtrl  handle alerts
+   */
+  constructor(public http:Http, private alertCtrl: AlertController, storage:Storage) {
     this.storage = storage;
     this.barcodeService = new barcodeService(this.http, this.storage)
     this.chmedHandler = new chmedJsonHandler(this.storage)
   }
 
-  ionViewDidLoad() {
-    console.log(this.navParams.get("complianceData"));
+  /*----------------------------------------------------------------------------*/
+  /* This Method is called as soon the View loads!
+  /* It gets the current mediPlan and generetates the qrCode
+  /*----------------------------------------------------------------------------*/
+    ionViewDidLoad() {
     this.storage.ready().then(()=>{
       this.storage.get('mediPlan').then((res)=>{
-        var tempDate = new Date(res["Dt"].substring(0, 10))
-        this.mediplanTime = tempDate.toLocaleDateString()
-        console.log(res)
+      var tempDate = new Date(res["Dt"].substring(0, 10))
+      this.mediplanTime = tempDate.toLocaleDateString()
       })
     })
-      this.chmedHandler.getCHMEDString().then((chmed16) => {
+    this.chmedHandler.getCHMEDString().then((chmed16) => {
       this.qrCode.value = chmed16
       console.log(chmed16)
       this.qrCode.generate();
     })
-  }
+    }
 
-
-  scanQRcode(){
+    /*----------------------------------------------------------------------------*/
+    /* This Method is called when scanQRCode Button is pressed
+    /* Calls the barcodeServie.scanQRCode
+    /*----------------------------------------------------------------------------*/
+    scanQRcode(){
     this.storage.ready().then(()=>{
       this.barcodeService.scanQRcodeForJSON().then((res)=>{
-          if(res){
-            let alert = this.alertCtrl.create({
-            title: 'Erfolgreich',
-            subTitle: 'Der Medikationsplan wurde erfolgreich eingelesen. Unter meine Medikation sind nun alle deine Medikamente aufgelistet.',
-            buttons: ['Ok']
+        if(res){
+          let alert = this.alertCtrl.create({
+          title: 'Erfolgreich',
+          subTitle: 'Der Medikationsplan wurde erfolgreich eingelesen. Unter meine Medikation sind nun alle deine Medikamente aufgelistet.',
+          buttons: ['Ok']
           });
           }
           else{
             console.log("something went WRONG");
           }
-      });
-    })
-  }
+          });
+        })
+    }
 
-  toggleContent(numb){
-  if (this.toggleObject == numb)
+    /*----------------------------------------------------------------------------*/
+    /* This Method is used to toggle The Content accordion
+    /*----------------------------------------------------------------------------*/
+    toggleContent(numb){
+    if (this.toggleObject == numb)
     this.toggleObject = 0
-  else
+    else
     this.toggleObject = numb;
-  }
-  navParam(){
-    /*this.navCtrl.push(MedicationReminderViewPage,{
-        state: 0
-      });*/
-      new Promise((resolve, reject) => {
-        this.navCtrl.push(MedicationReminderViewPage, {state: 1, resolve: resolve});
-      }).then(data => {
-        console.log(data)
-      });
-
-}
+    }
 }

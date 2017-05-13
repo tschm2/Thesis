@@ -7,14 +7,29 @@ import { HciHospAPI } from 'hci-hospindex-api';
 import  * as  HCITypes from 'hci-hospindex-api/src/api';
 import { chmedJsonHandler } from '../services/chmedJsonHandler';
 
+/*----------------------------------------------------------------------------*/
+/* barcodeService
+/* tschm2
+/* In this class the BarcodeScanner is getting Handled!
+/* All Function with scanning single Medication or the eMediplan are included
+/*
+/*----------------------------------------------------------------------------*/
+
 export class barcodeService {
 private list: Array<any>;
 private chmedHandler: chmedJsonHandler;
 
+  /**
+     * @param  {Storage}               publicstorage    ionic storage from phone
+   */
   constructor(public http: Http, public storage: Storage) {
     this.chmedHandler = new chmedJsonHandler(this.storage)
   }
 
+  /*----------------------------------------------------------------------------*/
+  /* This Method is used to Scan the QR-Code of the eMediplan
+  /* It returns a Promise with True or False if the scan was successfull
+  /*----------------------------------------------------------------------------*/
   scanQRcodeForJSON():any{
 
   return BarcodeScanner.scan().then((barcodeData) => {
@@ -38,6 +53,13 @@ private chmedHandler: chmedJsonHandler;
     })
   }
 
+  /*----------------------------------------------------------------------------*/
+  /* This Method is used to add the Title and Full Description of the Medication
+  /* In the QR-Code of the eMediplan only the Pharmacode of the Medication is stored
+  /* To get the description a Call to the HCI Solutions Database is needed
+  /*
+  /* Returns a list of Promises, because multiple accesses to the Database is needed!
+  /*----------------------------------------------------------------------------*/
   IdHCIQuery(medData){
     this.list = new Array<any>();
     var hciS = new HCIService();
@@ -64,6 +86,14 @@ private chmedHandler: chmedJsonHandler;
     });
   }
 
+  /*----------------------------------------------------------------------------*/
+  /* This Method is used to add Selfmedication to the Array
+  /* The Scan of the Barcode only has the ArticleNumber on it.
+  /* To get the full Data of the Medication a call to the HCI Solutions Database
+  /* is needed!
+
+  /* Returns a Promise when successfully done.
+  /*----------------------------------------------------------------------------*/
   scanMediCode(medData,morning,midday,evening,night,reason):Promise<any>{
 
     if(morning==true)morning=1
@@ -123,6 +153,13 @@ private chmedHandler: chmedJsonHandler;
       })
   }
 
+  /*----------------------------------------------------------------------------*/
+  /* This Method is used to do all the needed checks for the Medication
+  /* At the moment this method only checks for Doping and nutrition
+  /* "stringChecks" can be adapted!
+
+  /* Saves the checks in the storage: "checks"
+  /*----------------------------------------------------------------------------*/
   doChecksWithCurrentMedication(){
         let grouping:HCITypes.grouping = "byProduct"
         let extent:HCITypes.extent  = 'full';
@@ -153,7 +190,9 @@ private chmedHandler: chmedJsonHandler;
         })
       })
   }
-
+  /*----------------------------------------------------------------------------*/
+  /*
+  /*----------------------------------------------------------------------------*/
 
 /* To Be Deleted */
 

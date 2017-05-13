@@ -1,12 +1,17 @@
 import {Request, RequestMethod,Response} from '@angular/http';
 import {Injectable} from '@angular/core';
-
 import 'rxjs/add/operator/toPromise';
 import myPako from "../../node_modules/pako"
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
 import { Http, Headers, RequestOptions } from '@angular/http';
+
+/*----------------------------------------------------------------------------*/
+/* barcodeService
+/* tschm2
+/* This Class is used for the HCI Request
+/*----------------------------------------------------------------------------*/
 
 export class HCIService {
 apiURL:string;
@@ -15,6 +20,9 @@ json:JSON;
 http:Http
   constructor() { }
 
+  /*----------------------------------------------------------------------------*/
+  /* This Method is used to Query a Medication and get the HCISolutions Informatin
+  /*----------------------------------------------------------------------------*/
   hciquery(aKey: string, aKeyType: string): Promise<any> {
     var key = aKey; // queried barcode
     var index = 'hospINDEX'; // TODO: Default
@@ -48,7 +56,7 @@ http:Http
     return p;
     }
 
-  //testDummyData
+  //testDummyData TO BE DELETED
    getHCIData(http,id,keyT):any {
       // preparing variables
       var api = 'http://www.laettere.ch/carole/mina/getArticle.php';

@@ -8,7 +8,7 @@ import { NavController, NavParams } from 'ionic-angular';
 
 /*----------------------------------------------------------------------------*/
 /* MedicationPage
-/* tschm2
+/* tschm2, dornt1
 /* This is the TypescriptFile of the MedicationPage
 /*
 /* makeNutritionObject() used to create the NutritionObject for the Page

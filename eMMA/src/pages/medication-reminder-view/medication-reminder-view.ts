@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage'
 /*----------------------------------------------------------------------------*/
 /* MedicationReminderView
-/* tschm2
+/* tschm2, dornt1
 /* This is the TypescriptFile of the MedicationReminderView Page
 /*
 /* changeState() used to set the MedicationStatusTaken to 1 or 0
@@ -68,7 +68,7 @@ export class MedicationReminderViewPage {
       })
     })
   }
-  
+
   /*----------------------------------------------------------------------------*/
   /* This Method is called when the User presses on the Medication
   /* It sets the State of the chosen Medication to 0 or 1

@@ -8,7 +8,7 @@ import { AlertController } from 'ionic-angular';
 
 /*----------------------------------------------------------------------------*/
 /* NutritionPage
-/* tschm2
+/* tschm2, dornt1
 /* This is the TypescriptFile of the NutritionPage
 /*
 /* makeNutritionObject() used to create the NutritionObject for the Page

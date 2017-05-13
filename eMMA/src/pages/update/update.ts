@@ -10,7 +10,7 @@ import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 
 /*----------------------------------------------------------------------------*/
 /* UpdatePage
-/* tschm2
+/* tschm2, dornt1
 /* This is the TypescriptFile of the UpdatePage
 /* scanQRCode() is used to call the QRCode Function on Pressing the button
 /* checkMidata() is used to get the CHMED16 String on Midata!

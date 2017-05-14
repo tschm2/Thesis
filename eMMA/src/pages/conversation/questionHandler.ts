@@ -3,7 +3,7 @@ import { Storage } from '@ionic/storage';
 export class questionHandler {
   messageEMMA_Reminder_Morning = "Du möchtest also die Erinnerungsfunktion am Morgen testen"
   messageEMMA_Reminder_Midday = "Du möchtest also die Erinnerungsfunktion am Mittag testen"
-  messageEMMA_Reminder_Evening = "Du möchtest also die Erinnerungsfunktion am Abend testen"
+  messageEMMA_Reminder_Eavening = "Du möchtest also die Erinnerungsfunktion am Abend testen"
   messageEMMA_Reminder_Night = "Du möchtest also die Erinnerungsfunktion in der Nacht testen"
   messageEMMA_Delete_Storage = "OOOOPs: ich habe gerade den Specher gelöscht, Sorry -.-"
   messageEMMA_About = "Du möchtest also etwas über eMMA wissen."
@@ -29,6 +29,11 @@ export class questionHandler {
   takingTime:String[];
   constructor(private storage:Storage){
     }
+    /*----------------------------------------------------------------------------*/
+    /* This Methode handels the user input for the question Methode
+    /*
+    /*the question of the user is analysed and the return value is the awnser form eMMA
+    /*----------------------------------------------------------------------------*/
     returnAnswer(question: String):any{
       var retVal:any = "";
       var list = new Array<any>()
@@ -42,21 +47,23 @@ export class questionHandler {
         /*Ab it function und return not var*/
         var l2 = this.storage.get('medicationData').then((res)=>{
             this.drugList = res;
-            console.log(this.drugList);
-            for(var pos in this.drugList){
-              if(question.includes(this.drugList[pos].title)){
-                if(question.includes("WANN")||question.includes("ZEIT")||question.includes("UHR")){
+
+            for(var pos in this.drugList){  //stepp thorught every drug in drug list
+              if(question.includes(this.drugList[pos].title)){  //if the question includes a medicaitons name
+
+                if(question.includes("WANN")||question.includes("ZEIT")||question.includes("UHR")){//check if the user whatns to now soemting about the time
                   retVal = retVal + "Du solltest " + this.drugList[pos].title +" an folgenden Uhrzeiten einnehmen:\n"
                   for(var time in this.drugList[pos].Pos[0].D){
                     if(this.drugList[pos].Pos[0].D[time]){
-                      console.log(this.takingTime[time]);
                       retVal = retVal + this.messageEMMA_TakingTime[time]  + this.takingTime[time] + "Uhr, " + this.drugList[pos].Pos[0].D[time] + " "+ this.drugList[pos].Unit + "\n"
                     }
                   }
+                  //if the app insturctio has someting to do with "Essen" this information is also given to the user
                   if(this.drugList[pos].AppInstr && this.drugList[pos].AppInstr.includes("Essen")){
                     retVal = retVal + "jeweils" + this.drugList[pos].AppInstr + "\n"
                   }
                 }
+                //if the user wants to know about his apply intstruction
                 if((question.includes("WIE ")&& !question.includes("LANGE"))||question.includes("EINNAHME")){
                   if(this.drugList[pos].AppInstr){
                       retVal = retVal + "Du solltest " + this.drugList[pos].title + " " + this.drugList[pos].AppInstr  + " einnehmen\n";
@@ -65,6 +72,7 @@ export class questionHandler {
                     retVal = retVal + "Ich habe leider keine Informationen über die Einnahme von " + this.drugList[pos].title + "\n";
                   }
                 }
+                //if the suer wants to know the reason why he shoudl take his drug
                 if(question.includes("WIESO")||question.includes("GRUND")){
                   if(this.drugList[pos].TkgRsn){
                     retVal = retVal + "Als Grund für die Einnahme von " + this.drugList[pos].title + " habe ich " + this.drugList[pos].TkgRsn  + " eingetragen\n";
@@ -73,6 +81,7 @@ export class questionHandler {
                     retVal = retVal + "Ich habe leider keine Informationen über den Grund der einnahme von " + this.drugList[pos].title; "\n" + "soll ich für dich Googeln?\n"
                   }
                 }
+                //if the user wants to knwo someting about the taking duration of his drugs
                 if(question.includes("LANGE")||question.includes("DAUER")){
                   if(this.drugList[pos].Pos[0].DtFrom && this.drugList[pos].Pos[0].DtTo){
                     retVal = retVal + "Du solltes " + this.drugList[pos].title + " an folgenden Daten einnehmen:\n" + "vom: " + this.drugList[pos].Pos[0].DtFrom + " bis " + this.drugList[pos].Pos[0].DtTo +"\n";
@@ -81,18 +90,19 @@ export class questionHandler {
                     retVal = retVal + "Ich habe leider keine Informationen über die Einnahmedauer von: " + this.drugList[pos].title + "\n";
                   }
                 }
+                //if knwo possible awnser was found about this drug
                 if(retVal == ""){
                   retVal = retVal + "Was möchtest du über " + this.drugList[pos].title + " wissen?"
                 }
               }
             }
-            if(question === "?"){
+            if(question === "?"){//if the user writes onyl an ?, give him information what he can ask
               retVal = this.messageEMMA_InformationQuestion
               }
-            else if(question.length > 50){
+            else if(question.length > 35){//if there is too mutch information in the question
               retVal = this.messageEMMA_TooMutchInformation
             }
-            else if(retVal == ""){
+            else if(retVal == ""){//if tthe return value is still empty
               if(question.includes("NAHRUNG")||(question.includes("ESSEN")&&question.includes("NICHT"))){
                 retVal =  this.messageEMMA_Nutrition;
               }
@@ -109,7 +119,7 @@ export class questionHandler {
                   retVal = this.messageEMMA_Reminder_Midday
                 }
                 else if(question.includes("ABEND")){
-                  retVal = this.messageEMMA_Reminder_Evening
+                  retVal = this.messageEMMA_Reminder_Eavening
                 }else{
                   retVal = this.messageEMMA_Reminder_Morning
                 }
@@ -141,20 +151,20 @@ export class questionHandler {
               else if(question.includes("OK")||question.includes("DANKE")||question.includes("SUPER")||question.includes("TOLL")){
                 retVal = "Freut mich dass ich dir helfen konnte"
               }
-              else{
-                if(this.messageEMMA_Not_Understand_temp.length == 0){
+              else{ //if no possible awnser is found
+                if(this.messageEMMA_Not_Understand_temp.length == 0){ //if the ramdom array is empy
                   for (var name in this.messageEMMA_Not_Understand) {
-                    this.messageEMMA_Not_Understand_temp[name] = this.messageEMMA_Not_Understand[name];
+                    this.messageEMMA_Not_Understand_temp[name] = this.messageEMMA_Not_Understand[name];//refill the array
                   }
                 }
-                let random = Math.random()*this.messageEMMA_Not_Understand_temp.length;
-                retVal = this.messageEMMA_Not_Understand_temp.splice(random,1)
+                let random = Math.random()*this.messageEMMA_Not_Understand_temp.length; //get a random pos
+                retVal = this.messageEMMA_Not_Understand_temp.splice(random,1)//cut a string form the array at the random pos
               }
             }
             })
             list.push(l2) //To delete
  /* To delete*/
-          return Promise.all(list).then(()=>{
+          return Promise.all(list).then(()=>{//get the retun value if the calulation is finished
             return retVal
           })
 

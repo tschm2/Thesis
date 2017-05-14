@@ -2,23 +2,26 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Chart } from 'chart.js';
 import { Component, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage'
-/*
-  Generated class for the MyMedicationDiary page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+/*----------------------------------------------------------------------------*/
+/* my Medication diary Page
+/* tschm2, dornt1
+/* This file creates the medication diary
+/*
+/*
+/*----------------------------------------------------------------------------*/
 @Component({
   selector: 'page-my-medication-diary',
   templateUrl: 'my-medication-diary.html'
 })
 export class MyMedicationDiaryPage {
 
+  //view Child for barchart and linechart
   @ViewChild('barCanvas') barCanvas;
   @ViewChild('lineCanvas') lineCanvas;
 
+  //dom Obj
   months = ["Januar", "Februar", "März", "April", "Mai" , "Juni" , "Juli", "August" ,"September", "Oktober", "November" , "Dezember"]
-  drugs = ["Sortis", "Davalgan"]
   takenStrings = ["Morgen","Mittag","Abend","Nacht"]
   barChart: any;
   lineChart: any;
@@ -43,32 +46,32 @@ export class MyMedicationDiaryPage {
       var tempMonthObj = ({
         "DrugList":[]
       })
-      for (var posDrug in complianceObj.DrugList)
-      {
-        for(var m = 1; m<=6;m++){
-          for(var i = 1; i<2;i++){
-            complianceObj.DrugList[posDrug].Compliance.push({
-            "Date": i+".0" + m +".2017",
-            "D":[
-              Math.round(Math.random()),
-              Math.round(Math.random()),
-              Math.round(Math.random()),
-              "Niiiiicht eingenommen"
-              ]
-            })
-          }
-        }
-        tempMonthObj.DrugList.push({
-          "Name": complianceObj.DrugList[posDrug].Name,
-          "Months":[]
-        })
-        for(var pos in this.months){
-         tempMonthObj.DrugList[posDrug].Months.push({
-           "Name": this.months[pos],"Values":[0,0]
-         })
-        }
-      }
-      console.log("Dummy daten erstellt", tempMonthObj)
+      // for (var posDrug in complianceObj.DrugList)
+      // {
+      //   for(var m = 1; m<=6;m++){
+      //     for(var i = 1; i<2;i++){
+      //       complianceObj.DrugList[posDrug].Compliance.push({
+      //       "Date": i+".0" + m +".2017",
+      //       "D":[
+      //         Math.round(Math.random()),
+      //         Math.round(Math.random()),
+      //         Math.round(Math.random()),
+      //         "Niiiiicht eingenommen"
+      //         ]
+      //       })
+      //     }
+      //   }
+      //   tempMonthObj.DrugList.push({
+      //     "Name": complianceObj.DrugList[posDrug].Name,
+      //     "Months":[]
+      //   })
+      //   for(var pos in this.months){
+      //    tempMonthObj.DrugList[posDrug].Months.push({
+      //      "Name": this.months[pos],"Values":[0,0]
+      //    })
+      //   }
+      // }
+      // console.log("Dummy daten erstellt", tempMonthObj)
 
       let choosenMedicin = "SORTIS"
 
@@ -81,26 +84,28 @@ export class MyMedicationDiaryPage {
           let temptaken = 0;
           for(var value in complianceObj.DrugList[pos].Compliance){
 
+          //this part analyses the Compliance data and fill the correct values in the monts and drugcompliance array
           let ArryValue = Number( complianceObj.DrugList[pos].Compliance[value].Date.substring(3,5));
             for(var taken in complianceObj.DrugList[pos].Compliance[value].D){
               if(complianceObj.DrugList[pos].Compliance[value].D[taken] != undefined){
-                tempMax++;
-                  tempMonthObj.DrugList[pos].Months[ArryValue-1].Values[0]++
+                tempMax++;                                                    //add one value for a medication who should be taken
+                  tempMonthObj.DrugList[pos].Months[ArryValue-1].Values[0]++  //add one tho acutal month, for a medication which should be taken
                 if(complianceObj.DrugList[pos].Compliance[value].D[taken] != 0){
-                    tempMonthObj.DrugList[pos].Months[ArryValue-1].Values[1]++
-                  temptaken++;
+                    tempMonthObj.DrugList[pos].Months[ArryValue-1].Values[1]++  //add one tho acutal month, which was taken
+                  temptaken++;                                                  //add one value for a medication which was taken
                   if(complianceObj.DrugList[pos].Compliance[value].D[taken] != 1){
+                        //push deatil information in variable message
                         messages.push({
                         date: complianceObj.DrugList[pos].Compliance[value].Date,
                         dayTime: this.takenStrings[taken],
                         description: complianceObj.DrugList[pos].Compliance[value].D[taken]
                       })
                   }
-
                 }
               }
             }
           }
+          //add compliance dectiption for show all detail compliance informatoion in the table
           this.ComplianceListDescription.push({
             data: messages,
             name: labelNames[pos]
@@ -108,10 +113,7 @@ export class MyMedicationDiaryPage {
           messages = [];
         Values[pos] = temptaken/tempMax * 100;
       }
-      console.log(this.ComplianceListDescription)
-      console.log("Month",tempMonthObj)
-      console.log("Compliane",complianceObj)
-      console.log("description",this.ComplianceListDescription)
+      //take the months array and fill the array with values for the line chart
       var monthvalues = new Array<any>()
       for(var drugpos in tempMonthObj.DrugList){
         if(tempMonthObj.DrugList[drugpos].Name == choosenMedicin||choosenMedicin == "all"){
@@ -124,9 +126,7 @@ export class MyMedicationDiaryPage {
           }
         }
       }
-      //monthvalues.push(0,100)
-      //Values.push(100)
-      //this.storage.set('ComplianceData',complianceObj)
+      //generate bar chart
       this.barChart = new Chart(this.barCanvas.nativeElement, {
 
               type: 'bar',
@@ -165,7 +165,7 @@ export class MyMedicationDiaryPage {
               }
 
           });
-
+//generate line chart
           this.lineChart = new Chart(this.lineCanvas.nativeElement, {
 
               type: 'line',

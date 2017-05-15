@@ -27,6 +27,10 @@
         Medikationstreue Verlauf
       </ion-card-header>
       <ion-card-content [ngClass]="{'hidden': toggleObject != 2}">
+        <button ion-button full (click)="presentActionSheet(this)">
+          <span>{{choosenDrug}}</span>
+        </button>
+
         <canvas #lineCanvas></canvas>
       </ion-card-content>
     </ion-card>

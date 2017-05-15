@@ -2,7 +2,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Chart } from 'chart.js';
 import { Component, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage'
-
+import { ActionSheetController } from 'ionic-angular';
 /*----------------------------------------------------------------------------*/
 /* my Medication diary Page
 /* tschm2, dornt1
@@ -27,9 +27,11 @@ export class MyMedicationDiaryPage {
   lineChart: any;
   ComplianceListDescription:any;
   toggleObject:number;
+  choosenDrug: any = "Gesamte Medikation";
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public storage: Storage) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams,public storage: Storage,public actionSheetCtrl: ActionSheetController) {}
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyMedicationDiaryPage');
@@ -48,19 +50,19 @@ export class MyMedicationDiaryPage {
       })
       for (var posDrug in complianceObj.DrugList)
       {
-        for(var m = 1; m<=6;m++){
-          for(var i = 1; i<2;i++){
-            complianceObj.DrugList[posDrug].Compliance.push({
-            "Date": i+".0" + m +".2017",
-            "D":[
-              Math.round(Math.random()),
-              Math.round(Math.random()),
-              Math.round(Math.random()),
-              "Niiiiicht eingenommen"
-              ]
-            })
-          }
-        }
+        // for(var m = 1; m<=6;m++){
+        //   for(var i = 1; i<2;i++){
+        //     complianceObj.DrugList[posDrug].Compliance.push({
+        //     "Date": i+".0" + m +".2017",
+        //     "D":[
+        //       Math.round(Math.random()),
+        //       Math.round(Math.random()),
+        //       Math.round(Math.random()),
+        //       "Niiiiicht eingenommen"
+        //       ]
+        //     })
+        //   }
+        // }
         tempMonthObj.DrugList.push({
           "Name": complianceObj.DrugList[posDrug].Name,
           "Months":[]
@@ -72,8 +74,6 @@ export class MyMedicationDiaryPage {
         }
       }
       console.log("Dummy daten erstellt", tempMonthObj)
-
-      let choosenMedicin = "SORTIS"
 
       let labelNames = new Array<any>()
       var Values = new Array<any>()
@@ -116,7 +116,7 @@ export class MyMedicationDiaryPage {
       //take the months array and fill the array with values for the line chart
       var monthvalues = new Array<any>()
       for(var drugpos in tempMonthObj.DrugList){
-        if(tempMonthObj.DrugList[drugpos].Name == choosenMedicin||choosenMedicin == "all"){
+        if(tempMonthObj.DrugList[drugpos].Name == this.choosenDrug||this.choosenDrug == null||this.choosenDrug == "Gesamte Medikation"){
           for (var pos in tempMonthObj.DrugList[0].Months){
             if(tempMonthObj.DrugList[0].Months[pos].Values[0] == 0){
               monthvalues.push(0)
@@ -209,4 +209,32 @@ export class MyMedicationDiaryPage {
     else
       this.toggleObject = numb;
   }
+  presentActionSheet() {
+    this.storage.get('ComplianceData').then((res)=>{
+      let complianceObj = res;
+      let actionSheet = this.actionSheetCtrl.create({
+       title: 'Wähle ein Medikament aus',
+     });
+     var allButton = {
+         text: "Gesamte Medikation",
+         handler: () => {
+           this.choosenDrug = "Gesamte Medikation"
+           this.ionViewDidLoad()
+         }
+       }
+    actionSheet.addButton(allButton)
+     for (var posDrug in complianceObj.DrugList){
+       let tempName = complianceObj.DrugList[posDrug].Name;
+      var button = {
+          text: tempName,
+          handler: () => {
+            this.choosenDrug = tempName;
+            this.ionViewDidLoad()
+          }
+        }
+       actionSheet.addButton(button)
+     }
+     actionSheet.present();
+   })
+ }
 }

@@ -1,8 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { Page1 } from '../pages/page1/page1';
-import { Page2 } from '../pages/page2/page2';
 import { NutritionPage } from '../pages/nutrition/nutrition';
 import { AboutEmmaPage } from '../pages/about-emma/about-emma';
 import { MyMedicationDiaryPage } from '../pages/my-medication-diary/my-medication-diary';
@@ -17,8 +15,6 @@ import { QRCodeModule } from 'angular2-qrcode';
 @NgModule({
   declarations: [
     MyApp,
-    Page1,
-    Page2,
     NutritionPage,
     AboutEmmaPage,
     MyMedicationDiaryPage,
@@ -35,8 +31,6 @@ import { QRCodeModule } from 'angular2-qrcode';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    Page1,
-    Page2,
     NutritionPage,
     AboutEmmaPage,
     MyMedicationDiaryPage,

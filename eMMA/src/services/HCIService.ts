@@ -1,11 +1,7 @@
-import {Request, RequestMethod,Response} from '@angular/http';
-import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
-import myPako from "../../node_modules/pako"
-import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 
 /*----------------------------------------------------------------------------*/
 /* barcodeService

@@ -1,16 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
-
-import { Page1 } from '../pages/page1/page1';
-import { Page2 } from '../pages/page2/page2';
 import { NutritionPage } from '../pages/nutrition/nutrition';
 import { AboutEmmaPage } from '../pages/about-emma/about-emma';
 import { MyMedicationDiaryPage } from '../pages/my-medication-diary/my-medication-diary';
 import { ConversationPage } from '../pages/conversation/conversation';
 import { MyMedicationPage } from '../pages/my-medication/my-medication';
 import { UpdatePage } from '../pages/update/update';
-import { MedicationReminderViewPage } from '../pages/medication-reminder-view/medication-reminder-view';
+
 
 @Component({
   templateUrl: 'app.html'
@@ -27,13 +24,12 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Konversation mit eMMA', component: ConversationPage },
-      { title: 'Zu meiner Medikation', component: MyMedicationPage },
-      { title: 'Gesammte Medikation aktualisieren', component: UpdatePage },
-      { title: 'Das gilt es zu beachten!', component: NutritionPage },
+      { title: 'Schreiben mit eMMA', component: ConversationPage },
+      { title: 'Meine Medikation', component: MyMedicationPage },
+      { title: 'QR-Code aktualisieren', component: UpdatePage },
+      { title: 'Zu beachten!', component: NutritionPage },
       { title: 'Mein Medikationstagebuch', component: MyMedicationDiaryPage },
       { title: 'Wer ist eMMA', component: AboutEmmaPage },
-      { title: 'reminderView', component: MedicationReminderViewPage },
     ];
 
   }

@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { HciHospAPI } from 'hci-hospindex-api';
-import  * as  HCITypes from 'hci-hospindex-api/src/api';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import { AlertController } from 'ionic-angular';
 
 /*----------------------------------------------------------------------------*/

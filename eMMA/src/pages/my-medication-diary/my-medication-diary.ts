@@ -46,32 +46,32 @@ export class MyMedicationDiaryPage {
       var tempMonthObj = ({
         "DrugList":[]
       })
-      // for (var posDrug in complianceObj.DrugList)
-      // {
-      //   for(var m = 1; m<=6;m++){
-      //     for(var i = 1; i<2;i++){
-      //       complianceObj.DrugList[posDrug].Compliance.push({
-      //       "Date": i+".0" + m +".2017",
-      //       "D":[
-      //         Math.round(Math.random()),
-      //         Math.round(Math.random()),
-      //         Math.round(Math.random()),
-      //         "Niiiiicht eingenommen"
-      //         ]
-      //       })
-      //     }
-      //   }
-      //   tempMonthObj.DrugList.push({
-      //     "Name": complianceObj.DrugList[posDrug].Name,
-      //     "Months":[]
-      //   })
-      //   for(var pos in this.months){
-      //    tempMonthObj.DrugList[posDrug].Months.push({
-      //      "Name": this.months[pos],"Values":[0,0]
-      //    })
-      //   }
-      // }
-      // console.log("Dummy daten erstellt", tempMonthObj)
+      for (var posDrug in complianceObj.DrugList)
+      {
+        for(var m = 1; m<=6;m++){
+          for(var i = 1; i<2;i++){
+            complianceObj.DrugList[posDrug].Compliance.push({
+            "Date": i+".0" + m +".2017",
+            "D":[
+              Math.round(Math.random()),
+              Math.round(Math.random()),
+              Math.round(Math.random()),
+              "Niiiiicht eingenommen"
+              ]
+            })
+          }
+        }
+        tempMonthObj.DrugList.push({
+          "Name": complianceObj.DrugList[posDrug].Name,
+          "Months":[]
+        })
+        for(var pos in this.months){
+         tempMonthObj.DrugList[posDrug].Months.push({
+           "Name": this.months[pos],"Values":[0,0]
+         })
+        }
+      }
+      console.log("Dummy daten erstellt", tempMonthObj)
 
       let choosenMedicin = "SORTIS"
 

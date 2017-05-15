@@ -3,8 +3,8 @@ import { barcodeService } from '../../services/barcodeService';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 import { Storage } from '@ionic/storage'
 import { AlertController } from 'ionic-angular';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import { NavController, NavParams } from 'ionic-angular';
+import { Http } from '@angular/http';
+
 
 /*----------------------------------------------------------------------------*/
 /* MedicationPage
@@ -102,6 +102,7 @@ export class MyMedicationPage {
           this.barcodeService.doChecksWithCurrentMedication();
         })
         this.storage.set("medicationData", this.drugList);
+        alert.present();
         // Edits the ComplianceDataObject
         this.editComplianceData(res['Medicaments'][res['Medicaments'].length-1].title)
       })

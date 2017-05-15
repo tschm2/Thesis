@@ -3,8 +3,7 @@ import { Storage } from '@ionic/storage'
 import {Component} from '@angular/core';
 import {QRCodeComponent} from 'angular2-qrcode';
 import {ViewChild} from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import { MedicationReminderViewPage } from '../../pages/medication-reminder-view/medication-reminder-view';
+import { Http } from '@angular/http';
 import { AlertController } from 'ionic-angular';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 
@@ -81,6 +80,7 @@ export class UpdatePage {
           subTitle: 'Der Medikationsplan wurde erfolgreich eingelesen. Unter meine Medikation sind nun alle deine Medikamente aufgelistet.',
           buttons: ['Ok']
           });
+          alert.present();
           }
           else{
             console.log("something went WRONG");

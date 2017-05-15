@@ -6,8 +6,6 @@ import { Storage } from '@ionic/storage';
 import { eMMA} from '../../pages/conversation/eMMA';
 import { questionHandler } from '../../pages/conversation/questionHandler';
 //Import other Pages
-import { Page1 } from '../../pages/page1/page1';
-import { UpdatePage } from '../../pages/update/update';
 import { NutritionPage } from '../../pages/nutrition/nutrition';
 import { AboutEmmaPage } from '../../pages/about-emma/about-emma';
 import { MyMedicationDiaryPage } from '../../pages/my-medication-diary/my-medication-diary';
@@ -15,14 +13,13 @@ import { MyMedicationPage } from '../../pages/my-medication/my-medication';
 import { MedicationReminderViewPage } from '../../pages/medication-reminder-view/medication-reminder-view';
 //Import Services
 import { barcodeService } from '../../services/barcodeService';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import { LocalNotifications } from 'ionic-native';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 
 //Initalize eMMA Waiting Time
 var eMMAWaitingTime = 1000;
 var eMMAWaitingTimeDouble = 2*eMMAWaitingTime;
-var eMMAWaitingTimeShort = 200;
 
 var notificationSingelton = true;
 
@@ -83,7 +80,7 @@ export class ConversationPage {
   this part of the programm is used if the user start the app for the first time
   *****************************************************************************/
 
-  //Methode for register the name of the user
+  //Method for register the name of the user
   firstAppStart() {
     this.chmedHandler.saveEmptyMedicationplan();
     let tempTakingTime = ["08:00","12:00","18:00","22:00"] // set standart times for the taking times
@@ -92,7 +89,7 @@ export class ConversationPage {
     setTimeout(()=> this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_2),eMMAWaitingTimeDouble);
     this.overrideSendbutton("questionPinNecessary"); //nect metode is the Pin question
   }
-  //Methde to aks the user if a pin is necessary
+  //Method to aks the user if a pin is necessary
   questionPinNecessary(name:String){
     //chekc if name was not empty
     if(name == null){
@@ -264,6 +261,7 @@ export class ConversationPage {
   })
   }
   AwnswerReminder(){
+    this.toggleObject = showNothing
     //call the last trigerred notification to check the day time
     LocalNotifications.getTriggered(1).then((res)=>{
       let dayTime:any
@@ -275,8 +273,8 @@ export class ConversationPage {
         dayTime = 0;
       }
       this.storage.get('takingTime').then((takingtimes)=>{
-      let takingTime = takingtimes;
-      let newTime:String = takingTime[dayTime]
+      // let takingTime = takingtimes;
+      // let newTime:String = takingTime[dayTime]
       // let myHour = newTime.substr(0,2)
       // let myMinute = newTime.substr(3,2)
       // let dayoffset = false
@@ -341,11 +339,13 @@ export class ConversationPage {
     //Save Note to Compliance
     this.addComplianceInformation(input);
     this.finishReminderNotTaken();
+    this.overrideSendbutton("question");  //move to the question state
   }
   finishReminderNotSpecified(input:String){
     //Save not specified to Compliance
     this.addComplianceInformation(0);
     this.finishReminderNotTaken();
+    this.overrideSendbutton("question");  //move to the question state
   }
   finishReminderNotTaken(){
     //Methode if the Patinet hasn't took his medication
@@ -495,7 +495,7 @@ export class ConversationPage {
   /*----------------------------------------------------------------------------*/
   overrideAnswerButtonsOneButton(text1: String, function1: String) {
     this.toggleObject = showNothing;
-    setTimeout(() => this.toggleObject = 5 , eMMAWaitingTime);  //show the singe button
+    setTimeout(() => this.toggleObject = showsingleButton , eMMAWaitingTime);  //show the single button
     this.preAnswers = [];
     this.preAnswers.push({  //pus the information in the button
       text: text1,

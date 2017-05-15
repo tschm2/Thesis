@@ -33,7 +33,7 @@ private chmedHandler: chmedJsonHandler;
   scanQRcodeForJSON():any{
 
   return BarcodeScanner.scan().then((barcodeData) => {
-    let strData: string = this.chmedHandler.chmedToString(barcodeData)
+    let strData: string = this.chmedHandler.chmedToString(barcodeData.text)
       this.storage.ready().then(() => {
       var mediPlan = JSON.parse(strData)
       this.storage.set("mediPlan", mediPlan).then(()=>{

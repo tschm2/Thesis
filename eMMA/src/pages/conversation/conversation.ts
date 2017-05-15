@@ -2,7 +2,7 @@ import { NavController, NavParams, Platform, AlertController } from 'ionic-angul
 import {ViewChild, Component} from '@angular/core';
 import {Content} from 'ionic-angular/index';
 import { Storage } from '@ionic/storage';
-//Inport conversation methodes
+//Import conversation methodes
 import { eMMA} from '../../pages/conversation/eMMA';
 import { questionHandler } from '../../pages/conversation/questionHandler';
 //Import other Pages
@@ -17,6 +17,7 @@ import { MedicationReminderViewPage } from '../../pages/medication-reminder-view
 import { barcodeService } from '../../services/barcodeService';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { LocalNotifications } from 'ionic-native';
+import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 
 //Initalize eMMA Waiting Time
 var eMMAWaitingTime = 1000;
@@ -48,11 +49,13 @@ export class ConversationPage {
   sendButtonNumber: String;
   toggleObject:number;
   notifications: any[] = [];
+  chmedHandler: chmedJsonHandler;
 
   constructor(public http:Http,public navCtrl: NavController, public navParams: NavParams, private storage:Storage, public platform: Platform, public alertCtrl: AlertController) {
     this.messages = [];
     this.preAnswers = [];
     this.toggleObject = showTextfield;
+    this.chmedHandler = new chmedJsonHandler(this.storage)
   }
   eMMA = new eMMA();
   questionhandler = new questionHandler(this.storage);
@@ -82,7 +85,10 @@ export class ConversationPage {
 
   //Methode for register the name of the user
   firstAppStart() {
-     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_1)
+    this.chmedHandler.saveEmptyMedicationplan();
+    let tempTakingTime = ["08:00","12:00","18:00","22:00"] // set standart times for the taking times
+    this.storage.set('takingTime',tempTakingTime) // save the taking times to the storrage
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_1)
     setTimeout(()=> this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_2),eMMAWaitingTimeDouble);
     this.overrideSendbutton("questionPinNecessary"); //nect metode is the Pin question
   }

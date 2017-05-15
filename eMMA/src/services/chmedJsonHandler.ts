@@ -129,7 +129,8 @@ import myPako from "../../node_modules/pako"
   // Method to Decode the CHMED16 String
   /*----------------------------------------------------------------------------*/
   chmedToString(chmed16):string{
-    var b64Data  =   chmed16.text.substring(9);
+    console.log(chmed16)
+    var b64Data  =   chmed16.substring(9);
     // Decode base64 (convert ascii to binary)
     var stData     = atob(b64Data);
     // Convert binary string to character-number array
@@ -149,11 +150,14 @@ import myPako from "../../node_modules/pako"
   // This Method saves an Dummy Mediplan to allow the user to work with the application!
   /*----------------------------------------------------------------------------*/
   saveEmptyMedicationplan(){
-    var mediPlanString:String = "CHMED16A1H4sIAAAAAAAAAzWPzU7DMBCE32WvxGjt/LTxCWgAITUIlZ6KekjsTROhhqpxEFWUd2eTyLdvxrM76wEee1eDhs71llrXPZRVfW9qCCBzbCuUK4GxwHQvUWOoMblDpRE58GY5EK9DSaqSIrQmFVFRWlEarMR6FcsqDUlRYjmbk93fLgRaztyY4jy1gf46BvBRuIYV6AGefCtXRgIlj24ad2OP6eWdpxjz4o/VK7WWrqAxgK1/6DvHFhvtiWX2vDRPi7Nt53Jql0U7w8XD/AE5BgsoD5GH2EMyHke+sv5pyc//MkzHfborkVvcQ3OZgKO78/dM/z1VXKpeAQAA";
+    let mediPlanString = "CHMED16A1H4sIAAAAAAAAAzWPzU7DMBCE32WvxGjt/LTxCWgAITUIlZ6KekjsTROhhqpxEFWUd2eTyLdvxrM76wEee1eDhs71llrXPZRVfW9qCCBzbCuUK4GxwHQvUWOoMblDpRE58GY5EK9DSaqSIrQmFVFRWlEarMR6FcsqDUlRYjmbk93fLgRaztyY4jy1gf46BvBRuIYV6AGefCtXRgIlj24ad2OP6eWdpxjz4o/VK7WWrqAxgK1/6DvHFhvtiWX2vDRPi7Nt53Jql0U7w8XD/AE5BgsoD5GH2EMyHke+sv5pyc//MkzHfborkVvcQ3OZgKO78/dM/z1VXKpeAQAA";
+    console.log(mediPlanString);
     mediPlanString = this.chmedToString(mediPlanString)
     this.storage.ready().then(() => {
-      var mediPlan = JSON.parse(mediPlan)
-      this.storage.set("mediPlan", mediPlan)
+      var mediPlan = JSON.parse(mediPlanString)
+      this.storage.set("mediPlan", mediPlan).then(()=>{
+        console.log("FERTIG");
+      })
     })
   }
 

@@ -76,7 +76,7 @@ export class MyMedicationDiaryPage {
       console.log("Dummy daten erstellt", tempMonthObj)
 
       let labelNames = new Array<any>()
-      var Values = new Array<any>()
+      var barValues = new Array<any>()
 
       for(var pos in complianceObj.DrugList){
           labelNames[pos] =   complianceObj.DrugList[pos].Name;
@@ -111,7 +111,7 @@ export class MyMedicationDiaryPage {
             name: labelNames[pos]
           })
           messages = [];
-        Values[pos] = temptaken/tempMax * 100;
+        barValues[pos] = temptaken/tempMax * 100;
       }
       //take the months array and fill the array with values for the line chart
       var monthvalues = new Array<any>()
@@ -119,22 +119,23 @@ export class MyMedicationDiaryPage {
         if(tempMonthObj.DrugList[drugpos].Name == this.choosenDrug||this.choosenDrug == null||this.choosenDrug == "Gesamte Medikation"){
           for (var pos in tempMonthObj.DrugList[0].Months){
             if(tempMonthObj.DrugList[0].Months[pos].Values[0] == 0){
-              monthvalues.push(0)
+              monthvalues.push(null)
             }else{
               monthvalues.push(tempMonthObj.DrugList[0].Months[pos].Values[1]/tempMonthObj.DrugList[0].Months[pos].Values[0]*100)
             }
           }
         }
       }
+      barValues.push(0,100)
+      monthvalues.push(0,100)
       //generate bar chart
       this.barChart = new Chart(this.barCanvas.nativeElement, {
-
               type: 'bar',
               data: {
 
                   labels: labelNames,
                   datasets: [{
-                      data: Values,
+                      data: barValues,
                       backgroundColor: [
                           'rgba(255, 99, 132, 0.2)',
                           'rgba(54, 162, 235, 0.2)',

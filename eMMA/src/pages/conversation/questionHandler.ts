@@ -5,11 +5,11 @@ export class questionHandler {
   messageEMMA_Reminder_Midday = "Du möchtest also die Erinnerungsfunktion am Mittag testen"
   messageEMMA_Reminder_Eavening = "Du möchtest also die Erinnerungsfunktion am Abend testen"
   messageEMMA_Reminder_Night = "Du möchtest also die Erinnerungsfunktion in der Nacht testen"
-  messageEMMA_Delete_Storage = "OOOOPs: ich habe gerade den Specher gelöscht, Sorry -.-"
+  messageEMMA_Delete_Storage = "OOOOPs: ich habe gerade den Speicher gelöscht, Sorry -.-"
   messageEMMA_About = "Du möchtest also etwas über eMMA wissen."
   messageEMMA_Selfmedication = "Ich öffne die Selbstmedikation für dich"
   messageEMMA_Compliance = "Gerne zeige ich dir dein Medikationstagebuch an"
-  messageEMMA_Nutrition = "Ich zeige dir, welche Nahrungsmittel du im momment nicht essen darfts."
+  messageEMMA_Nutrition = "Ich zeige dir, welche Nahrungsmittel du im Momment nicht essen darfts."
   messageEMMA_InformationQuestion = "Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein + die Frage die du hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen must."
   messageEMMA_TooMutchInformation = "Huch, das war etwas viel auf Einmal. Bitte versuche es mit einer kürzeren Frage"
 
@@ -18,7 +18,7 @@ export class questionHandler {
   "Entschuldigung, ich habe dich leider nicht verstanden",
   "Sorry das habe ich verpasst. Bitte stelle eine andere Frage",
   "Diese Frage verstehe ich leider nicht. Kannst du es mit einer anderen Frage versuchen",
-  "Ich Verstehe das leider nicht",
+  "Ich verstehe das leider nicht",
   "Diese Frage kann ich leider nicht beantworten"
   ];
   messageEMMA_Not_Understand_temp = new Array<any>();
@@ -99,7 +99,7 @@ export class questionHandler {
             if(question === "?"){//if the user writes onyl an ?, give him information what he can ask
               retVal = this.messageEMMA_InformationQuestion
               }
-            else if(question.length > 35){//if there is too mutch information in the question
+            else if(question.length > 60){//if there is too mutch information in the question
               retVal = this.messageEMMA_TooMutchInformation
             }
             else if(retVal == ""){//if tthe return value is still empty

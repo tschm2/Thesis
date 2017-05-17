@@ -41,9 +41,23 @@ private chmedHandler: chmedJsonHandler;
       });
       this.IdHCIQuery(mediPlan).then((res) => {
           this.storage.set("medicationData", res);
-      });
+            var tempMedicationData = res;
+            var complianceObj = ({        //new object
+            "ID":"1",
+            "Date":"dateOfMediplan",
+            "DrugList":[]
+            })
+            for(var pos in tempMedicationData){ //new drug obj for every drug in the DrugList
+              complianceObj.DrugList.push({
+                "Name":tempMedicationData[pos].title,
+                "Compliance":[]
+              })
+            }
+           this.storage.set('ComplianceData',complianceObj)//save to storage
+          })
+        });
 
-      })
+
       return true
       // Success! Barcode data is here
     }, (err) => {

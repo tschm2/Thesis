@@ -21,17 +21,15 @@ export class MyMedicationDiaryPage {
   @ViewChild('lineCanvas') lineCanvas;
 
   //dom Obj
-  months = ["Januar", "Februar", "März", "April", "Mai" , "Juni" , "Juli", "August" ,"September", "Oktober", "November" , "Dezember"]
+  months = ["Januar", "Februar", "März", "April", "Mai" , "Juni"]
   takenStrings = ["Morgen","Mittag","Abend","Nacht"]
   barChart: any;
   lineChart: any;
   ComplianceListDescription:any;
   toggleObject:number;
-  choosenDrug: any = "Gesamte Medikation";
-
+  choosenMonth: any = "Gesamte Zeitdauer";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public storage: Storage,public actionSheetCtrl: ActionSheetController) {}
-
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyMedicationDiaryPage');
@@ -48,33 +46,24 @@ export class MyMedicationDiaryPage {
       var tempMonthObj = ({
         "DrugList":[]
       })
-      for (var posDrug in complianceObj.DrugList)
-      {
-        // for(var m = 1; m<=6;m++){
-        //   for(var i = 1; i<2;i++){
-        //     complianceObj.DrugList[posDrug].Compliance.push({
-        //     "Date": i+".0" + m +".2017",
-        //     "D":[
-        //       Math.round(Math.random()),
-        //       Math.round(Math.random()),
-        //       Math.round(Math.random()),
-        //       "Niiiiicht eingenommen"
-        //       ]
-        //     })
-        //   }
-        // }
-        tempMonthObj.DrugList.push({
-          "Name": complianceObj.DrugList[posDrug].Name,
-          "Months":[]
-        })
-        for(var pos in this.months){
-         tempMonthObj.DrugList[posDrug].Months.push({
-           "Name": this.months[pos],"Values":[0,0]
-         })
-        }
-      }
-      console.log("Dummy daten erstellt", tempMonthObj)
-
+      // for (var posDrug in complianceObj.DrugList)
+      // {
+      //   for(var m = 1; m<=6;m++){
+      //     for(var i = 1; i<5;i++){
+      //       complianceObj.DrugList[posDrug].Compliance.push({
+      //       "Date": "0"+i+".0" + m +".2017",
+      //       "D":[
+      //         Math.round(Math.random()),
+      //         Math.round(Math.random()),
+      //         Math.round(Math.random()),
+      //         Math.round(Math.random())
+      //         ]
+      //       })
+      //     }
+      //   }
+      // }
+        console.log(complianceObj)
+        this.storage.set('ComplianceData',complianceObj)
       let labelNames = new Array<any>()
       var barValues = new Array<any>()
 
@@ -85,14 +74,16 @@ export class MyMedicationDiaryPage {
           for(var value in complianceObj.DrugList[pos].Compliance){
 
           //this part analyses the Compliance data and fill the correct values in the monts and drugcompliance array
-          let ArryValue = Number( complianceObj.DrugList[pos].Compliance[value].Date.substring(3,5));
+          let monthValue = Number( complianceObj.DrugList[pos].Compliance[value].Date.substring(3,5));
             for(var taken in complianceObj.DrugList[pos].Compliance[value].D){
               if(complianceObj.DrugList[pos].Compliance[value].D[taken] != undefined){
-                tempMax++;                                                    //add one value for a medication who should be taken
-                  tempMonthObj.DrugList[pos].Months[ArryValue-1].Values[0]++  //add one tho acutal month, for a medication which should be taken
+                if(this.months[monthValue] == this.choosenMonth||this.choosenMonth == "Gesamte Zeitdauer"){
+                  tempMax++;  //add one value for a medication who should be taken
+                }
                 if(complianceObj.DrugList[pos].Compliance[value].D[taken] != 0){
-                    tempMonthObj.DrugList[pos].Months[ArryValue-1].Values[1]++  //add one tho acutal month, which was taken
-                  temptaken++;                                                  //add one value for a medication which was taken
+                  if(this.months[monthValue] == this.choosenMonth||this.choosenMonth == "Gesamte Zeitdauer"){
+                    temptaken++;      //add one value for a medication which was taken
+                  }
                   if(complianceObj.DrugList[pos].Compliance[value].D[taken] != 1){
                         //push deatil information in variable message
                         messages.push({
@@ -114,20 +105,7 @@ export class MyMedicationDiaryPage {
         barValues[pos] = temptaken/tempMax * 100;
       }
       //take the months array and fill the array with values for the line chart
-      var monthvalues = new Array<any>()
-      for(var drugpos in tempMonthObj.DrugList){
-        if(tempMonthObj.DrugList[drugpos].Name == this.choosenDrug||this.choosenDrug == null||this.choosenDrug == "Gesamte Medikation"){
-          for (var pos in tempMonthObj.DrugList[0].Months){
-            if(tempMonthObj.DrugList[0].Months[pos].Values[0] == 0){
-              monthvalues.push(null)
-            }else{
-              monthvalues.push(tempMonthObj.DrugList[0].Months[pos].Values[1]/tempMonthObj.DrugList[0].Months[pos].Values[0]*100)
-            }
-          }
-        }
-      }
       barValues.push(0,100)
-      monthvalues.push(0,100)
       //generate bar chart
       this.barChart = new Chart(this.barCanvas.nativeElement, {
               type: 'bar',
@@ -166,43 +144,8 @@ export class MyMedicationDiaryPage {
               }
 
           });
-//generate line chart
-          this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-
-              type: 'line',
-              data: {
-                  labels: this.months,
-                  datasets: [
-                      {
-                          label: "My First dataset",
-                          fill: false,
-                          lineTension: 0.1,
-                          backgroundColor: "rgba(75,192,192,0.4)",
-                          borderColor: "rgba(75,192,192,1)",
-                          borderCapStyle: 'butt',
-                          borderDash: [],
-                          borderDashOffset: 0.0,
-                          borderJoinStyle: 'miter',
-                          pointBorderColor: "rgba(75,192,192,1)",
-                          pointBackgroundColor: "#fff",
-                          pointBorderWidth: 1,
-                          pointHoverRadius: 5,
-                          pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                          pointHoverBorderColor: "rgba(220,220,220,1)",
-                          pointHoverBorderWidth: 2,
-                          pointRadius: 1,
-                          pointHitRadius: 10,
-                          data: monthvalues,
-                          spanGaps: false,
-                      }
-                  ]
-              }
-
-          });
-
       })
     })
-
   }
   toggleContent(numb){
     if (this.toggleObject == numb)
@@ -213,23 +156,25 @@ export class MyMedicationDiaryPage {
   presentActionSheet() {
     this.storage.get('ComplianceData').then((res)=>{
       let complianceObj = res;
+      console.log(res)
       let actionSheet = this.actionSheetCtrl.create({
-       title: 'Wähle ein Medikament aus',
+       title: 'Wähle einen Monat aus',
      });
      var allButton = {
-         text: "Gesamte Medikation",
+         text: "Gesamte Zeitdauer",
          handler: () => {
-           this.choosenDrug = "Gesamte Medikation"
+           this.choosenMonth = "Gesamte Zeitdauer"
            this.ionViewDidLoad()
          }
        }
     actionSheet.addButton(allButton)
-     for (var posDrug in complianceObj.DrugList){
-       let tempName = complianceObj.DrugList[posDrug].Name;
+     for (var month in this.months){
+
+      let tempName = this.months[month]
       var button = {
           text: tempName,
           handler: () => {
-            this.choosenDrug = tempName;
+            this.choosenMonth = tempName;
             this.ionViewDidLoad()
           }
         }

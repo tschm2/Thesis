@@ -6,6 +6,8 @@ import {ViewChild} from '@angular/core';
 import { Http } from '@angular/http';
 import { AlertController } from 'ionic-angular';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
+import {Midata} from 'midata';
+
 
 /*----------------------------------------------------------------------------*/
 /* UpdatePage
@@ -47,6 +49,7 @@ export class UpdatePage {
     this.storage = storage;
     this.barcodeService = new barcodeService(this.http, this.storage)
     this.chmedHandler = new chmedJsonHandler(this.storage)
+    this.updateFromMidata("marie@emma.ch","Emma1234.");
   }
 
   /*----------------------------------------------------------------------------*/
@@ -89,6 +92,17 @@ export class UpdatePage {
         })
     }
 
+    updateFromMidata(username:string, password:string){
+      let midata = new Midata("https://test.midata.coop:9000","eMMA","W1KAS4hxm1Ljd01j78e2ZTeMEzgczz0w");
+      //  let uName = "marie@emma.ch"
+      //  let uPassword = "Emma1234."
+      midata.login(username, password);
+      midata.save("ressource")
+      midata.search("ressource")
+
+
+
+    }
     /*----------------------------------------------------------------------------*/
     /* This Method is used to toggle The Content accordion
     /*----------------------------------------------------------------------------*/

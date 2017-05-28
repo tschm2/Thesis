@@ -18,7 +18,7 @@
     <ion-card-header (click)="toggleContent(1)" class="clickAbleHeader">
       Medikationstreue insgesammt
     </ion-card-header>
-          <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
+          <ion-card-content style="padding-top:2%;" [ngClass]="{'hidden': toggleObject != 1}">
           <canvas #barCanvas></canvas>
           <br>
           <button ion-button full (click)="presentActionSheet(this)">

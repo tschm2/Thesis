@@ -9,7 +9,7 @@ export class questionHandler {
   messageEMMA_About = "Du möchtest also etwas über eMMA wissen."
   messageEMMA_Selfmedication = "Ich öffne die Selbstmedikation für dich"
   messageEMMA_Compliance = "Gerne zeige ich dir dein Medikationstagebuch an"
-  messageEMMA_Nutrition = "Ich zeige dir, welche Nahrungsmittel du im Momment nicht essen darfts."
+  messageEMMA_Nutrition = "Ich zeige dir, welche Nahrungsmittel du im Moment nicht essen darfst."
   messageEMMA_InformationQuestion = "Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein + die Frage die du hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen must."
   messageEMMA_TooMutchInformation = "Huch, das war etwas viel auf Einmal. Bitte versuche es mit einer kürzeren Frage"
 
@@ -149,7 +149,7 @@ export class questionHandler {
                 retVal = "Ich verstehe. Ich werde dich also an die nächste Medikation nicht erinnern"
               }
               else if(question.includes("OK")||question.includes("DANKE")||question.includes("SUPER")||question.includes("TOLL")){
-                retVal = "Freut mich dass ich dir helfen konnte"
+                retVal = "Freut mich, dass ich dir helfen konnte"
               }
               else{ //if no possible awnser is found
                 if(this.messageEMMA_Not_Understand_temp.length == 0){ //if the ramdom array is empy

@@ -114,6 +114,7 @@ export class MyMedicationDiaryPage {
                   labels: labelNames,
                   datasets: [{
                       data: barValues,
+                      label:"Medikationsübersicht",
                       backgroundColor: [
                           'rgba(255, 99, 132, 0.2)',
                           'rgba(54, 162, 235, 0.2)',
@@ -134,6 +135,7 @@ export class MyMedicationDiaryPage {
                   }]
               },
               options: {
+                  tooltipTitleFontSize: 0,
                   scales: {
                       yAxes: [{
                           ticks: {
@@ -142,11 +144,12 @@ export class MyMedicationDiaryPage {
                       }]
                   }
               }
-
           });
+          this.barChart.options.legend.display = false;
       })
     })
   }
+
   toggleContent(numb){
     if (this.toggleObject == numb)
       this.toggleObject = 0

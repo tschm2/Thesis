@@ -3,7 +3,6 @@ import { barcodeService } from '../../services/barcodeService';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 import { Storage } from '@ionic/storage'
 import { AlertController } from 'ionic-angular';
-import { Http } from '@angular/http';
 
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +30,7 @@ export class MyMedicationPage {
   chmedHandler: chmedJsonHandler;
 
   // Dom Element
-  drugList:JSON;
+  drugList:any;
   patient:JSON;
   perDay:String[];
 
@@ -53,10 +52,10 @@ export class MyMedicationPage {
      * @param  {Storage}               publicstorage    ionic storage from phone
      * @param  {AlertController}       publicalertCtrl  handle alerts
    */
-  constructor(public http:Http, private alertCtrl: AlertController,  public storage: Storage) {
+  constructor(private alertCtrl: AlertController,  public storage: Storage) {
     this.perDay = ['Morgen','Mittag','Abend','Nacht'];
     this.chmedHandler = new chmedJsonHandler(this.storage)
-    this.barcodeService = new barcodeService(http, this.storage);
+    this.barcodeService = new barcodeService(this.storage);
   }
 
   /*----------------------------------------------------------------------------*/
@@ -68,6 +67,7 @@ export class MyMedicationPage {
   ionViewDidLoad() {
     this.storage.ready().then(()=>{
       this.storage.get('medicationData').then((res)=>{
+        console.log(res)
         this.drugList = res;
       })
       this.storage.get('takingTime').then((res)=>{
@@ -180,11 +180,22 @@ export class MyMedicationPage {
                   "DtFrom":today
                 }]
             })
+            if(this.drugList==null){
+              var newList:any[] = [];
+              console.log(newList)
+              console.log(tempObj)
+              newList.push(tempObj)
+              this.drugList = newList
+            }
+            else{
+              var tempList:any = this.drugList;
+              tempList.push(tempObj)
+            }
+            console.log(this.drugList)
 
-            var tempList:any = this.drugList;
-            tempList.push(tempObj)
             this.storage.ready().then(()=>{
               this.storage.get('mediPlan').then((res)=>{
+                res.Dt = today
                 res['Medicaments'] = this.drugList
                 this.storage.set('mediPlan', res)
                 this.storage.set("medicationData", this.drugList);

@@ -2,7 +2,6 @@ import { BarcodeScanner } from 'ionic-native';
 import myPako from "../../node_modules/pako"
 import { Storage } from '@ionic/storage';
 import { HCIService } from './HCIService';
-import { Http } from '@angular/http';
 import { HciHospAPI } from 'hci-hospindex-api';
 import  * as  HCITypes from 'hci-hospindex-api/src/api';
 import { chmedJsonHandler } from '../services/chmedJsonHandler';
@@ -22,7 +21,7 @@ private chmedHandler: chmedJsonHandler;
   /**
      * @param  {Storage}               publicstorage    ionic storage from phone
    */
-  constructor(public http: Http, public storage: Storage) {
+  constructor(public storage: Storage) {
     this.chmedHandler = new chmedJsonHandler(this.storage)
   }
 
@@ -31,36 +30,12 @@ private chmedHandler: chmedJsonHandler;
   /* It returns a Promise with True or False if the scan was successfull
   /*----------------------------------------------------------------------------*/
   scanQRcodeForJSON():any{
-
   return BarcodeScanner.scan().then((barcodeData) => {
-    let strData: string = this.chmedHandler.chmedToString(barcodeData.text)
-      this.storage.ready().then(() => {
-      var mediPlan = JSON.parse(strData)
-      this.storage.set("mediPlan", mediPlan).then(()=>{
-        this.doChecksWithCurrentMedication()
-      });
-      this.IdHCIQuery(mediPlan).then((res) => {
-          this.storage.set("medicationData", res);
-            var tempMedicationData = res;
-            var complianceObj = ({        //new object
-            "ID":"1",
-            "Date":"dateOfMediplan",
-            "DrugList":[]
-            })
-            for(var pos in tempMedicationData){ //new drug obj for every drug in the DrugList
-              complianceObj.DrugList.push({
-                "Name":tempMedicationData[pos].title,
-                "Compliance":[]
-              })
-            }
-           this.storage.set('ComplianceData',complianceObj)//save to storage
-          })
-        });
-
-
-      return true
+    this.saveMedicationInformation(barcodeData.text)
+    return true
       // Success! Barcode data is here
     }, (err) => {
+      console.log("Woops falscher QR-Code, zu Testzwecken wurde DummyData gespeichert")
       alert("Woops falscher QR-Code, zu Testzwecken wurde DummyData gespeichert");
       this.testDummyData()
       return false
@@ -159,7 +134,15 @@ private chmedHandler: chmedJsonHandler;
             "DtFrom":today
           }]
         })
-        medData.push(tempObj)
+        if(medData==null){
+          var newList:any[]
+          newList.push(tempObj)
+          medData = newList
+        }
+        else{
+          medData.push(tempObj)
+        }
+
         return medData
       })
       }, (err) => {
@@ -204,44 +187,91 @@ private chmedHandler: chmedJsonHandler;
         })
       })
   }
+
   /*----------------------------------------------------------------------------*/
-  /*
+  // Compare the medicationData stored on the Phone with the
+  // MedicationData String from MiDATA!
+  /*----------------------------------------------------------------------------*/
+  compareCHMED16Date(midataCHMED):any{
+    return this.storage.get("mediPlan").then((res) => {
+      let actMediplan = new Date(res.Dt.substring(0, 10));
+      let midataJson = new Date(this.chmedHandler.analyseCHMED(midataCHMED).Dt.substring(0, 10))
+      console.log(actMediplan)
+      console.log(midataJson)
+      actMediplan.setMonth(1)
+      console.log(actMediplan > midataJson)
+      if(actMediplan > midataJson){
+        console.log("Mediplan von Device")
+        return this.chmedHandler.getCHMEDString()
+        }
+      else{
+        console.log("Mediplan midata")
+        this.testMidata(midataCHMED)
+        return midataCHMED
+      }
+    })
+    }
+
+  /*----------------------------------------------------------------------------*/
+  /* This method is used to analyse the String, call the Check Functions
+  /* and save the Medication Data + create a new ComplianceDataObject!
   /*----------------------------------------------------------------------------*/
 
-/* To Be Deleted */
-
-        testThisNow(chmed){
-          var testData = "CHMED16A1eJytVM1u2kAQfpWNr7GjXduAzS0JoUUJLSK0kVrlsLYHvMJeo/W6TUC8TR6jt7xYZ+04JQFyqoTxeGd25ptvfjbWeaVTq2/1upRR6rnUDzs9y7YGGg9dyroOow4LZizoM6/veafU7VOKBqMEDSLfm4fdaO7488B1fAgjJ+RR4IQxjefBPOjw0DgbQzJ7XIHVZ7UsYp6D1KXV/7mxzlerkSy1Qm+SxylJICdXZQmyjeH7IWNeE7Lx4tnWpGhuD/Cf2dTG596AHqoib4HTEH91KrNi54yF1hZtJ6qMo4tHVAzUGflSaDJUXK5t86pAziFL8O604Ggx+YribLmYlhK/RqhcalEYhN+kMETdzq6trb1pALsBo17X/xgwPQTYcyg7AO5crTX5zGVpk/HzHxmnIFNeNRQdAniRYU2LOE1UFS+PgGSh2/PdD1ilx1j9TyAv0yKDUoMSEo2WoPaB7rZGpYg4y89sYqSkUtgpwugqAUoDmYAqCwnypO0al7HA946n5x6sQcdhDDM8kN7VA89XGZBrrjKb3D0/yYV4zWw0fkM/qCoVi0ou/qU0vnmfUQSCXEDC1RytcAgLHIx6QGr4OAFi8VvES8h2cmD7JTrYRy+NP5JTQGtmsnlFNxQQ7ZLt7AETJVlXJOcPZ8THV0b089MiE8g4IzMeZaCRcBBSQprX5d1D7/e6HvN6R9j/ECsinTVmRWNGt/dvq/F+Ux1qrtsYoak1vB9R44hrgcvH6m+si3rJsdD36rIzNL4U2sS441liMtZNEYdfcGGZIKBr6j6BTFAwaG9eVOOqbHQ3eANb5qpZeybM4KbUYzCw6jPe0PBa0Qafa1vfeYY2AasL0qjdVs1aNQtoncY0rr2MGtan+NHp9e7b8XZbwWsFvxU6rdBtrzEkeIvEpDhAGOHUZ6QXEuZ6xO+QrqH4VisA3bT2AruE434mzGy4H2KFx6Eb4lJFf/nS5A6KvLBMRKnJryInZusvuVma5SrjkkSwAGEY0yfW9i+0wN/G"
-
-          var b64Data  =   testData.substring(9);
-
-          // Decode base64 (convert ascii to binary)
-          var strData     = atob(b64Data);
-
-          // Convert binary string to character-number array
-          var charData    = strData.split('').map(function(x){return x.charCodeAt(0);});
-
-          // Turn number array into byte-array
-          var binData     = new Uint8Array(charData);
-
-          // Pako magic makeing
-          var data        = myPako.inflate(binData);
-
-          // Convert gunzipped byteArray back to ascii string:
-
-
-          let strData2: string  = String.fromCharCode.apply(null, new Uint16Array(data));
-
-
-            var mediPlan = JSON.parse(strData2)
-            console.log("PLEASE")
-            console.log(mediPlan)
-
-
-
+  saveMedicationInformation(stringData){
+    let strData: string = this.chmedHandler.chmedToString(stringData)
+      this.storage.ready().then(() => {
+      var mediPlan = JSON.parse(strData)
+      this.storage.set("mediPlan", mediPlan).then(()=>{
+        this.doChecksWithCurrentMedication()
+      });
+      this.IdHCIQuery(mediPlan).then((res) => {
+          mediPlan['Medicaments'] = res
+          this.storage.set("mediPlan", mediPlan);
+          this.storage.set("medicationData", res);
+          console.log(mediPlan);
+            var tempMedicationData = res;
+            var complianceObj = ({        //new object
+            "ID":"1",
+            "Date":"dateOfMediplan",
+            "DrugList":[]
+            })
+            for(var pos in tempMedicationData){ //new drug obj for every drug in the DrugList
+              complianceObj.DrugList.push({
+                "Name":tempMedicationData[pos].title,
+                "Compliance":[]
+              })
+            }
+           this.storage.set('ComplianceData',complianceObj)//save to storage
+          })
+        });
   }
 
+  /*----------------------------------------------------------------------------*/
+  /* This method is creating a medicationplan with data, it is used for the demo
+  /*----------------------------------------------------------------------------*/
+  testDummyData(){
+    var testData = "CHMED16A1H4sIAAAAAAAAA61UW2+bMBT+K55fC61tIECelsuyRctNCeukTX0wYAIKmAicaU2U/75jKG1XpdnLpFyOfT7b5/vO5YQHB5XiPq7VIRZS1R/DJL2NUmzgsYJtRqhrEsdkfkCdPqN9i94Q1icEANMYAKFtJX4vTEw78ZhpCz80fR56ph+RKPESz+G+C9i5iIPHvcB92thZxAv9Gu7/POHBfj+VtargNsmjFMWiQJ/qWsjuDdv2KbXaJ9tbLAOvyvb0GH6pQQz4PuigJ1VZtIH3TOLDp6ESlK/2qI/PgF1VdRQOH8Exrm7RolRoUnF5NPTfQchE5DGcXZccEKslmMFuu64lrKbg3Kms1BF+k5kWahN8hUUs6qjK9o2rj4eDUbCezlFSVkqggIc58gi5oz1SbBElaKN2cEZlKhcvaHw2Ti1t5lFi9ezrtMkl2pZJ6AWKg+qo0BcuawPNgWCUCpnyQyv0JZrDHGqjjNK4OkS761RHS3M8Xd4PFmiS5YXSVIHmHWW3DgKyzHtD9hn/Qpf6zLXZlSyT97L8n+iO0jIXtRJVJgG0E9V1ypvlOphuXvgyoplab9Pawhqarwo9zGp0PKCC/75FNvzlSB3ENs+g/GlTKUJByYhMSpEWTcTQpyV0TtNBbVe4PYta7jt6XeyDqVyLurkhCFpY2cLI+eFv/dweoYRYjNi+476j1yaC0Kqj+EcXrAaLwXg5Q6+kckijFXur1RO0zSVXGYwI3D/hYTOKqG9bJqU61wYeZUqH+Z3nsRZNHeQWdicLGCuwHWQFrD4LGUMSNd3Zk2NcVrLJ6wzwsPzUjib9yHhWq7nQATd7vNXxeWi1BJmB73kOGI82GW3drHPTzk090pBYR80t0zZta1g4rvvQlTzrDKsz7M5wOqPXHaOQoTPIkpZSM7mxKXJ9RJmFbAf1dI42qhJCKzUU1RbKjMMMRVTPjx/ZHrZ95sPgg/uKneYuKvSkMcpqhX6VBdKTecd13up9ziUKxVZkuiPUB3z+A3b0k/UrBgAA"
+    let strData: string = this.chmedHandler.chmedToString(testData)
+    var mediPlan = JSON.parse(strData)
+    this.storage.set("mediPlan", mediPlan).then(()=>{
+      this.storage.set("medicationData", mediPlan['Medicaments']);
+      console.log("DummyDataSet")
+    })
+  }
+  testMidata(testMidata){
+    var testData = testMidata
+    let strData: string = this.chmedHandler.chmedToString(testData)
+    var mediPlan = JSON.parse(strData)
+    console.log(mediPlan)
+    this.storage.set("mediPlan", mediPlan).then(()=>{
+      this.storage.set("medicationData", mediPlan['Medicaments']);
+      console.log("TestMidataFunctione")
+    })
+  }
 
+  /*----------------------------------------------------------------------------*/
+  /* This method is used to analyse the String, can be used manually to check a CHMED String
+  /*----------------------------------------------------------------------------*/
   analyseCHMED(){
     var testData = "CHMED16A1H4sIAAAAAAAAA61VzXLiOBB+lR5fxxBJNmBzIyHZdQ0ECjyZqt3KQRgBWmyZkuWpmaTyNvMYc8s77XlbVpwwWZK9bBXGbfWP9H39uX3vjWqz84beoE8oIQEjYdwbeL43NrjICO13KOnQKKXRkAbDIPhI2JAQDEjWGLAKg03cX2064SZinVDEq07MV1Enzki2iTZRj8e22FSs0+8H4Q1pY8uMF0KZyhv+ee+NDodEVUZjNcWzHaxFAZdVJVS7RxjGlAZuS1cl8L156bLH+E994uN1aw99pcuiPTiJ8ddAScujNRp7Dxg711W2Ov+OjrHuwnVp4EpzdefbWy3URuRrzF2UHCPmMzTT/XZRKXxK0Lk3srQn/KykJWqZfsKHtagyLQ+Na+idjy7SRTKFTamNgJSvcogIOaN9UmyBEliaPeYYaXLxEu09+PcONosoCfrh+7DJKdhBh9ATEEf6zsDvXFU+TB9/qmwn1I7XjuhTMM9zVEaZ7da6zvbvQ72YdcbJ7GZ0DVcyL4yFijDPKOv2AMGy6BXY5/gXuDRmg5C902XyVpf/J7gXuzIXlRFaKgzaC/0+5OVskSbLF7yMWKTB67a6sAbmsdBrDbJbdH2w1rrWqHtpfbUUVixzoatSCfWhfQcYpVEYvE0OO6mFXodS5OcEOZffeHHIBXziOvfhy+MPtZXPvKAKj2UgdL2T21ptXwiZTv7Fx81oknyeQqL+gsnfldV3sT1jRd7gPJPdr13owag4AIMiPyLI5SFBqs7zX1layQruaij4ty6EeMvBPP7Y5hLJos37JAxyJaRSYlc0fcVZVuJ8aeaMmx2DfkCDwRvEnZwWiVqIqqmQpi6sdGHk4fZXIl+PzFOqWmZ4NH0n/mNWzEfXo/FsAkeC6pFGUey1op5CXVO5kThIveG9d94MbBqHQdN0ihkX0thjfuH52pJmXAuvrnH42jrCNBr/Tag1Ghbw5Mk1rSvnm2AGCubSjXC7zXhSmamwR27WuGPyebg7iMz3bniOMRFtlO/crHXT1k0j0sBYZE2VxDVugQ+9weC2HQ2sNYLWCFuj1xr9No1ijx6QmB2+PrjDx5DCIAbKAgh70LddWhothHHC3qLQOH5rgNo5+4c84HLMYvxAYL1ib7ELDU8sg6wMfC0LsF+wPbedqw45V7ASWyEtY+aD9/APcU6IyFEHAAA="
     var b64Data  =   testData.substring(9);
@@ -255,85 +285,7 @@ private chmedHandler: chmedJsonHandler;
     var data        = myPako.inflate(binData);
     // Convert gunzipped byteArray back to ascii string:
     let strData2: string  = String.fromCharCode.apply(null, new Uint16Array(data));
-
     var mediPlan = JSON.parse(strData2)
     console.log(mediPlan)
   }
-  testDummyData(){
-    var testData = "CHMED16A1H4sIAAAAAAAAA9VWzXLiOBB+lR5fBxPJNsbm5oRhlhpIKGAyVbuVgzDCaLFlSpbnJ6m8zTzG3vJOe96WjROHkOzW1l62ih9Z3ZL6+/rrtu6sqNRba2D1fUIJcR3ihb2+1bGGGicdQn2bEpsGSxoMqDtw3ffEGRCCDuM1Oqw8dxP6q43tbQLH9ni4skO2CuwwJvEm2AQ9FprNpny9/LHn1oBWYxGzjEtdWIPf7qxovx/LQivcTbJ4C2uewYei4LI5w/NCSt36yHoXt2PN8nr1EH9ph3Twe2OCHqk8awInIX4qKMu8NUdD6x59Z6qIV+c/0DBUXbjMNYwUk7cd81dyueHpGtfOc4YesyscLnfJvJD4NEbjTovcRPhZCkPUYvkJH9a8iJXYV6aBdR5dLOfjKWxypTks2SqFgJAz6pMsAUpgoXe4Rgud8idv675zV8N2Akpc33sbNjkF27UJPQExUrcafmGy6MD04Q8Zb7ncsrIm+hTM8xSVkcfbtSrj3dtQL67s4fjqOrqEkUgzbaAizDPqdHuAYJ3gCOyj/xNcGjp9z3kjy+S1LP9HcC+2ecoLzZWQ6LTj6m3Ii6v5crx4wusQg9Q9TmvtVsFsC71UILpZtwNmtC4V6l4YWym4EcuMqyKXXL5rasChNPDc18lxTmqhZ1OK/Jwg58N3lu1TDp+YSjvw5eGnTMQjL6jCtgy4KrciKWXyRMh08oKP62gy/jyFsfwdJn8WRt9ZcuZkaYXzTHS/dqEHUbYHB7K0RVC97pigFRdwztdMbdAVO1SOXaPqHhUb2B5E8k3EO562KKEv9XKyPA5dYSznHL2pIecR7EjwVTvz9gucz89uULRnj6GIAm5LyNj3Lnj4l4J++JmkAlNOq67ANWacCyn5NqvU+QKv1/dd6vZfSf+b6BDbsnbLazdyf/NcDseN/1RtLGIMTd3yv+l4s+gyGl5NoFUWPVLVhXNcFwfXY7Kqos3XXEG0z/WWYxnCRrGEy247nhFr02TRpkyo6/r+s1eF5b6IchiNoslH7FXLVoDUPwqw8bLaXGVCAUsLmDEt8AVm/ZOG3LeJY5MeFuG/wzr8f2F1D1iNxg4rB3fWeXWdoKHnVi3JgLgQ2hzzhaVrUwy6bjCjS7waGH1wXdXhRy6RoUrIk4NpWha1bYIrMPgP9QXDHDOcFHrKDfBqjtXxPraHWrpOx7pmKfoEtJJfbXYaM23MNCBV55zH1S7juiDn+NDr92+aF5fTDNxm4DWDXjPwm2X0xqjAmm2xueMJ7z0K/RCo44LXA99U30IrznXddhPUCcObEFBzC/hV7HE6dEK8vuB+2c5gR8kcWAZRaPiaZ2DuVztm8l/sUyZhxRMuDGP6nXX/Fx1DXbHvCQAA"
-    var b64Data  =   testData.substring(9);
-
-    // Decode base64 (convert ascii to binary)
-    var strData     = atob(b64Data);
-
-    // Convert binary string to character-number array
-    var charData    = strData.split('').map(function(x){return x.charCodeAt(0);});
-
-    // Turn number array into byte-array
-    var binData     = new Uint8Array(charData);
-    // Pako magic makeing
-    var data        = myPako.inflate(binData);
-
-    // Convert gunzipped byteArray back to ascii string:
-
-    let strData2: string  = String.fromCharCode.apply(null, new Uint8Array(data));
-
-/*    var  re = /[ÀÁÂÃÄÅ]/g;
-strData2 =  strData2.replace(re,"A");*/
-    console.log(strData2)
-  strData2 = this.convert_accented_characters(strData2)
-    console.log(strData2)
-    this.storage.ready().then(() => {
-      var mediPlan = JSON.parse(strData2)
-      console.log(mediPlan)
-      this.storage.set("mediPlan", mediPlan);
-      this.getNamesFromID(mediPlan).then((res) => {
-          this.storage.set("medicationData", res);
-      });
-    })
-
-    }
-
-    getNamesFromID(medData){
-             this.list = new Array<any>();
-             var hciS = new HCIService();
-             for (let medi of medData['Medicaments']){
-               var l = hciS.getHCIData(this.http,medi.Id,"phar").then(function(response) {
-                     if(Number(medi.Id)){
-                     var result = JSON.parse(response._body);
-                     var desc = result.article[0].dscrd;
-                     var title = desc.split(" ")[0];
-                     medi.description = desc
-                     medi.title = title
-                   }
-                   else{
-                     medi.description = medi.Id
-                     medi.title = medi.Id
-                   }
-               });
-
-               this.list.push(l);
-             }
-
-               return Promise.all(this.list).then((res) => {
-                 return medData['Medicaments'];
-               });
-             }
-
-   convert_accented_characters(str){
-    var conversions = new Object();
-
-    conversions['ü'] = 'Ã¼|ï¿½';
-    conversions['ä'] = 'Ã¤';
-    conversions['ö'] = 'Ã¶';
-    conversions['Ö'] = 'Ã';
-    conversions['Ü'] = 'Ã';
-    conversions['Ä'] = 'Ã';
-    for(var i in conversions){
-        var re = new RegExp(conversions[i],"g");
-        str = str.replace(re,i);
-    }
-
-    return str;
-}
 }

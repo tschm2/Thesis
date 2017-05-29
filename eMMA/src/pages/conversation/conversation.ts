@@ -13,7 +13,6 @@ import { MyMedicationPage } from '../../pages/my-medication/my-medication';
 import { MedicationReminderViewPage } from '../../pages/medication-reminder-view/medication-reminder-view';
 //Import Services
 import { barcodeService } from '../../services/barcodeService';
-import { Http } from '@angular/http';
 import { LocalNotifications } from 'ionic-native';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 
@@ -48,7 +47,7 @@ export class ConversationPage {
   notifications: any[] = [];
   chmedHandler: chmedJsonHandler;
 
-  constructor(public http:Http,public navCtrl: NavController, public navParams: NavParams, private storage:Storage, public platform: Platform, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, public platform: Platform, public alertCtrl: AlertController) {
     this.messages = [];
     this.preAnswers = [];
     this.toggleObject = showTextfield;
@@ -159,7 +158,7 @@ export class ConversationPage {
   mediplanImport(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_OpenScanner); //inform the user that the scanner will be opend
     setTimeout(() => {
-      let scanner = new barcodeService(this.http, this.storage)   //initialize new scanner
+      let scanner = new barcodeService(this.storage)   //initialize new scanner
       scanner.scanQRcodeForJSON().then((success)=>{               //check if the scann was successfull
         if(success){
           this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_success)  //next step

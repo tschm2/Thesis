@@ -1,12 +1,11 @@
 import { barcodeService } from '../../services/barcodeService';
 import { Storage } from '@ionic/storage'
-import {Component} from '@angular/core';
-import {QRCodeComponent} from 'angular2-qrcode';
-import {ViewChild} from '@angular/core';
-import { Http } from '@angular/http';
+import { Component } from '@angular/core';
+import { QRCodeComponent } from 'angular2-qrcode';
+import { ViewChild } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
-import {Midata} from 'midata';
+import { Midata } from 'midata';
 
 
 
@@ -46,11 +45,10 @@ export class UpdatePage {
      * @param  {Storage}               publicstorage    ionic storage from phone
      * @param  {AlertController}       publicalertCtrl  handle alerts
    */
-  constructor(public http:Http, private alertCtrl: AlertController, storage:Storage) {
+  constructor(private alertCtrl: AlertController, storage:Storage) {
     this.storage = storage;
-    this.barcodeService = new barcodeService(this.http, this.storage)
+    this.barcodeService = new barcodeService(this.storage)
     this.chmedHandler = new chmedJsonHandler(this.storage)
-    this.updateFromMidata("marie@emma.ch","Emma1234.");
   }
 
   /*----------------------------------------------------------------------------*/
@@ -93,32 +91,47 @@ export class UpdatePage {
         })
     }
 
+    /*----------------------------------------------------------------------------*/
+    /* This Method is called when Abgleich mit Midata Button is pressed
+    /* It builds a connection to Midata with username and password entered.
+    /* If the username and password is correct, the compareCHMED16DAte function will becalled
+    /* If the eMediplan on Midata is more current, the one gets downloaded and saved in the application
+    /* else the current Medicationdata will get uploaded and stored on Midata!
+    /*----------------------------------------------------------------------------*/
+
     updateFromMidata(username:string, password:string){
+      console.log(username, password)
       let midata = new Midata("https://test.midata.coop:9000","eMMA","W1KAS4hxm1Ljd01j78e2ZTeMEzgczz0w");
       //  let uName = "marie@emma.ch"
       //  let uPassword = "Emma1234."
-        this.chmedHandler.getCHMEDString().then((res)=>{
-        this.chmedHandler.compareCHMED16Date(res);
-        midata.login(username,password).then((AuthToken)=>{
-          console.log(res)
+      midata.login(username,password).then((AuthToken)=>{
+      console.log(AuthToken)
 
-          var tk = {
-          resourceType: "Device",
-          status: 'active',
-          udi : { // Unique Device Identifier (UDI) Barcode string
-            deviceIdentifier : "eMediplan", // Mandatory fixed portion of UDI
-            name : res, // Device Name as appears on UDI label
-            jurisdiction : "fcm.com", // Regional UDI authority
-            carrierHRF : "-", // UDI Human Readable Barcode String
-            carrierAIDC : "-", // UDI Machine Readable Barcode String
-            issuer : "eMMA", // UDI Issuing Organization
-            entryType : "manual" // barcode | rfid | manual +
-          }
-        }
-              midata.save(tk)
-        })
-
-
+      midata.search("Device").then((res)=>{
+        this.barcodeService.compareCHMED16Date((res[0].udi.name)).then((newMediplan)=>{
+            var tk = {
+              resourceType: "Device",
+              status: 'active',
+              udi : { // Unique Device Identifier (UDI) Barcode string
+                deviceIdentifier : "eMediplan", // Mandatory fixed portion of UDI
+                name : newMediplan, // Device Name as appears on UDI label
+                jurisdiction : "eMMA", // Regional UDI authority
+                carrierHRF : "-", // UDI Human Readable Barcode String
+                carrierAIDC : "-", // UDI Machine Readable Barcode String
+                issuer : "eMMA", // UDI Issuing Organization
+                entryType : "manual" // barcode | rfid | manual +
+              }
+            }
+            midata.save(tk)
+            let alert = this.alertCtrl.create({
+            title: 'Erfolgreich',
+            subTitle: 'Auf MIDATA ist nun die aktuelle Medikation gespeichert.',
+            buttons: ['Ok']
+            });
+            alert.present();
+            this.toggleObject = 0;
+          })
+        });
       });
 
 

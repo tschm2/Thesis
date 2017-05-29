@@ -51,24 +51,4 @@ http:Http
 
     return p;
     }
-
-  //testDummyData TO BE DELETED
-   getHCIData(http,id,keyT):any {
-      // preparing variables
-      var api = 'http://www.laettere.ch/carole/mina/getArticle.php';
-      //console.log(api);
-      var keytype = keyT
-      //console.log(keytype);
-      var key = id;
-      //console.log(key);
-      var index = 'hospINDEX';
-      //console.log(index);
-
-      // concat uri
-      var uri = api + '?keytype=' + keytype + '&key=' + key + '&index=' + index;
-
-      return http.get(uri).toPromise().then(function(response){
-        return response;
-      });
-    }
   }

@@ -13,7 +13,7 @@ import myPako from "../../node_modules/pako"
   export class chmedJsonHandler {
   storage:Storage;
   hciS:any;
-
+  http:any;
     /**
        * @param  {Storage}               publicstorage    ionic storage from phone
      */
@@ -156,26 +156,10 @@ import myPako from "../../node_modules/pako"
     this.storage.ready().then(() => {
       var mediPlan = JSON.parse(mediPlanString)
       this.storage.set("mediPlan", mediPlan).then(()=>{
-        console.log("FERTIG");
+        console.log(mediPlan);
       })
     })
   }
-  /*----------------------------------------------------------------------------*/
-  // Compare the medicationData stored on the Phone with the
-  // MedicationData String from MiDATA!
-  /*----------------------------------------------------------------------------*/
-  compareCHMED16Date(midataCHMED):any{
-    return this.storage.get("mediPlan").then((res) => {
-      let actMediplan = new Date(res.Dt.substring(0, 10));
-      let midataJson = new Date(this.analyseCHMED(midataCHMED).Dt.substring(0, 10))
-      console.log(actMediplan)
-      console.log(midataJson)
-      actMediplan.setMonth(12)
-      console.log(actMediplan > midataJson)
-      return actMediplan > midataJson
-    })
-    }
-
   /*----------------------------------------------------------------------------*/
   // Method to analyse a CHMED16 String and get the JSON Data
   /*----------------------------------------------------------------------------*/

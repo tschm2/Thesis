@@ -9,6 +9,7 @@ import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 import {Midata} from 'midata';
 
 
+
 /*----------------------------------------------------------------------------*/
 /* UpdatePage
 /* tschm2, dornt1
@@ -96,23 +97,29 @@ export class UpdatePage {
       let midata = new Midata("https://test.midata.coop:9000","eMMA","W1KAS4hxm1Ljd01j78e2ZTeMEzgczz0w");
       //  let uName = "marie@emma.ch"
       //  let uPassword = "Emma1234."
-      midata.login(username,password).then((res)=>{
-        console.log(res)
-        var tk = {
-        resourceType: "Device",
-        status: 'active',
-        udi : { // Unique Device Identifier (UDI) Barcode string
-          deviceIdentifier : "eMediplan", // Mandatory fixed portion of UDI
-          name : "Notification Token", // Device Name as appears on UDI label
-          jurisdiction : "fcm.com", // Regional UDI authority
-          carrierHRF : "-", // UDI Human Readable Barcode String
-          carrierAIDC : "-", // UDI Machine Readable Barcode String
-          issuer : "eMMA", // UDI Issuing Organization
-          entryType : "manual" // barcode | rfid | manual +
+        this.chmedHandler.getCHMEDString().then((res)=>{
+        this.chmedHandler.compareCHMED16Date(res);
+        midata.login(username,password).then((AuthToken)=>{
+          console.log(res)
+
+          var tk = {
+          resourceType: "Device",
+          status: 'active',
+          udi : { // Unique Device Identifier (UDI) Barcode string
+            deviceIdentifier : "eMediplan", // Mandatory fixed portion of UDI
+            name : res, // Device Name as appears on UDI label
+            jurisdiction : "fcm.com", // Regional UDI authority
+            carrierHRF : "-", // UDI Human Readable Barcode String
+            carrierAIDC : "-", // UDI Machine Readable Barcode String
+            issuer : "eMMA", // UDI Issuing Organization
+            entryType : "manual" // barcode | rfid | manual +
+          }
         }
-      }
-            midata.save(tk)
-      })
+              midata.save(tk)
+        })
+
+
+      });
 
 
 

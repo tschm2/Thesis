@@ -160,6 +160,44 @@ import myPako from "../../node_modules/pako"
       })
     })
   }
+  /*----------------------------------------------------------------------------*/
+  // Compare the medicationData stored on the Phone with the
+  // MedicationData String from MiDATA!
+  /*----------------------------------------------------------------------------*/
+  compareCHMED16Date(midataCHMED):any{
+    return this.storage.get("mediPlan").then((res) => {
+      let actMediplan = new Date(res.Dt.substring(0, 10));
+      let midataJson = new Date(this.analyseCHMED(midataCHMED).Dt.substring(0, 10))
+      console.log(actMediplan)
+      console.log(midataJson)
+      actMediplan.setMonth(12)
+      console.log(actMediplan > midataJson)
+      return actMediplan > midataJson
+    })
+    }
+
+  /*----------------------------------------------------------------------------*/
+  // Method to analyse a CHMED16 String and get the JSON Data
+  /*----------------------------------------------------------------------------*/
+  analyseCHMED(midataCHMED):any{
+    var toAnalyse = midataCHMED
+    console.log(midataCHMED)
+    var b64Data  =   toAnalyse.substring(9);
+    // Decode base64 (convert ascii to binary)
+    var strData     = atob(b64Data);
+    // Convert binary string to character-number array
+    var charData    = strData.split('').map(function(x){return x.charCodeAt(0);});
+    // Turn number array into byte-array
+    var binData     = new Uint8Array(charData);
+    // Pako magic makeing
+    var data        = myPako.inflate(binData);
+    // Convert gunzipped byteArray back to ascii string:
+    let strData2: string  = String.fromCharCode.apply(null, new Uint16Array(data));
+
+    var mediPlan = JSON.parse(strData2)
+    return mediPlan;
+  }
+
 
   /*----------------------------------------------------------------------------*/
   // The Pako Library has converting Errors for the Characters ö ü ä Ö Ü Ä

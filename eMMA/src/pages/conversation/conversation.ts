@@ -359,16 +359,18 @@ export class ConversationPage {
           }
         }
       }
+
+      let i = 0;
       this.storage.get('medicationData').then((res)=>{                                    //get the drug list json for more information about the drugs
           let drugList = res;
           console.log(drugList);
           for(var pos in drugList){                                                       //stepp trought all drugs in drugList
             if(medication.includes(drugList[pos].title)){
-              output = output + "Als Grund für die Einnahme von " + drugList[pos].title + " habe ich " + drugList[pos].TkgRsn  + " eingetragen\n";    //get the user the information why he should take his drug
+            output = output + "Als Grund für die Einnahme von " + drugList[pos].title + " habe ich " + drugList[pos].TkgRsn  + " eingetragen\n"   //get the user the information why he should take his drug
             }
           }
-        this.sendEmmaText(output);  //send the output text to the conversational UI
       })
+      this.sendEmmaText(output);
     })
   }
   /*****************************************************************************

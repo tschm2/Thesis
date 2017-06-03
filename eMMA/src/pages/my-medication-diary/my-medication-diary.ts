@@ -77,11 +77,11 @@ export class MyMedicationDiaryPage {
           let monthValue = Number( complianceObj.DrugList[pos].Compliance[value].Date.substring(3,5));
             for(var taken in complianceObj.DrugList[pos].Compliance[value].D){
               if(complianceObj.DrugList[pos].Compliance[value].D[taken] != undefined){
-                if(this.months[monthValue] == this.choosenMonth||this.choosenMonth == "Gesamte Zeitdauer"){
+                if(this.months[monthValue-1] == this.choosenMonth||this.choosenMonth == "Gesamte Zeitdauer"){
                   tempMax++;  //add one value for a medication who should be taken
                 }
                 if(complianceObj.DrugList[pos].Compliance[value].D[taken] != 0){
-                  if(this.months[monthValue] == this.choosenMonth||this.choosenMonth == "Gesamte Zeitdauer"){
+                  if(this.months[monthValue-1] == this.choosenMonth||this.choosenMonth == "Gesamte Zeitdauer"){
                     temptaken++;      //add one value for a medication which was taken
                   }
                   if(complianceObj.DrugList[pos].Compliance[value].D[taken] != 1){

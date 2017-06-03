@@ -140,7 +140,7 @@ export class questionHandler {
               {
                 retVal = "Hallo, was möchtest du wissen?"
               }
-              else if(question.includes("WER")&&question.includes("Du"))
+              else if(question.includes("WER") && question.includes("DU"))
               {
                 retVal = "Ich bin eMMA. Deine Persöhliche elektronische Medikations Management Assistentin"
               }

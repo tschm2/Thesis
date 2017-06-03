@@ -24,7 +24,7 @@ export class eMMA{
   messageEMMA_FirstStart_questionPin_Yes = "Ja gerne";
   messageEMMA_FirstStart_questionPin_No = "Nein danke";
   messageEMMA_FirstStart_Pin = "Gib nun bitte den Pin ein! Du kannst ihn jederzeit unter den Einstellungen ändern.";
-  messageEMMA_FirstStart_questionAthlete = "Betreibst du Leistungssport";
+  messageEMMA_FirstStart_questionAthlete = "Betreibst du Leistungssport?";
   messageEMMA_FirstStart_questionAthlete_No = "uuuh nein";
   messageEMMA_FirstStart_questionAthlete_Yes = "Ja das tue ich";
   messageEMMA_FirstStart_questionDriver = "Besitzt du einen Führerausweis?"
@@ -41,8 +41,8 @@ export class eMMA{
   messageEMMA_FirstStart_questionImporteHealth_Yes = "Ja gerne"
   messageEMMA_FirstStart_questionImporteHealth_No = "Nein, ich besitze kein Dossier"
   messageEMMA_FirstStart_questioneHalthUsername = "Bitte gib deinen Usernamen im Feld ein"
-  messageEMMA_FirstStart_questioneHalthPasword = "Bitte gib dein Passwort im Feld ein"
-  messageEMMA_FirstStart_eHealthWrong = "Username oder Passwort falsch"
+  messageEMMA_FirstStart_questioneHalthPasword = "Bitte gib dein Passwort im Feld ein."
+  messageEMMA_FirstStart_eHealthWrong = "Username oder Passwort ist falsch"
   messageEMMA_FirstStart_eHealthCorrect= "Login erfolgreich"
   messageEMMA_FirstStart_questionDatasecurity = "Willst du von mir noch etwas über die Datenschutzbestimmungen wissen?"
   messageEMMA_FirstStart_questionDatasecurity_Yes = "Ja, zeigt mir bitte mehr";

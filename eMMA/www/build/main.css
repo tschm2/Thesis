@@ -24401,7 +24401,7 @@ ion-navbar.toolbar {
   color: #FFF;
 }
 
-.navbar .item-block {
+.item-block {
   color: #FFF;
   background-color: #7094ce;
 }
@@ -24416,9 +24416,9 @@ page-conversation .test {
   width: 20px;
 }
 
-page-conversation .messageBlock {
+page-conversation .test2 {
   padding: 0;
-  margin-top: 0;
+  margin-top: 0px;
   white-space: pre-line;
 }
 
@@ -24437,7 +24437,6 @@ page-conversation .showTime {
   text-align: right;
   font-size: 0.8em;
   color: #A4A4A4;
-  margin-top: -6%;
 }
 
 page-conversation .emma {
@@ -24452,11 +24451,10 @@ page-conversation .emma {
   margin-top: 5px;
   border-radius: 5px;
   margin-left: 10px;
-  font-size: 1.2em;
 }
 
 page-conversation .user {
-  min-width: 45%;
+  min-width: 30%;
   background-color: #DCF8C7;
   padding: 10px;
   width: auto;
@@ -24467,11 +24465,11 @@ page-conversation .user {
   margin-bottom: 5px;
   margin-right: 10px;
   border-radius: 5px;
-  font-size: 1.2em;
 }
 
 page-conversation .buttonsDiv {
-  height: 60px;
+  height: 100%;
+  background-color: #EFF;
 }
 
 page-conversation .buttons {
@@ -24481,41 +24479,23 @@ page-conversation .buttons {
   margin-left: 3.5%;
 }
 
-page-conversation .singleButton {
-  height: 95%;
-  width: 90%;
-  float: left;
-  margin-left: 5%;
-}
-
-page-conversation .singleButton button {
-  border-radius: 5px;
-  background-color: #DCF8C7;
-  font-size: 1.2em;
-  text-transform: inherit;
-  color: #333;
-  height: 95%;
-  word-wrap: break-word !important;
-  white-space: normal !important;
-}
-
 page-conversation .buttons button {
   border-radius: 5px;
   background-color: #DCF8C7;
-  font-size: 1.2em;
+  font-size: 0.9em;
   text-transform: inherit;
   color: #333;
-  height: 95%;
+  height: 80%;
   word-wrap: break-word !important;
   white-space: normal !important;
 }
 
 page-conversation .footer {
-  padding-top: 1%;
-  bottom: 0;
+  height: 10%;
+  bottom: 0px;
   position: absolute;
-  padding-bottom: 15px;
-  background-color: rgba(234, 234, 234, 0.3);
+  padding-top: 1%;
+  background-color: #EEE;
 }
 
 page-conversation .item-block {
@@ -24524,91 +24504,6 @@ page-conversation .item-block {
 
 page-conversation .footer input {
   color: #333;
-}
-
-page-medication-reminder-view .reminderItem {
-  width: 47%;
-  height: 27%;
-  max-height: 150px;
-  background-color: #FFF;
-  float: left;
-  position: relative;
-  margin-left: 2%;
-  margin-top: 3%;
-}
-
-page-medication-reminder-view .imagePlaceholder {
-  text-align: center;
-  width: 80%;
-  height: auto;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 30px;
-  background-color: #FFF;
-}
-
-page-medication-reminder-view .imagePlaceholder img {
-  max-height: 70px;
-}
-
-page-medication-reminder-view .status0 {
-  width: 25px;
-  height: 25px;
-  right: 5px;
-  top: 5px;
-  position: absolute;
-  background-image: url("../images/2.png");
-  background-size: 100% 100%;
-}
-
-page-medication-reminder-view .status1 {
-  width: 25px;
-  height: 25px;
-  right: 5px;
-  top: 5px;
-  position: absolute;
-  background-image: url("../images/1.png");
-  background-size: 100% 100%;
-}
-
-page-medication-reminder-view .description {
-  text-align: center;
-  width: 90%;
-  margin-top: 1%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-page-medication-reminder-view .hiddenSpaceremma {
-  float: left;
-  width: 70%;
-}
-
-page-medication-reminder-view .emma {
-  background-color: #FFF;
-  width: 90%;
-  max-width: 100%;
-  height: 50%;
-  float: left;
-  padding: 10px;
-  color: #333;
-  margin-bottom: 5px;
-  margin-top: 5px;
-  border-radius: 5px;
-  margin-left: 10px;
-}
-
-page-medication-reminder-view .messageBlock {
-  padding: 0;
-  margin-top: 0;
-  white-space: pre-line;
-}
-
-page-medication-reminder-view .showTime {
-  display: block;
-  text-align: right;
-  font-size: 0.8em;
-  color: #A4A4A4;
 }
 
 .clickAbleHeader {
@@ -24624,31 +24519,13 @@ page-medication-reminder-view .showTime {
   margin-top: 10px;
 }
 
+.drugImage {
+  height: 129px;
+}
+
 .nextToImage {
-  width: 40%;
-  font-size: 1.3em;
-  float: right;
-  margin-right: 10px;
-}
-
-.nextToImage span {
-  text-transform: lowercase;
-  float: right;
-  margin-right: 5%;
-}
-
-.image {
-  float: left;
-}
-
-ion-card img {
-  width: 100%;
-}
-
-.maxHeight {
-  width: 100%;
-  float: left;
-  margin: 10px;
+  padding-left: 20px;
+  background-color: #DDD;
 }
 
 .card-content {
@@ -24675,60 +24552,4 @@ ion-card img {
   float: right;
   background-image: url("../images/del.png");
   background-size: 100% 100%;
-}
-
-.card-md h2 {
-  font-size: 1.3em;
-  color: #3a65a9;
-}
-
-.cardContent {
-  background-color: #FFF;
-  height: auto;
-  width: auto;
-  padding: 7px;
-}
-
-table {
-  width: 100%;
-}
-
-table td {
-  padding: 10px;
-  font-size: 1.3em;
-}
-
-table tr:nth-child(odd) {
-  background-color: #DDD;
-}
-
-table tr:nth-child(even) {
-  background-color: #A3C1D6;
-}
-
-.clickAbleHeader {
-  background-color: #5893C1;
-  color: #FFF;
-}
-
-page-nutrition .grid {
-  font-size: 1.1em;
-}
-
-page-nutrition .grid button {
-  height: 100%;
-  width: 100%;
-  float: right;
-}
-
-page-nutrition h2 {
-  font-size: 1.3em;
-  color: #3a65a9;
-}
-
-page-update .time {
-  font-size: 1.3em;
-  color: #3a65a9;
-  text-align: center;
-  margin-top: 10px;
 }

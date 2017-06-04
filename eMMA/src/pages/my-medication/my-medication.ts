@@ -97,7 +97,9 @@ export class MyMedicationPage {
     });
     this.storage.ready().then(()=>{
       this.storage.get('mediPlan').then((res)=>{
+        res.Dt = this.drugList[this.drugList.length-1].Pos["0"].DtFrom
         res['Medicaments'] = this.drugList
+        this.drugList[this.drugList.length-1].DtFrom
         this.storage.set('mediPlan', res).then(()=>{
           this.barcodeService.doChecksWithCurrentMedication();
         })
@@ -242,6 +244,19 @@ export class MyMedicationPage {
             this.storage.set("medicationData", this.drugList);
             this.storage.get('mediPlan').then((res)=>{
               res['Medicaments'] = this.drugList
+              var today:any = new Date();
+              var dd:any = today.getDate()
+              var mm:any = today.getMonth()+1; //January is 0!
+              var yyyy:any = today.getFullYear();
+              if(dd<10) {
+                dd='0'+dd
+              }
+
+              if(mm<10) {
+                mm='0'+mm
+              }
+              today = yyyy+'-'+mm+'-'+dd;
+              res.Dt = today
               this.storage.set('mediPlan', res)
             })
           })

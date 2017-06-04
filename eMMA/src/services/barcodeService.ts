@@ -113,7 +113,7 @@ private chmedHandler: chmedJsonHandler;
         if(mm<10) {
             mm='0'+mm
         }
-        today = yyyy+'-'+dd+'-'+mm;
+        today = yyyy+'-'+mm+'-'+dd;
 
         var tempObj = ({
           "AppInstr":"Arzt oder Apotheker fragen.",
@@ -183,6 +183,7 @@ private chmedHandler: chmedJsonHandler;
         } as HCITypes.hciCdsCheckRequest;
 
         HciHospAPI.hciCdsCheck(hciCdsCheckRequest).then((res)=>{
+          console.log(res)
           this.storage.set("checks", res);
         })
       })
@@ -196,11 +197,9 @@ private chmedHandler: chmedJsonHandler;
     return this.storage.get("mediPlan").then((res) => {
       let actMediplan = new Date(res.Dt.substring(0, 10));
       let midataJson = new Date(this.chmedHandler.analyseCHMED(midataCHMED).Dt.substring(0, 10))
-      console.log(actMediplan)
-      console.log(midataJson)
-      actMediplan.setMonth(1)
-      console.log(actMediplan > midataJson)
-      if(actMediplan > midataJson){
+      console.log(actMediplan >= midataJson)
+
+      if(actMediplan >= midataJson){
         console.log("Mediplan von Device")
         return this.chmedHandler.getCHMEDString()
         }
@@ -264,6 +263,7 @@ private chmedHandler: chmedJsonHandler;
     var mediPlan = JSON.parse(strData)
     console.log(mediPlan)
     this.storage.set("mediPlan", mediPlan).then(()=>{
+      this.doChecksWithCurrentMedication()
       this.storage.set("medicationData", mediPlan['Medicaments']);
       console.log("TestMidataFunctione")
     })

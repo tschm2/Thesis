@@ -104,10 +104,12 @@ export class UpdatePage {
       let midata = new Midata("https://test.midata.coop:9000","eMMA","W1KAS4hxm1Ljd01j78e2ZTeMEzgczz0w");
       //  let uName = "marie@emma.ch"
       //  let uPassword = "Emma1234."
+
       midata.login(username,password).then((AuthToken)=>{
-      console.log(AuthToken)
+
 
       midata.search("Device").then((res)=>{
+        console.log(res)
         this.barcodeService.compareCHMED16Date((res[0].udi.name)).then((newMediplan)=>{
             var tk = {
               resourceType: "Device",
@@ -132,11 +134,8 @@ export class UpdatePage {
             this.toggleObject = 0;
           })
         });
-      });
 
-
-
-
+      })
     }
     /*----------------------------------------------------------------------------*/
     /* This Method is used to toggle The Content accordion

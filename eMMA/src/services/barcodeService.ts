@@ -205,7 +205,7 @@ private chmedHandler: chmedJsonHandler;
         }
       else{
         console.log("Mediplan midata")
-        this.testMidata(midataCHMED)
+        this.saveMedicationInformation(midataCHMED)
         return midataCHMED
       }
     })
@@ -215,6 +215,7 @@ private chmedHandler: chmedJsonHandler;
   /* This method is used to analyse the String, call the Check Functions
   /* and save the Medication Data + create a new ComplianceDataObject!
   /*----------------------------------------------------------------------------*/
+
 
   saveMedicationInformation(stringData){
     let strData: string = this.chmedHandler.chmedToString(stringData)
@@ -257,17 +258,7 @@ private chmedHandler: chmedJsonHandler;
       console.log("DummyDataSet")
     })
   }
-  testMidata(testMidata){
-    var testData = testMidata
-    let strData: string = this.chmedHandler.chmedToString(testData)
-    var mediPlan = JSON.parse(strData)
-    console.log(mediPlan)
-    this.storage.set("mediPlan", mediPlan).then(()=>{
-      this.doChecksWithCurrentMedication()
-      this.storage.set("medicationData", mediPlan['Medicaments']);
-      console.log("TestMidataFunctione")
-    })
-  }
+
 
   /*----------------------------------------------------------------------------*/
   /* This method is used to analyse the String, can be used manually to check a CHMED String

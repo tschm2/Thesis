@@ -38,7 +38,7 @@
       <button ion-button full (click)="reply(answer)">{{answer.text}}</button>
     </div>
   </div>
-  <form (ngSubmit)="sendMessage(inputNumber,sendButtonNumber)">
+  <form (ngSubmit)="sendPinPW(inputNumber,sendButtonNumber)">
   <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
     <ion-item style="width:80%;float:left;">
       <ion-input style="color:#FFF;" (focus)="scrollToBottomOnFocus()"  type="number" #inputNumber [ngModelOptions]="{standalone: true}" [(ngModel)]="numberinput" class="input-message" placeholder="dein Pin"></ion-input>
@@ -48,7 +48,7 @@
     </button>
   </ion-card-content>
 </form>
-<form (ngSubmit)="sendMessage(inputPW,sendButtonPW)">
+<form (ngSubmit)="sendPinPW(inputPW,sendButtonPW)">
   <ion-card-content [ngClass]="{'hidden': toggleObject != 4}">
     <ion-item style="width:80%;float:left;">
       <ion-input style="color:#FFF;" type="password" #inputPW [ngModelOptions]="{standalone: true}" [(ngModel)]="password" class="input-message" placeholder="dein Passwort"></ion-input>

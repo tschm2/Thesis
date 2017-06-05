@@ -8,6 +8,7 @@ export class questionHandler {
   messageEMMA_Delete_Storage = "OOOOPs: ich habe gerade den Speicher gelöscht, Sorry -.-"
   messageEMMA_About = "Du möchtest also etwas über eMMA wissen."
   messageEMMA_Selfmedication = "Ich öffne die Selbstmedikation für dich"
+  messageEMMA_Medication = "Ich öffne die Medikationsansicht für dich"
   messageEMMA_Compliance = "Gerne zeige ich dir dein Medikationstagebuch an"
   messageEMMA_Nutrition = "Ich zeige dir, welche Nahrungsmittel du im Moment nicht essen darfst."
   messageEMMA_InformationQuestion = "Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein + die Frage die du hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen must."
@@ -109,6 +110,10 @@ export class questionHandler {
               else if(question.includes("SELBSTMEDIKATION")||(question.includes("MEDIKAMENT")&&(question.includes("ZUSÄTZLICH")||(question.includes("ERFASSEN")))))
               {
                 retVal = this.messageEMMA_Selfmedication;
+              }
+              else if(question.includes("MEINE")&&(question.includes("MEDI")))
+              {
+                retVal = this.messageEMMA_Medication;
               }
               else if(question.includes("REMINDER"))
               {

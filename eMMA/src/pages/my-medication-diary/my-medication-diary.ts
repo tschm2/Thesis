@@ -148,7 +148,9 @@ export class MyMedicationDiaryPage {
           this.barChart.options.legend.display = false;
       })
     })
+    console.log(this.barChart)
   }
+
 
   toggleContent(numb){
     if (this.toggleObject == numb)

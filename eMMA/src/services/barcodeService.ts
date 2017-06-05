@@ -5,6 +5,7 @@ import { HCIService } from './HCIService';
 import { HciHospAPI } from 'hci-hospindex-api';
 import  * as  HCITypes from 'hci-hospindex-api/src/api';
 import { chmedJsonHandler } from '../services/chmedJsonHandler';
+import { Midata } from 'midata';
 
 /*----------------------------------------------------------------------------*/
 /* barcodeService
@@ -244,6 +245,42 @@ private chmedHandler: chmedJsonHandler;
            this.storage.set('ComplianceData',complianceObj)//save to storage
           })
         });
+  }
+  /*----------------------------------------------------------------------------*/
+  /* This Method is called when Abgleich mit Midata Button is pressed
+  /* It builds a connection to Midata with username and password entered.
+  /* If the username and password is correct, the compareCHMED16DAte function will becalled
+  /* If the eMediplan on Midata is more current, the one gets downloaded and saved in the application
+  /* else the current Medicationdata will get uploaded and stored on Midata!
+  /*----------------------------------------------------------------------------*/
+
+  updateMidataFromConversation(username:string, password:string){
+    console.log(username, password)
+    let midata = new Midata("https://test.midata.coop:9000","eMMA","W1KAS4hxm1Ljd01j78e2ZTeMEzgczz0w");
+    //  let uName = "marie@emma.ch"
+    //  let uPassword = "Emma1234."
+
+    midata.login(username,password).then((AuthToken)=>{
+    console.log(AuthToken)
+    midata.search("Device").then((res)=>{
+      this.compareCHMED16Date((res[0].udi.name)).then((newMediplan)=>{
+          var tk = {
+            resourceType: "Device",
+            status: 'active',
+            udi : { // Unique Device Identifier (UDI) Barcode string
+              deviceIdentifier : "eMediplan", // Mandatory fixed portion of UDI
+              name : newMediplan, // Device Name as appears on UDI label
+              jurisdiction : "eMMA", // Regional UDI authority
+              carrierHRF : "-", // UDI Human Readable Barcode String
+              carrierAIDC : "-", // UDI Machine Readable Barcode String
+              issuer : "eMMA", // UDI Issuing Organization
+              entryType : "manual" // barcode | rfid | manual +
+            }
+          }
+          midata.save(tk)
+        })
+      });
+    });
   }
 
   /*----------------------------------------------------------------------------*/

@@ -180,17 +180,25 @@ export class ConversationPage {
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questioneHalthUsername);
     this.overrideSendbutton("eHealthPassword");
   }
-  eHealthPassword(){
+  eHealthPassword(input: String){
+        this.storage.set('UsernameEHealht', input)
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questioneHalthPasword);
     this.overridePasswordSendButton("testUsernamePassword");
   }
-  testUsernamePassword(){
-    //ifLoginPossible
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_eHealthCorrect)
-    setTimeout(() => this.questionDataSecurity(),eMMAWaitingTime);
-    //else
-    //this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_eHealthWrong);
-    //this.eHealthUsername
+  testUsernamePassword(input: string){
+    this.storage.get('UsernameEHealht').then((name)=>{
+    var tempName = name;
+    let barService = new barcodeService(this.storage);
+    if(tempName == "marie@emma.ch"&&input == "Emma1234."){
+      barService.updateMidataFromConversation(name, input)
+      this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_eHealthCorrect)
+      setTimeout(() => this.questionDataSecurity(),eMMAWaitingTime);
+    }
+    else{
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_eHealthWrong);
+    this.eHealthUsername();
+    }
+    })
   }
   //aks the user if he want more information about the data security
   questionDataSecurity(){
@@ -359,18 +367,17 @@ export class ConversationPage {
           }
         }
       }
-
-      let i = 0;
+      this.sendEmmaText(output);
+      setTimeout(() =>
       this.storage.get('medicationData').then((res)=>{                                    //get the drug list json for more information about the drugs
           let drugList = res;
-          console.log(drugList);
-          for(var pos in drugList){                                                       //stepp trought all drugs in drugList
+          for(var pos in drugList){                                                      //stepp trought all drugs in drugList
             if(medication.includes(drugList[pos].title)){
-            output = output + "Als Grund für die Einnahme von " + drugList[pos].title + " habe ich " + drugList[pos].TkgRsn  + " eingetragen\n"   //get the user the information why he should take his drug
+            this.sendEmmaTextNow("Als Grund für die Einnahme von " + drugList[pos].title + " habe ich " + drugList[pos].TkgRsn  + " eingetragen\n" ) //get the user the information why he should take his drug
             }
           }
       })
-      this.sendEmmaText(output);
+      ,eMMAWaitingTimeDouble)
     })
   }
   /*****************************************************************************
@@ -407,7 +414,11 @@ export class ConversationPage {
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Delete_Storage){
           this.storage.clear(); //cleare the storage of the app. Force a new app start
-          setTimeout(() => this.ionViewDidLoad(),eMMAWaitingTimeDouble)
+
+          setTimeout(() =>
+          this.messages = [],
+          this.ionViewDidLoad(),
+          eMMAWaitingTimeDouble)
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Nutrition){
           this.navCtrl.push(NutritionPage) //open nutrition page
@@ -415,8 +426,8 @@ export class ConversationPage {
         else if(answereMMA == this.questionhandler.messageEMMA_Compliance){
           this.navCtrl.push(MyMedicationDiaryPage)//open diary page
         }
-        else if(answereMMA == this.questionhandler.messageEMMA_Selfmedication){
-          this.navCtrl.push(MyMedicationPage)//open self medication page
+        else if((answereMMA == this.questionhandler.messageEMMA_Selfmedication)||(answereMMA == this.questionhandler.messageEMMA_Medication)){
+                    this.navCtrl.push(MyMedicationPage)//open self medication page
         }
         else if(answereMMA == this.questionhandler.messageEMMA_About){
           this.navCtrl.push(AboutEmmaPage)//open about eMMA page
@@ -473,6 +484,22 @@ export class ConversationPage {
       this.content.scrollToBottom(), //scroll down in the view to the last message of eMMA
       setTimeout(() => this.messages[this.messages.length-1].text = message, eMMAWaitingTime),
       setTimeout(()=> this.content.scrollToBottom(),eMMAWaitingTime+50)//scroll to button again
+  }
+  /*----------------------------------------------------------------------------*/
+  /* This Methode is used to write a text from eMMA on the conversation page NOW
+  /*
+  /*----------------------------------------------------------------------------*/
+  sendEmmaTextNow(message:String){
+
+    var myHour = this.getLocalHour();
+    var myMinute = this.getLocalMinute();
+    //get the local time
+    this.messages.push({
+        text: message,  //write..... on the screnn. Means emma is thinking what she schoudl write
+        identity: 'emma',
+        time: myHour + ":"+myMinute //ad local time to message
+      }),
+      setTimeout(()=> this.content.scrollToBottom(),50) //scroll down in the view to the last message of eMMA
   }
   /*----------------------------------------------------------------------------*/
   /* This Methode is used to set a text on two buttions to aks the user someting
@@ -562,6 +589,22 @@ export class ConversationPage {
     setTimeout(() =>{ this.content.scrollToBottom();}, 50);
   }
   /*----------------------------------------------------------------------------*/
+  /* This Methode is used to write a Number Pin text from the user on the Convesation Page
+  /*
+  /*----------------------------------------------------------------------------*/
+sendPinPW(myReply, myFunc) {
+  var myHour = this.getLocalHour();
+  var myMinute = this.getLocalMinute();
+  this.messages.push({
+    text: "****",
+    identity: 'user',
+    time: myHour + ":"+myMinute
+  })
+  this[myFunc](myReply.value);
+  myReply.value = "";
+  setTimeout(() =>{ this.content.scrollToBottom();}, 50);
+}
+  /*----------------------------------------------------------------------------*/
   /* This Methode is used to write the new compliance information to the storrage
   /*
   /*----------------------------------------------------------------------------*/
@@ -641,7 +684,7 @@ export class ConversationPage {
       let notification = {
           id: 1,
           title: 'eMMA hat dir geschrieben',
-          text: 'Es ist jetzt ' + time+" es ist widermal Zeit :)",
+          text: 'Es ist jetzt ' + time+". Ich wollte dich daran erinnern",
           data: timeOfDay,
           at: firstNotificationTime,
       };
@@ -665,6 +708,9 @@ export class ConversationPage {
   triggerNotification(){  //shedule the notifications
     LocalNotifications.on("trigger", (event)=>{
       this.storage.set('FirstStartComplet', "reminder") //set the reminder start function
+      this.messages = [];
+      this.ionViewDidLoad();
+
     })
   }
   /*----------------------------------------------------------------------------*/

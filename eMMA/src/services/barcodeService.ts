@@ -247,11 +247,8 @@ private chmedHandler: chmedJsonHandler;
         });
   }
   /*----------------------------------------------------------------------------*/
-  /* This Method is called when Abgleich mit Midata Button is pressed
+  /* This Method is called when the Medication is updated via the CUI.
   /* It builds a connection to Midata with username and password entered.
-  /* If the username and password is correct, the compareCHMED16DAte function will becalled
-  /* If the eMediplan on Midata is more current, the one gets downloaded and saved in the application
-  /* else the current Medicationdata will get uploaded and stored on Midata!
   /*----------------------------------------------------------------------------*/
 
   updateMidataFromConversation(username:string, password:string){

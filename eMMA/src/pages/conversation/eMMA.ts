@@ -48,8 +48,8 @@ export class eMMA{
   messageEMMA_FirstStart_questionDatasecurity_Yes = "Ja, zeige mir bitte mehr.";
   messageEMMA_FirstStart_questionDatasecurity_No =  "Nein, gerade nicht danke.";
   messageEMMA_FirstStart_Datasecurity = "eMMA sendet keine deiner persönlichen Daten weiter...\n Du findest die Datenschutzbestimmungen in der App noch ausführlicher.\n Gehe dafür einfach im Menü auf 'Über eMMA'"
-  messageEMMA_FirstStart_Tourtorial = "Du bist nun im Fragemodus. Hier kannst du Fragen zu deiner Medikation stellen.";
-  messageEMMA_FirstStart_Tourtorial_2 = "Du hast neue Medikamente eingelesen. Bitte beachte folgendes:";
+  messageEMMA_FirstStart_Tutorial = "Du bist nun im Fragemodus. Hier kannst du Fragen zu deiner Medikation stellen.";
+  messageEMMA_FirstStart_Tutorial_2 = "Du hast neue Medikamente eingelesen. Folgende Lebensmittel solltest du mit deiner Medikation vermeiden:";
 
   //Messages used in the normal App Start
   messageEMMA_Normal_Start_1 = "Hallo " //Name des Benuters

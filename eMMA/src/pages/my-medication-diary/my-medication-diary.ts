@@ -80,11 +80,12 @@ export class MyMedicationDiaryPage {
                 if(this.months[monthValue-1] == this.choosenMonth||this.choosenMonth == "Gesamte Zeitdauer"){
                   tempMax++;  //add one value for a medication who should be taken
                 }
-                if(complianceObj.DrugList[pos].Compliance[value].D[taken] != 0){
+                if(complianceObj.DrugList[pos].Compliance[value].D[taken] == 1){
                   if(this.months[monthValue-1] == this.choosenMonth||this.choosenMonth == "Gesamte Zeitdauer"){
                     temptaken++;      //add one value for a medication which was taken
                   }
-                  if(complianceObj.DrugList[pos].Compliance[value].D[taken] != 1){
+                }
+                  else{
                         //push deatil information in variable message
                         messages.push({
                         date: complianceObj.DrugList[pos].Compliance[value].Date,
@@ -92,7 +93,7 @@ export class MyMedicationDiaryPage {
                         description: complianceObj.DrugList[pos].Compliance[value].D[taken]
                       })
                   }
-                }
+
               }
             }
           }
@@ -104,8 +105,10 @@ export class MyMedicationDiaryPage {
           messages = [];
         barValues[pos] = temptaken/tempMax * 100;
       }
+      console.log(this.ComplianceListDescription)
       //take the months array and fill the array with values for the line chart
       barValues.push(0,100)
+      console.log(barValues)
       //generate bar chart
       this.barChart = new Chart(this.barCanvas.nativeElement, {
               type: 'bar',

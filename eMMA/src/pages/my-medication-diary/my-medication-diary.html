@@ -32,7 +32,8 @@
       </ion-card-header>
       <ion-card-content [ngClass]="{'hidden': toggleObject != 2}">
           <ion-grid  *ngFor="let drug of ComplianceListDescription; let i = index">
-          {{drug.name}}
+            <div *ngIf=drug?.data[0]>
+            {{drug.name}}
             <ion-row>
               <ion-col>
                 <u>Datum</u>
@@ -55,6 +56,7 @@
                   {{messages.description}}
                 </ion-col>
               </ion-row>
+            </div>
         </ion-grid>
       </ion-card-content>
     </ion-card>

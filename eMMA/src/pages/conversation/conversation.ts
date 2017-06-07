@@ -63,6 +63,7 @@ export class ConversationPage {
   ionViewDidLoad() {
     this.toggleObject = showTextfield;  // Initalize view with text field for user input
     this.storage.get('FirstStartComplet').then((terminated)=>{ // check if first start, normal start or reminder
+      console.log(terminated)
       if(terminated == "reminder"){
         this.reminderAppStart();        //start the reminder function
       }
@@ -161,7 +162,7 @@ export class ConversationPage {
       let scanner = new barcodeService(this.storage)   //initialize new scanner
       scanner.scanQRcodeForJSON().then((success)=>{               //check if the scann was successfull
         if(success){
-          this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_success)  //next step
+          this.sendEmmaTextNow(this.eMMA.messageEMMA_FirstStart_ImportMediplan_success)  //next step
           setTimeout(() => this.questionEHealth() , eMMAWaitingTimeDouble);
         }
         else{
@@ -203,23 +204,47 @@ export class ConversationPage {
   //aks the user if he want more information about the data security
   questionDataSecurity(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionDatasecurity)
-    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionDatasecurity_Yes,"DataSecurity",this.eMMA.messageEMMA_FirstStart_questionDatasecurity_No,"eMMATourtorial");
+    this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionDatasecurity_Yes,"DataSecurity",this.eMMA.messageEMMA_FirstStart_questionDatasecurity_No,"eMMATutorial");
   }
   //show the data security information
   DataSecurity(){
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Datasecurity)
-    setTimeout(() => this.eMMATourtorial(),eMMAWaitingTime);
+    setTimeout(() => this.eMMATutorial(),eMMAWaitingTime);
   }
-  eMMATourtorial(){
+  eMMATutorial(){
     //finish the first app start and set all needed parameters
     this.storage.set('FirstStartComplet', true) //first start is complet
     let tempTakingTime = ["08:00","12:00","18:00","22:00"] // set standart times for the taking times
     let newTime:String = tempTakingTime[0];
-    let myHour = newTime.substr(0,2)
-    let myMinute = newTime.substr(3,2)
-    setTimeout(() => this.addlocalnotification(myHour,myMinute,0,false),eMMAWaitingTimeDouble)  //set new notification
     this.storage.set('takingTime',tempTakingTime) // save the taking times to the storrage
-    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Tourtorial); //inform the patient what he can do now
+
+    this.storage.get("checks").then((checks) =>{
+    console.log(checks);
+    if(checks != null){
+      checks = checks.body.medicaments
+      var output:String = "";
+      // Creates an Object for each Check of each Medication
+      checks.forEach((item,index) => {
+        var nutrition:string;
+        var tempString = item.checks["1"].rem
+
+        if(tempString.search(" - ") == -1){
+          nutrition = "";
+        }
+        else{
+          nutrition = tempString.slice(tempString.indexOf(" - ")+3)
+          nutrition = nutrition.slice(0,nutrition.indexOf(","))
+          console.log(nutrition)
+          output += "- "+nutrition+ "\n"
+        }
+      })
+      console.log(output)
+      this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Tutorial_2 + "\n" + output); //inform the patient what he can do now
+      setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Tutorial), eMMAWaitingTimeDouble);
+
+      }
+    })
+
     this.overrideSendbutton("question");                            //switch to question mode
     this.eMMANewComplianceObj();                                    //create new compliance obj
   }
@@ -231,7 +256,6 @@ export class ConversationPage {
 
   *****************************************************************************/
   reminderAppStart(){ //start the reminder fuction, first check if a pin is necessary
-    this.storage.set('FirstStartComplet', true)
     this.storage.get('Pin').then((Pin)=>{
     var tempPin = Pin;
     if(tempPin == null){
@@ -309,6 +333,7 @@ export class ConversationPage {
       this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_finish);
     }
     this.overrideSendbutton("question");  //move to the question state
+    this.storage.set('FirstStartComplet', true)
   }
   returnFromMedication(){
     let medicationNotTaken = "";        //initalize empty medication list
@@ -329,7 +354,7 @@ export class ConversationPage {
       }
       if(finishReminder){
         this.finishReminder(medicationNotTaken);
-        this.addComplianceInformation(0);
+        this.addComplianceInformation("kein Grund");
       }else{  //Ask the patient why he didn't take his drug
         //he can choose betwen leaving a note or say nothing
         this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_why_1 + "\n" + medicationNotTaken + this.eMMA.messageEMMA_reminderAppStart_why_2)
@@ -347,12 +372,14 @@ export class ConversationPage {
     this.addComplianceInformation(input);
     this.finishReminderNotTaken();
     this.overrideSendbutton("question");  //move to the question state
+    this.storage.set('FirstStartComplet', true)
   }
   finishReminderNotSpecified(input:String){
     //Save not specified to Compliance
-    this.addComplianceInformation(0);
+    this.addComplianceInformation("kein Grund");
     this.finishReminderNotTaken();
     this.overrideSendbutton("question");  //move to the question state
+    this.storage.set('FirstStartComplet', true)
   }
   finishReminderNotTaken(){
     //Methode if the Patinet hasn't took his medication
@@ -373,7 +400,7 @@ export class ConversationPage {
           let drugList = res;
           for(var pos in drugList){                                                      //stepp trought all drugs in drugList
             if(medication.includes(drugList[pos].title)){
-            this.sendEmmaTextNow("Als Grund für die Einnahme von " + drugList[pos].title + " habe ich " + drugList[pos].TkgRsn  + " eingetragen\n" ) //get the user the information why he should take his drug
+            this.sendEmmaTextNow("Bei " + drugList[pos].title + " habe ich " + drugList[pos].TkgRsn  + " hinterlegt\n" ) //get the user the information why he should take his drug
             }
           }
       })
@@ -389,7 +416,7 @@ export class ConversationPage {
   normalAppStart() {
     this.storage.get('name').then((name)=>{
     var Name = name;
-    this.sendEmmaText(this.eMMA.messageEMMA_Normal_Start_1 + Name + this.eMMA.messageEMMA_Normal_Start_2);
+    this.sendEmmaText(this.eMMA.messageEMMA_Normal_Start_1 + Name + " "+ this.eMMA.messageEMMA_Normal_Start_2);
     this.overrideSendbutton("question");
   })
   }
@@ -414,11 +441,10 @@ export class ConversationPage {
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Delete_Storage){
           this.storage.clear(); //cleare the storage of the app. Force a new app start
-
           setTimeout(() =>
           this.messages = [],
           this.ionViewDidLoad(),
-          eMMAWaitingTimeDouble)
+          eMMAWaitingTimeDouble * 2)
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Nutrition){
           this.navCtrl.push(NutritionPage) //open nutrition page
@@ -700,17 +726,16 @@ sendPinPW(myReply, myFunc) {
           alert.present();
         });
       }
-      if(notificationSingelton){ //singelton to make sure the methode is called just one time
-        notificationSingelton = false;
+      //if(notificationSingelton){ //singelton to make sure the methode is called just one time
+      //  notificationSingelton = false;
         this.triggerNotification()
-      }
+      //}
   }
   triggerNotification(){  //shedule the notifications
     LocalNotifications.on("trigger", (event)=>{
-      this.storage.set('FirstStartComplet', "reminder") //set the reminder start function
-      this.messages = [];
-      this.ionViewDidLoad();
-
+      this.storage.set('FirstStartComplet', "reminder") //set the reminder start functions
+      // this.messages = [];
+      // this.ionViewDidLoad();
     })
   }
   /*----------------------------------------------------------------------------*/

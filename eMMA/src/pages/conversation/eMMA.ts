@@ -57,7 +57,7 @@ export class eMMA{
 
   //Messages used for a reminder
   messageEMMA_reminderAppStart_questionAll_1 = "Hallo " //Name des Benutzers
-  messageEMMA_reminderAppStart_questionAll_2 = "\nEs ist jetzt "
+  messageEMMA_reminderAppStart_questionAll_2 = "Es ist jetzt "
   messageEMMA_reminderAppStart_questionAll_3 = "Uhr \nBitte trage ein ob du deine Medikamente genommen hast."
   messageEMMA_reminderAppStart_showMedication = "Zeige mir meine Medikation."
   messageEMMA_reminderAppStart_TakenAll = "Sehr gut, du hast alle eingenommen. Ich habe das so eingetragen."

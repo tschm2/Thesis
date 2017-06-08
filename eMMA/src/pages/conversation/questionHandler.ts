@@ -23,7 +23,7 @@ export class questionHandler {
   "Diese Frage kann ich leider nicht beantworten"
   ];
   messageEMMA_Not_Understand_temp = new Array<any>();
-  messageEMMA_TakingTime = [ "mogens um ", "mittags um  ", "abends um ", "In der Nacht um "
+  messageEMMA_TakingTime = [ "morgens um ", "mittags um  ", "abends um ", "In der Nacht um "
   ];
 
   drugList:JSON;

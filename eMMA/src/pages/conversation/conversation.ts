@@ -287,7 +287,8 @@ export class ConversationPage {
     let myHours = this.getLocalHour();
     let myMinute = this.getLocalMinute();
     let time = myHours + ":"+ myMinute; //save the local time Hours and Minutes to a String
-    this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_questionAll_1 + Name + this.eMMA.messageEMMA_reminderAppStart_questionAll_2 + time +this.eMMA.messageEMMA_reminderAppStart_questionAll_3);
+    this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_questionAll_1 + Name)
+    setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_questionAll_2 + time +this.eMMA.messageEMMA_reminderAppStart_questionAll_3), eMMAWaitingTime);
     this.overrideAnswerButtonsOneButton(this.eMMA.messageEMMA_reminderAppStart_showMedication,"AwnswerReminder")//open the reminder after pressing the buttion
   })
   }
@@ -416,7 +417,8 @@ export class ConversationPage {
   normalAppStart() {
     this.storage.get('name').then((name)=>{
     var Name = name;
-    this.sendEmmaText(this.eMMA.messageEMMA_Normal_Start_1 + Name + " "+ this.eMMA.messageEMMA_Normal_Start_2);
+    this.sendEmmaText(this.eMMA.messageEMMA_Normal_Start_1 + Name);
+    setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_Normal_Start_2), eMMAWaitingTime);
     this.overrideSendbutton("question");
   })
   }

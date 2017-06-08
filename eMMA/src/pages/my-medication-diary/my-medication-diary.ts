@@ -93,7 +93,6 @@ export class MyMedicationDiaryPage {
                         description: complianceObj.DrugList[pos].Compliance[value].D[taken]
                       })
                   }
-
               }
             }
           }

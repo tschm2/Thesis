@@ -55,10 +55,16 @@
                 <span *ngIf=drug?.Pos[0].DtTo> | <b>bis:</b> {{drug.Pos[0].DtTo}}</span>
               </td>
             </tr>
+
             <tr>
               <td>
                 <b>Verschrieben von:</b> {{drug?.PrscbBy}}
                 <div class="delete" (click)="deleteDrug(drug.title, drug.Id)" *ngIf="drug?.AutoMed"></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="http://compendium.ch/mpub/phc/{{drug?.Id}}/html"><b>Mehr Informationen</b></a>
               </td>
             </tr>
           </table>

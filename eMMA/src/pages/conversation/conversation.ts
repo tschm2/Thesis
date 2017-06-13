@@ -215,7 +215,6 @@ export class ConversationPage {
     //finish the first app start and set all needed parameters
     this.storage.set('FirstStartComplet', true) //first start is complet
     let tempTakingTime = ["08:00","12:00","18:00","22:00"] // set standart times for the taking times
-    let newTime:String = tempTakingTime[0];
     this.storage.set('takingTime',tempTakingTime) // save the taking times to the storrage
 
     this.storage.get("checks").then((checks) =>{
@@ -728,10 +727,10 @@ sendPinPW(myReply, myFunc) {
           alert.present();
         });
       }
-      //if(notificationSingelton){ //singelton to make sure the methode is called just one time
-      //  notificationSingelton = false;
+      if(notificationSingelton){ //singelton to make sure the methode is called just one time
+        notificationSingelton = false;
         this.triggerNotification()
-      //}
+      }
   }
   triggerNotification(){  //shedule the notifications
     LocalNotifications.on("trigger", (event)=>{

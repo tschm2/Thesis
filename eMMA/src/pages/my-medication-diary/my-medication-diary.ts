@@ -43,9 +43,6 @@ export class MyMedicationDiaryPage {
       this.storage.get('ComplianceData').then((res)=>{
       complianceObj = res;
 
-      var tempMonthObj = ({
-        "DrugList":[]
-      })
       // for (var posDrug in complianceObj.DrugList)
       // {
       //   for(var m = 1; m<=6;m++){
@@ -161,9 +158,7 @@ export class MyMedicationDiaryPage {
       this.toggleObject = numb;
   }
   presentActionSheet() {
-    this.storage.get('ComplianceData').then((res)=>{
-      let complianceObj = res;
-      console.log(res)
+
       let actionSheet = this.actionSheetCtrl.create({
        title: 'Wähle einen Monat aus',
      });
@@ -188,6 +183,5 @@ export class MyMedicationDiaryPage {
        actionSheet.addButton(button)
      }
      actionSheet.present();
-   })
  }
 }

@@ -260,7 +260,7 @@ private chmedHandler: chmedJsonHandler;
     midata.login(username,password).then((AuthToken)=>{
     console.log(AuthToken)
     midata.search("Device").then((res)=>{
-      this.compareCHMED16Date((res[0].udi.name)).then((newMediplan)=>{
+      this.compareCHMED16Date((res[0])).then((newMediplan)=>{
           var tk = {
             resourceType: "Device",
             status: 'active',

@@ -78,10 +78,13 @@ Ionic pages and navigation.
       Gespr&auml;chsverlauf
     </ion-card-header>
     <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
-        <p ion-item *ngFor="let msg of chatlog">
-          {{msg.identity}} ({{msg.time}}):<br />
-          {{msg.text}}
-        </p>
+      <p ion-item *ngFor="let msg of chatlog">
+      {{msg.identity}} ({{msg.time}}):<br />
+      {{msg.text}}
+      </p>
+
+      <!-- this textarea is added so the log can be copied from the app -->
+      <textarea rows="10" cols="35">{{logstring}}</textarea>
     </ion-card-content>
   </ion-card>
 </ion-content>

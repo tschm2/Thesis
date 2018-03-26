@@ -39,6 +39,7 @@ export class ConversationPage {
 
   @ViewChild(Content)  content: Content;
   messages: any[];
+  chatlog: any[];
   preAnswers: any[];
   sendButton: String;
   sendButtonPW: String;
@@ -49,6 +50,7 @@ export class ConversationPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, public platform: Platform, public alertCtrl: AlertController) {
     this.messages = [];
+    this.chatlog = [] // log for all messages
     this.preAnswers = [];
     this.toggleObject = showTextfield;
     this.chmedHandler = new chmedJsonHandler(this.storage)
@@ -83,6 +85,7 @@ export class ConversationPage {
   //Method for register the name of the user
   firstAppStart() {
     this.chmedHandler.saveEmptyMedicationplan();
+    this.storage.set('chatlog', []);
     let tempTakingTime = ["08:00","12:00","18:00","22:00"] // set standart times for the taking times
     this.storage.set('takingTime',tempTakingTime) // save the taking times to the storrage
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_1)
@@ -91,13 +94,13 @@ export class ConversationPage {
   }
   //Method to aks the user if a pin is necessary
   questionPinNecessary(name:String){
-    //chekc if name was not empty
+    //check if name was not empty
     if(name == null){
       //restart with the first function
       this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_NoName);
     }
     else{
-      this.storage.set('name',name )
+      this.storage.set('name',name);
       this.sendEmmaText("Hallo " + name+ "\n"+ this.eMMA.messageEMMA_FirstStart_questionPin);
       setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionPin2),eMMAWaitingTime);
       this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionPin_Yes,"inputPin",this.eMMA.messageEMMA_FirstStart_questionPin_No,"questionAthlete");
@@ -500,17 +503,18 @@ export class ConversationPage {
   /*----------------------------------------------------------------------------*/
   sendEmmaText(message:String){
 
-    var myHour = this.getLocalHour();
-    var myMinute = this.getLocalMinute();
+  //  var myHour = this.getLocalHour();
+  //  var myMinute = this.getLocalMinute();
     //get the local time
-    this.messages.push({
-        text: 'eMMA schreibt....',  //write..... on the screnn. Means emma is thinking what she schoudl write
+    this.processMsg({
+        text: message,  //write..... on the screnn. Means emma is thinking what she schoudl write
         identity: 'emma',
-        time: myHour + ":"+myMinute //ad local time to message
-      }),
-      this.content.scrollToBottom(), //scroll down in the view to the last message of eMMA
-      setTimeout(() => this.messages[this.messages.length-1].text = message, eMMAWaitingTime),
-      setTimeout(()=> this.content.scrollToBottom(),eMMAWaitingTime+50)//scroll to button again
+        // time: myHour + ":"+myMinute //ad local time to message -- hessg1 commented out for testing on 03-24
+        time: this.getLocalTime()
+      });
+//      this.content.scrollToBottom(), //scroll down in the view to the last message of eMMA
+    //  setTimeout(() => this.messages[this.messages.length-1].text = message, eMMAWaitingTime),
+    // setTimeout(()=> this.content.scrollToBottom(),eMMAWaitingTime+50)//scroll to button again
   }
   /*----------------------------------------------------------------------------*/
   /* This Methode is used to write a text from eMMA on the conversation page NOW
@@ -518,15 +522,21 @@ export class ConversationPage {
   /*----------------------------------------------------------------------------*/
   sendEmmaTextNow(message:String){
 
-    var myHour = this.getLocalHour();
-    var myMinute = this.getLocalMinute();
+  //  var myHour = this.getLocalHour();
+  //  var myMinute = this.getLocalMinute();
     //get the local time
-    this.messages.push({
-        text: message,  //write..... on the screnn. Means emma is thinking what she schoudl write
-        identity: 'emma',
-        time: myHour + ":"+myMinute //ad local time to message
-      }),
-      setTimeout(()=> this.content.scrollToBottom(),50) //scroll down in the view to the last message of eMMA
+    this.processMsg({
+    text: message,
+    identiy: 'emma',
+    time: this.getLocalTime()
+  })
+    // this.messages.push({
+    //     text: message,  //write..... on the screnn. Means emma is thinking what she schoudl write
+    //     identity: 'emma',
+    //     // time: myHour + ":"+myMinute //ad local time to message -- hessg1 commented out for testing on 03-24
+    //     time: this.getLocalTime()
+    //   }),
+    //   setTimeout(()=> this.content.scrollToBottom(),50) //scroll down in the view to the last message of eMMA
   }
   /*----------------------------------------------------------------------------*/
   /* This Methode is used to set a text on two buttions to aks the user someting
@@ -589,13 +599,14 @@ export class ConversationPage {
   /*
   /*----------------------------------------------------------------------------*/
   reply(answer) {
-    var myHour = this.getLocalHour();
-    var myMinute = this.getLocalMinute();
-    this.messages.push({
+  //  var myHour = this.getLocalHour();
+  //  var myMinute = this.getLocalMinute();
+    //var msg = {text: answer.text, identity: 'user', time: this.getLocalTime()};
+    this.processMsg({
       text: answer.text,
       identity: 'user',
-      time: myHour + ":"+myMinute
-    })
+      time: this.getLocalTime()
+    });
     this[answer.callFunction](answer.text);
     setTimeout(() =>{  this.content.scrollToBottom();},50);
     }
@@ -604,12 +615,13 @@ export class ConversationPage {
     /*
     /*----------------------------------------------------------------------------*/
   sendMessage(myReply, myFunc) {
-    var myHour = this.getLocalHour();
-    var myMinute = this.getLocalMinute();
-    this.messages.push({
+//    var myHour = this.getLocalHour();
+//    var myMinute = this.getLocalMinute();
+    this.processMsg({
       text: myReply.value,
       identity: 'user',
-      time: myHour + ":"+myMinute
+      // time: myHour + ":"+myMinute -- hessg1 commented 03-24 for testing purpose
+      time: this.getLocalTime()
     })
     this[myFunc](myReply.value);
     myReply.value = "";
@@ -620,12 +632,13 @@ export class ConversationPage {
   /*
   /*----------------------------------------------------------------------------*/
 sendPinPW(myReply, myFunc) {
-  var myHour = this.getLocalHour();
-  var myMinute = this.getLocalMinute();
-  this.messages.push({
+  //var myHour = this.getLocalHour();
+//  var myMinute = this.getLocalMinute();
+  this.processMsg({
     text: "****",
     identity: 'user',
-    time: myHour + ":"+myMinute
+    // time: myHour + ":"+myMinute -- hessg1 commented 03-24 for testing purpose
+    time: this.getLocalTime()
   })
   this[myFunc](myReply.value);
   myReply.value = "";
@@ -763,7 +776,59 @@ sendPinPW(myReply, myFunc) {
     }
     return myMinute;
   }
-    scrollToBottomOnFocus(){
-    setTimeout(() => this.content.scrollToBottom(), eMMAWaitingTime)
+
+  /*----------------------------------------------------------------------------*/
+  /* This Method is used to get the local time as a String
+  /* in the format hh:mm:ss
+  /*
+  /* author: hessg1
+  /*----------------------------------------------------------------------------*/
+
+  getLocalTime(){
+    var myDate = new Date();
+
+    var hour: any = myDate.getHours();
+    hour = (hour<10) ? "0" + hour : hour;
+
+    var minute: any = myDate.getMinutes();
+    minute = (minute<10) ? "0" + minute : minute;
+
+    var second: any = myDate.getSeconds();
+    second = (second<10) ? "0" + second : second;
+
+    return hour + ":" + minute + ":" + second;
   }
+
+  processMsg(msg: any){
+    this.storage.get('chatlog').then((savedlog)=>{
+      this.chatlog = savedlog;
+    })
+
+    if(msg.identity == 'emma'){
+       this.messages.push({
+         text: 'eMMA schreibt....',  //write..... on the screen, like emma is thinking what she should write
+         identity: 'emma',
+         time: msg.time.slice(0,5) // show only hours and minutes
+       })
+       this.content.scrollToBottom(), // scroll down in the view to the last message of eMMA
+       setTimeout(() => this.messages[this.messages.length-1].text = msg.text, eMMAWaitingTime),
+       // replace 'eMMA schreibt...' with actual text
+      setTimeout(()=> this.content.scrollToBottom(),eMMAWaitingTime+50)//scroll to bottom again
+    }
+    else {
+        this.messages.push({
+        text: msg.text,
+        identity: msg.identity,
+        time: msg.time.slice(0,5) // show only hours and minutes
+      });
+    }
+    this.chatlog.push(msg);
+    this.storage.set('chatlog', this.chatlog);
+  }
+
+
+
+   scrollToBottomOnFocus(){
+     setTimeout(() => this.content.scrollToBottom(), eMMAWaitingTime)
+   }
 }

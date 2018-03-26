@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 /*
   Generated class for the AboutEmma page.
@@ -13,10 +14,17 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class AboutEmmaPage {
   toggleObject:number;
+  chatlog:any[];
+  name:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage) {}
 
   ionViewDidLoad() {
+    this.storage.get('chatlog').then((val) => {
+    this.chatlog = val;
+    this.name = this.chatlog.length;
+  });
     console.log('ionViewDidLoad AboutEmmaPage');
   }
   toggleContent(numb){

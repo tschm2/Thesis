@@ -1,15 +1,15 @@
 <!--
-  Generated template for the AboutEmma page.
+Generated template for the AboutEmma page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
+See http://ionicframework.com/docs/v2/components/#navigation for more info on
+Ionic pages and navigation.
 -->
 <ion-header>
 
   <ion-navbar>
     <button ion-button menuToggle>
-          <ion-icon name="menu"></ion-icon>
-        </button>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>über eMMA</ion-title>
   </ion-navbar>
 
@@ -36,39 +36,52 @@
       <img src= 'images/hci-solutions_gross.png'/>
       <br>
       Namentlich möchten wir uns zusätzlich noch bei folgenden Personen bedanken:<ul>
-      <li>Prof Dr. Jürgen Holm  (Betreuer)</li>
-      <li>Prof Dr. Kersting Denecke (Betreuer)</li>
-      <li>Herr Markus Nufer (Experte)</li>
-      <li>Dr. Matthias Sonnenschein (Praxispartner)</li>
-      <li>Adrian Wyss (Wissenschaftlicher Mitarbeiter I4MI)</li>
-    </ul>
-      </ion-card-content>
+        <li>Prof Dr. Jürgen Holm  (Betreuer)</li>
+        <li>Prof Dr. Kersting Denecke (Betreuer)</li>
+        <li>Herr Markus Nufer (Experte)</li>
+        <li>Dr. Matthias Sonnenschein (Praxispartner)</li>
+        <li>Adrian Wyss (Wissenschaftlicher Mitarbeiter I4MI)</li>
+      </ul>
+    </ion-card-content>
   </ion-card>
+
   <ion-card (click)="toggleContent(2)">
     <ion-card-header class="clickAbleHeader">
       Datenschutz
     </ion-card-header>
     <ion-card-content [ngClass]="{'hidden': toggleObject != 2}">
-    <div>
-      <br>
-      <h2 >Haftungsausschluss</h2>
-      <p>Der Autor übernimmt keinerlei Gewähr hinsichtlich der inhaltlichen Richtigkeit, Genauigkeit, Aktualität, Zuverlässigkeit und Vollständigkeit der Informationen. Haftungsansprüche gegen den Autor wegen Schäden materieller oder immaterieller Art, welche aus dem Zugriff oder der Nutzung bzw. Nichtnutzung der veröffentlichten Informationen, durch Missbrauch der Verbindung oder durch technische Störungen entstanden sind, werden ausgeschlossen. Alle Angebote sind unverbindlich. Der Autor behält es sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.</p>
-    </div>
-    <div>
-      <br>
-      <h2>Haftung für Links </h2>
-      <p>Verweise und Links auf Webseiten Dritter liegen ausserhalb unseres Verantwortungsbereichs Es wird jegliche Verantwortung für solche Webseiten abgelehnt. Der Zugriff und die Nutzung solcher Webseiten erfolgen auf eigene Gefahr des Nutzers oder der Nutzerin. </p>
-    </div>
-    <div>
-      <br>
-      <h2>Urheberrechte</h2>
-      <p>Die Urheber- und alle anderen Rechte an Inhalten, Bildern, Fotos oder anderen Dateien auf der App gehören ausschliesslich der Berner Fachhochschule oder den speziell genannten Rechtsinhabern. Für die Reproduktion jeglicher Elemente ist die schriftliche Zustimmung der Urheberrechtsträger im Voraus einzuholen.</p>
-    </div>
-    <div>
-      <br>
-      <h2>Datenschutz </h2>
-      <p>Gestützt auf Artikel 13 der schweizerischen Bundesverfassung und die datenschutzrechtlichen Bestimmungen des Bundes (Datenschutzgesetz, DSG) hat jede Person Anspruch auf Schutz ihrer Privatsphäre sowie auf Schutz vor Missbrauch ihrer persönlichen Daten. Wir halten diese Bestimmungen ein. Persönliche Daten werden streng vertraulich behandelt und weder an Dritte verkauft noch weiter gegeben. In enger Zusammenarbeit mit unseren Hosting-Providern bemühen wir uns, die Datenbanken so gut wie möglich vor fremden Zugriffen, Verlusten, Missbrauch oder vor Fälschung zu schützen. Beim Zugriff auf unsere App werden folgende Daten in Logfiles gespeichert: IP-Adresse, Datum, Uhrzeit, Browser-Anfrage und allg. übertragene Informationen zum Betriebssystem resp. Browser. Diese Nutzungsdaten bilden die Basis für statistische, anonyme Auswertungen, so dass Trends erkennbar sind, anhand derer wir unsere Angebote entsprechend verbessern können. Link http://muster-vorlage.ch/impressum/</p>
-    </div>
+      <div>
+        <br>
+        <h2 >Haftungsausschluss</h2>
+        <p>Der Autor übernimmt keinerlei Gewähr hinsichtlich der inhaltlichen Richtigkeit, Genauigkeit, Aktualität, Zuverlässigkeit und Vollständigkeit der Informationen. Haftungsansprüche gegen den Autor wegen Schäden materieller oder immaterieller Art, welche aus dem Zugriff oder der Nutzung bzw. Nichtnutzung der veröffentlichten Informationen, durch Missbrauch der Verbindung oder durch technische Störungen entstanden sind, werden ausgeschlossen. Alle Angebote sind unverbindlich. Der Autor behält es sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.</p>
+      </div>
+      <div>
+        <br>
+        <h2>Haftung für Links </h2>
+        <p>Verweise und Links auf Webseiten Dritter liegen ausserhalb unseres Verantwortungsbereichs Es wird jegliche Verantwortung für solche Webseiten abgelehnt. Der Zugriff und die Nutzung solcher Webseiten erfolgen auf eigene Gefahr des Nutzers oder der Nutzerin. </p>
+      </div>
+      <div>
+        <br>
+        <h2>Urheberrechte</h2>
+        <p>Die Urheber- und alle anderen Rechte an Inhalten, Bildern, Fotos oder anderen Dateien auf der App gehören ausschliesslich der Berner Fachhochschule oder den speziell genannten Rechtsinhabern. Für die Reproduktion jeglicher Elemente ist die schriftliche Zustimmung der Urheberrechtsträger im Voraus einzuholen.</p>
+      </div>
+      <div>
+        <br>
+        <h2>Datenschutz </h2>
+        <p>Gestützt auf Artikel 13 der schweizerischen Bundesverfassung und die datenschutzrechtlichen Bestimmungen des Bundes (Datenschutzgesetz, DSG) hat jede Person Anspruch auf Schutz ihrer Privatsphäre sowie auf Schutz vor Missbrauch ihrer persönlichen Daten. Wir halten diese Bestimmungen ein. Persönliche Daten werden streng vertraulich behandelt und weder an Dritte verkauft noch weiter gegeben. In enger Zusammenarbeit mit unseren Hosting-Providern bemühen wir uns, die Datenbanken so gut wie möglich vor fremden Zugriffen, Verlusten, Missbrauch oder vor Fälschung zu schützen. Beim Zugriff auf unsere App werden folgende Daten in Logfiles gespeichert: IP-Adresse, Datum, Uhrzeit, Browser-Anfrage und allg. übertragene Informationen zum Betriebssystem resp. Browser. Diese Nutzungsdaten bilden die Basis für statistische, anonyme Auswertungen, so dass Trends erkennbar sind, anhand derer wir unsere Angebote entsprechend verbessern können. Link http://muster-vorlage.ch/impressum/</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card (click)="toggleContent(3)">
+    <ion-card-header class="clickAbleHeader">
+      Gespr&auml;chsverlauf
+    </ion-card-header>
+    <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
+      <div>
+        <br />
+        <p>Hier wird ein Protokoll deiner Gespr&auml;che mit eMMA zu lesen sein. Es sind {{name}} Elemente im Chatlog.</p>
+      </div>
     </ion-card-content>
 
 

@@ -1,4 +1,4 @@
-#eMMA zum Laufen bringen
+# eMMA zum Laufen bringen
 Um eMMA zum laufen zu bringen, müssen folgende Pakete installiert werden, die npm nicht automatisch installiert:
 
 ## MIDATA
@@ -10,5 +10,6 @@ Um eMMA zum laufen zu bringen, müssen folgende Pakete installiert werden, die n
 ## QR-Code
 - npm install angular2-qrcode
 
-#APK-Datei generieren
+# APK-Datei generieren
 Um eine APK-Datei zu generieren, muss Android Studio installiert sein. Ich musste zusätzlich noch Gradle installieren (auf dem Mac mit installiertem Homebrew: `brew install gradle`).
+mittels `cordova build android` wird dann eine APK gebaut, die man auf sein Android-Handy laden kann.

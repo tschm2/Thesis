@@ -50,7 +50,15 @@ export class ConversationPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, public platform: Platform, public alertCtrl: AlertController) {
     this.messages = [];
-    this.chatlog = [] // log for all messages
+      this.storage.get('chatlog').then((savedlog)=>{
+      this.chatlog = savedlog;
+      })
+      if(this.chatlog == null){
+        this.chatlog = [];
+        console.log("chatlog was an empty array");
+      }
+      this.chatlog.push({text: '##new session', identity: 'system', time: this.getLocalTime()});
+
     this.preAnswers = [];
     this.toggleObject = showTextfield;
     this.chmedHandler = new chmedJsonHandler(this.storage)
@@ -65,7 +73,7 @@ export class ConversationPage {
   ionViewDidLoad() {
     this.toggleObject = showTextfield;  // Initalize view with text field for user input
     this.storage.get('FirstStartComplet').then((terminated)=>{ // check if first start, normal start or reminder
-      console.log(terminated)
+      console.log("FirstStartComplete terminated: " + terminated)
       if(terminated == "reminder"){
         this.reminderAppStart();        //start the reminder function
       }
@@ -85,7 +93,7 @@ export class ConversationPage {
   //Method for register the name of the user
   firstAppStart() {
     this.chmedHandler.saveEmptyMedicationplan();
-    this.storage.set('chatlog', []);
+    // this.storage.set('chatlog', []);
     let tempTakingTime = ["08:00","12:00","18:00","22:00"] // set standart times for the taking times
     this.storage.set('takingTime',tempTakingTime) // save the taking times to the storrage
     this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_1)
@@ -257,7 +265,7 @@ export class ConversationPage {
   in the application
 
   *****************************************************************************/
-  reminderAppStart(){ //start the reminder fuction, first check if a pin is necessary
+  reminderAppStart(){ //start the reminder function, first check if a pin is necessary
     this.storage.get('Pin').then((Pin)=>{
     var tempPin = Pin;
     if(tempPin == null){
@@ -449,6 +457,7 @@ export class ConversationPage {
           this.messages = [],
           this.ionViewDidLoad(),
           eMMAWaitingTimeDouble * 2)
+          this.chatlog = [];
         }
         else if(answereMMA == this.questionhandler.messageEMMA_Nutrition){
           this.navCtrl.push(NutritionPage) //open nutrition page
@@ -505,7 +514,7 @@ export class ConversationPage {
   /*----------------------------------------------------------------------------*/
   sendEmmaText(message:String){
     this.processMsg({
-        text: message,  //write..... on the screnn. Means emma is thinking what she schoudl write
+        text: message,
         identity: 'emma',
         time: this.getLocalTime()
       });
@@ -520,19 +529,9 @@ export class ConversationPage {
   sendEmmaTextNow(message:String){
     this.processMsg({
     text: message,
-    identiy: 'emma',
+    identiy: 'emmaNOW',
     time: this.getLocalTime()
   })
-
-   // TODO: realice the "NOW" aspect of the function
-    // TODO: was like this:
-    // this.messages.push({
-    //     text: message,  //write..... on the screnn. Means emma is thinking what she schoudl write
-    //     identity: 'emma',
-    //     // time: myHour + ":"+myMinute //ad local time to message -- hessg1 commented out for testing on 03-24
-    //     time: this.getLocalTime()
-    //   }),
-    //   setTimeout(()=> this.content.scrollToBottom(),50) //scroll down in the view to the last message of eMMA
   }
 
 
@@ -775,7 +774,7 @@ sendPinPW(myReply, myFunc) {
 
   /*----------------------------------------------------------------------------*/
   /* This Method is used to get the local time as a String
-  /* in the format hh:mm:ss
+  /* in the format hh:mm:ss.m
   /*
   /* author: hessg1
   /*----------------------------------------------------------------------------*/
@@ -792,13 +791,26 @@ sendPinPW(myReply, myFunc) {
     var second: any = myDate.getSeconds();
     second = (second<10) ? "0" + second : second;
 
-    return hour + ":" + minute + ":" + second;
+    var milli: any = myDate.getMilliseconds();
+    milli = (milli<10) ? "0" + milli : milli;
+    milli = String(milli).slice(0,2);
+
+    return hour + ":" + minute + ":" + second + "." + milli;
   }
 
+  /*----------------------------------------------------------------------------*/
+  /* This method processes messages, as it sends them to the chat screen and also
+  /* saves them in the chatlog that is persisted in storage
+  /*
+  /* author: hessg1
+  /*----------------------------------------------------------------------------*/
+
   processMsg(msg: any){
-    this.storage.get('chatlog').then((savedlog)=>{
-      this.chatlog = savedlog;
-    })
+  //   if(this.chatlog == null){
+  //   this.storage.get('chatlog').then((savedlog)=>{
+  //     this.chatlog = savedlog;
+  //   })
+  // }
 
     if(msg.identity == 'emma'){
        this.messages.push({
@@ -810,6 +822,14 @@ sendPinPW(myReply, myFunc) {
        setTimeout(() => this.messages[this.messages.length-1].text = msg.text, eMMAWaitingTime),
        // replace 'eMMA schreibt...' with actual text
       setTimeout(()=> this.content.scrollToBottom(),eMMAWaitingTime+50)//scroll to bottom again
+    }
+    else if(msg.identity == 'emmaNOW'){
+      this.messages.push({
+           text: msg.text,
+           identity: 'emma',
+           time: this.getLocalTime()
+         }),
+         setTimeout(()=> this.content.scrollToBottom(),50) //scroll down in the view to the last message of eMMA
     }
     else {
         this.messages.push({

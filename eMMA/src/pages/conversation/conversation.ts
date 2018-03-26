@@ -497,39 +497,35 @@ export class ConversationPage {
     })
   })
   }
+
   /*----------------------------------------------------------------------------*/
-  /* This Methode is used to write a text from eMMA on the conversation page
+  /* This method is used to write a text from eMMA on the conversation page
   /*
+  /* edited by hessg1 on 26.03.
   /*----------------------------------------------------------------------------*/
   sendEmmaText(message:String){
-
-  //  var myHour = this.getLocalHour();
-  //  var myMinute = this.getLocalMinute();
-    //get the local time
     this.processMsg({
         text: message,  //write..... on the screnn. Means emma is thinking what she schoudl write
         identity: 'emma',
-        // time: myHour + ":"+myMinute //ad local time to message -- hessg1 commented out for testing on 03-24
         time: this.getLocalTime()
       });
-//      this.content.scrollToBottom(), //scroll down in the view to the last message of eMMA
-    //  setTimeout(() => this.messages[this.messages.length-1].text = message, eMMAWaitingTime),
-    // setTimeout(()=> this.content.scrollToBottom(),eMMAWaitingTime+50)//scroll to button again
   }
-  /*----------------------------------------------------------------------------*/
-  /* This Methode is used to write a text from eMMA on the conversation page NOW
-  /*
-  /*----------------------------------------------------------------------------*/
-  sendEmmaTextNow(message:String){
 
-  //  var myHour = this.getLocalHour();
-  //  var myMinute = this.getLocalMinute();
-    //get the local time
+  /*----------------------------------------------------------------------------*/
+  /* This methode is used to write a text from eMMA on the conversation page NOW
+  /*
+  /* edited by hessg1 on 26.03.
+  /*----------------------------------------------------------------------------*/
+
+  sendEmmaTextNow(message:String){
     this.processMsg({
     text: message,
     identiy: 'emma',
     time: this.getLocalTime()
   })
+
+   // TODO: realice the "NOW" aspect of the function
+    // TODO: was like this:
     // this.messages.push({
     //     text: message,  //write..... on the screnn. Means emma is thinking what she schoudl write
     //     identity: 'emma',
@@ -538,6 +534,8 @@ export class ConversationPage {
     //   }),
     //   setTimeout(()=> this.content.scrollToBottom(),50) //scroll down in the view to the last message of eMMA
   }
+
+
   /*----------------------------------------------------------------------------*/
   /* This Methode is used to set a text on two buttions to aks the user someting
   /*
@@ -595,13 +593,11 @@ export class ConversationPage {
     this.sendButtonNumber = newfunction;
   }
   /*----------------------------------------------------------------------------*/
-  /* This Methode is used to write a text from the user on the Convesation Page
+  /* This method is used to write a text from the user on the Conversation Page
   /*
+  /* edited by hessg1 on 26.03.
   /*----------------------------------------------------------------------------*/
   reply(answer) {
-  //  var myHour = this.getLocalHour();
-  //  var myMinute = this.getLocalMinute();
-    //var msg = {text: answer.text, identity: 'user', time: this.getLocalTime()};
     this.processMsg({
       text: answer.text,
       identity: 'user',
@@ -610,42 +606,42 @@ export class ConversationPage {
     this[answer.callFunction](answer.text);
     setTimeout(() =>{  this.content.scrollToBottom();},50);
     }
+
     /*----------------------------------------------------------------------------*/
-    /* This Methode is used to write a text from the user on the Convesation Page
+    /* This method is used to write a text from the user on the Conversation Page
     /*
+    /* edited by hessg1 on 26.03.
     /*----------------------------------------------------------------------------*/
   sendMessage(myReply, myFunc) {
-//    var myHour = this.getLocalHour();
-//    var myMinute = this.getLocalMinute();
     this.processMsg({
       text: myReply.value,
       identity: 'user',
-      // time: myHour + ":"+myMinute -- hessg1 commented 03-24 for testing purpose
       time: this.getLocalTime()
     })
+
     this[myFunc](myReply.value);
     myReply.value = "";
     setTimeout(() =>{ this.content.scrollToBottom();}, 50);
   }
+
   /*----------------------------------------------------------------------------*/
-  /* This Methode is used to write a Number Pin text from the user on the Convesation Page
+  /* This methode is used to write a Number Pin text from the user on the Conversation Page
   /*
   /*----------------------------------------------------------------------------*/
+
 sendPinPW(myReply, myFunc) {
-  //var myHour = this.getLocalHour();
-//  var myMinute = this.getLocalMinute();
   this.processMsg({
     text: "****",
     identity: 'user',
-    // time: myHour + ":"+myMinute -- hessg1 commented 03-24 for testing purpose
     time: this.getLocalTime()
   })
   this[myFunc](myReply.value);
   myReply.value = "";
   setTimeout(() =>{ this.content.scrollToBottom();}, 50);
 }
+
   /*----------------------------------------------------------------------------*/
-  /* This Methode is used to write the new compliance information to the storrage
+  /* This Methode is used to write the new compliance information to the storage
   /*
   /*----------------------------------------------------------------------------*/
   addComplianceInformation(information:any){

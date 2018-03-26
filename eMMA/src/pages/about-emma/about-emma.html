@@ -78,12 +78,10 @@ Ionic pages and navigation.
       Gespr&auml;chsverlauf
     </ion-card-header>
     <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">
-      <div>
-        <br />
-        <p>Hier wird ein Protokoll deiner Gespr&auml;che mit eMMA zu lesen sein. Es sind {{name}} Elemente im Chatlog.</p>
-      </div>
+        <p ion-item *ngFor="let msg of chatlog">
+          {{msg.identity}} ({{msg.time}}):<br />
+          {{msg.text}}
+        </p>
     </ion-card-content>
-
-
   </ion-card>
 </ion-content>

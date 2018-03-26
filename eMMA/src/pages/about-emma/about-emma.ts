@@ -14,8 +14,7 @@ import { Storage } from '@ionic/storage';
 })
 export class AboutEmmaPage {
   toggleObject:number;
-  chatlog:any[];
-  name:any;
+  chatlog: Array<{text: string, identity: string, time: string}>;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage) {}
@@ -23,7 +22,6 @@ export class AboutEmmaPage {
   ionViewDidLoad() {
     this.storage.get('chatlog').then((val) => {
     this.chatlog = val;
-    this.name = this.chatlog.length;
   });
     console.log('ionViewDidLoad AboutEmmaPage');
   }

@@ -64,4 +64,4 @@ Diese Datei beschreibt, welche Objekte eMMA im Storage-Objekt in ionic ablegt
 ## checks
 - geschrieben von barCodeService.ts
 - ?
-- ?
+- enthält die Wechselwirkungen (Nahrungsmittel), die von HCI abgeglichen wurden

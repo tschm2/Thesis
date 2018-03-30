@@ -710,6 +710,7 @@ this.storage.set('ComplianceData',complianceObj)
 /*
 /*----------------------------------------------------------------------------*/
 addlocalnotification(hours:any,minutes:any,timeOfDay:any,DayOffset:any){
+  console.log("add notification: " + hours + ":" + minutes + " timeOfDay:" + timeOfDay + " DayOffset:" + DayOffset);
   let firstNotificationTime  = new Date()
   firstNotificationTime.setHours(hours)
   firstNotificationTime.setMinutes(minutes)
@@ -811,9 +812,6 @@ getLocalTime(){
 
 processMsg(msg: any){
   if(this.chatlog == null){
-     // this.storage.get('chatlog').then((savedlog)=>{
-     // this.chatlog = savedlog;
-   //})
    this.chatlog = [];
   }
 

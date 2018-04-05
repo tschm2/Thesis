@@ -27,9 +27,12 @@ http:Http
       var username = 'EPN236342@hcisolutions.ch';
       var password = 'UMPbDJu7!W';
 
+      alert("pharmacode: " + key);
+
       var xhr = new XMLHttpRequest(),
       method = "GET",
       url = `https://index.hcisolutions.ch/index/current/get.aspx?schema=ARTICLE&keytype=${keyType}&key=${key}&index=${index}`;
+      //url = "https://index.hcisolutions.ch/index/current/get.aspx?schema=ARTICLE&keytype=phar&key=3365788&index=hospINDEX";
       xhr.open(method, url, true);
       var reqHeader = {'Authorization': 'Basic ' + btoa(`${username}:${password}`)};
 
@@ -39,10 +42,12 @@ http:Http
         });
       }
       xhr.onload = () => {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        if (xhr.readyState === XMLHttpRequest.DONE){ // && xhr.status === 200) { <- debugging
+          alert(url + "\nstatus: " + xhr.status); // <- debugging
           resolve(xhr.responseXML);
         } else {
           console.log("Error!");
+          reject(); // added hessg1 3.3.
         }
       };
 

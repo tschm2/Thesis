@@ -32,9 +32,12 @@ private chmedHandler: chmedJsonHandler;
   /*----------------------------------------------------------------------------*/
   scanQRcodeForJSON():any{
   return BarcodeScanner.scan().then((barcodeData) => {
-    this.saveMedicationInformation(barcodeData.text)
-    return true
+         this.saveMedicationInformation(barcodeData.text)
+     return true
       // Success! Barcode data is here
+      // für Tests wenn HCIquery nicht funktioniert: DummyDaten verwenden
+       // this.testDummyData();
+       // alert("Medikation wurde gespeichert.");
     }, (err) => {
       console.log("Woops falscher QR-Code, zu Testzwecken wurde DummyData gespeichert")
       alert("Woops falscher QR-Code, zu Testzwecken wurde DummyData gespeichert");
@@ -55,6 +58,7 @@ private chmedHandler: chmedJsonHandler;
     var hciS = new HCIService();
     for (let medi of medData['Medicaments']){
       if(Number(medi.Id)){
+
         var l = hciS.hciquery(medi.Id,"phar").then((responseXML)=>{
           var xml =  responseXML;
           var art = xml.getElementsByTagName("ART");
@@ -94,6 +98,7 @@ private chmedHandler: chmedJsonHandler;
     else evening = 0
     if(night==true)night=1
     else night = 0
+
 
     var hciS = new HCIService()
     return BarcodeScanner.scan().then((barcodeData) => {
@@ -226,10 +231,14 @@ private chmedHandler: chmedJsonHandler;
         this.doChecksWithCurrentMedication()
       });
       this.IdHCIQuery(mediPlan).then((res) => {
+         // fails as of today (3.4. hessg1)
+          alert("success: " + res);
           mediPlan['Medicaments'] = res
           this.storage.set("mediPlan", mediPlan);
+          alert("Medis \n" + mediPlan["Medicaments"])
           this.storage.set("medicationData", res);
           console.log(mediPlan);
+          alert("mediplan: " + mediPlan);
             var tempMedicationData = res;
             var complianceObj = ({        //new object
             "ID":"1",

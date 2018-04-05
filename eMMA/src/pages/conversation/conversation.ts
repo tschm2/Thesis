@@ -166,30 +166,30 @@ this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImportMedipl
 }
 //ask the user if he wants to import the eMedication plan information if the first try wasn't sucessful
 questionMediplanAgain(){
-this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImportMediplanAgain);
-this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImportMediplan_Yes,"mediplanImport",this.eMMA.messageEMMA_FirstStart_questionImportMediplan_No,"questionEHealth");
+  this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImportMediplanAgain);
+  this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImportMediplan_Yes,"mediplanImport",this.eMMA.messageEMMA_FirstStart_questionImportMediplan_No,"questionEHealth");
 }
-//import the eMedication plan
-mediplanImport(){
-this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_OpenScanner); //inform the user that the scanner will be opend
-setTimeout(() => {
-let scanner = new barcodeService(this.storage)   //initialize new scanner
-scanner.scanQRcodeForJSON().then((success)=>{               //check if the scann was successfull
-if(success){
-this.sendEmmaTextNow(this.eMMA.messageEMMA_FirstStart_ImportMediplan_success)  //next step
-setTimeout(() => this.questionEHealth() , eMMAWaitingTimeDouble);
-}
-else{
-  this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_Error)  //try again
-  setTimeout(() => this.questionMediplanAgain(), eMMAWaitingTime);
-}
-})
-}, eMMAWaitingTimeDouble);
+  //import the eMedication plan
+  mediplanImport(){
+    this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_OpenScanner); //inform the user that the scanner will be opend
+    setTimeout(() => {
+      let scanner = new barcodeService(this.storage)   //initialize new scanner
+      scanner.scanQRcodeForJSON().then((success)=>{               //check if the scann was successfull
+      if(success){
+        this.sendEmmaTextNow(this.eMMA.messageEMMA_FirstStart_ImportMediplan_success)  //next step
+        setTimeout(() => this.questionEHealth() , eMMAWaitingTimeDouble);
+      }
+      else {
+        this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_ImportMediplan_Error)  //try again
+        setTimeout(() => this.questionMediplanAgain(), eMMAWaitingTime);
+      }
+    })
+  }, eMMAWaitingTimeDouble);
 }
 //ask the user if he want to logg in with his eHealht password and username
 questionEHealth(){
-this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImporteHealth);
-this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImporteHealth_Yes,"eHealthUsername",this.eMMA.messageEMMA_FirstStart_questionImporteHealth_No,"questionDataSecurity");
+  this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionImporteHealth);
+  this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionImporteHealth_Yes,"eHealthUsername",this.eMMA.messageEMMA_FirstStart_questionImporteHealth_No,"questionDataSecurity");
 }
 eHealthUsername(){
   this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questioneHalthUsername);
@@ -306,40 +306,48 @@ reminderAppStartAfterPin(){
   })
 }
 AwnswerReminder(){
-  this.toggleObject = showNothing
+  alert("method: answerReminder");
+  this.toggleObject = showNothing;
   //call the last trigerred notification to check the day time
-  LocalNotifications.getTriggered(1).then((res)=>{
-  let dayTime:any
-  try{
-    dayTime = res["0"].data;
-  }
-  catch(e){
-    //if the date time is not defined take morning
-    dayTime = 0;
-  }
-  this.storage.get('takingTime').then((takingtimes)=>{
-    // let takingTime = takingtimes;
-    // let newTime:String = takingTime[dayTime]
-    // let myHour = newTime.substr(0,2)
-    // let myMinute = newTime.substr(3,2)
-    // let dayoffset = false
-    setTimeout(() =>   new Promise((resolve, reject) => {
-    this.navCtrl.push(MedicationReminderViewPage,
-      {state: dayTime, resolve: resolve});
-    }).then(data => {
-      let returnvaluePatientCompliance=data;
-      this.storage.set('returnvaluePatientCompliance',returnvaluePatientCompliance)
-      this.returnFromMedication()
-      // dayTime =dayTime + 1;
-      // if(dayTime == 4){
-      //   dayTime = 0;
-      //   dayoffset = true;
-      // }
-      //this.addlocalnotification(myHour,myMinute,dayTime,dayoffset)
-    }),eMMAWaitingTimeDouble);
-  })
-})
-}
+//  LocalNotifications.getTriggered(1).then((res)=>{
+    alert("into the LocalNotifications promise");
+//    let dayTime:any
+//    try{
+//      dayTime = res["0"].data;
+//    }
+//    catch(e){
+//      alert("error"); // if the date time is not defined take morning
+//      dayTime = 0;
+//    }
+
+    // workaround for tests: always ask for morning med. - hessg1 5.4.
+    // TODO: fix reminder stuff
+    let dayTime = 0;
+
+    this.storage.get('takingTime').then((takingtimes)=>{
+      // let takingTime = takingtimes;
+      // let newTime:String = takingTime[dayTime]
+      // let myHour = newTime.substr(0,2)
+      // let myMinute = newTime.substr(3,2)
+      // let dayoffset = false
+      setTimeout(() =>   new Promise((resolve, reject) => {
+        this.navCtrl.push(MedicationReminderViewPage,
+          {state: dayTime, resolve: resolve});
+        }).then(data => {
+          let returnvaluePatientCompliance=data;
+          this.storage.set('returnvaluePatientCompliance',returnvaluePatientCompliance)
+          this.returnFromMedication()
+            // dayTime =dayTime + 1;
+            // if(dayTime == 4){
+            //   dayTime = 0;
+            //   dayoffset = true;
+            // }
+            //this.addlocalnotification(myHour,myMinute,dayTime,dayoffset)
+        }),eMMAWaitingTimeDouble);
+      })
+    }//)
+  //}
+
 finishReminder(input:String){
   if(input != ""){  //if the methode has an input
     this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_finishNachBedarf);
@@ -734,7 +742,7 @@ addlocalnotification(hours:any,minutes:any,timeOfDay:any,DayOffset:any){
     // Schedule the new notifications
     LocalNotifications.schedule(notification);
     let alert = this.alertCtrl.create({
-      title: 'Notifications set\n'+ hours +":" + minutes + "Uhr",
+      title: 'Notifications set\n'+ hours +":" + minutes + " Uhr",
       buttons: ['Ok']
     });
     alert.present();
@@ -748,8 +756,8 @@ if(notificationSingelton){ //singelton to make sure the methode is called just o
 triggerNotification(){  //shedule the notifications
   LocalNotifications.on("trigger", (event)=>{
   this.storage.set('FirstStartComplet', "reminder") //set the reminder start functions
-  // this.messages = [];
-  // this.ionViewDidLoad();
+   // this.messages = [];
+   // this.ionViewDidLoad();
 })
 }
 /*----------------------------------------------------------------------------*/

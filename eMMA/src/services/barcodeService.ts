@@ -232,22 +232,19 @@ private chmedHandler: chmedJsonHandler;
       });
       this.IdHCIQuery(mediPlan).then((res) => {
          // fails as of today (3.4. hessg1)
-          alert("success: " + res);
           mediPlan['Medicaments'] = res
           this.storage.set("mediPlan", mediPlan);
-          alert("Medis \n" + mediPlan["Medicaments"])
           this.storage.set("medicationData", res);
           console.log(mediPlan);
-          alert("mediplan: " + mediPlan);
-            var tempMedicationData = res;
-            var complianceObj = ({        //new object
-            "ID":"1",
-            "Date":"dateOfMediplan",
-            "DrugList":[]
-            })
-            for(var pos in tempMedicationData){ //new drug obj for every drug in the DrugList
-              complianceObj.DrugList.push({
-                "Name":tempMedicationData[pos].title,
+	        var tempMedicationData = res;
+	        var complianceObj = ({        //new object
+	        "ID":"1",
+	        "Date":"dateOfMediplan",
+	        "DrugList":[]
+	        })
+	        for(var pos in tempMedicationData){ //new drug obj for every drug in the DrugList
+	          complianceObj.DrugList.push({
+	            "Name":tempMedicationData[pos].title,
                 "Compliance":[]
               })
             }

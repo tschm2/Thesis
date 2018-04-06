@@ -306,14 +306,12 @@ reminderAppStartAfterPin(){
   })
 }
 AwnswerReminder(){
-  alert("method: answerReminder");
   this.toggleObject = showNothing;
   //call the last trigerred notification to check the day time
 //  LocalNotifications.getTriggered(1).then((res)=>{
-    alert("into the LocalNotifications promise");
 //    let dayTime:any
 //    try{
-//      dayTime = res["0"].data;
+//      dayTime = res[0].data; // was ["0"] ? hessg1 5.4.
 //    }
 //    catch(e){
 //      alert("error"); // if the date time is not defined take morning

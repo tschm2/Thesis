@@ -1,1 +1,0 @@
-include LICENSE README.md requirements.txt dev-requirements.txt rasa_core/schemas/*

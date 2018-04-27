@@ -40,6 +40,7 @@
     "moment": "^2.22.0",
     "pako": "^1.0.6",
     "phonegap-plugin-barcodescanner": "^7.1.0",
+    "rivescript": "^1.19.0",
     "rxjs": "5.0.0-beta.12",
     "sw-toolbox": "3.4.0",
     "zone.js": "0.6.26"

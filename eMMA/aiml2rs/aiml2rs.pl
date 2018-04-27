@@ -1,3 +1,6 @@
+# perl script to convert aiml to rivescript
+# https://github.com/aichaos/aiml2rs
+
 #!/usr/bin/perl
 
 use 5.14.0;

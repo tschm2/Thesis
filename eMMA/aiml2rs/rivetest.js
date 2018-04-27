@@ -2,6 +2,7 @@
 
 /******************************************************************************
  * Interactive RiveScript Shell for quickly testing your RiveScript bot.      *
+ * https://github.com/aichaos/rivescript-js									  *
  *                                                                            *
  * Usage: node shell.js /path/to/brain                                        *
  ******************************************************************************/

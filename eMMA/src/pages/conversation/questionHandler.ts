@@ -156,6 +156,7 @@ export class questionHandler {
               else if(question.includes("OK")||question.includes("DANKE")||question.includes("SUPER")||question.includes("TOLL")){
                 retVal = "Freut mich, dass ich dir helfen konnte"
               }
+
               else{ //if no possible awnser is found
                 if(this.messageEMMA_Not_Understand_temp.length == 0){ //if the ramdom array is empy
                   for (var name in this.messageEMMA_Not_Understand) {

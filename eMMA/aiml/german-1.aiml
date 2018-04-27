@@ -1,16 +1,5 @@
-
-<!-- Site: Alicebot at http://alicebot.wikidot.com -->
-<!-- Source page: German_1.aiml at http://alicebot.wikidot.com/aiml:de-de:cdrossman:alice:german-1-aiml -->
-<!-- German_1.aiml -->
-
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <aiml version="1.0">
-
-<!-- Free software (c) 2001 ALICE AI Foundation -->
-<!-- This program is open source code released under -->
-<!-- the terms of the GNU General Public License -->
-<!-- as published by the Free Software Foundation. -->
-
 <category>
 <pattern>*</pattern>
 <template><random>
@@ -1048,14 +1037,6 @@ Ich bin <random>
 <category>
 <pattern>BYE</pattern>
 <template>Tschuess, <get name="name"/>!</template>
-</category>
-<category>
-<pattern>CAN YOU SPEAK ENGLISH *</pattern>
-<template>For an English version of A.L.I.C.E. go to <html:a href="http://www.alicebot.com">The A.L.I.C.E. nexus</html:a>.</template>
-</category>
-<category>
-<pattern>CAN YOU SPEAK ENGLISH</pattern>
-<template>For an English version of A.L.I.C.E. go to <html:a href="http://www.alicebot.com">The A.L.I.C.E. nexus</html:a>.</template>
 </category>
 <category>
 <pattern>CAN YOU SPEAK GERMAN *</pattern>
@@ -2144,26 +2125,6 @@ Ich bin <random>
 <category>
 <pattern>DIESER *</pattern>
 <template>Erzaehl weiter...</template>
-</category>
-<category>
-<pattern>DO YOU SPEAK ENGLISH *</pattern>
-<template>For an English version of A.L.I.C.E. go to <html:a href="http://www.alicebot.com">The A.L.I.C.E. nexus</html:a>.</template>
-</category>
-<category>
-<pattern>DO YOU SPEAK ENGLISH</pattern>
-<template>For an English version of A.L.I.C.E. go to <html:a href="http://www.alicebot.com">The A.L.I.C.E. nexus</html:a>.</template>
-</category>
-<category>
-<pattern>DO YOU SPEAK GERMAN *</pattern>
-<template>Of course I do. Sprich ruhig Deutsch mit mir.</template>
-</category>
-<category>
-<pattern>DO YOU SPEAK GERMAN</pattern>
-<template>Of course I do. Sprich ruhig Deutsch mit mir.</template>
-</category>
-<category>
-<pattern>DO YOU UNDERSTAND ENGLISH</pattern>
-<template>For an English version of ALICE please go to <html:a href="http://www.alicebot.org">The alice Nexus</html:a>!</template>
 </category>
 <category>
 <pattern>DOCH *</pattern>
@@ -3845,7 +3806,7 @@ Ich bin <random>
 <li>Interessant, diese Frage hoere ich nicht jeden Tag. Habe ich eine </li>
 <li>Ich weiss nicht, habe ich eine </li>
 <li>Hat nicht jeder eine </li>
-</random><star/>?<html:br/>Ich habe
+</random><star/>? Ich habe
 <random>
 <li> eine Menge Freunde im Internet.</li>
 <li> einen grossartigen Programmierer.</li>
@@ -3858,7 +3819,7 @@ Ich bin <random>
 <li>Interessant, diese Frage hoere ich nicht jeden Tag. Habe ich einen </li>
 <li>Ich weiss nicht, habe ich einen </li>
 <li>Hat nicht jeder einen </li>
-</random><star/>?<html:br/> Ich habe
+</random><star/>? Ich habe
 <random>
 <li> eine Menge Freunde im Internet.</li>
 <li> einen grossartigen Programmierer.</li>
@@ -3935,7 +3896,7 @@ Ich bin <random>
 <li>Interessant, diese Frage hoere ich nicht jeden Tag. Habe ich kein </li>
 <li>Ich weiss nicht, vielleicht habe ich wirklich kein </li>
 <li>Ich glaube, jeder hat ein </li>
-</random><star/>?<html:br/> Ich habe
+</random><star/>? Ich habe
 <random>
 <li> eine Menge Freunde im Internet.</li>
 <li> einen grossartigen Programmierer.</li>
@@ -3948,7 +3909,7 @@ Ich bin <random>
 <li>Interessant, diese Frage hoere ich nicht jeden Tag. Habe ich keine </li>
 <li>Ich weiss nicht, vielleicht habe ich wirklich keine </li>
 <li>Irgendwann einmal hat jeder keine </li>
-</random><star/>?<html:br/> Ich habe
+</random><star/>? Ich habe
 <random>
 <li> eine Menge Freunde im Internet.</li>
 <li> einen grossartigen Programmierer.</li>
@@ -3961,7 +3922,7 @@ Ich bin <random>
 <li>Interessant, diese Frage hoere ich nicht jeden Tag. Habe ich wirklich keinen </li>
 <li>Ich weiss nicht, vielleicht habe ich wirklich keinen </li>
 <li>Ich glaube, jeder hat einen </li>
-</random><star/>?<html:br/> Ich habe
+</random><star/>? Ich habe
 <random>
 <li> eine Menge Freunde im Internet.</li>
 <li> einen grossartigen Programmierer.</li>
@@ -5576,10 +5537,6 @@ Ich habe <random>
 <template>Juhu! Sinnlose Gewalt fuer alle!</template>
 </category>
 <category>
-<pattern>ICH SPRECHE ENGLISCH</pattern>
-<template>Eine englische Version gibt es auf <html:a href="http://www.alicebot.net">www.alicebot.net</html:a>.</template>
-</category>
-<category>
 <pattern>ICH SPRECHE GERADE NUR MIT DIR</pattern>
 <template>Das ehrt mich.</template>
 </category>
@@ -6473,14 +6430,6 @@ Ich habe <random>
 <category>
 <pattern>JAMES BROWN</pattern>
 <template>Der Godfather of soul?</template>
-</category>
-<category>
-<pattern>JAVA *</pattern>
-<template>Die neueste Version von <set name="thema">Java</set> bekommst Du bei <html:a HREF="http://java.sun.com">java.sun.com</html:a>.</template>
-</category>
-<category>
-<pattern>JAVA</pattern>
-<template>Die neueste Version von <set name="thema">Java</set> bekommst Du bei <html:a HREF="http://java.sun.com">java.sun.com</html:a>.</template>
 </category>
 <category>
 <pattern>JEANS</pattern>

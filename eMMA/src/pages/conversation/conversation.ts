@@ -41,9 +41,9 @@ export class ConversationPage {
   messages: any[];
   chatlog: any[];
   preAnswers: any[];
-  sendButton: String;
-  sendButtonPW: String;
-  sendButtonNumber: String;
+  sendButton: string;
+  sendButtonPW: string;
+  sendButtonNumber: string;
   toggleObject:number;
   notifications: any[] = [];
   chmedHandler: chmedJsonHandler;
@@ -104,7 +104,7 @@ setTimeout(()=> this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_2),eMMA
 this.overrideSendbutton("questionPinNecessary"); //nect metode is the Pin question
 }
 //Method to aks the user if a pin is necessary
-questionPinNecessary(name:String){
+questionPinNecessary(name:string){
 //check if name was not empty
 if(name == null){
 //restart with the first function
@@ -124,7 +124,7 @@ this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Pin);
 this.overrideNumberSendButton("questionAthlete");
 }
 //register if the user is an athleth
-questionAthlete(input:String){
+questionAthlete(input:string){
 if(input != this.eMMA.messageEMMA_FirstStart_questionPin_No){
   this.storage.set('Pin', input); // set the pin
 }
@@ -134,7 +134,7 @@ else{
 this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionAthlete);
 this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionAthlete_Yes,"saveAthlete",this.eMMA.messageEMMA_FirstStart_questionAthlete_No,"saveAthlete");
 }
-saveAthlete(input: String){
+saveAthlete(input: string){
   //save athlete information to storage
   if(input == this.eMMA.messageEMMA_FirstStart_questionAthlete_Yes ){
   this.storage.set('athlete', true)
@@ -150,7 +150,7 @@ this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionDriver);
 this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionDriver_Yes,"saveDriver",this.eMMA.messageEMMA_FirstStart_questionDriver_No,"saveDriver");
 }
 //save driving licence information to storage
-saveDriver(input:String){
+saveDriver(input:string){
 if(input == this.eMMA.messageEMMA_FirstStart_questionDriver_Yes ){
   this.storage.set('driver', true)
 }
@@ -195,7 +195,7 @@ eHealthUsername(){
   this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questioneHalthUsername);
   this.overrideSendbutton("eHealthPassword");
 }
-eHealthPassword(input: String){
+eHealthPassword(input: string){
   this.storage.set('UsernameEHealht', input)
   this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questioneHalthPasword);
   this.overridePasswordSendButton("testUsernamePassword");
@@ -235,7 +235,7 @@ eMMATutorial(){
     console.log(checks);
     if(checks != null){
       checks = checks.body.medicaments
-      var output:String = "";
+      var output:string = "";
       // Creates an Object for each Check of each Medication
       checks.forEach((item,index) => {
       var nutrition:string;
@@ -281,7 +281,7 @@ reminderAppStart(){ //start the reminder function, first check if a pin is neces
 })
 }
 //check if the user knows the pin
-checkPin(input: String){
+checkPin(input: string){
 this.storage.get('Pin').then((Pin)=>{
   var tempPin = Pin;
   if(input == tempPin){
@@ -346,7 +346,7 @@ AwnswerReminder(){
     }//)
   //}
 
-finishReminder(input:String){
+finishReminder(input:string){
   if(input != ""){  //if the methode has an input
     this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_finishNachBedarf);
   }else{
@@ -387,14 +387,14 @@ leaveNote(){
   this.sendEmmaText(this.eMMA.messageEMMA_reminderAppStart_why_LeaveNote);
   this.overrideSendbutton("finishReminderNote");
 }
-finishReminderNote(input:String){
+finishReminderNote(input:string){
   //Save Note to Compliance
   this.addComplianceInformation(input);
   this.finishReminderNotTaken();
   this.overrideSendbutton("question");  //move to the question state
   this.storage.set('FirstStartComplet', true)
 }
-finishReminderNotSpecified(input:String){
+finishReminderNotSpecified(input:string){
   //Save not specified to Compliance
   this.addComplianceInformation("kein Grund");
   this.finishReminderNotTaken();
@@ -441,9 +441,9 @@ normalAppStart() {
     this.overrideSendbutton("question");
   })
 }
-question(input:String){
+question(input:string){
   this.questionhandler.returnAnswer(input).then((res)=>{
-    var answereMMA:String = res
+    var answereMMA:string = res
     this.sendEmmaText(answereMMA)
     setTimeout(() => {
       var myHour: Number = this.getLocalHour()
@@ -522,7 +522,7 @@ eMMANewComplianceObj(){
 /*
 /* edited by hessg1 on 26.03.
 /*----------------------------------------------------------------------------*/
-sendEmmaText(message:String){
+sendEmmaText(message:string){
   this.processMsg({
     text: message,
     identity: 'emma',
@@ -536,7 +536,7 @@ sendEmmaText(message:String){
 /* edited by hessg1 on 26.03.
 /*----------------------------------------------------------------------------*/
 
-sendEmmaTextNow(message:String){
+sendEmmaTextNow(message:string){
   this.processMsg({
     text: message,
     identiy: 'emmaNOW',
@@ -549,7 +549,7 @@ sendEmmaTextNow(message:String){
 /* This Methode is used to set a text on two buttions to aks the user someting
 /*
 /*----------------------------------------------------------------------------*/
-overrideAnswerButtons(text1: String, function1: String, text2: String, function2: String) {
+overrideAnswerButtons(text1: string, function1: string, text2: string, function2: string) {
   this.toggleObject = showNothing;
   setTimeout(() => this.toggleObject = showButtons , eMMAWaitingTime); // show buttions
   this.preAnswers = []
@@ -565,7 +565,7 @@ overrideAnswerButtons(text1: String, function1: String, text2: String, function2
 /* This Methode is used to write a text to a single button on the conversation
 /*
 /*----------------------------------------------------------------------------*/
-overrideAnswerButtonsOneButton(text1: String, function1: String) {
+overrideAnswerButtonsOneButton(text1: string, function1: string) {
   this.toggleObject = showNothing;
   setTimeout(() => this.toggleObject = showsingleButton , eMMAWaitingTime);  //show the single button
   this.preAnswers = [];
@@ -579,7 +579,7 @@ overrideAnswerButtonsOneButton(text1: String, function1: String) {
 /* This Methode is used to give the user a text field to write a question or awnser one
 /*
 /*----------------------------------------------------------------------------*/
-overrideSendbutton(newfunction:String){
+overrideSendbutton(newfunction:string){
   this.toggleObject = showNothing;
   setTimeout(() => this.toggleObject = showTextfield,eMMAWaitingTime);
   this.sendButton = newfunction;
@@ -587,7 +587,7 @@ overrideSendbutton(newfunction:String){
 /*----------------------------------------------------------------------------*/
 /* This Methode is used to write a passwort i a secret password field
 /*----------------------------------------------------------------------------*/
-overridePasswordSendButton(newfunction:String){
+overridePasswordSendButton(newfunction:string){
   this.toggleObject = showNothing;
   setTimeout(() => this.toggleObject = showPasswordField,eMMAWaitingTime);
   this.sendButtonPW = newfunction;
@@ -596,7 +596,7 @@ overridePasswordSendButton(newfunction:String){
 /* This Methode is used to write a text info a number text field
 /*
 /*----------------------------------------------------------------------------*/
-overrideNumberSendButton(newfunction:String){
+overrideNumberSendButton(newfunction:string){
   this.toggleObject = showNothing;
   setTimeout(() => this.toggleObject = showNumberField,eMMAWaitingTime);
   this.sendButtonNumber = newfunction;

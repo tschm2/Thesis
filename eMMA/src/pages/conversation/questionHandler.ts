@@ -37,7 +37,7 @@ export class questionHandler {
       debug: false,
       utf8: false,
       watch: false,
-      brain: '/home/guillaume/dev/eMMA/eMMA/aiml2rs/rs/german-1.rive'
+      brain: './brain'
     };
     this.bot = new RiveScript({
       debug: this.opts.debug,

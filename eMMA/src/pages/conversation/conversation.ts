@@ -16,6 +16,9 @@ import { barcodeService } from '../../services/barcodeService';
 import { LocalNotifications } from 'ionic-native';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 
+import { BotService } from '../../services/botService';
+
+
 //Initalize eMMA Waiting Time
 var eMMAWaitingTime = 1000;
 var eMMAWaitingTimeDouble = 2*eMMAWaitingTime;
@@ -32,7 +35,8 @@ var showsingleButton = 5;
 
 @Component({
   selector: 'page-conversation',
-  templateUrl: 'conversation.html'
+  templateUrl: 'conversation.html',
+  providers: [BotService]
 })
 
 export class ConversationPage {
@@ -48,7 +52,7 @@ export class ConversationPage {
   notifications: any[] = [];
   chmedHandler: chmedJsonHandler;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, public platform: Platform, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private botService:BotService, public platform: Platform, public alertCtrl: AlertController) {
     this.messages = [];
     this.storage.get('chatlog').then((savedlog)=>{
       this.chatlog = savedlog;
@@ -64,10 +68,11 @@ export class ConversationPage {
 
     this.preAnswers = [];
     this.toggleObject = showTextfield;
-    this.chmedHandler = new chmedJsonHandler(this.storage)
+    this.chmedHandler = new chmedJsonHandler(this.storage);
+	this.botService.init();
   }
   eMMA = new eMMA();
-  questionhandler = new questionHandler(this.storage);
+  questionhandler = new questionHandler(this.storage, this.botService);
   /*----------------------------------------------------------------------------*/
   /* This Method is called as soon the View loads!
   /* if handels the state of the application on the conversation view

@@ -1,5 +1,5 @@
 import { Storage } from '@ionic/storage';
-import RiveScript from 'rivescript';
+import { BotService } from '../../services/botService';
 
 export class questionHandler {
   messageEMMA_Reminder_Morning = "Du möchtest also die Erinnerungsfunktion am Morgen testen"
@@ -29,33 +29,8 @@ export class questionHandler {
 
   drugList: JSON;
   takingTime: string[];
-  opts: any;
-  bot: RiveScript;
 
-  constructor(private storage: Storage) {
-    this.opts = {
-      debug: false,
-      utf8: false,
-      watch: false,
-      brain: './brain'
-    };
-    this.bot = new RiveScript({
-      debug: this.opts.debug,
-      utf8: this.opts.utf8,
-      concat: "newline",
-    });
-    (this.bot as any).ready = false;
-    this.bot.loadDirectory(this.opts.brain, this.loadingDone, this.loadingError);
-  }
-
-  loadingDone(batchNumber) {
-    console.log('Bot ready!');
-    this.bot.sortReplies();
-    (this.bot as any).ready = true;
-  }
-
-  loadingError(error, batchNumber) {
-    console.error("Loading error: " + error);
+  constructor(private storage: Storage, private botService: BotService) {
   }
 
   /*----------------------------------------------------------------------------*/
@@ -177,9 +152,7 @@ export class questionHandler {
         }
 
         else { //if no possible awnser is found
-          retVal = (this.bot && (this.bot as any).ready)
-            ? this.bot.reply("localuser", question)
-            : "ERR: Bot Not Ready Yet";
+          retVal = this.botService.retrieveBotAnswer(question);
         }
       }
     })

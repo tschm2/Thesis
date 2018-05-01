@@ -1,19 +1,24 @@
-import { Http, Response } from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import RiveScript from 'rivescript';
 
+@Injectable()
 export class BotService{
 	opts: any;
 	bot: RiveScript;
 	http: Http;
 
-	constructor() { }
+	constructor(private h: Http) {
+		this.http = h;
+	}
 
 	init(){
+		let testi = this.getData();
 		this.opts = {
 			debug: true,
 			utf8: true,
 			watch: false,
-			brain: this.getData
+			brain: testi
 		};
 		this.bot = new RiveScript({
 			debug: this.opts.debug,
@@ -26,8 +31,12 @@ export class BotService{
 	}
 
 	getData() {
-		return this.http.get('./assets/brain/german.rive')
-			.subscribe((res: Response) => res.text());
+		console.log("WE ARE HERE");
+		return this.http.get('./assets/brain/german-1.rive')
+			.map(res => {
+					console.log(res);
+				})
+			.subscribe(res => { console.log(res)});
 	}
 
 	loadingDone(batchNumber) {

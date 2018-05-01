@@ -11,6 +11,8 @@ import { UpdatePage } from '../pages/update/update';
 import { Storage } from '@ionic/storage';
 import { HttpModule } from '@angular/http';
 import { QRCodeModule } from 'angular2-qrcode';
+import { BotService } from '../services/botService';
+//TODO : andere services deklarieren
 
 @NgModule({
   declarations: [
@@ -39,6 +41,6 @@ import { QRCodeModule } from 'angular2-qrcode';
     UpdatePage,
     MedicationReminderViewPage
   ],
-  providers: [Storage,{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [Storage,{provide: ErrorHandler, useClass: IonicErrorHandler}, BotService]
 })
 export class AppModule {}

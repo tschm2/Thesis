@@ -14,6 +14,8 @@ export class BotService{
 
 	init(){
 		let testi = this.getData();
+		console.log('asdf');
+		console.log(testi);
 		this.opts = {
 			debug: true,
 			utf8: true,
@@ -31,12 +33,16 @@ export class BotService{
 	}
 
 	getData() {
-		console.log("WE ARE HERE");
-		return this.http.get('./assets/brain/german-1.rive')
+		let response = this.http.get('./assets/brain/german-1.rive')
 			.map(res => {
-					console.log(res);
-				})
-			.subscribe(res => { console.log(res)});
+				console.log('map function');
+				console.log(res);
+			})
+			.subscribe(res => {
+				console.log('subscribe function');
+				console.log(res);
+			});
+		return response;
 	}
 
 	loadingDone(batchNumber) {

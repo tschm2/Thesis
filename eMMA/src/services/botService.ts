@@ -28,10 +28,20 @@ export class BotService{
 
 	init(){
 		this.getData().then(function(value) {
-			return value
-		}).then(data => {
-			let url = data.toString();
-			this.bot.loadFile(url, this.loadingDone, this.loadingError);
+			return value;
+		}).then(value => {
+			let url = value.toString();
+			this.bot.loadFile(url, loadingDone, loadingError);
+
+			function loadingDone(batchNumber) {
+				console.log('Bot ready!');
+				this.bot.sortReplies();
+				this.ready = true;
+			};
+
+			function loadingError(error, batchNumber) {
+				console.error("Loading error: " + error);
+			};
 		});
 	}
 
@@ -39,22 +49,15 @@ export class BotService{
 		return new Promise((resolve, reject) => {
 			this.http.get('./assets/brain/german-1.rive')
 			.toPromise()
-			.then(res => { resolve(res.url); });
+			.then(res => {
+				resolve(res.url);
+			});
 		});
 	}
 
-	loadingDone(batchNumber) {
-		console.log('Bot ready!');
-	  	this.bot.sortReplies();
-	  	this.ready = true;
-	}
-
-	loadingError(error, batchNumber) {
-	  	console.error("Loading error: " + error);
-	}
 
 	retrieveBotAnswer(request) {
-		return (this.bot && (this.bot as any).ready)
+		return (this.ready)
 			? this.bot.reply("localuser", request)
 			: "ERR: Bot Not Ready Yet";
 	}

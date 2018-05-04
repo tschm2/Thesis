@@ -13,14 +13,12 @@ export class BotService{
 	}
 
 	init(){
-		let testi = this.getData();
-		console.log('asdf');
-		console.log(testi);
+		let url = this.getData();
 		this.opts = {
 			debug: true,
 			utf8: true,
 			watch: false,
-			brain: testi
+			brain: url
 		};
 		this.bot = new RiveScript({
 			debug: this.opts.debug,
@@ -29,20 +27,29 @@ export class BotService{
 		});
 		(this.bot as any).ready = false;
 		console.log('loading bot');
+		console.log(this.opts.brain);
 		this.bot.loadFile(this.opts.brain, this.loadingDone, this.loadingError);
 	}
 
 	getData() {
-		let response = this.http.get('./assets/brain/german-1.rive')
+		var url;
+		this.http.get('./assets/brain/german-1.rive')
 			.map(res => {
 				console.log('map function');
 				console.log(res);
+				console.log(res.url);
+				url = res.url;
+				return res.url;
 			})
 			.subscribe(res => {
-				console.log('subscribe function');
+				console.log("res here");
 				console.log(res);
+				return res;
 			});
-		return response;
+		// FIXME: already called in the beginning, should be the last step
+		// Work with promises in next commit
+		console.log("FINAL GETDATA RESULT " + url);
+		return url;
 	}
 
 	loadingDone(batchNumber) {

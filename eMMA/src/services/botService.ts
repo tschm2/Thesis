@@ -35,13 +35,14 @@ export class BotService{
 
 			function loadingDone(batchNumber) {
 				console.log('Bot ready!');
-				this.bot.sortReplies();
-				this.ready = true;
 			};
 
 			function loadingError(error, batchNumber) {
 				console.error("Loading error: " + error);
 			};
+		}).then(value => {
+			this.bot.sortReplies();
+			this.ready = true;
 		});
 	}
 
@@ -57,7 +58,7 @@ export class BotService{
 
 
 	retrieveBotAnswer(request) {
-		return (this.ready)
+		return (this.bot && this.ready)
 			? this.bot.reply("localuser", request)
 			: "ERR: Bot Not Ready Yet";
 	}

@@ -27,9 +27,7 @@ export class BotService{
 	}
 
 	init(){
-		this.getData().then(function(value) {
-			return value;
-		}).then(value => {
+		this.getData().then(value => {
 			let url = value.toString();
 			this.bot.loadFile(url, loadingDone, loadingError);
 
@@ -43,15 +41,19 @@ export class BotService{
 		}).then(value => {
 			this.bot.sortReplies();
 			this.ready = true;
+		}).catch(error => {
+			console.log("ERROR: " + error);
 		});
 	}
 
 	getData() {
 		return new Promise((resolve, reject) => {
 			this.http.get('./assets/brain/german-1.rive')
-			.toPromise()
-			.then(res => {
-				resolve(res.url);
+				.toPromise()
+				.then(res => {
+					resolve(res.url);
+				}).catch(error => {
+					console.log("ERROR: " + error);
 			});
 		});
 	}

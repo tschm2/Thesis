@@ -55,6 +55,16 @@ export class BotService{
 		});
 	}
 
+	setUservar(name, value) {
+		this.bot.setUservar("localuser", name, value);
+		console.log(this.getUservar(name));
+	}
+
+	getUservar(name) {
+		let uservar = this.bot.getUservar("localuser", name);
+		console.log(uservar);
+		return uservar;
+	}
 
 	retrieveBotAnswer(request) {
 		if(!this.ready) {

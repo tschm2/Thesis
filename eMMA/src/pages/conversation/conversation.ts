@@ -117,6 +117,7 @@ this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_NoName);
 }
 else{
   this.storage.set('name',name);
+  this.botService.setUservar('name', name);
   this.sendEmmaText("Hallo " + name+ "\n"+ this.eMMA.messageEMMA_FirstStart_questionPin);
   setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionPin2),eMMAWaitingTime);
   this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionPin_Yes,"inputPin",this.eMMA.messageEMMA_FirstStart_questionPin_No,"questionAthlete");

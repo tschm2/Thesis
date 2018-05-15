@@ -149,8 +149,11 @@ export class questionHandler {
         }
         else if (question.includes("OK") || question.includes("DANKE") || question.includes("SUPER") || question.includes("TOLL")) {
           retVal = "Freut mich, dass ich dir helfen konnte"
-        }
-
+	  	}
+		else if ((question.includes("ICH HEISSE") || question.includes("MEIN NAME IST") || question.includes("NENNE MICH")) && !question.includes("WIE")) {
+		  retVal = this.botService.retrieveBotAnswer(question);
+		  this.storage.set('name', this.botService.getUservar('name'));
+		}
         else { //if no possible awnser is found
           retVal = this.botService.retrieveBotAnswer(question);
         }

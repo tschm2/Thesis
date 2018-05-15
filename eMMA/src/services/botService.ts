@@ -38,9 +38,6 @@ export class BotService{
 			function loadingError(error, batchNumber) {
 				console.error("Loading error: " + error);
 			};
-		}).then(value => {
-			this.bot.sortReplies();
-			this.ready = true;
 		}).catch(error => {
 			console.log("ERROR: " + error);
 		});
@@ -60,6 +57,10 @@ export class BotService{
 
 
 	retrieveBotAnswer(request) {
+		if(!this.ready) {
+			this.bot.sortReplies();
+			this.ready = true;
+		}
 		return (this.bot && this.ready)
 			? this.bot.reply("localuser", request)
 			: "ERR: Bot Not Ready Yet";

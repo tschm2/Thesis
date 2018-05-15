@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { HCIService } from './HCIService';
 import myPako from "../../node_modules/pako"
@@ -10,14 +11,15 @@ import myPako from "../../node_modules/pako"
 /* Furthermore it has Functions to add and remove the Medication Entrys
 /*----------------------------------------------------------------------------*/
 
-  export class chmedJsonHandler {
+@Injectable()
+export class chmedJsonHandler {
   storage:Storage;
   hciS:any;
   http:any;
     /**
        * @param  {Storage}               publicstorage    ionic storage from phone
      */
-  constructor(storage) {
+  constructor(storage: Storage) {
     this.hciS = new HCIService();
     this.storage = storage;
   }

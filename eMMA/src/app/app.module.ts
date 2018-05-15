@@ -11,11 +11,11 @@ import { UpdatePage } from '../pages/update/update';
 import { Storage } from '@ionic/storage';
 import { HttpModule } from '@angular/http';
 import { QRCodeModule } from 'angular2-qrcode';
-import { Midata } from 'midata';
 
 import { BotService } from '../services/botService';
 import { barcodeService } from '../services/barcodeService';
 import { chmedJsonHandler } from '../services/chmedJsonHandler';
+import { HCIService } from '../services/HCIService';
 
 @NgModule({
   declarations: [
@@ -46,6 +46,13 @@ import { chmedJsonHandler } from '../services/chmedJsonHandler';
     UpdatePage,
     MedicationReminderViewPage
   ],
-  providers: [Storage,{provide: ErrorHandler, useClass: IonicErrorHandler},BotService]
+  providers: [
+	  Storage,
+	  BotService,
+	  barcodeService,
+	  chmedJsonHandler,
+	  HCIService,
+	  {provide: ErrorHandler, useClass: IonicErrorHandler},
+  ]
 })
 export class AppModule {}

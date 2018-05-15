@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
@@ -8,7 +9,7 @@ import { Http } from '@angular/http';
 /* tschm2
 /* This Class is used for the HCI Request
 /*----------------------------------------------------------------------------*/
-
+@Injectable()
 export class HCIService {
 apiURL:string;
 url:string;

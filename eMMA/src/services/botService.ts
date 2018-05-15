@@ -1,6 +1,8 @@
+import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import RiveScript from 'rivescript';
 
+@Injectable()
 export class BotService{
 	opts: any;
 	bot: RiveScript;

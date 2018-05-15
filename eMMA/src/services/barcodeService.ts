@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { BarcodeScanner } from 'ionic-native';
 import myPako from "../../node_modules/pako"
 import { Storage } from '@ionic/storage';
@@ -15,6 +16,7 @@ import { Midata } from 'midata';
 /*
 /*----------------------------------------------------------------------------*/
 
+@Injectable()
 export class barcodeService {
 private list: Array<any>;
 private chmedHandler: chmedJsonHandler;

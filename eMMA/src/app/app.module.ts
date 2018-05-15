@@ -12,6 +12,11 @@ import { Storage } from '@ionic/storage';
 import { HttpModule } from '@angular/http';
 import { QRCodeModule } from 'angular2-qrcode';
 
+import { BotService } from '../services/botService';
+import { barcodeService } from '../services/barcodeService';
+import { chmedJsonHandler } from '../services/chmedJsonHandler';
+import { HCIService } from '../services/HCIService';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -28,7 +33,9 @@ import { QRCodeModule } from 'angular2-qrcode';
     HttpModule,
     QRCodeModule
   ],
-  bootstrap: [IonicApp],
+  bootstrap: [
+	  IonicApp
+  ],
   entryComponents: [
     MyApp,
     NutritionPage,
@@ -39,6 +46,13 @@ import { QRCodeModule } from 'angular2-qrcode';
     UpdatePage,
     MedicationReminderViewPage
   ],
-  providers: [Storage,{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+	  Storage,
+	  BotService,
+	  barcodeService,
+	  chmedJsonHandler,
+	  HCIService,
+	  {provide: ErrorHandler, useClass: IonicErrorHandler},
+  ]
 })
 export class AppModule {}

@@ -1,8 +1,9 @@
 ! version = 2.0
 
 // Variablen
-! array medication = Bactrim Co-Diovan Sortis Panadol
-! var botmaster = Gabriel
+// ! array medication = Bactrim Co-Diovan Sortis Panadol
+// ! var botmaster = Gabriel
+! var bot name = eMMA
 
 // Antwortmuster
 + *
@@ -26,29 +27,6 @@
 - Das ist ein sehr origineller Gedanke.
 - Es gibt nicht viele Leute, die sich auf diese Weise auszudrücken vermögen.
 - Schreibst du manchmal Gedichte?
-
-+ was kannst du *
-- Ich kann deine Medikamente anzeigen.
-- Ich kann neue Medikamente einlesen.
-- Ich kann dich an deine Medikamente erinnern.
-- Ich kann so einiges.
-
-+ was kann ich *
-- Hast du deine Medikamente schon erfasst?
-
-+ ja *
-% hast du deine medikamente schon erfasst
-- Sehr gut.
-
-+ nein *
-% hast du deine medikamente schon erfasst
-- Dann lass uns das jetzt machen.
-
-+ was soll ich *
-- Du musst gar nichts.
-
-+ das habe ich leider nicht verstanden
-- Ich habe früher auch vieles nicht verstanden. Aber ich habe dazu gelernt.
 
 + * bewerten
 - Ich bin mir sicher, du willst mein LC1-Projekt mit "A" bewerten.
@@ -3238,7 +3216,12 @@
 - Und was erzeugte diesen?
 
 + ich heisse *
++ mein name ist *
++ nenne mich *
 - OK, ich werde Dich <set name={formal}<star>{/formal}><get name> nennen.
+
+//+ mein name ist *
+//- OK, ich werde Dich <set name={formal}<star>{/formal}><get name> nennen.
 
 + ich heisse nicht *
 - Oh, tut mir leid. Wie ist Dein Name?

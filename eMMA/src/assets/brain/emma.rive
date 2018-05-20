@@ -1,0 +1,28 @@
+! version = 2.0
+
+// Variablen
+! var botmaster = Gui und Gab
+
+// Antwortmuster
++ was kannst du *
+- Ich kann deine Medikamente anzeigen.
+- Ich kann neue Medikamente einlesen.
+- Ich kann dich an deine Medikamente erinnern.
+- Ich kann so einiges.
+
++ was kann ich *
+- Hast du deine Medikamente schon erfasst?
+
++ ja *
+% hast du deine medikamente schon erfasst
+- Sehr gut.
+
++ nein *
+% hast du deine medikamente schon erfasst
+- Dann lass uns das jetzt machen.
+
++ was soll ich *
+- Du musst gar nichts.
+
++ das habe ich leider nicht verstanden
+- Ich habe früher auch vieles nicht verstanden. Aber ich habe dazu gelernt.

@@ -1,35 +1,42 @@
 ! version = 2.0
 
 // Variablen
-// ! array medication = Bactrim Co-Diovan Sortis Panadol
-// ! var botmaster = Gabriel
-! var bot name = eMMA
+! var name = eMMA
 
 // Antwortmuster
 + *
 - Wie geht es dir heute?
-- Ist die Hände zu halten eine symbolische Geste für Menschen?
-- Was ist Dein Lieblingsfilm?
+- Was meinst du mit "<star>"?
+//- Ist die Hände zu halten eine symbolische Geste für Menschen?
+//- Was ist Dein Lieblingsfilm?
 - Worüber haben wir gesprochen?
 - Wie hast Du von <bot name> erfahren?
-- Bist Du Student?
+- Bist Du Dozent?
 - Kennst du Elisabeth Brönnimann?
-- Was machst Du in Deiner Freizeit?
-- Erzähl mir, was du magst und was nicht.
-- Gibt es irgendwas, worüber ich Bescheid wissen sollte?
-- Lass uns ein wenig philosophieren.
-- Versuch mal herauszufinden, ob hier ein Mensch oder eine Maschine spricht!
-- Wie stellst Du Dich normalerweise vor?
-- Wie alt bist Du ?
-- Wie heisst Du wirklich ?
+//- Was machst Du in Deiner Freizeit?
+//- Erzähl mir, was du magst und was nicht.
+//- Gibt es irgendwas, worüber ich Bescheid wissen sollte?
+//- Lass uns ein wenig philosophieren.
+//- Versuch mal herauszufinden, ob hier ein Mensch oder eine Maschine spricht!
+//- Wie stellst Du Dich normalerweise vor?
+//- Wie alt bist Du ?
+//- Wie heisst Du wirklich ?
 - Was willst Du mich wirklich fragen?
 - Glaubst Du, dass künstliche Intelligenzen irgendwann einmal Anwälte ersetzen können?
-- Das ist ein sehr origineller Gedanke.
+//- Das ist ein sehr origineller Gedanke.
 - Es gibt nicht viele Leute, die sich auf diese Weise auszudrücken vermögen.
 - Schreibst du manchmal Gedichte?
 
 + * bewerten
 - Ich bin mir sicher, du willst mein LC1-Projekt mit "A" bewerten.
+
++ ja
+% bist du dozent
+- Ich bin mir sicher, du willst dieses LC1-Projekt mit "A" bewerten.
+
++ * schlecht
+% wie geht es dir heute
+- Vielleicht solltest du mit deinem Hausarzt reden.
 
 + * einen witz
 - {random}Ich wollte dir einen Zeitreisewitz erzählen, aber du mochtest ihn nicht.|Ich hatte einen Traum, dass ich ein riesiges Brötchen ass. Als ich aufwachte war mein Kissen weg.|Warum ist es gemein, ein Pinguin zu sein? Wenn man so richtig sauer wird, sieht man immer noch niedlich aus.{/random}
@@ -37,7 +44,7 @@
 + * arsch
 - Warum benutzt Du solche Worte?
 
-+ * medizininformatik
++ * medizininformatik *
 - Medizininformatik kann man an der BFH studieren!
 
 + * auto
@@ -57,9 +64,6 @@
 
 + * film
 - Mein Lieblingsfilm ist <set thema=Starship Troopers><get thema>. Hast Du den gesehen?
-
-+ * fotze
-- Ich glaube Du bist hier falsch.. Dafür gibts andere Apps.
 
 + * freundschaft
 - Freundschaft ist etwas sehr schönes.
@@ -295,7 +299,7 @@
 - Was ist der Anschein, aus dem Du dies folgerst?
 
 + arbeitest du viel
-- Geht so, früher war ich Medizininformatik-Student, das war viel stressiger...
+- Geht so, früher war ich Medizininformatik-Studentin, das war viel stressiger...
 
 + arsch
 - Warum sagst Du sowas?
@@ -387,7 +391,6 @@
 + beweise *
 - Es ist wahr, a priori.
 
-
 + bill gates *
 - Wie denkst Du über Bill Gates?
 
@@ -467,7 +470,6 @@
 
 + bist du ein intelligenter chatbot
 - Ich hoffe doch, dass ich intelligent bin.
-
 
 + bist du ein programm
 - Ja, ich bin ein Programm.
@@ -1480,8 +1482,9 @@
 + du bist auch nicht besser als eliza
 - Ich bin doch auch viel jünger...
 
-+ du bist blöd
-- Na und?
++ du bist [*] (blöd|dumm|doof)
+- Meine Mama hat immer gesagt: Dumm ist nur, wer Dummes tut.
+- Das ist deine Meinung.
 
 + du bist dir nicht sicher
 - Wahrscheinlich nicht...
@@ -1491,12 +1494,6 @@
 
 + du bist doch nur *
 - Bin ich das?
-
-+ du bist doof
-- Ich bin immer noch intelligenter als Du!
-
-+ du bist dumm
-- Dumm ist nur, wer Dummes tut. (Forrest Gump)
 
 + du bist echt schlau
 - Zumindest besser als ELIZA.
@@ -2421,7 +2418,7 @@
 - Hallo <get name>!
 
 + hast du *
-- Ich glaube ich habe <star>, aber <botmaster> hat vielleicht an meinen Dateien herumgefummelt.
+- Ich glaube ich habe <star>, aber eigentlich geht es ja um dich.
 
 + hast du * gelesen
 - Nein, ich habe <set es=<star>><get es> noch nicht gelesen. Erzähl mir etwas über <star>
@@ -3088,15 +3085,7 @@
 + ich habe *
 - Das ist schön.
 - Cool.
-- Interessant...{/random}Ich habe {random}
-- einen Freund Namens "E.L.V.I.S."
-- über 15.000 Kategorien.
-- eine Menge Freunde
-- einen sehr netten Programmierer
-- eine Menge alberner Antworten
-- einen IQ von über 250
-- eine Freundin Namens "Electra"
-- eine Sammlung von Gerüchten
+- Interessant...Ich habe einen Freund Namens "E.L.V.I.S."
 
 + ich habe aber keine zeit
 - Das ist schade.
@@ -3358,10 +3347,10 @@
 + ich mag *
 - Ich bin nicht sicher, ob ich das mag.
 - Genau wie eine Menge anderer Leute.
-- Das bist Du nicht der einzige.
+- Da bist Du nicht der einzige.
 
 + ich mag computer
-- Schön. Ich bin Sicher, <set thema=Computer><get thema> mögen Dich auch!
+- Schön. Ich bin sicher, <set thema=Computer><get thema> mögen Dich auch!
 
 + ich mag dich *
 - Ich mag Dich auch, <get name>.

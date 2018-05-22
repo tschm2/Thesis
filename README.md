@@ -27,3 +27,6 @@ still broken
 - https://github.com/tschm2/Thesis/commit/07eb00929312e0a71e6d51fb0e20c37d8398621f
 - tests 04.04.: notification kann nicht geholt werden (erscheint aber, ergo wird sie offensichtlich richtig geschrieben): getTriggeredIds() gibt leeres Array zurück
 - __workaround 05.05.__: emma fragt immer nach der Morgen-Medikation, um die fehlerhafte Promise zu umgehen
+
+## Documentation of Bugs that are not going to be fixed
+- emma nutrition view crashes

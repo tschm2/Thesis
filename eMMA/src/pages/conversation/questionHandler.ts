@@ -12,7 +12,7 @@ export class questionHandler {
   messageEMMA_Medication = "Ich öffne die Medikationsansicht für dich"
   messageEMMA_Compliance = "Gerne zeige ich dir dein Medikationstagebuch an"
   messageEMMA_Nutrition = "Ich zeige dir, welche Nahrungsmittel du im Moment nicht essen darfst."
-  messageEMMA_InformationQuestion = "Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein + die Frage die du hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen must."
+  messageEMMA_InformationQuestion = "Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein + die Frage die du hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen musst."
   messageEMMA_TooMutchInformation = "Huch, das war etwas viel auf Einmal. Bitte versuche es mit einer kürzeren Frage"
 
 
@@ -88,7 +88,7 @@ export class questionHandler {
           //if the user wants to knwo someting about the taking duration of his drugs
           if (question.includes("LANGE") || question.includes("DAUER")) {
             if (this.drugList[pos].Pos[0].DtFrom && this.drugList[pos].Pos[0].DtTo) {
-              retVal = retVal + "Du solltes " + this.drugList[pos].title + " an folgenden Daten einnehmen:\n" + "vom: " + this.drugList[pos].Pos[0].DtFrom + " bis " + this.drugList[pos].Pos[0].DtTo + "\n";
+              retVal = retVal + "Du solltest " + this.drugList[pos].title + " an folgenden Daten einnehmen:\n" + "vom: " + this.drugList[pos].Pos[0].DtFrom + " bis " + this.drugList[pos].Pos[0].DtTo + "\n";
             }
             else {
               retVal = retVal + "Ich habe leider keine Informationen über die Einnahmedauer von: " + this.drugList[pos].title + "\n";
@@ -100,23 +100,25 @@ export class questionHandler {
           }
         }
       }
-      if (question === "?") {//if the user writes onyl an ?, give him information what he can ask
-        retVal = this.messageEMMA_InformationQuestion
-      }
-      else if (question.length > 60) {//if there is too mutch information in the question
+      // if (question === "?") {//if the user writes onyl an ?, give him information what he can ask
+      //   retVal = this.messageEMMA_InformationQuestion
+      // }
+      // else
+     if (question.length > 200) {//if there is too mutch information in the question
         retVal = this.messageEMMA_TooMutchInformation
       }
       else if (retVal == "") {//if tthe return value is still empty
-        if (question.includes("NAHRUNG") || (question.includes("ESSEN") && question.includes("NICHT"))) {
-          retVal = this.messageEMMA_Nutrition;
-        }
-        else if (question.includes("SELBSTMEDIKATION") || (question.includes("MEDIKAMENT") && (question.includes("ZUSÄTZLICH") || (question.includes("ERFASSEN"))))) {
-          retVal = this.messageEMMA_Selfmedication;
-        }
-        else if (question.includes("MEINE") && (question.includes("MEDI"))) {
-          retVal = this.messageEMMA_Medication;
-        }
-        else if (question.includes("REMINDER")) {
+        // if (question.includes("NAHRUNG") || (question.includes("ESSEN") && question.includes("NICHT"))) {
+        //   retVal = this.messageEMMA_Nutrition;
+        // }
+        // else if (question.includes("SELBSTMEDIKATION") || (question.includes("MEDIKAMENT") && (question.includes("ZUSÄTZLICH") || (question.includes("ERFASSEN"))))) {
+        //   retVal = this.messageEMMA_Selfmedication;
+        // }
+        // else if (question.includes("MEINE") && (question.includes("MEDI"))) {
+        //   retVal = this.messageEMMA_Medication;
+        // }
+        // else if (question.includes("REMINDER")) {
+        if (question.includes("REMINDER")) {
           if (question.includes("NACHT")) {
             retVal = this.messageEMMA_Reminder_Night
           }
@@ -129,27 +131,27 @@ export class questionHandler {
             retVal = this.messageEMMA_Reminder_Morning
           }
         }
-        else if (question.includes("ÜBER")) {
-          retVal = this.messageEMMA_About
-        }
+        // else if (question.includes("ÜBER")) {
+        //   retVal = this.messageEMMA_About
+        // }
         else if (question.includes("DELETE")) {
           retVal = this.messageEMMA_Delete_Storage;
         }
-        else if (question.includes("AUSWERTUNG") || (question.includes("WELCHE") && question.includes("NICHT") && question.includes("EINGENOMMEN"))) {
-          retVal = this.messageEMMA_Compliance;
-        }
-        else if (question.includes("HALLO") || question.includes("HUHU") || question.includes("GUGUS")) {
-          retVal = "Hallo, was möchtest du wissen?"
-        }
-        else if (question.includes("WER") && question.includes("DU")) {
-          retVal = "Ich bin eMMA. Deine Persöhliche elektronische Medikations Management Assistentin"
-        }
-        else if (question.includes("BEREITS") && question.includes("GENOMMEN")) {
-          retVal = "Ich verstehe. Ich werde dich also an die nächste Medikation nicht erinnern"
-        }
-        else if (question.includes("OK") || question.includes("DANKE") || question.includes("SUPER") || question.includes("TOLL")) {
-          retVal = "Freut mich, dass ich dir helfen konnte"
-	  	}
+      //   else if (question.includes("AUSWERTUNG") || (question.includes("WELCHE") && question.includes("NICHT") && question.includes("EINGENOMMEN"))) {
+      //     retVal = this.messageEMMA_Compliance;
+      //   }
+      //   else if (question.includes("HALLO") || question.includes("HUHU") || question.includes("GUGUS")) {
+      //     retVal = "Hallo, was möchtest du wissen?"
+      //   }
+      //   else if (question.includes("WER") && question.includes("DU")) {
+      //     retVal = "Ich bin eMMA. Deine Persöhliche elektronische Medikations Management Assistentin"
+      //   }
+      //   else if (question.includes("BEREITS") && question.includes("GENOMMEN")) {
+      //     retVal = "Ich verstehe. Ich werde dich also an die nächste Medikation nicht erinnern"
+      //   }
+      //   else if (question.includes("OK") || question.includes("DANKE") || question.includes("SUPER") || question.includes("TOLL")) {
+      //     retVal = "Freut mich, dass ich dir helfen konnte"
+	  	// }
 		else if ((question.includes("ICH HEISSE") || question.includes("MEIN NAME IST") || question.includes("NENNE MICH")) && !question.includes("WIE")) {
 		  retVal = this.botService.retrieveBotAnswer(question);
 		  this.storage.set('name', this.botService.getUservar('name'));

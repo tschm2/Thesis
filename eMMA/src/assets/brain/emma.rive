@@ -2,27 +2,79 @@
 
 // Variablen
 ! var botmaster = Gui und Gab
+! array mymedi = Dafalgan Neocitran Co-Diovan Sortis Panadol
+! var medi = Dafalgan
 
 // Antwortmuster
++ ich habe (@mymedi) geschluckt // whyyyyy does this not work!
+- Was möchtest du zu dazu wissen?
+
+
 + was kannst du *
-- Ich kann deine Medikamente anzeigen.
-- Ich kann neue Medikamente einlesen.
-- Ich kann dich an deine Medikamente erinnern.
+- Ich kann unter anderem deine Medikamente anzeigen. {weight=2}
+- Ich kann unter anderem neue Medikamente einlesen. {weight=2}
+- Ich kann dich unter anderem an deine Medikamente erinnern. {weight=2}
 - Ich kann so einiges.
 
-+ was kann ich *
-- Hast du deine Medikamente schon erfasst?
++ ?
+- <bot informationquestion>
+- Hast du alle Medikamente schon erfasst? {weight=10}
+- Du kannst zum Beispiel eingenommene Medikamente erfassen, neue Medikamente hinzufügen oder auch einfach mit mir plaudern.
+- Du kannst mir Fragen zu deinen Medikamenten stellen, zum Beispiel wann du sie einnehmen musst.
+- Du kannst sämtliche Funktionen auch über das Menü oben links erreichen.
 
-+ ja *
-% hast du deine medikamente schon erfasst
-- Sehr gut.
++ was kann ich [*]
+@ ?
 
-+ nein *
-% hast du deine medikamente schon erfasst
-- Dann lass uns das jetzt machen.
++ wie [*] weiter
+@ ?
+
++ wie * helfen
+@ ?
+
++ hilfe
+@ ?
+
++ ja
+% hast du alle medikamente schon erfasst
+- Dann kannst du mir zum Beispiel sagen wann du sie eingenommen hast. Ich führe dein Medikationstagebuch.
+
++ ich habe *
+% dann kannst du mir zum beispiel sagen wann du sie eingenommen hast ich führe dein medikationstagebuch
+- Das Medikament kenne ich noch nicht, möchtest du es erfassen?
+
++ * (@medication) *
+% dann kannst du mir zum beispiel sagen wann du sie eingenommen hast ich führe dein medikationstagebuch
+- Achso, du hast <star> genommen?
+
++ [*] nein [*]
+% hast du alle medikamente schon erfasst
+- Möchtest du jetzt ein weiteres Medikament hinzufügen?
+
++ [*] ja [*]
+% möchtest du jetzt ein weiteres medikament hinzufügen
+- <bot medicationview>
+
++ [*] ja [*]
+% das medikament kenne ich noch nicht möchtest du es erfassen
+- <bot medicationview>
+
++ [*] nein [*]
+% das medikament kenne ich noch nicht möchtest du es erfassen
+- Alles klar, dann nicht.
 
 + was soll ich *
 - Du musst gar nichts.
 
-+ das habe ich leider nicht verstanden
++ das habe ich leider nicht verstandend
 - Ich habe früher auch vieles nicht verstanden. Aber ich habe dazu gelernt.
+
+// these questions where hardcoded in the original eMMA 1.0
++ was kann ich (einnehmen|essen)
+- <bot nutrition>
+
++ medikamente
+- <bot medicationview>
+
++ [*] meine [*] (medi|medikation|medikamente)
+@ medikamente

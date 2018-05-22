@@ -32,9 +32,9 @@ export class BotService{
 			this.bot.loadFile(url, loadingDone, loadingError);
 
 			// OK, this can probably be done better - but it works for the moment ;-)
-			let baseUrl = url.substr(0, url.length-13);
-			this.bot.loadFile(baseUrl + 'medication.rive', loadingDone, loadingError);
+			let baseUrl = url.substr(0, url.length-15);
 			this.bot.loadFile(baseUrl + 'emma.rive', loadingDone, loadingError);
+			this.bot.loadFile(baseUrl + 'german-1.rive', loadingDone, loadingError);
 
 			function loadingDone(batchNumber) {
 				console.log('Bot ready!');
@@ -50,7 +50,7 @@ export class BotService{
 
 	getData() {
 		return new Promise((resolve, reject) => {
- 			this.http.get('./assets/brain/german-1.rive')
+ 			this.http.get('./assets/brain/medication.rive')
 				.toPromise()
 				.then(res => {
 					resolve(res.url);

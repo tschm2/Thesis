@@ -2,13 +2,43 @@
 
 // Variablen
 ! var botmaster = Gui und Gab
-! array mymedi = Dafalgan Neocitran Co-Diovan Sortis Panadol
-! var medi = Dafalgan
 
 // Antwortmuster
-+ ich habe (@mymedi) geschluckt // whyyyyy does this not work!
-- Was möchtest du zu dazu wissen?
 
++ [*] (@medication) [*] nicht [*]
+- Du konntest {uppercase}<star>{/uppercase} nicht einnehmen? {topic=medication} <set talkingmed={uppercase}<star>{/uppercase}>
+
++ [*] (@medication) [*]
+- Was möchtest du über {uppercase}<star>{/uppercase} wissen? {topic=medication} <set talkingmed={uppercase}<star>{/uppercase}>
+
+> topic medication
+  // when the patient mentioned a known medication
+  // (the mentioned medication is saved as the variable talkingmed)
+
+  + *
+  - Hast du noch weitere Fragen zu <get talkingmed>?
+
+  + nein
+  % hast du noch weitere fragen *
+  - OK. Du kannst mich alles zu deiner Medikation fragen. {topic=random}
+
+  + nein
+  % * nicht einnehmen
+  - Warum konntest du <get talkingmed> nicht einnehmen?
+
+  + (ja|doch)
+  % * nicht einnehmen
+  - Soll ich dich zum Medikationstagebuch weiterleiten?
+
+  + (ja|gerne|bitte|)
+  % soll ich dich zum medikationstagebuch weiterleiten
+  - <bot compliance>
+
+  + [*] wann [*]
+  % was möchtest du über * wissen
+  - #inst##<get talkingmed>##Du solltest <get talkingmed> zu folgenden Zeiten einnehmen:
+
+< topic
 
 + was kannst du *
 - Ich kann unter anderem deine Medikamente anzeigen. {weight=2}
@@ -33,7 +63,7 @@
 @ ?
 
 + hilfe
-@ ?
+- Du weisst nicht was du hier machen kannst? {@?}
 
 + ja
 % hast du alle medikamente schon erfasst
@@ -78,3 +108,21 @@
 
 + [*] meine [*] (medi|medikation|medikamente)
 @ medikamente
+
++ delete
+- <bot deleteStorage>
+
++ reminder nacht
+- <bot reminderNight>
+
++ reminder morgen
+- <bot reminderMorning>
+
++ reminder mittag
+- <bot reminderMidday>
+
++ reminder abend
+- <bot reminderEvening>
+
++ [*](ich heisse|nenne mich wieder|nenne mich|mein name ist) *
+- inst#name#{formal}<star2>{/formal}#OK, ich werde Dich <set name={formal}<star2>{/formal}><get name> nennen.

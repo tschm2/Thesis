@@ -3,27 +3,25 @@
 // Variablen
 ! var name = eMMA
 
+// Ersetzungen
+! sub nö = nein
+! sub ne = nein
+! sub jop = ja
+! sub jo = ja
+! sub jawohl = ja
+! sub medi = medikament
+! sub pillen = medikament
+
 // Antwortmuster
 + *
 - Wie geht es dir heute?
 - Was meinst du mit "<star>"?
-//- Ist die Hände zu halten eine symbolische Geste für Menschen?
-//- Was ist Dein Lieblingsfilm?
 - Worüber haben wir gesprochen?
-- Wie hast Du von <bot name> erfahren?
+- Wie hast Du von mir erfahren?
 - Bist Du Dozent?
 - Kennst du Elisabeth Brönnimann?
-//- Was machst Du in Deiner Freizeit?
-//- Erzähl mir, was du magst und was nicht.
-//- Gibt es irgendwas, worüber ich Bescheid wissen sollte?
-//- Lass uns ein wenig philosophieren.
-//- Versuch mal herauszufinden, ob hier ein Mensch oder eine Maschine spricht!
-//- Wie stellst Du Dich normalerweise vor?
-//- Wie alt bist Du ?
-//- Wie heisst Du wirklich ?
 - Was willst Du mich wirklich fragen?
 - Glaubst Du, dass künstliche Intelligenzen irgendwann einmal Anwälte ersetzen können?
-//- Das ist ein sehr origineller Gedanke.
 - Es gibt nicht viele Leute, die sich auf diese Weise auszudrücken vermögen.
 - Schreibst du manchmal Gedichte?
 
@@ -3203,14 +3201,6 @@
 
 + ich hatte den eindruck
 - Und was erzeugte diesen?
-
-+ ich heisse *
-+ mein name ist *
-+ nenne mich *
-- OK, ich werde Dich <set name={formal}<star>{/formal}><get name> nennen.
-
-//+ mein name ist *
-//- OK, ich werde Dich <set name={formal}<star>{/formal}><get name> nennen.
 
 + ich heisse nicht *
 - Oh, tut mir leid. Wie ist Dein Name?

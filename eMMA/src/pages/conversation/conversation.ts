@@ -457,7 +457,7 @@ question(input:string){
       if(answereMMA == this.questionhandler.messageEMMA_Reminder_Night){
         this.addlocalnotification(myHour,myMinute,3,false)  //ad reminder for night
       }
-      else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Eavening){
+      else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Evening){
         this.addlocalnotification(myHour,myMinute,2,false)//ad reminder for Eavening
       }
       else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Midday){

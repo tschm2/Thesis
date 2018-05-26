@@ -4,7 +4,7 @@ import { BotService } from '../../services/botService';
 export class questionHandler {
   messageEMMA_Reminder_Morning = "Du möchtest also die Erinnerungsfunktion am Morgen testen"
   messageEMMA_Reminder_Midday = "Du möchtest also die Erinnerungsfunktion am Mittag testen"
-  messageEMMA_Reminder_Eavening = "Du möchtest also die Erinnerungsfunktion am Abend testen"
+  messageEMMA_Reminder_Evening = "Du möchtest also die Erinnerungsfunktion am Abend testen"
   messageEMMA_Reminder_Night = "Du möchtest also die Erinnerungsfunktion in der Nacht testen"
   messageEMMA_Delete_Storage = "OOOOPs: ich habe gerade den Speicher gelöscht, Sorry -.-"
   messageEMMA_About = "Du möchtest also etwas über eMMA wissen."
@@ -13,7 +13,7 @@ export class questionHandler {
   messageEMMA_Compliance = "Gerne zeige ich dir dein Medikationstagebuch an"
   messageEMMA_Nutrition = "Ich zeige dir, welche Nahrungsmittel du im Moment nicht essen darfst."
   messageEMMA_InformationQuestion = "Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein + die Frage die du hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen musst."
-  messageEMMA_TooMutchInformation = "Huch, das war etwas viel auf Einmal. Bitte versuche es mit einer kürzeren Frage"
+  messageEMMA_TooMuchInformation = "Huch, das war etwas viel auf Einmal. Bitte versuche es mit einer kürzeren Frage"
 
 
   messageEMMA_Not_Understand = [
@@ -105,7 +105,7 @@ export class questionHandler {
       // }
       // else
      if (question.length > 200) {//if there is too mutch information in the question
-        retVal = this.messageEMMA_TooMutchInformation
+        retVal = this.messageEMMA_TooMuchInformation
       }
       else if (retVal == "") {//if tthe return value is still empty
         // if (question.includes("NAHRUNG") || (question.includes("ESSEN") && question.includes("NICHT"))) {
@@ -118,25 +118,25 @@ export class questionHandler {
         //   retVal = this.messageEMMA_Medication;
         // }
         // else if (question.includes("REMINDER")) {
-        if (question.includes("REMINDER")) {
-          if (question.includes("NACHT")) {
-            retVal = this.messageEMMA_Reminder_Night
-          }
-          else if (question.includes("MITTAG")) {
-            retVal = this.messageEMMA_Reminder_Midday
-          }
-          else if (question.includes("ABEND")) {
-            retVal = this.messageEMMA_Reminder_Eavening
-          } else {
-            retVal = this.messageEMMA_Reminder_Morning
-          }
-        }
+        // if (question.includes("REMINDER")) {
+        //   if (question.includes("NACHT")) {
+        //     retVal = this.messageEMMA_Reminder_Night
+        //   }
+        //   else if (question.includes("MITTAG")) {
+        //     retVal = this.messageEMMA_Reminder_Midday
+        //   }
+        //   else if (question.includes("ABEND")) {
+        //     retVal = this.messageEMMA_Reminder_Evening
+        //   } else {
+        //     retVal = this.messageEMMA_Reminder_Morning
+        //   }
+        // }
         // else if (question.includes("ÜBER")) {
         //   retVal = this.messageEMMA_About
         // }
-        else if (question.includes("DELETE")) {
-          retVal = this.messageEMMA_Delete_Storage;
-        }
+        // else if (question.includes("DELETE")) {
+        //   retVal = this.messageEMMA_Delete_Storage;
+        // }
       //   else if (question.includes("AUSWERTUNG") || (question.includes("WELCHE") && question.includes("NICHT") && question.includes("EINGENOMMEN"))) {
       //     retVal = this.messageEMMA_Compliance;
       //   }
@@ -152,17 +152,31 @@ export class questionHandler {
       //   else if (question.includes("OK") || question.includes("DANKE") || question.includes("SUPER") || question.includes("TOLL")) {
       //     retVal = "Freut mich, dass ich dir helfen konnte"
 	  	// }
-		else if ((question.includes("ICH HEISSE") || question.includes("MEIN NAME IST") || question.includes("NENNE MICH")) && !question.includes("WIE")) {
-		  retVal = this.botService.retrieveBotAnswer(question);
-		  this.storage.set('name', this.botService.getUservar('name'));
-		}
-        else { //if no possible awnser is found
+		//  if ((question.includes("ICH HEISSE") || question.includes("MEIN NAME IST") || question.includes("NENNE MICH")) && !question.includes("WIE")) {
+		//   retVal = this.botService.retrieveBotAnswer(question);
+		//   this.storage.set('name', this.botService.getUservar('name'));
+		// }
+        // else { //if no possible answer is found
           retVal = this.botService.retrieveBotAnswer(question);
+        // }
+        if(retVal.includes('inst#')){
+          var values = retVal.split("#");
+          // doing interpretation of given instructions
+          if(values[1] == 'name'){
+            this.storage.set('name', values[2]);
+            retVal = values[3];
+          }
+          else{
+            console.log(values[1]);
+            console.log(values[2]);
+            retVal = values[2];
+          }
+
         }
       }
     })
-    list.push(l2) //To delete
-    /* To delete*/
+
+    list.push(l2)
     return Promise.all(list).then(() => {//get the retun value if the calulation is finished
       return retVal
     })

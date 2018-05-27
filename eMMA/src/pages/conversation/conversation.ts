@@ -454,19 +454,19 @@ question(input:string){
     setTimeout(() => {
       var myHour: Number = this.getLocalHour()
       var myMinute: Number = this.getLocalMinute()
-      if(answereMMA == this.questionhandler.messageEMMA_Reminder_Night){
+      if(answereMMA == this.questionhandler.messageEMMA.reminderNight){
         this.addlocalnotification(myHour,myMinute,3,false)  //ad reminder for night
       }
-      else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Evening){
+      else if(answereMMA == this.questionhandler.messageEMMA.reminderEvening){
         this.addlocalnotification(myHour,myMinute,2,false)//ad reminder for Eavening
       }
-      else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Midday){
+      else if(answereMMA == this.questionhandler.messageEMMA.reminderMidday){
         this.addlocalnotification(myHour,myMinute,1,false)//ad reminder for midday
       }
-      else if(answereMMA == this.questionhandler.messageEMMA_Reminder_Morning){
+      else if(answereMMA == this.questionhandler.messageEMMA.reminderMorning){
         this.addlocalnotification(myHour,myMinute,0,false)//else add reminder for morning
       }
-      else if(answereMMA == this.questionhandler.messageEMMA_Delete_Storage){
+      else if(answereMMA == this.questionhandler.messageEMMA.deleteStorage){
         this.storage.clear(); //cleare the storage of the app. Force a new app start
         setTimeout(() =>
         this.messages = [],
@@ -475,16 +475,16 @@ question(input:string){
         eMMAWaitingTimeDouble * 2)
 
       }
-      else if(answereMMA == this.questionhandler.messageEMMA_Nutrition){
+      else if(answereMMA == this.questionhandler.messageEMMA.nutrition){
         this.navCtrl.push(NutritionPage) //open nutrition page
       }
-      else if(answereMMA == this.questionhandler.messageEMMA_Compliance){
+      else if(answereMMA == this.questionhandler.messageEMMA.compliance){
         this.navCtrl.push(MyMedicationDiaryPage)//open diary page
       }
-      else if((answereMMA == this.questionhandler.messageEMMA_Selfmedication)||(answereMMA == this.questionhandler.messageEMMA_Medication)){
+      else if((answereMMA == this.questionhandler.messageEMMA.selfmedication)||(answereMMA == this.questionhandler.messageEMMA.medication)){
         this.navCtrl.push(MyMedicationPage)//open self medication page
       }
-      else if(answereMMA == this.questionhandler.messageEMMA_About){
+      else if(answereMMA == this.questionhandler.messageEMMA.about){
         this.navCtrl.push(AboutEmmaPage)//open about eMMA page
       }
     }

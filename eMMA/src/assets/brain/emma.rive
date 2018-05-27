@@ -34,16 +34,30 @@
   % soll ich dich zum medikationstagebuch weiterleiten
   - <bot compliance>
 
-  + [*] wann [*]
+  + [*] wann [*] // TODO adjust: if (question.includes("WANN") || question.includes("ZEIT") || question.includes("UHR"))
   % was möchtest du über * wissen
-  - #inst##<get talkingmed>##Du solltest <get talkingmed> zu folgenden Zeiten einnehmen:
+  - inst#medWhen#<get talkingmed>#Du solltest <get talkingmed> zu folgenden Zeiten einnehmen:\n
+  // TODO: can we do a redirect to {@ *} after some waiting time?
+
+  + [*] wie [*] // TODO adjust: ((question.includes("WIE ") && !question.includes("LANGE")) || question.includes("EINNAHME"))
+  % was möchtest du über * wissen
+  - inst#medHow#<get talkingmed>#Du solltest <get talkingmed>
+
+  + [*] (warum|wieso|grund) [*]
+  % was möchtest du über * wissen
+  - inst#medWhy#<get talkingmed>#Als Grund für die Einnahme von <get talkingmed> ist folgendes eingetragen:
+
+  + [*] (lange|dauer) [*]
+  % was möchtest du über * wissen
+  - inst#medDuration#<get talkingmed>#Du solltest <get talkingmed> in folgendem Zeitraum einnehmen: 
 
 < topic
 
 + was kannst du *
-- Ich kann unter anderem deine Medikamente anzeigen. {weight=2}
+- Ich kann unter anderem deine Medikamente anzeigen. {weight=3}
 - Ich kann unter anderem neue Medikamente einlesen. {weight=2}
-- Ich kann dich unter anderem an deine Medikamente erinnern. {weight=2}
+- Ich kann dich unter anderem an deine Medikamente erinnern. {weight=4}
+- Ich kann dir mit deiner Medikation helfen {weight=10}
 - Ich kann so einiges.
 
 + ?

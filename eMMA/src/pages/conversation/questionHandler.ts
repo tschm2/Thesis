@@ -137,10 +137,22 @@ returnAnswer(question: string): any {
     }
   }
 
+  // opening a medicaments compendium page in browser
+  else if(values[1] = 'compendium'){
+      var medi = this.findMedicament(values[2]);
+      console.log(medi);
+      if(medi == null || medi.Id == undefined){
+        window.open("https://compendium.ch/search/" + values[2] + "/de", "_blank");
+      }
+      console.log("http://compendium.ch/mpub/phc/" + medi.Id + "/html");
+      window.open("http://compendium.ch/mpub/phc/" + medi.Id + "/html", "_blank"); //, "_system", "location=yes");
+
+  }
+
   // this shouldn't be executed
   else{
     console.log('Instruction ' + values[1] + ' not found.');
-    retVal = values[2];
+    retVal = values[3];
   }
 
 }

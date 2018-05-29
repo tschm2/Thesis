@@ -3,6 +3,11 @@
 // Variablen
 ! var botmaster = Gui und Gab
 
+// testing
++ kawabonga
+- inst#url#http://www.google.ch#Ich öffne den Link für dich.
+
+
 // Antwortmuster
 
 + [*] (@medication) [*] nicht [*]
@@ -34,7 +39,7 @@
   % * nicht einnehmen
   - Soll ich dich zum Medikationstagebuch weiterleiten?
 
-  + (ja|gerne|bitte|)
+  + (ja|gerne|bitte)
   % soll ich dich zum medikationstagebuch weiterleiten
   - <bot compliance>
 
@@ -57,18 +62,22 @@
 //  % was möchtest du über * wissen
   - inst#medDuration#<get talkingmed>#Du solltest <get talkingmed> in folgendem Zeitraum einnehmen:
 
+  + [*] (wirkung|nebenwirkung|nebenwirkungen) [*]
+  - Ich habe keine Nebenwirkungen gespeichert. Soll ich für dich im Compendium nachschlagen?
+
+  + [*] (ja|gerne|bitte) [*]
+  & * compendium nachschlagen
+  - inst#compendium#<get talkingmed>#Bitte sehr, ich schlage <get talkingmed> im Compendium nach.
+
 < topic
 
 > topic doctor
 + *
-- Möchtest du mir sagen wie dein Hausarzt heisst?
-
-+ bring mich ins web
-- inst#url#http://google.ch#blubb
+- Reden wir über etwas anderes. Was kann ich für dich tun? {topic=random}
 
 + [*](nein|keinen)[*]
 * <get doctor> == undefined => Es wäre gut, einen kompetenten Hausarzt zu haben. {topic=random}<set doctor=none>
-- OK.
+- OK.{topic=random}
 
 + [*](ja|habe)[*]
 % (hast du eigentlich einen hausarzt|hast du dir einen hausarzt gesucht)

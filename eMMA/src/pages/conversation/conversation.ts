@@ -20,7 +20,7 @@ import { BotService } from '../../services/botService';
 
 
 //Initalize eMMA Waiting Time
-var eMMAWaitingTime = 1000;
+var eMMAWaitingTime = 200;
 var eMMAWaitingTimeDouble = 2*eMMAWaitingTime;
 
 var notificationSingelton = true;

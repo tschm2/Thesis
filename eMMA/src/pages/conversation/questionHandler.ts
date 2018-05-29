@@ -90,7 +90,7 @@ returnAnswer(question: string): any {
       }
       //if the application instrucion has someting to do with "Essen" this information is also given to the user
       if (medi.AppInstr && medi.AppInstr.includes("Essen")) {
-        retVal = retVal + "jeweils" + medi.AppInstr + "\n";
+        retVal = retVal + "jeweils " + medi.AppInstr;
       }
     }
   }

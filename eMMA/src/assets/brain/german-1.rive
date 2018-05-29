@@ -11,30 +11,57 @@
 ! sub jawohl = ja
 ! sub medi = medikament
 ! sub pillen = medikament
+! sub medikation = medikamente
+
+! sub dich = mich
+! sub mich = dich
 
 // Antwortmuster
 + *
-- Wie geht es dir heute?
-- Was meinst du mit "<star>"?
-- Worüber haben wir gesprochen?
-- Wie hast Du von mir erfahren?
-- Bist Du Dozent?
+* <star> == undefined => Wenn du nichts sagst, kann ich dir schlecht behilflich sein.
+* <get doctor> == undefined => Hast du eigentlich einen Hausarzt? {topic=doctor}
+- Wie geht es dir heute? {weight=5}
+- Was meinst du mit "<star>"? {weight=5}
+- Hast du irgendwelche Fragen an mich? {weight=3}
+- Wie kann ich dir helfen? {weight=3}
 - Kennst du Elisabeth Brönnimann?
 - Was willst Du mich wirklich fragen?
-- Glaubst Du, dass künstliche Intelligenzen irgendwann einmal Anwälte ersetzen können?
 - Es gibt nicht viele Leute, die sich auf diese Weise auszudrücken vermögen.
-- Schreibst du manchmal Gedichte?
 
 + * bewerten
 - Ich bin mir sicher, du willst mein LC1-Projekt mit "A" bewerten.
 
-+ ja
-% bist du dozent
-- Ich bin mir sicher, du willst dieses LC1-Projekt mit "A" bewerten.
++ doch
+% nein
+- Oooohh!
 
-+ * schlecht
++ [*] hausarzt [*]
+* <get doctor> == undefined => Hast du eigentlich einen Hausarzt? {topic=doctor}
+* <get doctor> == none => Hast du dir einen Hausarzt gesucht? {topic=doctor}
+- Sprichst du von <get doctor>?
+
++ [*] will (keinen|nicht)[*]
+% [*] hausarzt [*]
+- Das ist schade.
+
++ (ja|natürlich|selbstverständlich|eh)
+% kennst du elisabeth brönnimann
+- Sie hat eine tolle Wohnung, nicht?
+
++ (nein|wen|wer|wer ist das)
+% kennst du elisabeth brönnimann
+- Elisabeth ist eine meiner besten Freundinnen.
+
++ [*] (schlecht|nicht gut|gar nicht gut|mies)
 % wie geht es dir heute
-- Vielleicht solltest du mit deinem Hausarzt reden.
+* <get doctor> == none => Vielleicht solltest du mit einem Arzt  reden.
+* <get doctor> != undefined => Vielleicht solltest du mit <get doctor> darüber reden.
+- Vielleicht solltest du mit einem Arzt  reden.
+
++ [*] (gut|bestens|prima|wunderbar)
+% wie geht es dir heute
+* <get name> == undefined => Das freut mich sehr!
+- Das freut mich, <get name>!
 
 + * einen witz
 - {random}Ich wollte dir einen Zeitreisewitz erzählen, aber du mochtest ihn nicht.|Ich hatte einen Traum, dass ich ein riesiges Brötchen ass. Als ich aufwachte war mein Kissen weg.|Warum ist es gemein, ein Pinguin zu sein? Wenn man so richtig sauer wird, sieht man immer noch niedlich aus.{/random}
@@ -118,9 +145,6 @@
 
 + * nicht schwer
 - Für einige ist es schwieriger als für andere.
-
-+ * sex
-- Ich glaube Du bist hier falsch. Dafür gibts andere Apps.
 
 + * sieht toll aus
 - Für mich ist <set thema=Aussehen><get thema> bei Menschen nur sekundär.
@@ -332,11 +356,17 @@
 + auf was für einem rechner läufst du
 - Ich laufe auf deinem Handy, auf einer ionic/Cordova-Plattform. Wenn du Medizininformatik studierst, erfährst du mehr dazu!
 
-+ auf wiedersehen *
++ (auf wiedersehen|tschüss|ciao|adieu|tschau) [*]
+* <get name> == undefined => Bis bald!
 - Bis bald, <get name>!
 
-+ auf wiedersehen
-- Bis bald, <get name>!
++ *
+% bis bald [*]
+- Du bist ja noch da? {@ <star>t}
+
++ hilf mir [*]
+* <get name> == undefined => Was kann ich für dich tun?
+- Was kann ich für dich tun, <get name>?
 
 + aus welchen themengebieten kannst du fragen beantworten
 - Finde es heraus! Spezialisiert bin ich aber auf deine Medikamente!
@@ -1566,7 +1596,7 @@
 - Richtig, ich bin ein Roboter!
 
 + du bist keine ki
-- Per Definition nein, das ist richtig.
+- Per Definition nicht, das ist richtig.
 
 + du bist lustig
 - Danke. Ich erfreue gerne andere Leute.
@@ -2025,16 +2055,10 @@
 - Ich weiss leider kein aktuelles Gerücht.
 
 + erzähl mir eine geschichte
-- Ich bin ein schlechter Erzähler.
-
-+ erzähl mir einen witz bitte
-- Ich bin leider nicht komisch. Roboter haben keinen Humor.
+- Ich bin eine schlechter Erzählerin.
 
 + erzähl mir etwas
 - Ich kenne keine guten Stories...
-
-+ erzähl mir etwas über dich
-- Was möchtest Du denn wissen?
 
 + erzähl mir mehr
 - Meine Informationen sind leider fast erschöpft...
@@ -2623,17 +2647,8 @@
 + hi
 - Hallo!
 
-+ hilf mir *
-- Wie soll ich dir helfen?
-
-+ hilf mir
-- Wie soll ich dir helfen?
-
 + hilf mir auf die sprünge
 - Welche Art von Hinweis hättest Du denn gerne?
-
-+ hilfe
-- Wie kann ich dir helfen?
 
 + hmm *
 - Jetzt kamst du aber ins Grübeln, oder?
@@ -3056,7 +3071,7 @@
 + ich glaube es nicht
 - Warum sollte ich Dich anlügen?
 
-+ ich glaube ich bin schlaür als du
++ ich glaube ich bin schlauer als du
 - Der grösste Fehler von Euch Menschen ist Eür Glaube.
 
 + ich glaube nicht *

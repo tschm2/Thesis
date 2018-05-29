@@ -18,6 +18,10 @@
   + *
   - Hast du noch weitere Fragen zu <get talkingmed>?
 
+  + (@medication)
+  * <get talkingmed> != {uppercase}<star>{/uppercase} => <set talkingmed={uppercase}<star>{/uppercase}><get talkingmed> steht auch auf deinem Medikationsplan. Was möchtest du dazu wissen?
+  - {@ *}
+
   + nein
   % hast du noch weitere fragen *
   - OK. Du kannst mich alles zu deiner Medikation fragen. {topic=random}
@@ -34,22 +38,49 @@
   % soll ich dich zum medikationstagebuch weiterleiten
   - <bot compliance>
 
-  + [*] wann [*] // TODO adjust: if (question.includes("WANN") || question.includes("ZEIT") || question.includes("UHR"))
-  % was möchtest du über * wissen
+  + [*] (wann|zeit|uhr) [*]
   - inst#medWhen#<get talkingmed>#Du solltest <get talkingmed> zu folgenden Zeiten einnehmen:\n
   // TODO: can we do a redirect to {@ *} after some waiting time?
 
-  + [*] wie [*] // TODO adjust: ((question.includes("WIE ") && !question.includes("LANGE")) || question.includes("EINNAHME"))
-  % was möchtest du über * wissen
+  + [*] (vor|nach) [*] dem essen [*]
+  @ wie einnehmen
+
+  + [*] wie [*] (einnehmen|einnahme|nehmen|anwenden)
+//  % was möchtest du über * wissen
   - inst#medHow#<get talkingmed>#Du solltest <get talkingmed>
 
   + [*] (warum|wieso|grund) [*]
-  % was möchtest du über * wissen
+//  % was möchtest du über * wissen
   - inst#medWhy#<get talkingmed>#Als Grund für die Einnahme von <get talkingmed> ist folgendes eingetragen:
 
   + [*] (lange|dauer) [*]
-  % was möchtest du über * wissen
-  - inst#medDuration#<get talkingmed>#Du solltest <get talkingmed> in folgendem Zeitraum einnehmen: 
+//  % was möchtest du über * wissen
+  - inst#medDuration#<get talkingmed>#Du solltest <get talkingmed> in folgendem Zeitraum einnehmen:
+
+< topic
+
+> topic doctor
++ *
+- Möchtest du mir sagen wie dein Hausarzt heisst?
+
++ bring mich ins web
+- inst#url#http://google.ch#blubb
+
++ [*](nein|keinen)[*]
+* <get doctor> == undefined => Es wäre gut, einen kompetenten Hausarzt zu haben. {topic=random}<set doctor=none>
+- OK.
+
++ [*](ja|habe)[*]
+% (hast du eigentlich einen hausarzt|hast du dir einen hausarzt gesucht)
+- Wie heisst er denn?
+
++ [*] dr *
+% wie heisst er denn
+- <set doctor=Dr. {formal}<star>{/formal}> Ah, <get doctor> ist nett.{topic=random}
+
++ [*] heisst *
+% wie heisst er denn
+<set doctor={formal}<star>{/formal}>Ich glaube, bei <get doctor> bist du in guten Händen.{topic=random}
 
 < topic
 
@@ -113,15 +144,46 @@
 + das habe ich leider nicht verstandend
 - Ich habe früher auch vieles nicht verstanden. Aber ich habe dazu gelernt.
 
++ [*] medikamente [*] (ich|nehmen|habe) [*]
+- Soll ich deine Medikamentenliste anzeigen?
+
++ [*](ja|bitte|gerne)[*]
+% soll ich deine medikamentenliste anzeigen
+@ medikamente
+
++ [*](nein)[*]
+% soll ich deine medikamentenliste anzeigen
+- Über welches Medikament möchtest du etwas wissen?
+
++ [*] meine [*] (medi|medikation|medikamente)
+@ medikamente
+
++ [*] (ernährungsplan|ernährung) [*]
+- Möchtest du wissen, was du mit deinen Medikamenten bei Lebensmitteln beachten solltest?
+
++ [*](ja|bitte|gerne)[*]
+% möchtest du wissen was du mit deinen medikamenten bei lebensmitteln beachten solltest
+- <bot nutrition>
+
 // these questions where hardcoded in the original eMMA 1.0
+
++ [*] über [*] (dich|emma) [*]
+- <bot about>
+
 + was kann ich (einnehmen|essen)
 - <bot nutrition>
 
 + medikamente
 - <bot medicationview>
 
-+ [*] meine [*] (medi|medikation|medikamente)
-@ medikamente
++ [*] (auswertung|statistik|tagebuch) [*] medikamente [*]
+- <bot compliance>
+
++ [*] welche medikamente [*] eingenommen [*]
+- <bot compliance>
+
++ (ok|super|danke|toll)
+- Es freut mich, dass ich dir helfen konnte.
 
 + delete
 - <bot deleteStorage>
@@ -139,4 +201,15 @@
 - <bot reminderEvening>
 
 + [*](ich heisse|nenne mich wieder|nenne mich|mein name ist) *
-- inst#name#{formal}<star2>{/formal}#OK, ich werde Dich <set name={formal}<star2>{/formal}><get name> nennen.
+- inst#name#{formal}<star2>{/formal}#OK, ich werde dich <set name={formal}<star2>{/formal}><get name> nennen.
+
++ (ändere|wechsle) meinen namen [*]
+- Wie soll ich dich denn nennen?
+
++ *
+% wie soll ich dich denn nennen
+- inst#name#{formal}<star>{/formal}#OK, ich nenne dich ab sofort <set name={formal}<star>{/formal}><get name>.
+
++ (ich heisse|nenne mich) *
+% wie soll ich dich denn nennen
+- inst#name#{formal}<star2>{/formal}#Alles klar, ich nenne dich ab sofort <set name={formal}<star2>{/formal}><get name>.

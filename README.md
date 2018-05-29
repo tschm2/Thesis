@@ -6,6 +6,14 @@ At the time, 3 .rive Files are loaded by the bot
 - but the way the file path is resolved and the files are loaded is not very elegant.
 - we have to find a way to write the `medication.rive` file with the actual medication data
 
+### scripting
+- eMMA still is not that intelligent, the rivescripts have to be adjusted (work in progress, Gabriel)
+
+### compliance information: write to midata
+
+### find a way to trigger the compliance entering form from chatbot
+- similar to triggering the notification, or displaying the medication page
+
 ## critical bugs for testing prototype
 ### medication plan on midata is broken
 still broken
@@ -29,4 +37,4 @@ still broken
 - __workaround 05.05.__: emma fragt immer nach der Morgen-Medikation, um die fehlerhafte Promise zu umgehen
 
 ## Documentation of Bugs that are not going to be fixed
-- emma nutrition view crashes
+- emma nutrition view crashes (checks.body is NULL) -> on App, page is displayed, but without any information

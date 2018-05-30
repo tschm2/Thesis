@@ -144,8 +144,7 @@ returnAnswer(question: string): any {
       if(medi == null || medi.Id == undefined){
         window.open("https://compendium.ch/search/" + values[2] + "/de", "_blank");
       }
-      console.log("http://compendium.ch/mpub/phc/" + medi.Id + "/html");
-      window.open("http://compendium.ch/mpub/phc/" + medi.Id + "/html", "_blank"); //, "_system", "location=yes");
+      window.open("http://compendium.ch/mpub/phc/" + medi.Id + "/html", "_blank");
 
   }
 

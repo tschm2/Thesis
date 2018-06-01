@@ -30,6 +30,9 @@
   % hast du noch weitere fragen *
   - OK. Du kannst mich alles zu deiner Medikation fragen. {topic=random}
 
+  + (abbrechen|stop|vergiss es)
+  @ nein
+
   + nein
   % * nicht einnehmen
   - Warum konntest du <get talkingmed> nicht einnehmen?
@@ -50,22 +53,19 @@
   @ wie einnehmen
 
   + [*] wie [*] (einnehmen|einnahme|nehmen|anwenden)
-//  % was möchtest du über * wissen
   - inst#medHow#<get talkingmed>#Du solltest <get talkingmed>
 
   + [*] (warum|wieso|grund) [*]
-//  % was möchtest du über * wissen
   - inst#medWhy#<get talkingmed>#Als Grund für die Einnahme von <get talkingmed> ist folgendes eingetragen:
 
   + [*] (lange|dauer) [*]
-//  % was möchtest du über * wissen
   - inst#medDuration#<get talkingmed>#Du solltest <get talkingmed> in folgendem Zeitraum einnehmen:
 
   + [*] (wirkung|nebenwirkung|nebenwirkungen) [*]
   - Ich habe keine Nebenwirkungen gespeichert. Soll ich für dich im Compendium nachschlagen?
 
   + [*] (ja|gerne|bitte) [*]
-  & * compendium nachschlagen
+  % * compendium nachschlagen
   - inst#compendium#<get talkingmed>#Bitte sehr, ich schlage <get talkingmed> im Compendium nach.
 
 < topic
@@ -89,6 +89,17 @@
 + [*] heisst *
 % wie heisst er denn
 <set doctor={formal}<star>{/formal}>Ich glaube, bei <get doctor> bist du in guten Händen.{topic=random}
+
+< topic
+
++ [*] (@potentialmed) [*]
+- <set talkingmed>={uppercase}<star>{/uppercase}Nimmst <get talkingmed> ein?
+
++ [*] ja [*]
+% nimmst du * ein
+- Soll ich <get talkingmed> in deine Medikationsliste aufnehmen? {topic=newmed}
+
+> topic newmed
 
 < topic
 

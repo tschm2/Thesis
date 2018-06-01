@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { File } from '@ionic-native/file';
 
 @Injectable()
@@ -20,7 +21,7 @@ export class FileController{
 	readFile(fileName) {
 		console.log('reading file ' + filename);
 		let directoryResolvedUrl = this.file.resolveDirectoryUrl(this.file.checkDir(this.fs, this.baseDir));
-		return this.file.getFile(this.fs, fileName, { create: false });
+		return this.file.getFile(directoryResolvedUrl, fileName, { create: false });
 	}
 
 	writeFile(fileName, content) {
@@ -31,6 +32,7 @@ export class FileController{
 
 	readDirectory(dir) {
 		console.log('reading directory ' + dir);
+		this.file.listDir(this.fs, this.baseDir);
 		let directoryRes = this.file.getDirectory(dir);
 		return this.file.readEntries(directoryRes);
 	}

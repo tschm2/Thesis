@@ -13,6 +13,7 @@ import { HttpModule } from '@angular/http';
 import { QRCodeModule } from 'angular2-qrcode';
 
 import { BotService } from '../services/botService';
+import { FileController } from '../services/fileController';
 import { barcodeService } from '../services/barcodeService';
 import { chmedJsonHandler } from '../services/chmedJsonHandler';
 import { HCIService } from '../services/HCIService';
@@ -49,6 +50,7 @@ import { HCIService } from '../services/HCIService';
   providers: [
 	  Storage,
 	  BotService,
+	  FileController,
 	  barcodeService,
 	  chmedJsonHandler,
 	  HCIService,

@@ -1,13 +1,25 @@
 ! version = 2.0
 
-// Variablen
-! var botmaster = Gui und Gab
+! array zahlen = eins zwei drei
+! array number = one two three
 
 // testing
-+ [*](@potentialmed)[*]
-- Das ist ein Medikament.
+
++ test (@zahlen)
+- <bot number 1>
+//- ja genau <set bot zahlen=<bot number>>
+
++ compliance
+- inst#compl##Ich rufe den Compliance-Screen auf
 
 // Antwortmuster
+
++ [*](@potentialmed)[*]
+- Möchtest du <star> zu deiner Medikation hinzufügen? <set talkingmed={uppercase}<star>{/uppercase}>
+
++ [*](ja|bitte|gerne)[*]
+% möchtest du * zu deiner medikation hinzufügen
+- inst#scan#<get talkingmed>#Ich öffne den Scanner für dich.
 
 + [*] (@medication) [*] nicht [*]
 - Du konntest {uppercase}<star>{/uppercase} nicht einnehmen? {topic=medication} <set talkingmed={uppercase}<star>{/uppercase}>
@@ -93,13 +105,19 @@
 < topic
 
 + [*] (@potentialmed) [*]
-- <set talkingmed>={uppercase}<star>{/uppercase}Nimmst <get talkingmed> ein?
+- <set talkingmed={uppercase}<star>{/uppercase}>Nimmst du <get talkingmed> ein?
 
 + [*] ja [*]
 % nimmst du * ein
 - Soll ich <get talkingmed> in deine Medikationsliste aufnehmen? {topic=newmed}
 
 > topic newmed
+
++ [*] ja [*]
+- inst#scan#<get talkinmed>#Ich öffne den Scanner für dich.
+
++ [*] nein [*]
+- OK, dann nicht. {topic=random}
 
 < topic
 

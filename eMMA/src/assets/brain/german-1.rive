@@ -2437,6 +2437,7 @@
 - Hallo!
 
 + hallo <bot name>
+* <get name> == undefined => <set name=<bot username>> {@hallo <bot name>}
 - Hallo <get name>!
 
 + hast du *

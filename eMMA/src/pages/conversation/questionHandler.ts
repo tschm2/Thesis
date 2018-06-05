@@ -1,7 +1,11 @@
 import { Storage } from '@ionic/storage';
 import { BotService } from '../../services/botService';
+import { barcodeService } from '../../services/barcodeService';
 
 export class questionHandler {
+  /* Calling the barcodeService */
+  barcodeService: barcodeService;
+
   messageEMMA = {
     reminderMorning: "Du möchtest also die Erinnerungsfunktion am Morgen testen.",
     reminderMidday: "Du möchtest also die Erinnerungsfunktion am Mittag testen.",
@@ -22,6 +26,7 @@ export class questionHandler {
   takingTime: string[];
 
   constructor(private storage: Storage, private botService: BotService) {
+        this.barcodeService = new barcodeService(this.storage);
   }
 
   // method finds a medicament from this.drugList and returns it as an Object
@@ -66,8 +71,10 @@ returnAnswer(question: string): any {
     // check if there is an instruction coded in the return value
 
     if(retVal.includes('inst#')){
+
       var values = retVal.split("#"); // parse the instruction syntax
       retVal = values[3]; // this is the answer we give to the user
+      alert(values[1] + " retVal: " + retVal);
 
     // doing interpretation of given instructions
 
@@ -138,15 +145,46 @@ returnAnswer(question: string): any {
   }
 
   // opening a medicaments compendium page in browser
-  else if(values[1] = 'compendium'){
+  else if(values[1] == 'compendium'){
       var medi = this.findMedicament(values[2]);
-      console.log(medi);
       if(medi == null || medi.Id == undefined){
         window.open("https://compendium.ch/search/" + values[2] + "/de", "_blank");
       }
       window.open("http://compendium.ch/mpub/phc/" + medi.Id + "/html", "_blank");
-
   }
+
+  else if(values[1] == 'scan'){
+    this.barcodeService.scanMediCode(null,1,1,1,1,"").then((res)=>{
+      retVal = "Gescannt: " + res;
+
+    //   // this.storage.ready().then(()=>{
+    //   //   this.storage.get('mediPlan').then((res)=>{
+    //   //     res.Dt = this.drugList[this.drugList.length-1].Pos["0"].DtFrom
+    //   //     res['Medicaments'] = this.drugList
+    //   //     this.drugList[this.drugList.length-1].DtFrom
+    //   //     this.storage.set('mediPlan', res).then(()=>{
+    //   //       this.barcodeService.doChecksWithCurrentMedication();
+    //   //     })
+    //   //     this.storage.set("medicationData", this.drugList);
+    //   //     // alert.present();
+    //   //     alert("done");
+    //   //     // Edits the ComplianceDataObject
+    //   //     this.editComplianceData(res['Medicaments'][res['Medicaments'].length-1].title)
+    //   //   })
+    //   // })
+    //   // this.toggleObject = 0
+      })
+  }
+
+  else if(values[1] == 'compl'){
+    alert('we are in compliance');
+    // TODO all the fancy things
+  }
+
+  else if(values[1] == 'yesno'){
+    // compare conversation.ts overrideAnswerButtons() (line558+)
+  }
+
 
   // this shouldn't be executed
   else{

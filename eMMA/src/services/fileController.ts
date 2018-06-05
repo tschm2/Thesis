@@ -3,13 +3,13 @@ import { File } from '@ionic-native/file';
 
 @Injectable()
 export class FileController{
-	file: File;
+	file:File;
 	fs:string;
 	baseDir:string;
 
 	constructor(private f: File) {
 		this.file = f;
-		this.fs =  cordova.file.dataDirectory;
+		this.fs =  this.file.dataDirectory; // this.file.dataDirectory ??
 		this.baseDir = 'brain';
 	}
 

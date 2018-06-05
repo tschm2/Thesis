@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "2.2.1",
     "@angular/platform-server": "2.2.1",
     "@ionic-native/barcode-scanner": "^4.6.0",
+    "@ionic-native/core": "^4.7.0",
     "@ionic-native/file": "^4.7.0",
     "@ionic-native/local-notifications": "^4.6.0",
     "@ionic/storage": "^1.1.9",

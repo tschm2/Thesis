@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import RiveScript from 'rivescript';
+import { FileController } from '../services/fileController';
 
 @Injectable()
 export class BotService{
 	bot: RiveScript;
+	fileController: FileController;
 	opts: any;
 	ready: boolean;
 	http: Http;
 
-	constructor(private h: Http) {
+	constructor(private h: Http, private fc: FileController) {
 		this.http = h;
 		this.ready = false;
+		this.fileController = fc;
 
 		this.opts = {
 			debug: true,
@@ -92,7 +95,7 @@ export class BotService{
 			}
 		}
 
-		Promise.all([storage.get('name'),storage.get('medicationData')]).then(values=>{
+		Promise.all([storage.get('name'),storage.get('medicationData'),this.ready]).then(values=>{
 			name = "! var username = " + values[0];
 
 			medications = "! var medications = ";
@@ -103,7 +106,7 @@ export class BotService{
 			fileString += "\n\n" + name + "\n\n" + medications;
 			console.log(fileString);
 
-			// save fileString to file here
+			this.fileController.readDirectory('brain');
 
 		});
 

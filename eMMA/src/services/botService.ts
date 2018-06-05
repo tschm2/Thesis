@@ -81,4 +81,44 @@ export class BotService{
 			: "ERR: Bot Not Ready Yet";
 	}
 
+	generateFile(qh, storage){
+		var fileString = "// the event triggering variables - generated dynamically from the questionHandler messageEMMA object";
+		var name = "";
+		var medications = "";
+
+		for(var prop in qh.messageEMMA){
+			if(!Array.isArray(qh.messageEMMA[prop])){
+				fileString += "\n! var " + prop + " = " + qh.messageEMMA[prop];
+			}
+		}
+
+		Promise.all([storage.get('name'),storage.get('medicationData')]).then(values=>{
+			name = "! var username = " + values[0];
+
+			medications = "! var medications = ";
+			 	for(var med in values[1]){
+			 		medications += values[1][med].title.toLowerCase() + '|';
+			 	}
+				medications = medications.substring(0, medications.length - 1);
+			fileString += "\n\n" + name + "\n\n" + medications;
+			console.log(fileString);
+
+			// save fileString to file here
+
+		});
+
+		// storage.get('name').then((res)=>{
+		// 	name = "! var username = " + res;
+		// 	console.log(name);
+		// });
+		// storage.get('medicationData').then((res)=>{
+		// 	medications = "! var medications = ";
+		// 	for(var med in res){
+		// 		medications += res[med].title.toLowerCase() + '|';
+		// 	}
+		// 	medications = medications.substring(0, medications.length - 1);
+		// 	console.log(medications);
+		// });
+	}
+
 }

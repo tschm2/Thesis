@@ -82,6 +82,8 @@
       "cordova-plugin-statusbar": {},
       "cordova-sqlite-storage": {}
     },
-    "platforms": []
+    "platforms": [
+      "android"
+    ]
   }
 }

@@ -71,6 +71,7 @@ export class ConversationPage {
     this.toggleObject = showTextfield;
     this.chmedHandler = new chmedJsonHandler(this.storage);
 	this.botService.init();
+  this.botService.generateFile(this.questionhandler, this.storage);
   }
   eMMA = new eMMA();
   questionhandler = new questionHandler(this.storage, this.botService, this.fileController);
@@ -119,6 +120,7 @@ this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_NoName);
 else{
   this.storage.set('name',name);
   this.botService.setUservar('name', name);
+  console.log('setUservar name: ' + name);
   this.sendEmmaText("Hallo " + name+ "\n"+ this.eMMA.messageEMMA_FirstStart_questionPin);
   setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionPin2),eMMAWaitingTime);
   this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionPin_Yes,"inputPin",this.eMMA.messageEMMA_FirstStart_questionPin_No,"questionAthlete");
@@ -482,7 +484,7 @@ question(input:string){
       else if(answereMMA == this.questionhandler.messageEMMA.compliance){
         this.navCtrl.push(MyMedicationDiaryPage)//open diary page
       }
-      else if((answereMMA == this.questionhandler.messageEMMA.selfmedication)||(answereMMA == this.questionhandler.messageEMMA.medication)){
+      else if((answereMMA == this.questionhandler.messageEMMA.selfmedication)||(answereMMA == this.questionhandler.messageEMMA.medicationview)){
         this.navCtrl.push(MyMedicationPage)//open self medication page
       }
       else if(answereMMA == this.questionhandler.messageEMMA.about){

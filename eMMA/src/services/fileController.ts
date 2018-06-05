@@ -9,7 +9,7 @@ export class FileController{
 
 	constructor(private f: File) {
 		this.file = f;
-		this.fs =  this.file.dataDirectory; // this.file.dataDirectory ??
+		this.fs =  this.file.dataDirectory;
 		this.baseDir = 'brain';
 	}
 

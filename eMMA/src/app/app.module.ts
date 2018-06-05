@@ -9,6 +9,7 @@ import { MyMedicationPage } from '../pages/my-medication/my-medication';
 import { MedicationReminderViewPage } from '../pages/medication-reminder-view/medication-reminder-view';
 import { UpdatePage } from '../pages/update/update';
 import { Storage } from '@ionic/storage';
+import { File } from '@ionic-native/file';
 import { HttpModule } from '@angular/http';
 import { QRCodeModule } from 'angular2-qrcode';
 
@@ -49,6 +50,7 @@ import { HCIService } from '../services/HCIService';
   ],
   providers: [
 	  Storage,
+	  File,
 	  BotService,
 	  FileController,
 	  barcodeService,

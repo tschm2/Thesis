@@ -1,5 +1,6 @@
 import { Storage } from '@ionic/storage';
 import { BotService } from '../../services/botService';
+import { FileController } from '../../services/fileController';
 import { barcodeService } from '../../services/barcodeService';
 
 export class questionHandler {
@@ -25,7 +26,7 @@ export class questionHandler {
   drugList: JSON;
   takingTime: string[];
 
-  constructor(private storage: Storage, private botService: BotService) {
+  constructor(private storage: Storage, private botService: BotService, private fileController: FileController) {
         this.barcodeService = new barcodeService(this.storage);
   }
 

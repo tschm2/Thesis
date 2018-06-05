@@ -1,9 +1,9 @@
 import { NavController, NavParams, Platform, AlertController } from 'ionic-angular';
-import {ViewChild, Component} from '@angular/core';
-import {Content} from 'ionic-angular/index';
+import { ViewChild, Component } from '@angular/core';
+import { Content } from 'ionic-angular/index';
 import { Storage } from '@ionic/storage';
 //Import conversation methodes
-import { eMMA} from '../../pages/conversation/eMMA';
+import { eMMA } from '../../pages/conversation/eMMA';
 import { questionHandler } from '../../pages/conversation/questionHandler';
 //Import other Pages
 import { NutritionPage } from '../../pages/nutrition/nutrition';
@@ -17,11 +17,12 @@ import { LocalNotifications } from 'ionic-native';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 
 import { BotService } from '../../services/botService';
+import { FileController } from '../../services/fileController';
 
 
 //Initalize eMMA Waiting Time
 var eMMAWaitingTime = 200;
-var eMMAWaitingTimeDouble = 2*eMMAWaitingTime;
+var eMMAWaitingTimeDouble = 2 * eMMAWaitingTime;
 
 var notificationSingelton = true;
 
@@ -52,7 +53,7 @@ export class ConversationPage {
   notifications: any[] = [];
   chmedHandler: chmedJsonHandler;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private botService:BotService, public platform: Platform, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private botService:BotService, private fileController: FileController, public platform: Platform, public alertCtrl: AlertController) {
     this.messages = [];
     this.storage.get('chatlog').then((savedlog)=>{
       this.chatlog = savedlog;
@@ -72,7 +73,7 @@ export class ConversationPage {
 	this.botService.init();
   }
   eMMA = new eMMA();
-  questionhandler = new questionHandler(this.storage, this.botService);
+  questionhandler = new questionHandler(this.storage, this.botService, this.fileController);
   /*----------------------------------------------------------------------------*/
   /* This Method is called as soon the View loads!
   /* if handels the state of the application on the conversation view

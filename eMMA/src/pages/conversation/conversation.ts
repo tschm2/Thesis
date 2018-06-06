@@ -56,12 +56,12 @@ export class ConversationPage {
     this.messages = [];
     this.storage.get('chatlog').then((savedlog)=>{
       this.chatlog = savedlog;
-      console.log("log loaded from storage");
+      //console.log("log loaded from storage");
     })
     if(this.chatlog == null){
       this.chatlog = [{text: "", identity: "system: init log", time: this.getLocalTime()}];
       this.storage.set('chatlog', this.chatlog).then(()=>{
-        console.log("new chatlog saved to storage")
+        //console.log("new chatlog saved to storage")
       });
     }
     this.chatlog.push({text: '##new session', identity: 'system', time: this.getLocalTime()});
@@ -70,6 +70,7 @@ export class ConversationPage {
     this.toggleObject = showTextfield;
     this.chmedHandler = new chmedJsonHandler(this.storage);
 	this.botService.init();
+  this.botService.generateFile(this.questionhandler, this.storage);
   }
   eMMA = new eMMA();
   questionhandler = new questionHandler(this.storage, this.botService);
@@ -81,7 +82,7 @@ export class ConversationPage {
   ionViewDidLoad() {
     this.toggleObject = showTextfield;  // Initalize view with text field for user input
     this.storage.get('FirstStartComplet').then((terminated)=>{ // check if first start, normal start or reminder
-    console.log("FirstStartComplete terminated: " + terminated)
+    //console.log("FirstStartComplete terminated: " + terminated)
     if(terminated == "reminder"){
       this.reminderAppStart();        //start the reminder function
     }
@@ -118,6 +119,7 @@ this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_NoName);
 else{
   this.storage.set('name',name);
   this.botService.setUservar('name', name);
+  console.log('setUservar name: ' + name);
   this.sendEmmaText("Hallo " + name+ "\n"+ this.eMMA.messageEMMA_FirstStart_questionPin);
   setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_questionPin2),eMMAWaitingTime);
   this.overrideAnswerButtons(this.eMMA.messageEMMA_FirstStart_questionPin_Yes,"inputPin",this.eMMA.messageEMMA_FirstStart_questionPin_No,"questionAthlete");
@@ -481,7 +483,7 @@ question(input:string){
       else if(answereMMA == this.questionhandler.messageEMMA.compliance){
         this.navCtrl.push(MyMedicationDiaryPage)//open diary page
       }
-      else if((answereMMA == this.questionhandler.messageEMMA.selfmedication)||(answereMMA == this.questionhandler.messageEMMA.medication)){
+      else if((answereMMA == this.questionhandler.messageEMMA.selfmedication)||(answereMMA == this.questionhandler.messageEMMA.medicationview)){
         this.navCtrl.push(MyMedicationPage)//open self medication page
       }
       else if(answereMMA == this.questionhandler.messageEMMA.about){

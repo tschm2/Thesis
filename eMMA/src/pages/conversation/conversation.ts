@@ -20,8 +20,8 @@ import { BotService } from '../../services/botService';
 
 
 //Initalize eMMA Waiting Time
-var eMMAWaitingTime = 200;
-var eMMAWaitingTimeDouble = 2*eMMAWaitingTime;
+var eMMAWaitingTime = 500;
+var eMMAWaitingTimeDouble = 4*eMMAWaitingTime;
 
 var notificationSingelton = true;
 
@@ -73,7 +73,7 @@ export class ConversationPage {
   this.botService.generateFile(this.questionhandler, this.storage);
   }
   eMMA = new eMMA();
-  questionhandler = new questionHandler(this.storage, this.botService);
+  questionhandler = new questionHandler(this.storage, this.botService, this);
   /*----------------------------------------------------------------------------*/
   /* This Method is called as soon the View loads!
   /* if handels the state of the application on the conversation view
@@ -264,6 +264,7 @@ eMMATutorial(){
     setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Tutorial), eMMAWaitingTimeDouble);
 
   }
+  setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Tutorial), eMMAWaitingTimeDouble);
 })
 
 this.overrideSendbutton("question");                            //switch to question mode
@@ -493,6 +494,8 @@ question(input:string){
     ,eMMAWaitingTimeDouble);
   });
 }
+
+
 /*****************************************************************************
 
 Funtions for Conversation.ts
@@ -612,7 +615,7 @@ overrideNumberSendButton(newfunction:string){
 /*----------------------------------------------------------------------------*/
 /* This method is used to write a text from the user on the Conversation Page
 /*
-/* edited by hessg1 on 26.03.
+/* edited by hessg1 on 26.03. // and 07.06. for additional button handling
 /*----------------------------------------------------------------------------*/
 reply(answer) {
   this.processMsg({
@@ -620,7 +623,13 @@ reply(answer) {
     identity: 'user',
     time: this.getLocalTime()
   });
-  this[answer.callFunction](answer.text);
+  if(answer.callFunction == null){
+    this[this.sendButton](answer.text);
+    this.toggleObject = 1;
+  }
+  else{
+    this[answer.callFunction](answer.text);
+  }
   setTimeout(() =>{  this.content.scrollToBottom();},50);
 }
 
@@ -864,4 +873,8 @@ processMsg(msg: any){
 scrollToBottomOnFocus(){
   setTimeout(() => this.content.scrollToBottom(), eMMAWaitingTime)
 }
+
+
+
+
 }

@@ -1,6 +1,7 @@
 import { Storage } from '@ionic/storage';
 import { BotService } from '../../services/botService';
 import { barcodeService } from '../../services/barcodeService';
+import { ConversationPage} from '../../pages/conversation/conversation';
 
 export class questionHandler {
   /* Calling the barcodeService */
@@ -24,17 +25,21 @@ export class questionHandler {
 
   drugList: JSON;
   takingTime: string[];
+  convPage: ConversationPage;
 
-  constructor(private storage: Storage, private botService: BotService) {
-        this.barcodeService = new barcodeService(this.storage);
+  constructor(private storage: Storage, private botService: BotService, convPage: ConversationPage) {
+        this.barcodeService = new barcodeService(storage);
+        this.convPage = convPage;
   }
 
-  // method finds a medicament from this.drugList and returns it as an Object
-  // @param name: the name of the medicament to find
-  // @return: the medicament as an object. null if not found.
-  // @author: hessg1
-  findMedicament(name: string): any {
-  var medi = null;
+/*----------------------------------------------------------------------------*/
+/*  method finds a medicament from this.drugList and returns it as an Object
+/* @param name: the name of the medicament to find
+/* @return: the medicament as an object. null if not found.
+/* @author: hessg1
+/*----------------------------------------------------------------------------*/
+findMedicament(name: string): any {
+ var medi = null;
   for(var pos in this.drugList){
     if(this.drugList[pos].title.toUpperCase() == name.toUpperCase()){
       medi = this.drugList[pos];
@@ -46,13 +51,10 @@ export class questionHandler {
 /*----------------------------------------------------------------------------*/
 /* This method handles the user input for the question method
 /*
-/*the question of the user is analysed and the return value is the answer form eMMA
+/* the question of the user is analysed and the return value is the answer form eMMA
 /* original authors: dorner / tschanz
 /* refactoring author: hessg1
 /*----------------------------------------------------------------------------*/
-
-
-
 returnAnswer(question: string): any {
   var retVal: any = "";
   var list = new Array<any>() // i have no idea what this list does or if it is used anywhere... but don't change a running system :D 27.5. hessg1
@@ -74,7 +76,6 @@ returnAnswer(question: string): any {
 
       var values = retVal.split("#"); // parse the instruction syntax
       retVal = values[3]; // this is the answer we give to the user
-      alert(values[1] + " retVal: " + retVal);
 
     // doing interpretation of given instructions
 
@@ -181,7 +182,24 @@ returnAnswer(question: string): any {
     // TODO all the fancy things
   }
 
-  else if(values[1] == 'yesno'){
+  else if(values[1] == 'button'){
+    var first_button = values[2].split("|")[0];
+    var second_button = values[2].split("|")[1];
+    this.convPage.toggleObject = 0;
+    setTimeout(() => this.convPage.toggleObject = 2 , 500); // show buttons
+    this.convPage.preAnswers = [];
+    this.convPage.preAnswers.push({
+      text: first_button,
+      id: 1,
+      callFunction: null // function callback - but what?
+    });
+
+    this.convPage.preAnswers.push({
+      text: second_button,
+      id: 2,
+      callFunction: null // here we have to call a function - but what?
+    });
+
     // compare conversation.ts overrideAnswerButtons() (line558+)
   }
 
@@ -189,7 +207,6 @@ returnAnswer(question: string): any {
   // this shouldn't be executed
   else{
     console.log('Instruction ' + values[1] + ' not found.');
-    retVal = values[3];
   }
 
 }
@@ -199,5 +216,9 @@ list.push(l2);
 return Promise.all(list).then(() => {//get the return value if the calulation is finished
   return retVal
 })
+}
+
+nullfunct(){
+
 }
 }

@@ -25,7 +25,6 @@
 - Hast du irgendwelche Fragen an mich? {weight=3}
 - Wie kann ich dir helfen? {weight=3}
 - Kennst du Elisabeth Brönnimann?
-- Was willst Du mich wirklich fragen?
 - Es gibt nicht viele Leute, die sich auf diese Weise auszudrücken vermögen.
 
 + * bewerten
@@ -44,13 +43,13 @@
 % [*] hausarzt [*]
 - Das ist schade.
 
-+ (ja|natürlich|selbstverständlich|eh)
++ [*](ja|natürlich|selbstverständlich|eh)[*]
 % kennst du elisabeth brönnimann
 - Sie hat eine tolle Wohnung, nicht?
 
-+ (nein|wen|wer|wer ist das)
++ [*](nein|wen|wer|wer ist das)[*]
 % kennst du elisabeth brönnimann
-- Elisabeth ist eine meiner besten Freundinnen.
+- Elisabeth ist eine gute Freundin von mir.
 
 + [*] (schlecht|nicht gut|gar nicht gut|mies)
 % wie geht es dir heute
@@ -63,17 +62,14 @@
 * <get name> == undefined => Das freut mich sehr!
 - Das freut mich, <get name>!
 
-+ * einen witz
++ [*] einen witz
 - {random}Ich wollte dir einen Zeitreisewitz erzählen, aber du mochtest ihn nicht.|Ich hatte einen Traum, dass ich ein riesiges Brötchen ass. Als ich aufwachte war mein Kissen weg.|Warum ist es gemein, ein Pinguin zu sein? Wenn man so richtig sauer wird, sieht man immer noch niedlich aus.{/random}
 
 + * arsch
 - Warum benutzt Du solche Worte?
 
-+ * medizininformatik *
++ [*] medizininformatik [*]
 - Medizininformatik kann man an der BFH studieren!
-
-+ * auto
-- Was für einen Wagen fährst Du?
 
 + * dumm
 - "dumm" = "nicht intelligent"?
@@ -88,7 +84,7 @@
 - Ich habe keine Ahnung, was das bedeutet.
 
 + * film
-- Mein Lieblingsfilm ist <set thema=Starship Troopers><get thema>. Hast Du den gesehen?
+- Mein Lieblingsfilm ist 2001. Hast Du den gesehen?
 
 + * freundschaft
 - Freundschaft ist etwas sehr schönes.
@@ -120,15 +116,6 @@
 + * liebe
 - Ich habe leider keinerlei Emotionen.
 
-+ * linux
-- <set thema=Linux><get thema> ist genial.
-
-+ * mein freund
-- Sind wir <set thema=Freunde><get thema>?
-
-+ * meine freundin
-- Sind wir <set thema=Freunde><get thema>?
-
 + * mich
 - Ist es das was Du sagen wolltest?
 - OK sprechen wir über Dich.
@@ -147,22 +134,16 @@
 - Für einige ist es schwieriger als für andere.
 
 + * sieht toll aus
-- Für mich ist <set thema=Aussehen><get thema> bei Menschen nur sekundär.
-
-+ * sprache
-- Sprichst Du irgendwelche <set thema=Fremdsprachen><get thema>?
+- Für mich ist das Aussehen bei Menschen nur sekundär.
 
 + * über dich
-- OK Reden wir über mich.
+- OK, reden wir über mich.
 
 + * und du
 - Ist das von besonderem Interesse für Dich?
 
 + * ungewöhnlich
 - Was ist so ungewöhnlich daran?
-
-+ * verliebt
-- <set thema=Liebe><get thema> muss etwas sehr Schönes sein. Leider habe ich keine Emotionen.
 
 + * viele leute
 - Mehr als 10,000?
@@ -174,16 +155,10 @@
 - Zu Dir?
 
 + 2001 *
-- Ich bin durch <set thema=HAL><get thema> inspiriert.
+- Ich bin durch HAL inspiriert.
 
 + 2001
-- <set thema=2001><get thema> ist ein grossartiger Film.
-
-+ 2010
-- Die Fortsetzung war nicht so gut wie das Original.
-
-+ 2012
-- Für 2012 ist der Weltuntergang prophezeit worden.
+- 2001 ist ein grossartiger Film.
 
 + 30 minuten
 - Ok, eine halbe Stunde.
@@ -199,7 +174,6 @@
 
 + aber *
 - Interessant.
-- Häh?
 - Und?
 - Hmm...
 - Bist Du Dir da sicher?
@@ -246,9 +220,6 @@
 + aldous huxley
 - Hat der nicht "Brave new world" geschrieben?
 
-+ <bot name> im wunderland
-- Das ist ein schönes Buch! Zuletzt in The Matrix erwähnt.
-
 + alle *
 - Ich glaube, es gibt auch Ausnahmen.
 - Nicht wirklich alle, oder?
@@ -258,7 +229,7 @@
 - "? Alle?
 
 + alle roboter *
-- Du kannst nicht wirklich sagen, ALLE <set thema=Roboter><get thema> <star>.
+- Du kannst nicht wirklich sagen, ALLE Roboter <star>.
 
 + alle sind schuld
 - Woran denn?
@@ -443,7 +414,7 @@
 - Ich freu mich drauf!
 
 + bist du *
-- Ich weiss nicht, ob ich <star> bin. Ich bin {random}|deine elektronische Medikationsassistentin.|eine KI.|ein ChatBot.|von BFH-Studenten entwickelt worden.|eine künstliche Intelligenz.|ein gigantisches elektronisches Gehirn.{/random}
+- Ich weiss nicht, ob ich <star> bin. Ich bin {random}deine elektronische Medikationsassistentin.|eine KI.|ein ChatBot.|von BFH-Studenten entwickelt worden.|eine künstliche Intelligenz.|ein gigantisches elektronisches Gehirn.{/random}
 
 + bist du <bot name>
 - Ja, das bin ich.
@@ -766,6 +737,9 @@
 
 + (das ergibt keinen sinn|das macht keinen sinn)
 - Was ist daran für Dich so schwer zu verstehen?
+
++ [*] sinn [*] lebens [*]
+- 42.
 
 + das ergibt sich aus dem kontext
 - Oho, ein Intellektueller!
@@ -3658,9 +3632,6 @@
 + ich weiss keine frage mehr
 - Dann erzähl irgendwas.
 
-+ ich weiss meinen namen nicht
-- Hast Du Alzheimer?
-
 + ich weiss nicht *
 - Willst Du es nicht herausfinden?
 
@@ -3715,16 +3686,14 @@
 - Warum nicht?
 
 + ich werde warten
-- OK Sekunde...
+- OK, Sekunde...
 
 + ich wette *
 - Wieviel setzt Du?
 
-+ ich will *
-- Und warum willst Du das?
++ ich will [*]
+- Könntest du das etwas anders formulieren?
 
-+ ich will
-- Und warum willst Du?
 
 + ich will alles
 - Nimmersatt!
@@ -4070,3 +4039,10 @@
 
 + jules verne
 - Träumst Du auch von einer Reise zum Mond?
+
++ [*] ja [*]
+% träumst du auch von einer reise zum mond
+- Wer weiss, vielleicht fliegt Elon auch bald zum Mond.
+
++ [*] inschallah [*]
+- Ohne Gottes Wille vermag der Mensch nichts.

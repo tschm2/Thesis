@@ -66,9 +66,9 @@ returnAnswer(question: string): any {
   /*Ab it function und return not var*/
   var l2 = this.storage.get('medicationData').then((res) => {
     this.drugList = res;
-
+    console.log("bot input: "+ question);
     retVal = this.botService.retrieveBotAnswer(question);
-
+    console.log("raw bot output: " + retVal);
 
     // check if there is an instruction coded in the return value
 
@@ -151,7 +151,9 @@ returnAnswer(question: string): any {
       if(medi == null || medi.Id == undefined){
         window.open("https://compendium.ch/search/" + values[2] + "/de", "_blank");
       }
-      window.open("http://compendium.ch/mpub/phc/" + medi.Id + "/html", "_blank");
+      else{
+        window.open("http://compendium.ch/mpub/phc/" + medi.Id + "/html", "_blank");
+      }
   }
 
   else if(values[1] == 'scan'){
@@ -179,6 +181,7 @@ returnAnswer(question: string): any {
 
   else if(values[1] == 'compl'){
     alert('we are in compliance');
+    this.convPage.AwnswerReminder();
     // TODO all the fancy things
   }
 
@@ -191,21 +194,20 @@ returnAnswer(question: string): any {
     this.convPage.preAnswers.push({
       text: first_button,
       id: 1,
-      callFunction: null // function callback - but what?
+      callFunction: null
     });
 
     this.convPage.preAnswers.push({
       text: second_button,
       id: 2,
-      callFunction: null // here we have to call a function - but what?
+      callFunction: null
     });
-
-    // compare conversation.ts overrideAnswerButtons() (line558+)
   }
 
 
   // this shouldn't be executed
   else{
+    alert('Instruction ' + values[1] + ' not found.');
     console.log('Instruction ' + values[1] + ' not found.');
   }
 

@@ -95,19 +95,27 @@ export class BotService{
 			}
 		}
 
+		if(!this.fileController.checkDirectory("brain")) {
+			this.fileController.createDirectory("brain");
+			console.log("directory brain created");
+		} else {
+			console.log("directory brain has already been created, dawg");
+		}
+
+		console.log("we're right above the Promise");
 		Promise.all([storage.get('name'),storage.get('medicationData'),this.ready]).then(values=>{
+			console.log("we're inside the Promise now");
 			name = "! var username = " + values[0];
 
 			medications = "! var medications = ";
-			 	for(var med in values[1]){
-			 		medications += values[1][med].title.toLowerCase() + '|';
-			 	}
+				for(var med in values[1]){
+					medications += values[1][med].title.toLowerCase() + '|';
+				}
 				medications = medications.substring(0, medications.length - 1);
 			fileString += "\n\n" + name + "\n\n" + medications;
 			console.log(fileString);
 
 			this.fileController.readDirectory('brain');
-
 		});
 
 		// storage.get('name').then((res)=>{

@@ -13,6 +13,7 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'about-emma.html'
 })
 export class AboutEmmaPage {
+  showlog = true; // toggles displaying of the chatlog. disable for productive use.
   toggleObject:number;
   chatlog: Array<{text: string, identity: string, time: string}>;
   logstring: string;

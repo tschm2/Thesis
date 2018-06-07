@@ -22,7 +22,7 @@ Ionic pages and navigation.
     <ion-card-content [ngClass]="{'hidden': toggleObject != 1}">
       <img src= 'images/eMMA_Logo_quer.png'/>
       <h2> Die Projektgruppe</h2>
-      eMMA, elektronische Medikations-Management Assistentin, 2.2 wurden von den Studierenden Mauro Tschanz und Tim Dorner, im Rahmen ihrer Bachelorthesis erdacht und Entwickelt. Alle Rechte für die Verwendung der Idee, des Namens, des Logos und alle weiteren Leistungen währen der Bachelorthesis, bleiben bei den Studierenden. <br>15.Juni.2017
+      <p>eMMA, elektronische Medikations-Management Assistentin, 2.2 wurden von den Studierenden Mauro Tschanz und Tim Dorner, im Rahmen ihrer Bachelorthesis erdacht und entwickelt.</p><p>Im Living Case 1 des Frühjahrssemesters 2018 wurde die eMMA-App von Guillaume Fricker und Gabriel Hess weiterentwickelt, um die Funktionalität des Conversational Interface zu verbessern.</p><p>Alle Rechte für die Verwendung der Idee, des Namens, des Logos und alle weiteren Leistungen während der Bachelorthesis, bleiben bei den Studierenden. <br>15.Juni.2017, aktualisiert 07. Juni 2018.</p>
       <br>
       <br>
       <h2>Danksagung</h2>
@@ -74,7 +74,7 @@ Ionic pages and navigation.
   </ion-card>
 
   <ion-card (click)="toggleContent(3)">
-    <ion-card-header class="clickAbleHeader">
+    <ion-card-header class="clickAbleHeader" [ngClass]="{'hidden': !showlog}">
       Gespr&auml;chsverlauf
     </ion-card-header>
     <ion-card-content [ngClass]="{'hidden': toggleObject != 3}">

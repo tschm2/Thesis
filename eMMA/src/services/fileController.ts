@@ -15,8 +15,26 @@ export class FileController{
 
 	checkDirectory(dir) {
 		this.file.checkDir(this.file.dataDirectory, dir)
-			.then(success => console.log('Directory exists'))
-			.catch(err => console.log('Directory doesn\'t exist'));
+			.then(success => {
+				console.log('Directory exists');
+				return true;
+			})
+			.catch(err => {
+				console.log('Directory doesn\'t exist');
+				return false;
+			});
+	}
+
+	createDirectory(dir) {
+		this.file.createDir(this.fs, dir, false)
+		.then(success => {
+			console.log('Directory ' + dir + ' created in file system');
+			return true;
+		})
+		.catch(err => {
+			console.log('Directory already exists');
+			return false;
+		});
 	}
 
 	readFile(fileName) {

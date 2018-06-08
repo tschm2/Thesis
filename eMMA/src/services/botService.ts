@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import RiveScript from 'rivescript';
+import { FileController } from '../services/fileController';
 
 @Injectable()
 export class BotService{
 	bot: RiveScript;
+	fileController: FileController;
 	opts: any;
 	ready: boolean;
 	http: Http;
 
-	constructor(private h: Http) {
+	constructor(private h: Http, private fc: FileController) {
 		this.http = h;
 		this.ready = false;
+		this.fileController = fc;
 
 		this.opts = {
 			debug: true,
@@ -56,7 +59,7 @@ export class BotService{
 					resolve(res.url);
 				}).catch(error => {
 					console.log("ERROR: " + error);
-			});
+				});
 		});
 	}
 
@@ -79,6 +82,42 @@ export class BotService{
 		return (this.bot && this.ready)
 			? this.bot.reply("localuser", request)
 			: "ERR: Bot Not Ready Yet";
+	}
+
+	generateFile(qh, storage){
+		var fileString = "// the event triggering variables - generated dynamically from the questionHandler messageEMMA object";
+		var name = "";
+		var medications = "";
+
+		for(var prop in qh.messageEMMA){
+			if(!Array.isArray(qh.messageEMMA[prop])){
+				fileString += "\n! var " + prop + " = " + qh.messageEMMA[prop];
+			}
+		}
+
+		if(!this.fileController.checkDirectory("brain")) {
+			this.fileController.createDirectory("brain");
+			console.log("directory brain created");
+		} else {
+			console.log("directory brain has already been created, dawg");
+		}
+
+		console.log("we're right above the Promise");
+		Promise.all([storage.get('name'),storage.get('medicationData'),this.ready]).then(values=>{
+			console.log("we're inside the Promise now");
+			name = "! var username = " + values[0];
+
+			medications = "! var medications = ";
+			for(var med in values[1]){
+				medications += values[1][med].title.toLowerCase() + '|';
+			}
+			medications = medications.substring(0, medications.length - 1);
+			fileString += "\n\n" + name + "\n\n" + medications;
+
+			this.fileController.createDirectory('brain');
+			this.fileController.writeFile('test.txt', fileString);
+			console.log("file created : " + fileString);
+		});
 	}
 
 }

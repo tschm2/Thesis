@@ -1,9 +1,9 @@
 import { NavController, NavParams, Platform, AlertController } from 'ionic-angular';
-import {ViewChild, Component} from '@angular/core';
-import {Content} from 'ionic-angular/index';
+import { ViewChild, Component } from '@angular/core';
+import { Content } from 'ionic-angular/index';
 import { Storage } from '@ionic/storage';
 //Import conversation methodes
-import { eMMA} from '../../pages/conversation/eMMA';
+import { eMMA } from '../../pages/conversation/eMMA';
 import { questionHandler } from '../../pages/conversation/questionHandler';
 //Import other Pages
 import { NutritionPage } from '../../pages/nutrition/nutrition';
@@ -17,6 +17,7 @@ import { LocalNotifications } from 'ionic-native';
 import { chmedJsonHandler } from '../../services/chmedJsonHandler';
 
 import { BotService } from '../../services/botService';
+import { FileController } from '../../services/fileController';
 
 
 //Initalize eMMA Waiting Time
@@ -52,7 +53,7 @@ export class ConversationPage {
   notifications: any[] = [];
   chmedHandler: chmedJsonHandler;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private botService:BotService, public platform: Platform, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private botService:BotService, private fileController: FileController, public platform: Platform, public alertCtrl: AlertController) {
     this.messages = [];
     this.storage.get('chatlog').then((savedlog)=>{
       this.chatlog = savedlog;
@@ -69,11 +70,11 @@ export class ConversationPage {
     this.preAnswers = [];
     this.toggleObject = showTextfield;
     this.chmedHandler = new chmedJsonHandler(this.storage);
-	this.botService.init();
-  this.botService.generateFile(this.questionhandler, this.storage);
+    this.botService.init();
+  	this.botService.generateFile(this.questionhandler, this.storage);
   }
   eMMA = new eMMA();
-  questionhandler = new questionHandler(this.storage, this.botService, this);
+  questionhandler = new questionHandler(this.storage, this.botService, this.fileController, this);
   /*----------------------------------------------------------------------------*/
   /* This Method is called as soon the View loads!
   /* if handels the state of the application on the conversation view

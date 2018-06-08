@@ -97,9 +97,9 @@ export class BotService{
 
 		if(!this.fileController.checkDirectory("brain")) {
 			this.fileController.createDirectory("brain");
-			alert("directory brain created");
+			console.log("directory brain created");
 		} else {
-			alert("directory brain has already been created, dawg");
+			console.log("directory brain has already been created, dawg");
 		}
 
 		console.log("we're right above the Promise");
@@ -116,7 +116,7 @@ export class BotService{
 
 			this.fileController.createDirectory('brain');
 			this.fileController.writeFile('test.txt', fileString);
-			alert("file created : " + fileString);
+			console.log("file created : " + fileString);
 		});
 	}
 

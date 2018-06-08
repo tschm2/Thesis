@@ -66,9 +66,6 @@ returnAnswer(question: string): any {
   /*Ab it function und return not var*/
   var l2 = this.storage.get('medicationData').then((res) => {
     this.drugList = res;
-	if(question=='FILE'){
-		question = "Ich habe ein File eingelesen";
-	}
     retVal = this.botService.retrieveBotAnswer(question);
 
 

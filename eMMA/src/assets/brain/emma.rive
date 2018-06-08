@@ -13,6 +13,32 @@
 + [*] (@medication) [*]
 - Was möchtest du über {uppercase}<star>{/uppercase} wissen? {topic=medication} <set talkingmed={uppercase}<star>{/uppercase}>
 
+// triggers for handling question and mentioning of medication in same post
+  + [*] (wirkung|nebenwirkung|nebenwirkungen|informationen) [*] (@medication) [*]
+  - <set talkingmed={uppercase}<star2>{/uppercase}> {topic=medication} {@ wirkung}
+
+  + [*] (wann|zeit|uhr) [*] (@medication) [*]
+  - <set talkingmed={uppercase}<star2>{/uppercase}> {topic=medication} {@ wann}
+
+  + [*] (@medication) [*] (vor|nach) [*] dem essen [*]
+  - <set talkingmed={uppercase}<star1>{/uppercase}> {topic=medication} {@ vor dem essen}
+
+  + [*] wie [*] (@medication) [*] (einnehmen|einnahme|nehmen|anwenden)
+  - <set talkingmed={uppercase}<star1>{/uppercase}> {topic=medication} {@ wie einnehmen}
+
+  + [*] (@medication) [*] (warum|wieso|grund) [*]
+  - <set talkingmed={uppercase}<star1>{/uppercase}> {topic=medication} {@ warum}
+
+  + [*] (warum|wieso|grund) [*] (@medication) [*]
+  - <set talkingmed={uppercase}<star2>{/uppercase}> {topic=medication} {@ warum}
+
+  + [*] (wie lange|dauer) [*] (@medication) [*]
+  - <set talkingmed={uppercase}<star2>{/uppercase}> {topic=medication} {@ dauer}
+
+  + [*] (@medication) [*] (lange|dauer) [*]
+  - <set talkingmed={uppercase}<star1>{/uppercase}> {topic=medication} {@ dauer}
+// end of handle-all-in-one triggers
+
 + [*] (@potentialmed) [*]
 - <set talkingmed={uppercase}<star>{/uppercase}>Nimmst du <get talkingmed> ein?
 

@@ -16,11 +16,11 @@ export class FileController{
 	checkDirectory(dir) {
 		this.file.checkDir(this.file.dataDirectory, dir)
 			.then(success => {
-				console.log('Directory exists');
+				alert('Directory ' + dir + ' exists');
 				return true;
 			})
 			.catch(err => {
-				console.log('Directory doesn\'t exist');
+				alert('Directory ' +  dir + 'doesn\'t exist');
 				return false;
 			});
 	}
@@ -28,28 +28,38 @@ export class FileController{
 	createDirectory(dir) {
 		this.file.createDir(this.fs, dir, false)
 		.then(success => {
-			console.log('Directory ' + dir + ' created in file system');
+			alert('Directory ' + dir + ' created in file system');
 			return true;
 		})
 		.catch(err => {
-			console.log('Directory already exists');
+			alert('Directory already exists');
 			return false;
 		});
 	}
 
 	readFile(fileName) {
-		console.log('reading file ' + fileName);
-		return this.file.readAsText(this.fs, fileName);
+		alert('reading file ' + fileName);
+		return new Promise((resolve, reject) => {
+			this.file.readAsText(this.fs, fileName)
+			.then(content => {
+				// TODO: do something with file content here
+				alert("inpromise " + content);
+				resolve(content);
+			})
+			.catch(err => {
+				alert('reading file failed ' + err);
+			});
+		});
 	}
 
 	writeFile(fileName, content) {
 		this.file.writeExistingFile(this.fs, fileName, content)
-			.then(success => console.log('writing to file successful'))
-			.catch(err => console.log('writing to file failed ' + err));
+			.then(success => alert('writing to file successful'))
+			.catch(err => alert('writing to file failed ' + err));
 	}
 
 	readDirectory(dir) {
-		console.log('reading directory ' + dir);
+		alert('reading directory ' + dir);
 		//only for testing purpose, delete later
 		this.file.listDir(this.fs, this.baseDir);
 		let fullpath = this.fs + dir;
@@ -58,6 +68,6 @@ export class FileController{
 				let resolvedFileSystem = result;
 				return this.file.getDirectory(resolvedFileSystem, dir, { create: false, exclusive: false });
 			})
-			.catch(err => console.log('reading directory failed ' + err));
+			.catch(err => alert('reading directory failed ' + err));
 	}
 }

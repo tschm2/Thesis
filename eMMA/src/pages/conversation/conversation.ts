@@ -70,8 +70,8 @@ export class ConversationPage {
     this.preAnswers = [];
     this.toggleObject = showTextfield;
     this.chmedHandler = new chmedJsonHandler(this.storage);
-	this.botService.init();
-  this.botService.generateFile(this.questionhandler, this.storage);
+    this.botService.init();
+  	this.botService.generateFile(this.questionhandler, this.storage);
   }
   eMMA = new eMMA();
   questionhandler = new questionHandler(this.storage, this.botService, this.fileController);

@@ -59,7 +59,7 @@ export class BotService{
 					resolve(res.url);
 				}).catch(error => {
 					console.log("ERROR: " + error);
-			});
+				});
 		});
 	}
 
@@ -97,9 +97,9 @@ export class BotService{
 
 		if(!this.fileController.checkDirectory("brain")) {
 			this.fileController.createDirectory("brain");
-			console.log("directory brain created");
+			alert("directory brain created");
 		} else {
-			console.log("directory brain has already been created, dawg");
+			alert("directory brain has already been created, dawg");
 		}
 
 		console.log("we're right above the Promise");
@@ -108,28 +108,16 @@ export class BotService{
 			name = "! var username = " + values[0];
 
 			medications = "! var medications = ";
-				for(var med in values[1]){
-					medications += values[1][med].title.toLowerCase() + '|';
-				}
-				medications = medications.substring(0, medications.length - 1);
+			for(var med in values[1]){
+				medications += values[1][med].title.toLowerCase() + '|';
+			}
+			medications = medications.substring(0, medications.length - 1);
 			fileString += "\n\n" + name + "\n\n" + medications;
-			console.log(fileString);
 
-			this.fileController.readDirectory('brain');
+			this.fileController.createDirectory('brain');
+			this.fileController.writeFile('test.txt', fileString);
+			alert("file created : " + fileString);
 		});
-
-		// storage.get('name').then((res)=>{
-		// 	name = "! var username = " + res;
-		// 	console.log(name);
-		// });
-		// storage.get('medicationData').then((res)=>{
-		// 	medications = "! var medications = ";
-		// 	for(var med in res){
-		// 		medications += res[med].title.toLowerCase() + '|';
-		// 	}
-		// 	medications = medications.substring(0, medications.length - 1);
-		// 	console.log(medications);
-		// });
 	}
 
 }

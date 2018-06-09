@@ -13,6 +13,7 @@ export class BotService{
 	http: Http;
 	storage: Storage;
 	qh: any;
+	emma: any;
 
 
 	constructor(private h: Http, private fc: FileController) {
@@ -32,8 +33,8 @@ export class BotService{
 		});
 		console.log(this.bot);
 	}
-	set(questionHandler, storage){
-		this.qh = questionHandler;
+	set(emma, storage){
+		this.emma = emma;
 		this.storage = storage;
 	}
 	init(){
@@ -106,9 +107,9 @@ export class BotService{
 		var name = "";
 		var medications = "";
 
-		for(var prop in this.qh.messageEMMA){
-			if(!Array.isArray(this.qh.messageEMMA[prop])){
-				fileString += "\n! var " + prop + " = " + this.qh.messageEMMA[prop];
+		for(var prop in this.emma.messageEMMA){
+			if(!Array.isArray(this.emma.messageEMMA[prop])){
+				fileString += "\n! var " + prop + " = " + this.emma.messageEMMA[prop];
 			}
 		}
 		alert('right before the promise');

@@ -7,29 +7,31 @@ export class questionHandler {
   /* Calling the barcodeService */
   barcodeService: barcodeService;
 
-  messageEMMA = {
-    reminderMorning: "Du möchtest also die Erinnerungsfunktion am Morgen testen.",
-    reminderMidday: "Du möchtest also die Erinnerungsfunktion am Mittag testen.",
-    reminderEvening: "Du möchtest also die Erinnerungsfunktion am Abend testen.",
-    reminderNight: "Du möchtest also die Erinnerungsfunktion in der Nacht testen.",
-    deleteStorage: "OOOOPs: ich habe gerade den Speicher gelöscht, Sorry -.-",
-    about: "Du möchtest also etwas über eMMA wissen.",
-    selfmedication: "Ich öffne die Selbstmedikation für dich.",
-	  medicationview: "Ich öffne die Medikationsansicht für dich.",
-    compliance: "Gerne zeige ich dir dein Medikationstagebuch an.",
-    nutrition: "Ich zeige dir, welche Nahrungsmittel du im Moment nicht essen darfst.",
-    informationQuestion: "Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein und die Frage, die du dazu hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen musst.",
-    error: "Hatschi! Entschuldigung, da ist etwas schief gegangen.",
-    takingTime: ["morgens um ", "mittags um  ", "abends um ", "in der Nacht um "]
-  };
+  // messageEMMA = {
+  //   reminderMorning: "Du möchtest also die Erinnerungsfunktion am Morgen testen.",
+  //   reminderMidday: "Du möchtest also die Erinnerungsfunktion am Mittag testen.",
+  //   reminderEvening: "Du möchtest also die Erinnerungsfunktion am Abend testen.",
+  //   reminderNight: "Du möchtest also die Erinnerungsfunktion in der Nacht testen.",
+  //   deleteStorage: "OOOOPs: ich habe gerade den Speicher gelöscht, Sorry -.-",
+  //   about: "Du möchtest also etwas über eMMA wissen.",
+  //   selfmedication: "Ich öffne die Selbstmedikation für dich.",
+	//   medicationview: "Ich öffne die Medikationsansicht für dich.",
+  //   compliance: "Gerne zeige ich dir dein Medikationstagebuch an.",
+  //   nutrition: "Ich zeige dir, welche Nahrungsmittel du im Moment nicht essen darfst.",
+  //   informationQuestion: "Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein und die Frage, die du dazu hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen musst.",
+  //   error: "Hatschi! Entschuldigung, da ist etwas schief gegangen.",
+  //   takingTime: ["morgens um ", "mittags um  ", "abends um ", "in der Nacht um "]
+  // };
 
   drugList: JSON;
   takingTime: string[];
   convPage: ConversationPage;
+  emma: any;
 
   constructor(private storage: Storage, private botService: BotService, convPage: ConversationPage) {
 	  this.barcodeService = new barcodeService(storage);
 	  this.convPage = convPage;
+    this.emma = convPage.eMMA;
   }
 
 /*----------------------------------------------------------------------------*/
@@ -88,12 +90,12 @@ returnAnswer(question: string): any {
     else if(values[1] == 'medWhen'){
       var medi = this.findMedicament(values[2]);
       if(medi == null){
-        retVal = this.messageEMMA.error;
+        retVal = this.emma.messageEMMA.error;
       }
     else{
       for (var time in medi.Pos[0].D) {
         if (medi.Pos[0].D[time]) {
-          retVal = retVal + this.messageEMMA.takingTime[time] + this.takingTime[time] + " Uhr, " + medi.Pos[0].D[time] + " " + medi.Unit + "\n"
+          retVal = retVal + this.emma.messageEMMA.takingTime[time] + this.takingTime[time] + " Uhr, " + medi.Pos[0].D[time] + " " + medi.Unit + "\n"
         }
       }
       //if the application instrucion has someting to do with "Essen" this information is also given to the user
@@ -107,7 +109,7 @@ returnAnswer(question: string): any {
   else if(values[1] == 'medHow'){
     var medi = this.findMedicament(values[2]);
       if(medi == null){
-        retVal = this.messageEMMA.error;
+        retVal = this.emma.messageEMMA.error;
       }
       else if(medi.AppInstr){
         retVal += ' ' + medi.AppInstr + ' einnehmen.';
@@ -121,7 +123,7 @@ returnAnswer(question: string): any {
   else if(values[1] == 'medWhy'){
     var medi = this.findMedicament(values[2]);
     if(medi == null){
-      retVal = this.messageEMMA.error;
+      retVal = this.emma.messageEMMA.error;
     }
     else if (medi.TkgRsn) {
       retVal += ' ' + medi.TkgRsn + '.';
@@ -135,7 +137,7 @@ returnAnswer(question: string): any {
   else if(values[1] == 'medDuration'){
     var medi = this.findMedicament(values[2]);
     if(medi == null){
-      retVal = this.messageEMMA.error;
+      retVal = this.emma.messageEMMA.error;
     }
     else if (medi.Pos[0].DtFrom && medi.Pos[0].DtTo) {
       retVal += ' Vom ' + medi.Pos[0].DtFrom + " bis zum " + medi.Pos[0].DtTo + '.';

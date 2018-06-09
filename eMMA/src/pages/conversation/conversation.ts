@@ -70,7 +70,7 @@ export class ConversationPage {
     this.preAnswers = [];
     this.toggleObject = showTextfield;
     this.chmedHandler = new chmedJsonHandler(this.storage);
-    this.botService.set(this.questionhandler, this.storage);
+    this.botService.set(this.eMMA, this.storage);
     //this.botService.init(); this is done after importing medication etc.
   }
   eMMA = new eMMA();
@@ -460,19 +460,19 @@ question(input:string){
     setTimeout(() => {
       var myHour: Number = this.getLocalHour()
       var myMinute: Number = this.getLocalMinute()
-      if(answereMMA == this.questionhandler.messageEMMA.reminderNight){
+      if(answereMMA == this.eMMA.messageEMMA.reminderNight){
         this.addlocalnotification(myHour,myMinute,3,false)  //ad reminder for night
       }
-      else if(answereMMA == this.questionhandler.messageEMMA.reminderEvening){
+      else if(answereMMA == this.eMMA.messageEMMA.reminderEvening){
         this.addlocalnotification(myHour,myMinute,2,false)//ad reminder for Eavening
       }
-      else if(answereMMA == this.questionhandler.messageEMMA.reminderMidday){
+      else if(answereMMA == this.eMMA.messageEMMA.reminderMidday){
         this.addlocalnotification(myHour,myMinute,1,false)//ad reminder for midday
       }
-      else if(answereMMA == this.questionhandler.messageEMMA.reminderMorning){
+      else if(answereMMA == this.eMMA.messageEMMA.reminderMorning){
         this.addlocalnotification(myHour,myMinute,0,false)//else add reminder for morning
       }
-      else if(answereMMA == this.questionhandler.messageEMMA.deleteStorage){
+      else if(answereMMA == this.eMMA.messageEMMA.deleteStorage){
         this.storage.clear(); //cleare the storage of the app. Force a new app start
         setTimeout(() =>
         this.messages = [],
@@ -481,16 +481,16 @@ question(input:string){
         eMMAWaitingTimeDouble * 2)
 
       }
-      else if(answereMMA == this.questionhandler.messageEMMA.nutrition){
+      else if(answereMMA == this.eMMA.messageEMMA.nutrition){
         this.navCtrl.push(NutritionPage) //open nutrition page
       }
-      else if(answereMMA == this.questionhandler.messageEMMA.compliance){
+      else if(answereMMA == this.eMMA.messageEMMA.compliance){
         this.navCtrl.push(MyMedicationDiaryPage)//open diary page
       }
-      else if((answereMMA == this.questionhandler.messageEMMA.selfmedication)||(answereMMA == this.questionhandler.messageEMMA.medicationview)){
+      else if((answereMMA == this.eMMA.messageEMMA.selfmedication)||(answereMMA == this.eMMA.messageEMMA.medicationview)){
         this.navCtrl.push(MyMedicationPage)//open self medication page
       }
-      else if(answereMMA == this.questionhandler.messageEMMA.about){
+      else if(answereMMA == this.eMMA.messageEMMA.about){
         this.navCtrl.push(AboutEmmaPage)//open about eMMA page
       }
     }

@@ -134,7 +134,7 @@ returnAnswer(question: string): any {
   // opening a medicaments compendium page in browser
   else if(values[1] == 'compendium'){
       var medi = this.findMedicament(values[2]);
-      if(medi == null || medi.Id == undefined || medi.Id == values[2]){
+      if(medi == null || medi.Id == undefined || medi.Id.toLowerCase() == values[2].toLowerCase()){
         window.open("https://compendium.ch/search/" + values[2] + "/de", "_blank");
       }
       else{

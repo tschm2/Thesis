@@ -17,7 +17,7 @@ export class BotService{
 		this.fileController = fc;
 
 		this.opts = {
-			debug: true,
+			debug: false,
 			utf8: true,
 			watch: false
 		};
@@ -35,16 +35,26 @@ export class BotService{
 			this.bot.loadFile(url, loadingDone, loadingError);
 
 			// OK, this can probably be done better - but it works for the moment ;-)
-			let baseUrl = url.substr(0, url.length-15);
-			this.bot.loadFile(baseUrl + 'emma.rive', loadingDone, loadingError);
-			this.bot.loadFile(baseUrl + 'german-1.rive', loadingDone, loadingError);
+			let baseUrl = url.substr(0, url.length-9);
+			this.bot.loadFile(baseUrl + 'german.rive', loadingDone, loadingError);
+			if((<any>window).cordova){ // if cordova is available, we can load the written file
+				// TODO:
+				// load generated file with fileController
+						this.bot.loadFile('generated.rive', loadingDone, loadingError);
+						alert('file read');
+
+			}
+			else{ // if we developing on a non cordova machine (ionic serve), we use the fallback file
+				console.log('no cordova available, use fallback file /assets/medication.rive');
+				this.bot.loadFile(baseUrl + 'medication.rive', loadingDone, loadingError);
+			}
 
 			function loadingDone(batchNumber) {
-				console.log('Bot ready!');
+				console.log('File loaded! (' + batchNumber + ')');
 			};
 
 			function loadingError(error, batchNumber) {
-				console.error("Loading error: " + error);
+			console.log("Loading error: " + error);
 			};
 		}).catch(error => {
 			console.log("ERROR: " + error);
@@ -53,7 +63,7 @@ export class BotService{
 
 	getData() {
 		return new Promise((resolve, reject) => {
- 			this.http.get('./assets/brain/medication.rive')
+ 			this.http.get('./assets/brain/emma.rive')
 				.toPromise()
 				.then(res => {
 					resolve(res.url);
@@ -70,7 +80,7 @@ export class BotService{
 
 	getUservar(name) {
 		let uservar = this.bot.getUservar("localuser", name);
-		console.log(uservar);
+		console.log('got user name: '+uservar);
 		return uservar;
 	}
 
@@ -102,9 +112,7 @@ export class BotService{
 			console.log("directory brain has already been created, dawg");
 		}
 
-		console.log("we're right above the Promise");
 		Promise.all([storage.get('name'),storage.get('medicationData'),this.ready]).then(values=>{
-			console.log("we're inside the Promise now");
 			name = "! var username = " + values[0];
 
 			medications = "! var medications = ";
@@ -112,11 +120,17 @@ export class BotService{
 				medications += values[1][med].title.toLowerCase() + '|';
 			}
 			medications = medications.substring(0, medications.length - 1);
-			fileString += "\n\n" + name + "\n\n" + medications;
+			fileString += "\n\n" + name + "\n\n" + medications + "\n\n//pattern for testing successful loading of the file\n+ razulpatuff \n- sagte das Känguru";
 
-			this.fileController.createDirectory('brain');
-			this.fileController.writeFile('test.txt', fileString);
-			console.log("file created : " + fileString);
+			this.fileController.writeFile('generated.rive', fileString)
+			.then(success => {
+				this.fileController.readFile('generated.rive');
+				this.bot.loadFile(this.fileController.getPath() + 'generated.rive', x=>{alert('generated file loaded: ' + x)}, x=>{alert('some error occured')});
+			})
+			.catch(error => {
+				console.log('there was an error: ' + error);
+			});
+
 		});
 	}
 

@@ -52,9 +52,11 @@ export class FileController {
 	}
 
 	writeFile(fileName, content) {
-		this.file.writeExistingFile(this.fs, fileName, content)
-			.then(success => console.log('writing to file successful'))
-			.catch(err => console.log('writing to file failed ' + err));
+		 	return this.file.writeFile(this.fs, fileName, content, {replace: true});
+	}
+
+	getPath(){
+		return this.fs;
 	}
 
 	readDirectory(dir) {
@@ -65,6 +67,7 @@ export class FileController {
 		this.file.resolveDirectoryUrl(fullpath)
 			.then(resolvedFileSystem => {
 				return this.file.getDirectory(resolvedFileSystem, dir, { create: false, exclusive: false });
+				// this won't work, since "the return value" will be accessed before promise finished -> undefined
 			})
 			.catch(err => {
 				console.log('reading directory failed ' + err)

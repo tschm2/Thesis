@@ -74,7 +74,7 @@ export class ConversationPage {
   	this.botService.generateFile(this.questionhandler, this.storage);
   }
   eMMA = new eMMA();
-  questionhandler = new questionHandler(this.storage, this.botService, this.fileController, this);
+  questionhandler = new questionHandler(this.storage, this.botService, this);
   /*----------------------------------------------------------------------------*/
   /* This Method is called as soon the View loads!
   /* if handels the state of the application on the conversation view

@@ -1,6 +1,5 @@
 import { Storage } from '@ionic/storage';
 import { BotService } from '../../services/botService';
-import { FileController } from '../../services/fileController';
 import { barcodeService } from '../../services/barcodeService';
 import { ConversationPage} from '../../pages/conversation/conversation';
 
@@ -16,8 +15,7 @@ export class questionHandler {
     deleteStorage: "OOOOPs: ich habe gerade den Speicher gelöscht, Sorry -.-",
     about: "Du möchtest also etwas über eMMA wissen.",
     selfmedication: "Ich öffne die Selbstmedikation für dich.",
-	medication: "Ich öffne die Medikationsansicht für dich.",
-	medicationview: "Ich öffne die Medikationsansicht für dich.",
+	  medicationview: "Ich öffne die Medikationsansicht für dich.",
     compliance: "Gerne zeige ich dir dein Medikationstagebuch an.",
     nutrition: "Ich zeige dir, welche Nahrungsmittel du im Moment nicht essen darfst.",
     informationQuestion: "Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein und die Frage, die du dazu hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen musst.",
@@ -29,7 +27,7 @@ export class questionHandler {
   takingTime: string[];
   convPage: ConversationPage;
 
-  constructor(private storage: Storage, private botService: BotService, private fileController: FileController, convPage: ConversationPage) {
+  constructor(private storage: Storage, private botService: BotService, convPage: ConversationPage) {
 	  this.barcodeService = new barcodeService(storage);
 	  this.convPage = convPage;
   }

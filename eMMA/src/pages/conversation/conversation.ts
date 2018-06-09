@@ -70,8 +70,8 @@ export class ConversationPage {
     this.preAnswers = [];
     this.toggleObject = showTextfield;
     this.chmedHandler = new chmedJsonHandler(this.storage);
-    this.botService.init();
-  	this.botService.generateFile(this.questionhandler, this.storage);
+    this.botService.set(this.questionhandler, this.storage);
+    //this.botService.init(); this is done after importing medication etc.
   }
   eMMA = new eMMA();
   questionhandler = new questionHandler(this.storage, this.botService, this);
@@ -238,7 +238,7 @@ eMMATutorial(){
   //finish the first app start and set all needed parameters
   this.storage.set('FirstStartComplet', true) //first start is complet
   let tempTakingTime = ["08:00","12:00","18:00","22:00"] // set standart times for the taking times
-  this.storage.set('takingTime',tempTakingTime) // save the taking times to the storrage
+  this.storage.set('takingTime',tempTakingTime) // save the taking times to the storage
 
   this.storage.get("checks").then((checks) =>{
     console.log(checks);
@@ -266,6 +266,7 @@ eMMATutorial(){
 
   }
   setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Tutorial), eMMAWaitingTimeDouble);
+  this.botService.init();
 })
 
 this.overrideSendbutton("question");                            //switch to question mode
@@ -445,6 +446,7 @@ Methode for awnser the questions of the user
 *****************************************************************************/
 normalAppStart() {
   this.storage.get('name').then((name)=>{
+    this.botService.init();
     var Name = name;
     this.sendEmmaText(this.eMMA.messageEMMA_Normal_Start_1 + Name);
     setTimeout(() => this.sendEmmaText(this.eMMA.messageEMMA_Normal_Start_2), eMMAWaitingTime);

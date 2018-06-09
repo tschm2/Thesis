@@ -9,7 +9,7 @@ export class FileController {
 
 	constructor(private f: File) {
 		this.file = f;
-		this.fs = this.file.dataDirectory;
+		this.fs = this.file.externalDataDirectory;
 		this.baseDir = 'brain';
 	}
 
@@ -43,7 +43,7 @@ export class FileController {
 			this.file.readAsText(this.fs, fileName)
 				.then(content => {
 					// TODO: do something with file content here
-					resolve(content);
+					alert(content);
 				})
 				.catch(err => {
 					console.log('reading file failed ' + err);

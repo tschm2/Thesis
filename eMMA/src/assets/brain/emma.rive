@@ -59,7 +59,7 @@
 
 + ja gerne
 % questcompendium *
-- inst#compendium#<get talkingmed>#Also gut, schauen wir mal...
+- postCompendium inst#compendium#<get talkingmed>#Hat dir diese Information weitergeholfen?
 
 + nein danke
 % questcompendium *
@@ -211,6 +211,15 @@
 + was [*] compendium
 - Das Compendium ist eine Datenbank mit Informationen zu Medikamenten. Wenn du magst, kann ich für dich Medikamente nachschlagen.
 
++ [*] (nein|nicht) [*]
+% postcompendium *
+* <get doctor> == undefined  => In diesem Fall solltest du vielleicht du deinen Hausarzt oder Apotheker fragen.
+* <get doctor> == none => In diesem Fall solltest du vielleicht eine Ärztin oder einen Apotheker fragen.
+- In diesem Fall solltest du vielleicht mal mit <get doctor> über <get talkingmed> reden.
+
++ [*] (ja|danke) [*]
+% postcompendium *
+- Prima!
 
 // T O P I C S
 // when the patient mentioned a known medication
@@ -240,33 +249,33 @@
 
   + ja
   % questcompliance *
-  - <bot compliance>
+  - <bot compliance>{topic=random}
 
   + nein
   % questcompliance *
   - Was möchtest du zu <get talkingmed> wissen?
 
   + [*] (wann|zeit|uhr) [*]
-  - inst#medWhen#<get talkingmed>#Du solltest <get talkingmed> zu folgenden Zeiten einnehmen:\n
+  - {topic=random} inst#medWhen#<get talkingmed>#Du solltest <get talkingmed> zu folgenden Zeiten einnehmen:\n
 
   + [*] (vor|nach) [*] dem essen [*]
   @ wie einnehmen
 
   + [*] wie [*] (einnehmen|einnahme|nehmen|anwenden)
-  - inst#medHow#<get talkingmed>#Du solltest <get talkingmed>
+  - {topic=random} inst#medHow#<get talkingmed>#Du solltest <get talkingmed>
 
   + [*] (warum|wieso|grund) [*]
-  - inst#medWhy#<get talkingmed>#Als Grund für die Einnahme von <get talkingmed> ist folgendes eingetragen:
+  - {topic=random} inst#medWhy#<get talkingmed>#Als Grund für die Einnahme von <get talkingmed> ist folgendes eingetragen:
 
   + [*] (lange|dauer) [*]
-  - inst#medDuration#<get talkingmed>#Du solltest <get talkingmed> in folgendem Zeitraum einnehmen:
+  - {topic=random} inst#medDuration#<get talkingmed>#Du solltest <get talkingmed> in folgendem Zeitraum einnehmen:
 
   + [*] (wirkung|nebenwirkung|nebenwirkungen) [*]
   - compendiumquestion inst#button#nachschlagen|nein, danke#Ich habe keine Nebenwirkungen zu <get talkingmed> gespeichert. Soll ich für dich im Compendium nachschlagen?
 
   + nachschlagen
   % compendiumquestion *
-  - inst#compendium#<get talkingmed>#Bitte sehr, ich schlage <get talkingmed> im Compendium nach.
+  - postCompendium inst#compendium#<get talkingmed>#Hat dir diese Information weitergeholfen?{topic=random}
 
   + was [*] compendium [*]
   - {topic=random} {@ was compendium}
@@ -289,23 +298,23 @@
 
   + [*] dr * *
   % wie heisst er denn
-  - <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
+  - <bot doctor=<star1>> <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
 
   + *
   % wie heisst er denn
-  - <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
+  - <bot doctor=<star1>> <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
 
   + [*] dr *
   % wie heisst er denn
-  - <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
+  - <bot doctor=<star1>> <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
 
   + [*] dr * ist [*]
   % wie heisst er denn
-  - <set doctor=Dr. {formal}<star>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
+  - <bot doctor=<star1>> <set doctor=Dr. {formal}<star>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
 
   + [*] heisst *
   % wie heisst er denn
-  - <set doctor={formal}<star>{/formal}> inst#doctor#<get doctor>#Ich glaube, bei <get doctor> bist du in guten Händen.{topic=random}
+  - <bot doctor=<star1>> <set doctor={formal}<star>{/formal}> inst#doctor#<get doctor>#Ich glaube, bei <get doctor> bist du in guten Händen.{topic=random}
 < topic
 
 

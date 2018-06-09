@@ -12,6 +12,7 @@
 ! sub medi = medikament
 ! sub pillen = medikament
 ! sub medikation = medikamente
+! sub medikamenten = medikamente
 
 ! sub dich = mich
 ! sub mich = dich
@@ -19,15 +20,25 @@
 // Antwortmuster
 + *
 * <star> == undefined => Wenn du nichts sagst, kann ich dir schlecht behilflich sein.
-* <bot doctor> != undefined && <get doctor> == undefined => <set doctor=<bot doctor>> Das habe ich leider nicht richtig verstanden, kannst du die Frage umformulieren?
-* <get doctor> == undefined => Hast du eigentlich einen Hausarzt? {topic=doctor}
-- Wie geht es dir heute? {weight=5}
-- Was meinst du mit "<star>"? {weight=5}
-- Hast du irgendwelche Fragen an mich? {weight=3}
-- Wie kann ich dir helfen? {weight=3}
-- Das habe ich leider nicht richtig verstanden, kannst du die Frage umformulieren? {weight=3}
-- Kennst du Elisabeth Brönnimann?
-- Es gibt nicht viele Leute, die sich auf diese Weise auszudrücken vermögen.
+* <bot doctor> == undefined => Hast du eigentlich einen Hausarzt?{topic=doctor}
+- <set doctor=<bot doctor>>Wie geht es dir heute? {weight=5}
+- <set doctor=<bot doctor>>Was meinst du mit "<star>"? {weight=5}
+- <set doctor=<bot doctor>>Hast du irgendwelche Fragen an mich? {weight=3}
+- <set doctor=<bot doctor>>Wie kann ich dir helfen? {weight=3}
+- <set doctor=<bot doctor>>Das habe ich leider nicht richtig verstanden, kannst du die Frage umformulieren? {weight=5}
+- <set doctor=<bot doctor>>Kennst du Elisabeth Brönnimann?
+- <set doctor=<bot doctor>>Es gibt nicht viele Leute, die sich auf diese Weise auszudrücken vermögen.
+
++ *
+% das habe ich leider nicht richtig verstanden *
+- Es tut mir sehr leid, aber auch das habe ich nicht verstanden. {weight=2}
+- Sorry, auch das habe ich leider nicht ganz verstanden. {weight=3}
+- Bitte?
+
++ [*] nein [*]
+% undefined
+* <get doctor> == undefined => <set doctor=<bot doctor>> Wenn du später eine Frage zu deinen Medikamenten hast, kannst du sie mir jederzeit stellen.
+- OK. {@}
 
 + * bewerten
 - Ich bin mir sicher, du willst mein LC1-Projekt mit "A" bewerten.

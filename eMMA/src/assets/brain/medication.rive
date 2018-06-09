@@ -8,6 +8,7 @@
 ! array medication = bactrim dafalgan neocitran co-diovan sortis panadol // important: for use as trigger word medication has to be lower case
 
 ! var username = Gabriel
+! var doctor = Dr. Wenger
 
 // the event triggering variables - have to be generated dynamically from the questionHandler messageEMMA object
 ! var about = Du möchtest also etwas über eMMA wissen.

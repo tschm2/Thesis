@@ -134,7 +134,7 @@ returnAnswer(question: string): any {
   // opening a medicaments compendium page in browser
   else if(values[1] == 'compendium'){
       var medi = this.findMedicament(values[2]);
-      if(medi == null || medi.Id == undefined){
+      if(medi == null || medi.Id == undefined || medi.Id == values[2]){
         window.open("https://compendium.ch/search/" + values[2] + "/de", "_blank");
       }
       else{
@@ -143,6 +143,7 @@ returnAnswer(question: string): any {
   }
 
   else if(values[1] == 'scan'){
+    // TODO: this is not good this way - maybe just link to add new medicament page?
     this.barcodeService.scanMediCode(null,1,1,1,1,"").then((res)=>{
       retVal = "Gescannt: " + res;
 
@@ -182,12 +183,16 @@ returnAnswer(question: string): any {
       id: 1,
       callFunction: null
     });
-
     this.convPage.preAnswers.push({
       text: second_button,
       id: 2,
       callFunction: null
     });
+  }
+
+  // persist hausarzt
+  else if(values[1] == 'doctor'){
+    this.storage.set('doctor', values[2]);
   }
 
 

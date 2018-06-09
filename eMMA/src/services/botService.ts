@@ -49,7 +49,6 @@ export class BotService{
 			this.bot.loadFile(baseUrl + 'german.rive', loadingDone, loadingError);
 
 			if((<any>window).cordova){ // if cordova is available, we can load the written file
-				alert('generate and load');
 				this.generateAndLoadFile();
 			}
 			else{ // if we developing on a non cordova machine (ionic serve), we use the fallback file
@@ -103,18 +102,21 @@ export class BotService{
 	}
 
 	generateAndLoadFile(){
-		var fileString = "// the event triggering variables - generated dynamically from the questionHandler messageEMMA object";
+		var fileString = "! version = 2.0\n";
 		var name = "";
 		var medications = "";
+		var doctor = "";
 
 		for(var prop in this.emma.messageEMMA){
 			if(!Array.isArray(this.emma.messageEMMA[prop])){
 				fileString += "\n! var " + prop + " = " + this.emma.messageEMMA[prop];
 			}
 		}
-		alert('right before the promise');
-		Promise.all([this.storage.get('name'),this.storage.get('medicationData'),this.ready]).then(values=>{
+		Promise.all([this.storage.get('name'),this.storage.get('medicationData'),this.storage.get('doctor'),this.ready]).then(values=>{
 			name = "! var username = " + values[0];
+			if(values[2] != null){
+				doctor = "! var doctor = " + values[2];
+			}
 
 			medications = "! array medication = ";
 			if(values[1].length > 0){
@@ -124,12 +126,19 @@ export class BotService{
 				medications = medications.substring(0, medications.length - 1);
 			}
 			else {
-				medications += 'sd12sf4d44d|43546sdf4e542d4'; // we have to write something, since the bot won't work properly if this array is empty
+				// we have to write something, since the bot wont work properly if this
+				// array is empty. since it's gibberish, it will probably never be triggered.
+				// (and it's overwritten as soon as any medication is added)
+				medications += 'sd12sf4d44d|43546sdf4e542d4';
+
 			}
-			fileString += "\n\n" + name + "\n\n" + medications + "\n\n//pattern for testing successful loading of the file\n+ razulpatuff \n- sagte das Känguru";
+			fileString += "\n\n" + name +
+										"\n" + doctor +
+										"\n\n" + medications;
 
 			this.fileController.writeFile('generated.rive', fileString)
 			.then(success => {
+				alert(fileString);
 				this.bot.loadFile(this.fileController.getPath() + 'generated.rive', x=>{console.log('generated file loaded: ' + x)}, x=>{console.log('some error occured')});
 			})
 			.catch(error => {

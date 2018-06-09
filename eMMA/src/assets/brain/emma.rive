@@ -148,11 +148,16 @@
 @ medikamente
 
 + [*] (ernährungsplan|ernährung) [*]
-- Möchtest du wissen, was du mit deinen Medikamenten bei Lebensmitteln beachten solltest?
+- nutritionquestion #inst#button#ja|nein#Möchtest du wissen, was du mit deinen Medikamenten bei Lebensmitteln beachten solltest?
 
-+ [*](ja|bitte|gerne)[*]
-% möchtest du wissen was du mit deinen medikamenten bei lebensmitteln beachten solltest
++ ja
+% nutritionquestion *
 - <bot nutrition>
+
++ nein
+% nutritionquestion *
+- Sonst kann ich dich zur Ernährung leider nicht beraten.
+
 
 // these questions where hardcoded in the original eMMA 1.0
 
@@ -275,7 +280,7 @@
   - Reden wir über etwas anderes. Was kann ich für dich tun? {topic=random}
 
   + [*](nein|keinen)[*]
-  * <get doctor> == undefined => Es wäre gut, einen kompetenten Hausarzt zu haben. {topic=random}<set doctor=none>
+  * <get doctor> == undefined => inst#doctor#none#Es wäre gut, einen kompetenten Hausarzt zu haben. {topic=random}<set doctor=none>
   - OK.{topic=random}
 
   + [*](ja|habe)[*]
@@ -284,23 +289,23 @@
 
   + [*] dr * *
   % wie heisst er denn
-  - <set doctor=Dr. {formal}<star1>{/formal}> Von <get doctor> höre ich nur Gutes.{topic=random}
+  - <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
 
   + *
   % wie heisst er denn
-  - <set doctor=Dr. {formal}<star1>{/formal}> Von <get doctor> höre ich nur Gutes.{topic=random}
+  - <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
 
   + [*] dr *
   % wie heisst er denn
-  - <set doctor=Dr. {formal}<star1>{/formal}> Von <get doctor> höre ich nur Gutes.{topic=random}
+  - <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
 
   + [*] dr * ist [*]
   % wie heisst er denn
-  - <set doctor=Dr. {formal}<star>{/formal}> Von <get doctor> höre ich nur Gutes.{topic=random}
+  - <set doctor=Dr. {formal}<star>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
 
   + [*] heisst *
   % wie heisst er denn
-  - <set doctor={formal}<star>{/formal}>Ich glaube, bei <get doctor> bist du in guten Händen.{topic=random}
+  - <set doctor={formal}<star>{/formal}> inst#doctor#<get doctor>#Ich glaube, bei <get doctor> bist du in guten Händen.{topic=random}
 < topic
 
 

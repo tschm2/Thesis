@@ -4,6 +4,10 @@
 ### bug with manually added medications, that are going to queried for compendium
 - when the instruction interface does a compendium check with a medication that is in the medication list, but has been added manually (not from scanning mediplan), this goes wrong. the problem is probably, that we try to use the medicaments pharmaID for the compendium query (so we can directly link to the patient information); but when added manually, there is no pharmaID set.
 
+### instruction interface: scan#
+- is not usable at the moment
+- needs also better handling in rivescript
+
 ### persist hausarzt
 - now, rivescript forgets about the hausarzt every time the bot is reloaded (and that's a lot). annoying.
 - to do here:

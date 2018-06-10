@@ -92,13 +92,13 @@ private chmedHandler: chmedJsonHandler;
   /*----------------------------------------------------------------------------*/
   scanMediCode(medData,morning,midday,evening,night,reason):Promise<any>{
 
-    if(morning==true)morning=1
+    if(morning==true || morning == 'true') morning=1
     else morning = 0
-    if(midday==true)midday=1
+    if(midday==true || midday == 'true') midday=1
     else midday = 0
-    if(evening==true)evening=1
+    if(evening==true || evening == 'true') evening=1
     else evening = 0
-    if(night==true)night=1
+    if(night==true || night == 'true') night=1
     else night = 0
 
 
@@ -124,7 +124,7 @@ private chmedHandler: chmedJsonHandler;
         today = yyyy+'-'+mm+'-'+dd;
 
         var tempObj = ({
-          "AppInstr":"Arzt oder Apotheker fragen.",
+          "AppInstr":"Arzt oder Apotheker fragen",
           "TkgRsn":reason,
           "AutoMed":"1",
           "Id":art[0].getElementsByTagName("PHAR")[0].textContent,

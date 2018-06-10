@@ -5,7 +5,6 @@
 + compliance
 - inst#compl#null#Ich rufe den Compliance-Screen auf
 
-
 // Antwortmuster
 + [*] (@medication) [*] nicht [*]
 - Du konntest {uppercase}<star>{/uppercase} nicht einnehmen? {topic=medication} <set talkingmed={uppercase}<star>{/uppercase}>
@@ -44,7 +43,7 @@
 
 + [*] ja [*]
 % nimmst du * ein
-- Soll ich <get talkingmed> in deine Medikationsliste aufnehmen? {topic=newmed}
+- addquest inst#button#ja|nein#Soll ich <get talkingmed> in deine Medikationsliste aufnehmen? {topic=newmed}
 
 + [*] (nein|nicht) [*]
 % nimmst du * ein
@@ -322,11 +321,59 @@
 // topic for handling new medication that is not on the list yet
 > topic newmed
   + [*] (@potentialmed) [*]
-  * <get talkingmed> == undefined => <set talkingmed=<{uppercase}<star>{/uppercase}> inst#button#ja|nein#Du möchtest also <get talkingmed> zu deiner Medikationsliste hinzufügen?
+  * <get talkingmed> == undefined => <set talkingmed=<{uppercase}<star>{/uppercase}> addquest inst#button#ja|nein#Du möchtest also <get talkingmed> zu deiner Medikationsliste hinzufügen?
   - Was möchtest du zu <star> wissen?
 
-  + [*] ja [*]
-  - inst#scan#<get talkingmed>#Ich öffne den Scanner für dich.
+  + ja
+  % addquest *
+  - scanquest inst#button#ja|nein#Wenn du eine Packung von <get talkingmed> hast, kannst du den Strichcode scannen und das so <get talkingmed> einfacher hinzufügen. Möchtest du den Code scannen?
+
+  + ja
+  % scanquest *
+  - morningquest inst#button#ja|nein#Prima. Zuerst muss ich aber noch wissen, wie du das Medikament einnimmst. Musst du es Morgens nehmen?
+
+  + ja
+  % morningquest *
+  - middayquest <set morning=true> inst#button#ja|nein#Und musst du es Mittags einnehmen?
+
+  + nein
+  % morningquest *
+  - middayquest <set morning=false> inst#button#ja|nein#Und musst du es Mittags einnehmen?
+
+  + ja
+  % middayquest *
+  - eveningquest <set midday=true> inst#button#ja|nein#Und am Abend?
+
+  + nein
+  % middayquest *
+  - eveningquest <set midday=false> inst#button#ja|nein#Und am Abend?
+
+  + ja
+  % eveningquest *
+  - nightquest <set evening=true> inst#button#ja|nein#Und wie schaut es vor dem Schlafen gehen aus, musst du dann <get talkingmed> auch nochmal nehmen?
+
+  + nein
+  % eveningquest *
+  - nightquest <set evening=false> inst#button#ja|nein#Und wie schaut es vor dem Schlafen gehen aus, musst du dann <get talkingmed> nehmen?
+
+  + ja
+  % nightquest *
+  - <set night=true>Wunderbar, ich aktiviere gleich den Scanner. Aus welchem Grund nimmst du <get talkingmed> ein?
+
+  + nein
+  % nightquest *
+  - <set night=false>Ich aktiviere gleich den Scanner. Aus welchem Grund nimmst du <get talkingmed> ein?
+
+  + *
+  % * aus welchem grund nimmst du * ein
+  - <set reason={formal}<star>{/formal} scanmed inst#scan#<star>|<get morning>|<get midday>|<get evening>|<get night>|<get talkingmed>#Bitte scanne jetzt den Barcode von <get talkingmed> ein.
+
+  + *
+  % scanmed *
+  - Ich habe <get talkingmed> hinzugefügt.{topic=random}<set talkingmed=undefined>
+
+  //+ [*] ja [*]
+  //- inst#scan#<get talkingmed>#Ich öffne den Scanner für dich.
 
   + [*] nein [*]
   - Wie du meinst. {topic=random}

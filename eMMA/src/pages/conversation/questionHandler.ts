@@ -7,7 +7,7 @@ export class questionHandler {
   /* Calling the barcodeService */
   barcodeService: barcodeService;
 
-  drugList: JSON;
+  drugList: any;
   takingTime: string[];
   convPage: ConversationPage;
   emma: any;
@@ -79,12 +79,12 @@ returnAnswer(question: string): any {
     else{
       for (var time in medi.Pos[0].D) {
         if (medi.Pos[0].D[time]) {
-          retVal = retVal + this.emma.messageEMMA.takingTime[time] + this.takingTime[time] + " Uhr, " + medi.Pos[0].D[time] + " " + medi.Unit + "\n"
+          retVal = retVal + this.emma.messageEMMA.takingTime[time] + this.takingTime[time] + " Uhr, " + medi.Pos[0].D[time] + " " + medi.Unit + ",\n"
         }
       }
       //if the application instrucion has someting to do with "Essen" this information is also given to the user
       if (medi.AppInstr && medi.AppInstr.includes("Essen")) {
-        retVal = retVal + "jeweils " + medi.AppInstr;
+        retVal = retVal + "jeweils " + medi.AppInstr + ".";
       }
     }
   }
@@ -143,26 +143,39 @@ returnAnswer(question: string): any {
   }
 
   else if(values[1] == 'scan'){
-    // TODO: this is not good this way - maybe just link to add new medicament page?
-    this.barcodeService.scanMediCode(null,1,1,1,1,"").then((res)=>{
-      retVal = "Gescannt: " + res;
+    var params = values[2].split("|");
+    var reason = params[0];
+    var morning = params[1];
+    var midday = params[2];
+    var evening = params[3];
+    var night = params[4];
 
-    //   // this.storage.ready().then(()=>{
-    //   //   this.storage.get('mediPlan').then((res)=>{
-    //   //     res.Dt = this.drugList[this.drugList.length-1].Pos["0"].DtFrom
-    //   //     res['Medicaments'] = this.drugList
-    //   //     this.drugList[this.drugList.length-1].DtFrom
-    //   //     this.storage.set('mediPlan', res).then(()=>{
-    //   //       this.barcodeService.doChecksWithCurrentMedication();
-    //   //     })
-    //   //     this.storage.set("medicationData", this.drugList);
-    //   //     // alert.present();
-    //   //     alert("done");
-    //   //     // Edits the ComplianceDataObject
-    //   //     this.editComplianceData(res['Medicaments'][res['Medicaments'].length-1].title)
-    //   //   })
-    //   // })
-    //   // this.toggleObject = 0
+    this.barcodeService.scanMediCode(this.drugList,morning,midday,evening,night,reason).then((res)=>{
+
+      this.storage.ready().then(()=>{
+        this.storage.get('mediPlan').then((res)=>{
+          res.Dt = this.drugList[this.drugList.length-1].Pos["0"].DtFrom
+          res['Medicaments'] = this.drugList
+          this.drugList[this.drugList.length-1].DtFrom
+          this.storage.set('mediPlan', res).then(()=>{
+            this.barcodeService.doChecksWithCurrentMedication();
+          })
+          this.storage.set("medicationData", this.drugList);
+          var name = res['Medicaments'][res['Medicaments'].length-1].title;
+          retVal = name + "erfolgreich hinzugefügt!"
+
+          // edit the ComplianceDataObject
+
+          this.storage.get('ComplianceData').then((res)=>{
+            res.DrugList.push({
+              "Name":name,
+              "Compliance":[]
+            })
+            this.storage.set('ComplianceData',res)
+          })
+        })
+      })
+
       })
   }
 

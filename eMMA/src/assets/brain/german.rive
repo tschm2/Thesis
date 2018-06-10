@@ -1,5 +1,12 @@
 ! version = 2.0
 
+// This file is based on german1.aiml from ALICE-Bot (c) 2001 ALICE AI Foundation
+// (http://alicebot.wikidot.com/aiml:de-de:cdrossman:alice:german-1-aiml). It has
+// been thoroughly adapted for use in the eMMA scenario.
+//
+// This file is open source code, released under the terms of the GNU General
+// Public License as published by the Free Software Foundation.
+
 // Variablen
 ! var name = eMMA
 

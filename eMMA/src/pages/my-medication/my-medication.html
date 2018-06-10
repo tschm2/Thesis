@@ -58,7 +58,7 @@
 
             <tr>
               <td>
-                <b>Verschrieben von:</b> {{drug?.PrscbBy}}
+                <b>Verschrieben oder erfasst von:</b> {{drug?.PrscbBy}}
                 <div class="delete" (click)="deleteDrug(drug.title, drug.Id)" *ngIf="drug?.AutoMed"></div>
               </td>
             </tr>

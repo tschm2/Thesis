@@ -142,6 +142,7 @@ returnAnswer(question: string): any {
       }
   }
 
+  // add a medication via barcode scan
   else if(values[1] == 'scan'){
     var params = values[2].split("|");
     var reason = params[0];
@@ -179,12 +180,93 @@ returnAnswer(question: string): any {
       })
   }
 
-  else if(values[1] == 'compl'){
-    alert('we are in compliance');
-    this.convPage.AwnswerReminder();
-    // TODO all the fancy things
+  // add a medication without barcode scan
+  else if(values[1] == 'addmed'){
+    var params = values[2].split("|");
+    var name = params[0]
+    var reason = params[1];
+    var morning = params[2];
+    var midday = params[3];
+    var evening = params[4];
+    var night = params[5];
+
+    if(morning=='true')morning=1
+    else morning = 0
+    if(midday=='true')midday=1
+    else midday = 0
+    if(evening=='true')evening=1
+    else evening = 0
+    if(night=='true')night=1
+    else night = 0
+
+    // Set the Date of the Medication to Today
+    var today:any = new Date();
+    var dd:any = today.getDate()
+    var mm:any = today.getMonth()+1; //January is 0!
+    var yyyy:any = today.getFullYear();
+    if(dd<10) {
+      dd='0'+dd
+    }
+
+    if(mm<10) {
+      mm='0'+mm
+    }
+    today = yyyy+'-'+mm+'-'+dd;
+    // Create Object of the Medication
+    var tempObj = ({
+      "AppInstr":"Arzt oder Apotheker fragen.",
+      "TkgRsn":reason,
+      "AutoMed":"1",
+      "Id":name,
+      "IdType":"1",
+      "Unit":"",
+      "description":name,
+      "title":name,
+      "PrscbBy":"mir als Patient",
+      "Pos":[{
+        "D":[
+          morning,
+          midday,
+          evening,
+          night
+        ],
+          "DtFrom":today
+        }]
+    })
+    if(this.drugList==null){
+      var newList:any[] = [];
+      console.log(newList)
+      console.log(tempObj)
+      newList.push(tempObj)
+      this.drugList = newList
+    }
+    else{
+      var tempList:any = this.drugList;
+      tempList.push(tempObj)
+    }
+
+    this.storage.ready().then(()=>{
+      this.storage.get('mediPlan').then((res)=>{
+        res.Dt = today
+        res['Medicaments'] = this.drugList
+        this.storage.set('mediPlan', res)
+        this.storage.set("medicationData", this.drugList);
+
+        // edit the ComplianceDataObject
+
+        this.storage.get('ComplianceData').then((res)=>{
+          res.DrugList.push({
+            "Name":name,
+            "Compliance":[]
+          })
+          this.storage.set('ComplianceData',res)
+        })
+      })
+    })
   }
 
+
+  // ask a question with two answering buttons
   else if(values[1] == 'button'){
     var first_button = values[2].split("|")[0];
     var second_button = values[2].split("|")[1];
@@ -202,6 +284,8 @@ returnAnswer(question: string): any {
       callFunction: null
     });
   }
+
+
 
   // persist hausarzt
   else if(values[1] == 'doctor'){

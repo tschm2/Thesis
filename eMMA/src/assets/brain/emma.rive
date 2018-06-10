@@ -2,9 +2,6 @@
 
 // testing
 
-+ compliance
-- inst#compl#null#Ich rufe den Compliance-Screen auf
-
 // Antwortmuster
 + [*] (@medication) [*] nicht [*]
 - Du konntest {uppercase}<star>{/uppercase} nicht einnehmen? {topic=medication} <set talkingmed={uppercase}<star>{/uppercase}>
@@ -41,6 +38,16 @@
 + [*] (@potentialmed) [*]
 - <set talkingmed={uppercase}<star>{/uppercase}>Nimmst du <get talkingmed> ein?
 
++ [*] (@potentialmed) [*] (hinzufügen|eintragen|aufnehmen) [*]
+- <set talkingmed={uppercase}<star>{/uppercase}> addquest inst#button#ja|nein#Du möchtest also <get talkingmed> zu deiner Medikationsliste hinzufügen? {topic=newmed}
+
++ [*] medikament [*] (hinzufügen|eintragen|aufnehmen) [*]
+- Welches Medikament möchtest du denn zu deiner Medikationsliste hinzufügen?
+
++ *
+% welches medikament möchtest du denn zu deiner medikationsliste hinzufügen
+- <set talkingmed={uppercase}<star>{/uppercase}> addquest inst#button#ja|nein#Soll ich <get talkingmed> wirklich auf deine Medikationsliste nehmen? {topic=newmed}
+
 + [*] ja [*]
 % nimmst du * ein
 - addquest inst#button#ja|nein#Soll ich <get talkingmed> in deine Medikationsliste aufnehmen? {topic=newmed}
@@ -70,6 +77,10 @@
 - Ich kann dich unter anderem an deine Medikamente erinnern. {weight=1}
 - Ich kann dich bei deiner Medikation unterstützen. {weight=5}
 - Ich kann so einiges.
+
++ [*] (zeige|öffne) [*]
+% * ich habe * zu deiner medikation *
+- <bot medicationview>
 
 + [*] das [*] (machen|tun)
 % ich kann unter anderem deine medikamente anzeigen
@@ -326,11 +337,11 @@
 
   + ja
   % addquest *
-  - scanquest inst#button#ja|nein#Wenn du eine Packung von <get talkingmed> hast, kannst du den Strichcode scannen und das so <get talkingmed> einfacher hinzufügen. Möchtest du den Code scannen?
+  - morningquest inst#button#ja|nein#Also, dann fügen wir es hinzu. Zuerst muss ich aber noch wissen, wie du <get talkingmed> einnimmst. Musst du es Morgens nehmen?
 
-  + ja
-  % scanquest *
-  - morningquest inst#button#ja|nein#Prima. Zuerst muss ich aber noch wissen, wie du das Medikament einnimmst. Musst du es Morgens nehmen?
+  + nein
+  % addquest *
+  - Was möchtest du denn zu <get talkingmed> wissen? {topic=medication}
 
   + ja
   % morningquest *
@@ -358,23 +369,44 @@
 
   + ja
   % nightquest *
-  - <set night=true>Wunderbar, ich aktiviere gleich den Scanner. Aus welchem Grund nimmst du <get talkingmed> ein?
+  - <set night=true> Wunderbar. Aus welchem Grund nimmst du <get talkingmed> ein?
 
   + nein
   % nightquest *
-  - <set night=false>Ich aktiviere gleich den Scanner. Aus welchem Grund nimmst du <get talkingmed> ein?
+  - <set night=false>Ich verstehe. Aus welchem Grund nimmst du <get talkingmed> ein?
 
   + *
   % * aus welchem grund nimmst du * ein
-  - <set reason={formal}<star>{/formal} scanmed inst#scan#<star>|<get morning>|<get midday>|<get evening>|<get night>|<get talkingmed>#Bitte scanne jetzt den Barcode von <get talkingmed> ein.
+  - <set reason={formal}<star>{/formal}> scanquest inst#button#ja|nein# Wenn du eine Packung von <get talkingmed> hast, kann ich den Strichcode scannen und so weitere Informationen hinzufügen. Möchtest du das?
+
+  + ja
+  % [*] scanquest *
+  - scanmed inst#scan#<get reason>|<get morning>|<get midday>|<get evening>|<get night>Erfolgreich hinzugefügt!{topic=random}
+
+  + nein
+  % [*] scanquest *
+  - verifyname inst#button#ist korrekt|neu eingeben#Ist <get talkingmed> der korrekte Name, oder möchtest du den Medikamentenname vor dem Hinzufügen neu eingeben?
+
+  + ist korrekt
+  % verifyname *
+  - inst#addmed#<get talkingmed>|<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Ich habe <get talkingmed> zu deiner Medikation hinzugefügt. {topic=random}
+
+  + neu eingeben
+  % verifyname *
+  - Dann gib jetzt bitte den Namen des Medikaments neu ein. Ich füge es dann hinzu.
+
+  + *
+  % dann gib jetzt bitte den namen des medikaments neu ein *
+  - inst#addmed#{uppercase}<star>{/uppercase}|<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Ich habe {uppercase}<star>{/uppercase} zu deiner Medikation hinzugefügt. {topic=random}
+
+  + [*] (nicht|nein|abbrechen) [*]
+  % dann gib jetzt bitte den namen des medikaments neu ein *
+  - Also, lass uns über etwas anderes reden. {topic=random}
 
   + *
   % scanmed *
   - Ich habe <get talkingmed> hinzugefügt.{topic=random}<set talkingmed=undefined>
 
-  //+ [*] ja [*]
-  //- inst#scan#<get talkingmed>#Ich öffne den Scanner für dich.
-
-  + [*] nein [*]
-  - Wie du meinst. {topic=random}
+//  + [*] nein [*]
+//  - Wie du meinst. {topic=random}
 < topic

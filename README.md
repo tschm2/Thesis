@@ -3,6 +3,10 @@
 
 ## TO DO
 
+#### when reminder / compliance was set, chatbot is not initialized again
+- find where this happens in conversation.ts
+- call botservice.init()
+
 #### give chatbot knowledge about the Nahrungsmittelinteraktionen
 - read informations from `storage`
 - add to `generated.rive` file

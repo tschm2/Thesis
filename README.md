@@ -3,10 +3,6 @@
 
 ## TO DO
 
-#### instruction interface: scan#
-- is not usable at the moment
-- needs also better handling in rivescript
-
 #### give chatbot knowledge about the Nahrungsmittelinteraktionen
 - read informations from `storage`
 - add to `generated.rive` file
@@ -21,6 +17,9 @@
 
 
 ## DONE
+
+#### instruction interface: scan#
+- now works quite good
 
 #### bug with manually added medications, that are going to queried for compendium
 - was only a one-liner :)

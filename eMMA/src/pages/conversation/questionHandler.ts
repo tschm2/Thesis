@@ -307,8 +307,4 @@ return Promise.all(list).then(() => {//get the return value if the calulation is
   return retVal
 })
 }
-
-nullfunct(){
-
-}
 }

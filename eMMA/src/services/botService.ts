@@ -138,7 +138,6 @@ export class BotService{
 
 			this.fileController.writeFile('generated.rive', fileString)
 			.then(success => {
-				alert(fileString);
 				this.bot.loadFile(this.fileController.getPath() + 'generated.rive', x=>{console.log('generated file loaded: ' + x)}, x=>{console.log('some error occured')});
 			})
 			.catch(error => {

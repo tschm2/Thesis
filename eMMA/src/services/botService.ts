@@ -114,12 +114,12 @@ export class BotService{
 		}
 		Promise.all([this.storage.get('name'),this.storage.get('medicationData'),this.storage.get('doctor'),this.ready]).then(values=>{
 			name = "! var username = " + values[0];
-			if(values[2] != null){
+			if(values[2] != null && values[2] != ""){
 				doctor = "! var doctor = " + values[2];
 			}
 
 			medications = "! array medication = ";
-			if(values[1].length > 0){
+			if(values[1] != null && values[1].length > 0){
 				for(var med in values[1]){
 					medications += values[1][med].title.toLowerCase() + '|';
 				}
@@ -135,13 +135,12 @@ export class BotService{
 			fileString += "\n\n" + name +
 										"\n" + doctor +
 										"\n\n" + medications;
-
 			this.fileController.writeFile('generated.rive', fileString)
 			.then(success => {
 				this.bot.loadFile(this.fileController.getPath() + 'generated.rive', x=>{console.log('generated file loaded: ' + x)}, x=>{console.log('some error occured')});
 			})
 			.catch(error => {
-				alert('there was an error reading the rive file: ' + error);
+				alert('there was an error writing or loading the rive file: ' + error);
 			});
 
 		});

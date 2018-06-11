@@ -105,10 +105,14 @@ firstAppStart() {
 this.chmedHandler.saveEmptyMedicationplan();
 // this.storage.set('chatlog', []);
 let tempTakingTime = ["08:00","12:00","18:00","22:00"] // set standart times for the taking times
-this.storage.set('takingTime',tempTakingTime) // save the taking times to the storrage
+this.storage.set('takingTime',tempTakingTime) // save the taking times to the storage
+this.storage.set('name', "");
+this.storage.set('doctor', "");
+this.storage.set('medicationData', null);
+
 this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_1)
 setTimeout(()=> this.sendEmmaText(this.eMMA.messageEMMA_FirstStart_Hello_2),eMMAWaitingTimeDouble);
-this.overrideSendbutton("questionPinNecessary"); //nect metode is the Pin question
+this.overrideSendbutton("questionPinNecessary"); //nect method is the Pin question
 }
 //Method to aks the user if a pin is necessary
 questionPinNecessary(name:string){

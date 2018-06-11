@@ -3,6 +3,11 @@
 
 ## TO DO
 
+
+
+####
+- do medication check after inserting new medicaments
+
 #### when reminder / compliance was set, chatbot is not initialized again
 - find where this happens in conversation.ts
 - call botservice.init()
@@ -13,7 +18,9 @@
 - handle in rivescript
 
 #### scripting
- - eMMA still is not that intelligent, the rivescripts have to be adjusted (work in progress, Gabriel)
+- eMMA still is not that intelligent, the rivescripts have to be adjusted (work in progress, Gabriel)
+- empty reply given after adding a medicament
+- medikament hinzufügen -> willst du dieses medikament wirklich hinzufügen? is a question to much 
 
 #### compliance information: write to midata
 - also the question: how to encode (SNOMED CT)

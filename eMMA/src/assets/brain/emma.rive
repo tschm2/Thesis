@@ -141,11 +141,11 @@
 
 + [*] ja [*]
 % möchtest du jetzt ein weiteres medikament hinzufügen
-- <bot medicationview>
+@ medikament hinzufügen
 
 + [*] ja [*]
 % das medikament kenne ich noch nicht möchtest du es erfassen
-- <bot medicationview>
+@ medikament hinzufügen
 
 + [*] nein [*]
 % das medikament kenne ich noch nicht möchtest du es erfassen
@@ -218,7 +218,10 @@
 + reminder abend
 - <bot reminderEvening>
 
-+ [*](ich heisse|nenne mich wieder|nenne mich|mein name ist) *
++ [*] nenne mich *
+- ich heisse <star>
+
++ [*](ich heisse|nenne mich wieder|mein name ist) *
 - inst#name#{formal}<star2>{/formal}#OK, ich werde dich <set name={formal}<star2>{/formal}><get name> nennen.
 
 + (ändere|wechsle) meinen namen [*]

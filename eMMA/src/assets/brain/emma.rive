@@ -301,6 +301,11 @@
   % compendiumquestion *
   - postCompendium inst#compendium#<get talkingmed>#Hat dir diese Information weitergeholfen?{topic=random}
 
+  + nein danke
+  % compendiumquestion *
+  * <get doctor> != none  <get doctor> != undefined => Du kannst das auch mit <get doctor> besprechen.
+  - Du kannst auch eine Ärztin oder einen Apotheker fragen.
+
   + was [*] compendium [*]
   - {topic=random} {@ was compendium}
 

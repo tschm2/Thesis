@@ -429,6 +429,9 @@
   % scanmed *
   - Ich habe <get talkingmed> hinzugefügt.{topic=random}<set talkingmed=undefined>
 
-//  + [*] nein [*]
-//  - Wie du meinst. {topic=random}
+  + *
+  - Worüber haben wir gesprochen? {topic = random}
+
+  + [*] nein [*]
+  - Wie du meinst. {topic=random}
 < topic

@@ -141,7 +141,7 @@ export class BotService{
 				this.bot.loadFile(this.fileController.getPath() + 'generated.rive', x=>{console.log('generated file loaded: ' + x)}, x=>{console.log('some error occured')});
 			})
 			.catch(error => {
-				alert('there was an error: ' + error);
+				alert('there was an error reading the rive file: ' + error);
 			});
 
 		});

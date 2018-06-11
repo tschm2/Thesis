@@ -163,7 +163,6 @@ returnAnswer(question: string): any {
           })
           this.storage.set("medicationData", this.drugList);
           var name = res['Medicaments'][res['Medicaments'].length-1].title;
-          retVal = name + "erfolgreich hinzugefügt!"
 
           // edit the ComplianceDataObject
 

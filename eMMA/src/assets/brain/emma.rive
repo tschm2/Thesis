@@ -2,6 +2,9 @@
 
 // testing
 
++ welche medikamente habe ich eingenommen
+- inst#button#ja|nein#Soll ich das Medikationstagebuch öffnen?
+
 // Antwortmuster
 + [*] (@medication) [*] nicht [*]
 - Du konntest {uppercase}<star>{/uppercase} nicht einnehmen? {topic=medication} <set talkingmed={uppercase}<star>{/uppercase}>
@@ -59,6 +62,18 @@
 + *
 % was möchtest du denn zu * wissen
 - questcompendium inst#button#Ja, gerne|Nein, danke#Ich habe dazu leider nichts gespeichert, aber ich könnte im Compendium nachschlagen.
+
++ [*] wann [*]
+% was möchtest du denn zu * wissen
+- <get talkingmed> steht nicht auf deiner Medikationsliste, deshalb weiss ich nicht wann du es einnehmen musst.
+
++ [*] wie [*]
+% was möchtest du denn zu * wissen
+- <get talkingmed> steht nicht auf deiner Medikationsliste, deshalb weiss ich nicht wie du es einnehmen musst.
+
++ [*] (warum|weshalb) [*]
+% was möchtest du denn zu * wissen
+- <get talkingmed> steht nicht auf deiner Medikationsliste, deshalb weiss ich nicht wie du es einnehmen musst.
 
 + [*] informationen [*] (@potentialmed) [*]
 - <set talkingmed={uppercase}<star>{/uppercase}> questcompendium inst#button#Ja, gerne|Nein, danke#Ich habe leider keine Informationen zu <get talkingmed>, aber ich könnte das für dich im Compendium nachschlagen.
@@ -255,7 +270,7 @@
 
   + (ja|doch)
   % * nicht einnehmen
-  - questcompliance inst#button#ja|nein#Soll ich dich zum Medikationstagebuch weiterleiten?
+  - questcompliance inst#button#ja|nein#Soll ich das Medikationstagebuch öffnen?
 
   + ja
   % questcompliance *
@@ -381,7 +396,7 @@
 
   + ja
   % [*] scanquest *
-  - scanmed inst#scan#<get reason>|<get morning>|<get midday>|<get evening>|<get night>Erfolgreich hinzugefügt!{topic=random}
+  - scanmed inst#scan#<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Erfolgreich hinzugefügt!{topic=random}
 
   + nein
   % [*] scanquest *

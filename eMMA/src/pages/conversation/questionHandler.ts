@@ -144,40 +144,65 @@ returnAnswer(question: string): any {
 
   // add a medication via barcode scan
   else if(values[1] == 'scan'){
-    var params = values[2].split("|");
-    var reason = params[0];
-    var morning = params[1];
-    var midday = params[2];
-    var evening = params[3];
-    var night = params[4];
+  var params = values[2].split("|");
+  var reason = params[0];
+  var morning = params[1];
+  var midday = params[2];
+  var evening = params[3];
+  var night = params[4];
 
-    this.barcodeService.scanMediCode(this.drugList,morning,midday,evening,night,reason).then((res)=>{
+  this.barcodeService.scanMediCode(this.drugList,morning,midday,evening,night,reason).then((res)=>{
 
-      this.storage.ready().then(()=>{
-        this.storage.get('mediPlan').then((res)=>{
-          res.Dt = this.drugList[this.drugList.length-1].Pos["0"].DtFrom
-          res['Medicaments'] = this.drugList
-          this.drugList[this.drugList.length-1].DtFrom
-          this.storage.set('mediPlan', res).then(()=>{
-            this.barcodeService.doChecksWithCurrentMedication();
+    this.storage.ready().then(()=>{
+      this.storage.get('mediPlan').then((res)=>{
+        res.Dt = this.drugList[this.drugList.length-1].Pos["0"].DtFrom
+        res['Medicaments'] = this.drugList
+        this.drugList[this.drugList.length-1].DtFrom
+        this.storage.set('mediPlan', res).then(()=>{
+          this.barcodeService.doChecksWithCurrentMedication();
+        })
+        this.storage.set("medicationData", this.drugList);
+        var name = res['Medicaments'][res['Medicaments'].length-1].title;
+
+        // edit the ComplianceDataObject
+
+        this.storage.get('ComplianceData').then((res)=>{
+          res.DrugList.push({
+            "Name":name,
+            "Compliance":[]
           })
-          this.storage.set("medicationData", this.drugList);
-          var name = res['Medicaments'][res['Medicaments'].length-1].title;
+          this.storage.set('ComplianceData',res)
 
-          // edit the ComplianceDataObject
+          // check for medication interactions (code adapted from emma1.0)
+          this.storage.get("checks").then((checks) =>{
+            console.log(checks);
+            if(checks != null){
+              checks = checks.body.medicaments
+              var output:string = "";
+              // Creates an Object for each Check of each Medication
+              checks.forEach((item,index) => {
+              var nutrition:string;
+              var tempString = item.checks["1"].rem
 
-          this.storage.get('ComplianceData').then((res)=>{
-            res.DrugList.push({
-              "Name":name,
-              "Compliance":[]
+              if(tempString.search(" - ") == -1){
+                nutrition = "";
+              }
+              else{
+                nutrition = tempString.slice(tempString.indexOf(" - ")+3)
+                nutrition = nutrition.slice(0,nutrition.indexOf(","))
+                output += "- "+nutrition+ "\n"
+              }
             })
-            this.storage.set('ComplianceData',res)
-          })
+            // inform user about interactions
+            this.convPage.sendEmmaText("Folgende Lebensmittel solltest du mit deiner Medikation vermeiden:\n" + output);
+
+          }
         })
       })
-
-      })
-  }
+    })
+  })
+})
+}
 
   // add a medication without barcode scan
   else if(values[1] == 'addMed'){

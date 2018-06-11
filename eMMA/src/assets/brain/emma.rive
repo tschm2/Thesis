@@ -45,11 +45,7 @@
 - <set talkingmed={uppercase}<star>{/uppercase}> addquest inst#button#ja|nein#Du möchtest also <get talkingmed> zu deiner Medikationsliste hinzufügen? {topic=newmed}
 
 + [*] medikament [*] (hinzufügen|eintragen|aufnehmen) [*]
-- Welches Medikament möchtest du denn zu deiner Medikationsliste hinzufügen?
-
-+ *
-% welches medikament möchtest du denn zu deiner medikationsliste hinzufügen
-- <set talkingmed={uppercase}<star>{/uppercase}> addquest inst#button#ja|nein#Soll ich <get talkingmed> wirklich auf deine Medikationsliste nehmen? {topic=newmed}
+- Welches Medikament möchtest du denn zu deiner Medikationsliste hinzufügen? {topic=newmed}
 
 + [*] ja [*]
 % nimmst du * ein
@@ -124,13 +120,16 @@
 + hilfe
 - Du weisst nicht was du hier machen kannst? {@?}
 
++ [*] (wieso|warum) [*] nicht [*] (hinzufügen|aufnehmen|scannen) [*]
+- Um Medikamente mit dem Scanner zu erkennen, brauche ich eine Internetverbindung.
+
 + [*] ja [*]
 % hast du alle medikamente schon erfasst
 - Dann kannst du mir zum Beispiel sagen wann du sie eingenommen hast. Ich führe dein Medikationstagebuch.
 
 + [*] (@potentialmed) [*]
 % dann kannst du mir zum beispiel sagen wann du sie eingenommen hast ich führe dein medikationstagebuch
-- Das Medikament kenne ich noch nicht, möchtest du es erfassen?
+- <set talkingmed={uppercase}<star>{/uppercase}> addquest inst#button#ja|nein#Du möchtest also <get talkingmed> zu deiner Medikationsliste hinzufügen? {topic=newmed}
 
 + [*] (@medication) [*]
 % dann kannst du mir zum beispiel sagen wann du sie eingenommen hast ich führe dein medikationstagebuch
@@ -354,6 +353,14 @@
   % addquest *
   - morningquest inst#button#ja|nein#Also, dann fügen wir es hinzu. Zuerst muss ich aber noch wissen, wie du <get talkingmed> einnimmst. Musst du es Morgens nehmen?
 
+  + *
+  % welches medikament möchtest du denn zu deiner medikationsliste hinzufügen
+  - <set talkingmed={uppercase}<star>{/uppercase}> morningquest inst#button#ja|nein#Also, dann fügen wir es hinzu. Zuerst muss ich aber noch wissen, wie du <get talkingmed> einnimmst. Musst du es Morgens nehmen?
+
+  + [*] (keines|nicht|nein) [*]
+  % welches medikament möchtest du denn zu deiner medikationsliste hinzufügen
+  - Ich verstehe. {topic=random}
+
   + nein
   % addquest *
   - Was möchtest du denn zu <get talkingmed> wissen? {topic=medication}
@@ -396,7 +403,7 @@
 
   + ja
   % [*] scanquest *
-  - scanmed inst#scan#<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Erfolgreich hinzugefügt!{topic=random}
+  - scanmed inst#scan#<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Ich liebe Strichcodes!{topic=random}
 
   + nein
   % [*] scanquest *

@@ -389,7 +389,7 @@
 
   + ist korrekt
   % verifyname *
-  - inst#addmed#<get talkingmed>|<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Ich habe <get talkingmed> zu deiner Medikation hinzugefügt. {topic=random}
+  - inst#addMed#<get talkingmed>|<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Ich habe <get talkingmed> zu deiner Medikation hinzugefügt. {topic=random}
 
   + neu eingeben
   % verifyname *
@@ -397,7 +397,7 @@
 
   + *
   % dann gib jetzt bitte den namen des medikaments neu ein *
-  - inst#addmed#{uppercase}<star>{/uppercase}|<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Ich habe {uppercase}<star>{/uppercase} zu deiner Medikation hinzugefügt. {topic=random}
+  - inst#addMed#{uppercase}<star>{/uppercase}|<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Ich habe {uppercase}<star>{/uppercase} zu deiner Medikation hinzugefügt. {topic=random}
 
   + [*] (nicht|nein|abbrechen) [*]
   % dann gib jetzt bitte den namen des medikaments neu ein *

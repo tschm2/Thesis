@@ -181,7 +181,7 @@ returnAnswer(question: string): any {
   }
 
   // add a medication without barcode scan
-  else if(values[1] == 'addmed'){
+  else if(values[1] == 'addMed'){
     var params = values[2].split("|");
     var name = params[0]
     var reason = params[1];

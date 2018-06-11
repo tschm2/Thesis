@@ -365,6 +365,7 @@ finishReminder(input:string){
   }
   this.overrideSendbutton("question");  //move to the question state
   this.storage.set('FirstStartComplet', true)
+  this.botService.init();
 }
 returnFromMedication(){
   let medicationNotTaken = "";        //initalize empty medication list

@@ -6,10 +6,6 @@
 #### give feedback if adding medication did not work
 - probably via alert(), since retVal can not be filled within the promise
 
-#### when reminder / compliance was set, chatbot is not initialized again
-- find where this happens in conversation.ts
-- call botservice.init()
-
 #### give chatbot knowledge about the Nahrungsmittelinteraktionen
 - read informations from `storage`
 - add to `generated.rive` file
@@ -17,8 +13,6 @@
 
 #### scripting
 - eMMA still is not that intelligent, the rivescripts have to be adjusted (work in progress, Gabriel)
-- empty reply given after adding a medicament
-- medikament hinzufügen -> willst du dieses medikament wirklich hinzufügen? is a question to much
 
 #### compliance information: write to midata
 - also the question: how to encode (SNOMED CT)
@@ -26,6 +20,8 @@
 
 
 ## DONE
+
+#### when reminder / compliance was set, chatbot is not initialized again
 
 ####
 - do medication check after inserting new medicaments

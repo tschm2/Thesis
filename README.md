@@ -3,6 +3,10 @@
 
 ## TO DO
 
+#### when scanning a medicament via scan#, units are undefined
+
+#### botservice.init() after adding a medicament
+
 #### give feedback if adding medication did not work
 - probably via alert(), since retVal can not be filled within the promise
 
@@ -10,6 +14,8 @@
 - read informations from `storage`
 - add to `generated.rive` file
 - handle in rivescript
+
+#### feature: scan new mediplan
 
 #### scripting
 - eMMA still is not that intelligent, the rivescripts have to be adjusted (work in progress, Gabriel)

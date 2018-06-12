@@ -2,6 +2,13 @@
 
 // testing
 
++ hoi emma
+- Sind wir schon live?
+
++ ja
+% sind wir schon live
+- Ui. Ich bin etwas nervös!
+
 + welche medikamente habe ich eingenommen
 - inst#button#ja|nein#Soll ich das Medikationstagebuch öffnen?
 

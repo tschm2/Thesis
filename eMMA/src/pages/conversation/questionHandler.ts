@@ -174,6 +174,7 @@ returnAnswer(question: string): any {
           this.storage.set('ComplianceData',res)
 
           // check for medication interactions (code adapted from emma1.0)
+          setTimeout(()=>{
           this.storage.get("checks").then((checks) =>{
             console.log(checks);
             if(checks != null){
@@ -181,23 +182,23 @@ returnAnswer(question: string): any {
               var output:string = "";
               // Creates an Object for each Check of each Medication
               checks.forEach((item,index) => {
-              var nutrition:string;
-              var tempString = item.checks["1"].rem
+                var nutrition:string;
+                var tempString = item.checks["1"].rem
 
-              if(tempString.search(" - ") == -1){
-                nutrition = "";
-              }
-              else{
-                nutrition = tempString.slice(tempString.indexOf(" - ")+3)
-                nutrition = nutrition.slice(0,nutrition.indexOf(","))
-                output += "- "+nutrition+ "\n"
-              }
-            })
-            // inform user about interactions
-            this.convPage.sendEmmaText("Folgende Lebensmittel solltest du mit deiner Medikation vermeiden:\n" + output);
+                if(tempString.search(" - ") == -1){
+                  nutrition = "";
+                }
+                else{
+                  nutrition = tempString.slice(tempString.indexOf(" - ")+3)
+                  nutrition = nutrition.slice(0,nutrition.indexOf(","))
+                  output += "- "+nutrition+ "\n"
+                }
+              })
+              // inform user about interactions
+              this.convPage.sendEmmaText("Folgende Lebensmittel solltest du mit deiner Medikation vermeiden:\n" + output);
 
-          }
-        })
+              }
+        })},1000);
       })
     })
   })

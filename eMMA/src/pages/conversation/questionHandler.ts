@@ -171,7 +171,8 @@ returnAnswer(question: string): any {
             "Name":name,
             "Compliance":[]
           })
-          this.storage.set('ComplianceData',res)
+          this.storage.set('ComplianceData',res);
+          this.botService.generateAndLoadFile();
 
           // check for medication interactions (code adapted from emma1.0)
           setTimeout(()=>{
@@ -285,7 +286,8 @@ returnAnswer(question: string): any {
             "Compliance":[]
           })
           this.storage.set('ComplianceData',res)
-        })
+        });
+        setTimeout(()=>{this.botService.generateAndLoadFile();},500);
       })
     })
   }

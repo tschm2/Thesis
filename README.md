@@ -5,7 +5,6 @@
 
 #### when scanning a medicament via scan#, units are undefined
 
-#### botservice.init() after adding a medicament
 
 #### give feedback if adding medication did not work
 - probably via alert(), since retVal can not be filled within the promise
@@ -26,6 +25,8 @@
 
 
 ## DONE
+#### botservice.init() after adding a medicament
+- better: used generateAndLoadFile()
 
 #### when reminder / compliance was set, chatbot is not initialized again
 

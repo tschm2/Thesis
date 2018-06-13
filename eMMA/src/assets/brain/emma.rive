@@ -10,7 +10,7 @@
 - Ui. Ich bin etwas nervös!
 
 + welche medikamente habe ich eingenommen
-- inst#button#ja|nein#Soll ich das Medikationstagebuch öffnen?
+- questcompliance inst#button#ja|nein#Soll ich das Medikationstagebuch öffnen?
 
 // Antwortmuster
 + [*] (@medication) [*] nicht [*]
@@ -179,7 +179,7 @@
 @ medikamente
 
 + [*] (ernährungsplan|ernährung) [*]
-- nutritionquestion #inst#button#ja|nein#Möchtest du wissen, was du mit deinen Medikamenten bei Lebensmitteln beachten solltest?
+- nutritionquestion inst#button#ja|nein#Möchtest du wissen, was du mit deinen Medikamenten bei Lebensmitteln beachten solltest?
 
 + ja
 % nutritionquestion *
@@ -287,6 +287,7 @@
 
   + nein
   % questcompliance *
+  * <get talkingmed> == undefined => Was möchtest du denn wissen?
   - Was möchtest du zu <get talkingmed> wissen?
 
   + [*] (wann|zeit|uhr) [*]

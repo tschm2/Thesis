@@ -3,9 +3,6 @@
 
 ## TO DO
 
-#### when scanning a medicament via scan#, units are undefined
-
-
 #### give feedback if adding medication did not work
 - probably via alert(), since retVal can not be filled within the promise
 
@@ -25,6 +22,11 @@
 
 
 ## DONE
+#### when scanning a medicament via scan#, units are undefined
+- are not undefined anymore, but empty string when scanned from medication box (unit information not in data from hci solucions?)
+- but if undefined, units are not shown anymore
+- thus, units are only shown if medication was scanned from a mediplan
+
 #### botservice.init() after adding a medicament
 - better: used generateAndLoadFile()
 
@@ -64,19 +66,4 @@
 
 #### returning to app after reminder notification broken
 - eMMA gets stuck after pressing the "Zeig mir meine Medikation"-Button
-- bug in conversation.ts / AwnswerReminder() function
-  - runs until line 312: `LocalNotifications.getTriggered(1).then((res)=>{`
-  - gets stuck there
-- notifications get set in conversation.ts / addlocalnotification, from line 716
-
-      let notification = {
-        id: 1,
-        title: 'eMMA hat dir geschrieben',
-        text: 'Es ist jetzt ' + time+". Ich wollte dich daran erinnern",
-        data: timeOfDay,
-        at: firstNotificationTime,
-      };
-- maybe also a reload-problem - check original emmas whitelist
-- https://github.com/tschm2/Thesis/commit/07eb00929312e0a71e6d51fb0e20c37d8398621f
-- tests 04.04.: notification kann nicht geholt werden (erscheint aber, ergo wird sie offensichtlich richtig geschrieben): getTriggeredIds() gibt leeres Array zurück
-- __workaround 05.05.__: emma fragt immer nach der Morgen-Medikation, um die fehlerhafte Promise zu umgehen
+- workaround 05.05: emma fragt immer nach der Morgen-Medikation, um die fehlerhafte Promise zu umgehen

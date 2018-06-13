@@ -129,6 +129,7 @@ private chmedHandler: chmedJsonHandler;
           "AutoMed":"1",
           "Id":art[0].getElementsByTagName("PHAR")[0].textContent,
           "IdType":"3",
+          "Unit":"",
           "description":desc,
           "title":title,
           "PrscbBy":"mir als Patient",

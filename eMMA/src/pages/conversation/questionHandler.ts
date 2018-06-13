@@ -79,12 +79,13 @@ returnAnswer(question: string): any {
     else{
       for (var time in medi.Pos[0].D) {
         if (medi.Pos[0].D[time]) {
-          retVal = retVal + this.emma.messageEMMA.takingTime[time] + this.takingTime[time] + " Uhr, " + medi.Pos[0].D[time] + " " + medi.Unit + ",\n"
+          var unit = (medi.Unit == null ? "" : " " + medi.Unit);
+          retVal = retVal + this.emma.messageEMMA.takingTime[time] + this.takingTime[time] + " Uhr: " + medi.Pos[0].D[time] + unit + "\n"
         }
       }
       //if the application instrucion has someting to do with "Essen" this information is also given to the user
       if (medi.AppInstr && medi.AppInstr.includes("Essen")) {
-        retVal = retVal + "jeweils " + medi.AppInstr + ".";
+        retVal = retVal + "(jeweils " + medi.AppInstr + ")";
       }
     }
   }

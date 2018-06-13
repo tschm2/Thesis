@@ -89,7 +89,6 @@ export class MyMedicationPage {
   scanMedBox(){
   this.barcodeService.scanMediCode(this.drugList,this.morning,this.midday,this.evening,this.night,this.reason).then((res)=>{
     console.log(res)
-    alert(res)
     // Opens Alert to notifiy the User
     // let alert = this.alertCtrl.create({
     //   title: 'Arztneimittel erfasst!',
@@ -106,7 +105,6 @@ export class MyMedicationPage {
         })
         this.storage.set("medicationData", this.drugList);
         // alert.present();
-        alert("done");
         // Edits the ComplianceDataObject
         this.editComplianceData(res['Medicaments'][res['Medicaments'].length-1].title)
       })

@@ -1,17 +1,5 @@
 ! version = 2.0
 
-// testing
-
-+ hoi emma
-- Sind wir schon live?
-
-+ ja
-% sind wir schon live
-- Ui. Ich bin etwas nervös!
-
-+ welche medikamente habe ich eingenommen
-- questcompliance inst#button#ja|nein#Soll ich das Medikationstagebuch öffnen?
-
 // Antwortmuster
 + [*] (@medication) [*] nicht [*]
 - Du konntest {uppercase}<star>{/uppercase} nicht einnehmen? {topic=medication} <set talkingmed={uppercase}<star>{/uppercase}>

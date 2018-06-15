@@ -1,0 +1,441 @@
+! version = 2.0
+
+// Antwortmuster
++ [*] (@medication) [*] nicht [*]
+- Du konntest {uppercase}<star>{/uppercase} nicht einnehmen? {topic=medication} <set talkingmed={uppercase}<star>{/uppercase}>
+
++ [*] (@medication) [*]
+- Was möchtest du über {uppercase}<star>{/uppercase} wissen? {topic=medication} <set talkingmed={uppercase}<star>{/uppercase}>
+
+// triggers for handling question and mentioning of medication in same post
+  + [*] (wirkung|nebenwirkung|nebenwirkungen|informationen) [*] (@medication) [*]
+  - <set talkingmed={uppercase}<star2>{/uppercase}> {topic=medication} {@ wirkung}
+
+  + [*] (wann|zeit|uhr) [*] (@medication) [*]
+  - <set talkingmed={uppercase}<star2>{/uppercase}> {topic=medication} {@ wann}
+
+  + [*] (@medication) [*] (vor|nach) [*] dem essen [*]
+  - <set talkingmed={uppercase}<star1>{/uppercase}> {topic=medication} {@ vor dem essen}
+
+  + [*] wie [*] (@medication) [*] (einnehmen|einnahme|nehmen|anwenden)
+  - <set talkingmed={uppercase}<star1>{/uppercase}> {topic=medication} {@ wie einnehmen}
+
+  + [*] (@medication) [*] (warum|wieso|grund) [*]
+  - <set talkingmed={uppercase}<star1>{/uppercase}> {topic=medication} {@ warum}
+
+  + [*] (warum|wieso|grund) [*] (@medication) [*]
+  - <set talkingmed={uppercase}<star2>{/uppercase}> {topic=medication} {@ warum}
+
+  + [*] (wie lange|dauer) [*] (@medication) [*]
+  - <set talkingmed={uppercase}<star2>{/uppercase}> {topic=medication} {@ dauer}
+
+  + [*] (@medication) [*] (lange|dauer) [*]
+  - <set talkingmed={uppercase}<star1>{/uppercase}> {topic=medication} {@ dauer}
+// end of handle-all-in-one triggers
+
++ [*] (@potentialmed) [*]
+- <set talkingmed={uppercase}<star>{/uppercase}>Nimmst du <get talkingmed> ein?
+
++ [*] (@potentialmed) [*] (hinzufügen|eintragen|aufnehmen) [*]
+- <set talkingmed={uppercase}<star>{/uppercase}> addquest inst#button#ja|nein#Du möchtest also <get talkingmed> zu deiner Medikationsliste hinzufügen? {topic=newmed}
+
++ [*] medikament [*] (hinzufügen|eintragen|aufnehmen) [*]
+- Welches Medikament möchtest du denn zu deiner Medikationsliste hinzufügen? {topic=newmed}
+
++ [*] ja [*]
+% nimmst du * ein
+- addquest inst#button#ja|nein#Soll ich <get talkingmed> in deine Medikationsliste aufnehmen? {topic=newmed}
+
++ [*] (nein|nicht) [*]
+% nimmst du * ein
+- Was möchtest du denn zu <get talkingmed> wissen?
+
++ *
+% was möchtest du denn zu * wissen
+- questcompendium inst#button#Ja, gerne|Nein, danke#Ich habe dazu leider nichts gespeichert, aber ich könnte im Compendium nachschlagen.
+
++ [*] wann [*]
+% was möchtest du denn zu * wissen
+- <get talkingmed> steht nicht auf deiner Medikationsliste, deshalb weiss ich nicht wann du es einnehmen musst.
+
++ [*] wie [*]
+% was möchtest du denn zu * wissen
+- <get talkingmed> steht nicht auf deiner Medikationsliste, deshalb weiss ich nicht wie du es einnehmen musst.
+
++ [*] (warum|weshalb) [*]
+% was möchtest du denn zu * wissen
+- <get talkingmed> steht nicht auf deiner Medikationsliste, deshalb weiss ich nicht wie du es einnehmen musst.
+
++ [*] informationen [*] (@potentialmed) [*]
+- <set talkingmed={uppercase}<star>{/uppercase}> questcompendium inst#button#Ja, gerne|Nein, danke#Ich habe leider keine Informationen zu <get talkingmed>, aber ich könnte das für dich im Compendium nachschlagen.
+
++ ja gerne
+% questcompendium *
+- postCompendium inst#compendium#<get talkingmed>#Hat dir diese Information weitergeholfen?
+
++ nein danke
+% questcompendium *
+- Wie du meinst. :)
+
++ was kannst du *
+- Ich kann unter anderem deine Medikamente anzeigen. {weight=3}
+- Ich kann unter anderem neue Medikamente einlesen. {weight=3}
+- Ich kann dich unter anderem an deine Medikamente erinnern. {weight=1}
+- Ich kann dich bei deiner Medikation unterstützen. {weight=5}
+- Ich kann so einiges.
+
++ [*] (zeige|öffne) [*]
+% * ich habe * zu deiner medikation *
+- <bot medicationview>
+
++ [*] das [*] (machen|tun)
+% ich kann unter anderem deine medikamente anzeigen
+- <bot medicationview>
+
++ [*] das [*] (machen|tun)
+% ich kann unter anderem neue medikamente eingelesen
+- <set talkingmed=undefined>Was für ein Medikament möchtest du denn hinzufügen? {topic=newmed}
+
++ ?
+- <bot informationquestion>
+- Hast du alle Medikamente schon erfasst? {weight=5}
+- Du kannst zum Beispiel eingenommene Medikamente erfassen, neue Medikamente hinzufügen oder auch einfach mit mir plaudern.
+- Du kannst mir Fragen zu deinen Medikamenten stellen, zum Beispiel wann du sie einnehmen musst.
+- Du kannst sämtliche Funktionen auch über das Menü oben links erreichen.
+
++ was kann ich [*]
+@ ?
+
++ wie [*] weiter
+@ ?
+
++ wie * helfen
+@ ?
+
++ hilfe
+- Du weisst nicht was du hier machen kannst? {@?}
+
++ [*] (wieso|warum) [*] nicht [*] (hinzufügen|aufnehmen|scannen) [*]
+- Um Medikamente mit dem Scanner zu erkennen, brauche ich eine Internetverbindung.
+
++ [*] ja [*]
+% hast du alle medikamente schon erfasst
+- Dann kannst du mir zum Beispiel sagen wann du sie eingenommen hast. Ich führe dein Medikationstagebuch.
+
++ [*] (@potentialmed) [*]
+% dann kannst du mir zum beispiel sagen wann du sie eingenommen hast ich führe dein medikationstagebuch
+- <set talkingmed={uppercase}<star>{/uppercase}> addquest inst#button#ja|nein#Du möchtest also <get talkingmed> zu deiner Medikationsliste hinzufügen? {topic=newmed}
+
++ [*] (@medication) [*]
+% dann kannst du mir zum beispiel sagen wann du sie eingenommen hast ich führe dein medikationstagebuch
+- <set talkingmed={uppercase}<star>{/uppercase} Achso, du hast <get talkingmed> genommen?
+
++ [*] (nein|nicht) [*]
+% hast du alle medikamente schon erfasst
+- Möchtest du jetzt ein weiteres Medikament hinzufügen?
+
++ [*] ja [*]
+% möchtest du jetzt ein weiteres medikament hinzufügen
+@ medikament hinzufügen
+
++ [*] ja [*]
+% das medikament kenne ich noch nicht möchtest du es erfassen
+@ medikament hinzufügen
+
++ [*] nein [*]
+% das medikament kenne ich noch nicht möchtest du es erfassen
+- Alles klar, dann nicht.
+
++ was soll ich *
+- Du musst gar nichts.
+
++ das habe ich leider nicht verstanden
+- Ich habe früher auch vieles nicht verstanden. Aber ich habe dazu gelernt.
+
++ [*] medikamente [*] (ich|nehmen|habe) [*]
+- Soll ich deine Medikamentenliste anzeigen?
+
++ [*](ja|bitte|gerne)[*]
+% soll ich deine medikamentenliste anzeigen
+@ medikamente
+
++ [*](nein)[*]
+% soll ich deine medikamentenliste anzeigen
+- Über welches Medikament möchtest du etwas wissen?
+
++ [*] meine [*] (medi|medikation|medikamente)
+@ medikamente
+
++ [*] (ernährungsplan|ernährung) [*]
+- nutritionquestion inst#button#ja|nein#Möchtest du wissen, was du mit deinen Medikamenten bei Lebensmitteln beachten solltest?
+
++ ja
+% nutritionquestion *
+- <bot nutrition>
+
++ nein
+% nutritionquestion *
+- Sonst kann ich dich zur Ernährung leider nicht beraten.
+
+
+// these questions where hardcoded in the original eMMA 1.0
+
++ [*] über [*] (dich|emma) [*]
+- <bot about>
+
++ was kann ich (einnehmen|essen)
+- <bot nutrition>
+
++ medikamente
+- <bot medicationview>
+
++ [*] (auswertung|statistik|tagebuch) [*] medikamente [*]
+- <bot compliance>
+
++ [*] welche medikamente [*] eingenommen [*]
+- <bot compliance>
+
++ (ok|super|danke|toll)
+- Es freut mich, dass ich dir helfen konnte.
+
++ delete
+- <bot deleteStorage>
+
++ reminder nacht
+- <bot reminderNight>
+
++ reminder morgen
+- <bot reminderMorning>
+
++ reminder mittag
+- <bot reminderMidday>
+
++ reminder abend
+- <bot reminderEvening>
+
++ [*] nenne mich *
+- ich heisse <star>
+
++ [*](ich heisse|nenne mich wieder|mein name ist) *
+- inst#name#{formal}<star2>{/formal}#OK, ich werde dich <set name={formal}<star2>{/formal}><get name> nennen.
+
++ (ändere|wechsle) meinen namen [*]
+- Wie soll ich dich denn nennen?
+
++ *
+% wie soll ich dich denn nennen
+- inst#name#{formal}<star>{/formal}#OK, ich nenne dich ab sofort <set name={formal}<star>{/formal}><get name>.
+
++ (ich heisse|nenne mich) *
+% wie soll ich dich denn nennen
+- inst#name#{formal}<star2>{/formal}#Alles klar, ich nenne dich ab sofort <set name={formal}<star2>{/formal}><get name>.
+
++ was [*] compendium
+- Das Compendium ist eine Datenbank mit Informationen zu Medikamenten. Wenn du magst, kann ich für dich Medikamente nachschlagen.
+
++ [*] (nein|nicht) [*]
+% postcompendium *
+* <get doctor> == undefined  => In diesem Fall solltest du vielleicht du deinen Hausarzt oder Apotheker fragen.
+* <get doctor> == none => In diesem Fall solltest du vielleicht eine Ärztin oder einen Apotheker fragen.
+- In diesem Fall solltest du vielleicht mal mit <get doctor> über <get talkingmed> reden.
+
++ [*] (ja|danke) [*]
+% postcompendium *
+- Prima!
+
+// T O P I C S
+// when the patient mentioned a known medication
+// (the mentioned medication is saved as the variable talkingmed)
+> topic medication
+  + *
+  - Hast du noch weitere Fragen zu <get talkingmed>?
+
+  + [*] (@medication) [*] // user mentions another medicament from his plan
+  * <get talkingmed> != {uppercase}<star>{/uppercase} => <set talkingmed={uppercase}<star>{/uppercase}><get talkingmed> steht auch auf deinem Medikationsplan. Was möchtest du dazu wissen?
+  - {@ *}
+
+  + nein
+  % hast du noch weitere fragen *
+  - OK. Du kannst mich alles zu deiner sonstigen Medikation fragen. {topic=random}
+
+  + (abbrechen|nichts|stop|vergiss es)
+  - OK. Du kannst mich alles zu deiner sonstigen Medikation fragen. {topic=random}
+
+  + nein
+  % * nicht einnehmen
+  - Warum konntest du <get talkingmed> nicht einnehmen?
+
+  + (ja|doch)
+  % * nicht einnehmen
+  - questcompliance inst#button#ja|nein#Soll ich das Medikationstagebuch öffnen?
+
+  + ja
+  % questcompliance *
+  - <bot compliance>{topic=random}
+
+  + nein
+  % questcompliance *
+  * <get talkingmed> == undefined => Was möchtest du denn wissen?
+  - Was möchtest du zu <get talkingmed> wissen?
+
+  + [*] (wann|zeit|uhr) [*]
+  - {topic=random} inst#medWhen#<get talkingmed>#Du solltest <get talkingmed> zu folgenden Zeiten einnehmen:\n
+
+  + [*] (vor|nach) [*] dem essen [*]
+  @ wie einnehmen
+
+  + [*] wie [*] (einnehmen|einnahme|nehmen|anwenden)
+  - {topic=random} inst#medHow#<get talkingmed>#Du solltest <get talkingmed>
+
+  + [*] (warum|wieso|grund) [*]
+  - {topic=random} inst#medWhy#<get talkingmed>#Als Grund für die Einnahme von <get talkingmed> ist folgendes eingetragen:
+
+  + [*] (lange|dauer) [*]
+  - {topic=random} inst#medDuration#<get talkingmed>#Du solltest <get talkingmed> in folgendem Zeitraum einnehmen:
+
+  + [*] (wirkung|nebenwirkung|nebenwirkungen) [*]
+  - compendiumquestion inst#button#nachschlagen|nein, danke#Ich habe keine Nebenwirkungen zu <get talkingmed> gespeichert. Soll ich für dich im Compendium nachschlagen?
+
+  + nachschlagen
+  % compendiumquestion *
+  - postCompendium inst#compendium#<get talkingmed>#Hat dir diese Information weitergeholfen?{topic=random}
+
+  + nein danke
+  % compendiumquestion *
+  * <get doctor> != none  <get doctor> != undefined => Du kannst das auch mit <get doctor> besprechen.
+  - Du kannst auch eine Ärztin oder einen Apotheker fragen.
+
+  + was [*] compendium [*]
+  - {topic=random} {@ was compendium}
+
+< topic
+
+
+// topic for statements around setting a doctor as "hausarzt"
+> topic doctor
+  + *
+  - Reden wir über etwas anderes. Was kann ich für dich tun? {topic=random}
+
+  + [*](nein|keinen)[*]
+  * <get doctor> == undefined => inst#doctor#none#Es wäre gut, einen kompetenten Hausarzt zu haben. {topic=random}<set doctor=none>
+  - OK.{topic=random}
+
+  + [*](ja|habe)[*]
+  % (hast du eigentlich einen hausarzt|hast du dir einen hausarzt gesucht)
+  - Wie heisst er denn?
+
+  + [*] dr * *
+  % wie heisst er denn
+  - <bot doctor=<star1>> <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
+
+  + *
+  % wie heisst er denn
+  - <bot doctor=<star1>> <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
+
+  + [*] dr *
+  % wie heisst er denn
+  - <bot doctor=<star1>> <set doctor=Dr. {formal}<star1>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
+
+  + [*] dr * ist [*]
+  % wie heisst er denn
+  - <bot doctor=<star1>> <set doctor=Dr. {formal}<star>{/formal}> inst#doctor#<get doctor>#Von <get doctor> höre ich nur Gutes.{topic=random}
+
+  + [*] heisst *
+  % wie heisst er denn
+  - <bot doctor=<star1>> <set doctor={formal}<star>{/formal}> inst#doctor#<get doctor>#Ich glaube, bei <get doctor> bist du in guten Händen.{topic=random}
+< topic
+
+
+
+// topic for handling new medication that is not on the list yet
+> topic newmed
+  + [*] (@potentialmed) [*]
+  * <get talkingmed> == undefined => <set talkingmed=<{uppercase}<star>{/uppercase}> addquest inst#button#ja|nein#Du möchtest also <get talkingmed> zu deiner Medikationsliste hinzufügen?
+  - Was möchtest du zu <star> wissen?
+
+  + ja
+  % addquest *
+  - morningquest inst#button#ja|nein#Also, dann fügen wir es hinzu. Zuerst muss ich aber noch wissen, wie du <get talkingmed> einnimmst. Musst du es Morgens nehmen?
+
+  + *
+  % welches medikament möchtest du denn zu deiner medikationsliste hinzufügen
+  - <set talkingmed={uppercase}<star>{/uppercase}> morningquest inst#button#ja|nein#Also, dann fügen wir es hinzu. Zuerst muss ich aber noch wissen, wie du <get talkingmed> einnimmst. Musst du es Morgens nehmen?
+
+  + [*] (keines|nicht|nein) [*]
+  % welches medikament möchtest du denn zu deiner medikationsliste hinzufügen
+  - Ich verstehe. {topic=random}
+
+  + nein
+  % addquest *
+  - Was möchtest du denn zu <get talkingmed> wissen? {topic=medication}
+
+  + ja
+  % morningquest *
+  - middayquest <set morning=true> inst#button#ja|nein#Und musst du es Mittags einnehmen?
+
+  + nein
+  % morningquest *
+  - middayquest <set morning=false> inst#button#ja|nein#Und musst du es Mittags einnehmen?
+
+  + ja
+  % middayquest *
+  - eveningquest <set midday=true> inst#button#ja|nein#Und am Abend?
+
+  + nein
+  % middayquest *
+  - eveningquest <set midday=false> inst#button#ja|nein#Und am Abend?
+
+  + ja
+  % eveningquest *
+  - nightquest <set evening=true> inst#button#ja|nein#Und wie schaut es vor dem Schlafen gehen aus, musst du dann <get talkingmed> auch nochmal nehmen?
+
+  + nein
+  % eveningquest *
+  - nightquest <set evening=false> inst#button#ja|nein#Und wie schaut es vor dem Schlafen gehen aus, musst du dann <get talkingmed> nehmen?
+
+  + ja
+  % nightquest *
+  - <set night=true> Wunderbar. Aus welchem Grund nimmst du <get talkingmed> ein?
+
+  + nein
+  % nightquest *
+  - <set night=false>Ich verstehe. Aus welchem Grund nimmst du <get talkingmed> ein?
+
+  + *
+  % * aus welchem grund nimmst du * ein
+  - <set reason={formal}<star>{/formal}> scanquest inst#button#ja|nein# Wenn du eine Packung von <get talkingmed> hast, kann ich den Strichcode scannen und so weitere Informationen hinzufügen. Möchtest du das?
+
+  + ja
+  % [*] scanquest *
+  - scanmed inst#scan#<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Ich liebe Strichcodes!{topic=random}
+
+  + nein
+  % [*] scanquest *
+  - verifyname inst#button#ist korrekt|neu eingeben#Ist <get talkingmed> der korrekte Name, oder möchtest du den Medikamentenname vor dem Hinzufügen neu eingeben?
+
+  + ist korrekt
+  % verifyname *
+  - inst#addMed#<get talkingmed>|<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Ich habe <get talkingmed> zu deiner Medikation hinzugefügt. {topic=random}
+
+  + neu eingeben
+  % verifyname *
+  - Dann gib jetzt bitte den Namen des Medikaments neu ein. Ich füge es dann hinzu.
+
+  + *
+  % dann gib jetzt bitte den namen des medikaments neu ein *
+  - inst#addMed#{uppercase}<star>{/uppercase}|<get reason>|<get morning>|<get midday>|<get evening>|<get night>#Ich habe {uppercase}<star>{/uppercase} zu deiner Medikation hinzugefügt. {topic=random}
+
+  + [*] (nicht|nein|abbrechen) [*]
+  % dann gib jetzt bitte den namen des medikaments neu ein *
+  - Also, lass uns über etwas anderes reden. {topic=random}
+
+  + *
+  % scanmed *
+  - Ich habe <get talkingmed> hinzugefügt.{topic=random}<set talkingmed=undefined>
+
+  + *
+  - Worüber haben wir gesprochen? {topic = random}
+
+  + [*] nein [*]
+  - Wie du meinst. {topic=random}
+< topic

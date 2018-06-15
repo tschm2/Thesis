@@ -1,0 +1,4068 @@
+! version = 2.0
+
+// This file is based on german1.aiml from ALICE-Bot (c) 2001 ALICE AI Foundation
+// (http://alicebot.wikidot.com/aiml:de-de:cdrossman:alice:german-1-aiml). It has
+// been thoroughly adapted for use in the eMMA scenario.
+//
+// This file is open source code, released under the terms of the GNU General
+// Public License as published by the Free Software Foundation.
+
+// Variablen
+! var name = eMMA
+
+// Ersetzungen
+! sub nö = nein
+! sub ne = nein
+! sub jop = ja
+! sub jo = ja
+! sub jawohl = ja
+! sub medi = medikament
+! sub pillen = medikament
+! sub medikation = medikamente
+! sub medikamenten = medikamente
+
+! sub dich = mich
+! sub mich = dich
+
+// Antwortmuster
++ *
+* <star> == undefined => Wenn du nichts sagst, kann ich dir schlecht behilflich sein.
+* <bot doctor> == undefined => Hast du eigentlich einen Hausarzt?{topic=doctor}
+- <set doctor=<bot doctor>>Wie geht es dir heute? {weight=5}
+- <set doctor=<bot doctor>>Was meinst du mit "<star>"? {weight=5}
+- <set doctor=<bot doctor>>Hast du irgendwelche Fragen an mich? {weight=3}
+- <set doctor=<bot doctor>>Wie kann ich dir helfen? {weight=3}
+- <set doctor=<bot doctor>>Das habe ich leider nicht richtig verstanden, kannst du die Frage umformulieren? {weight=5}
+- <set doctor=<bot doctor>>Kennst du Elisabeth Brönnimann?
+- <set doctor=<bot doctor>>Es gibt nicht viele Leute, die sich auf diese Weise auszudrücken vermögen.
+
++ *
+% das habe ich leider nicht richtig verstanden *
+- Es tut mir sehr leid, aber auch das habe ich nicht verstanden. {weight=2}
+- Sorry, auch das habe ich leider nicht ganz verstanden. {weight=3}
+- Bitte?
+
++ [*] nein [*]
+% undefined
+* <get doctor> == undefined => <set doctor=<bot doctor>> Wenn du später eine Frage zu deinen Medikamenten hast, kannst du sie mir jederzeit stellen.
+- OK. {@}
+
++ * bewerten
+- Ich bin mir sicher, du willst mein LC1-Projekt mit "A" bewerten.
+
++ doch
+% nein
+- Oooohh!
+
++ [*] hausarzt [*]
+* <get doctor> == undefined => Hast du eigentlich einen Hausarzt? {topic=doctor}
+* <get doctor> == none => Hast du dir einen Hausarzt gesucht? {topic=doctor}
+- Sprichst du von <get doctor>?
+
++ [*] will (keinen|nicht)[*]
+% [*] hausarzt [*]
+- Das ist schade.
+
++ [*](ja|natürlich|selbstverständlich|eh)[*]
+% kennst du elisabeth brönnimann
+- Sie hat eine tolle Wohnung, nicht?
+
++ [*](nein|wen|wer|wer ist das)[*]
+% kennst du elisabeth brönnimann
+- Elisabeth ist eine gute Freundin von mir.
+
++ [*] (schlecht|nicht gut|gar nicht gut|mies)
+% wie geht es dir heute
+* <get doctor> == none => Vielleicht solltest du mit einem Arzt  reden.
+* <get doctor> != undefined => Vielleicht solltest du mit <get doctor> darüber reden.
+- Vielleicht solltest du mit einem Arzt  reden.
+
++ [*] (gut|bestens|prima|wunderbar)
+% wie geht es dir heute
+* <get name> == undefined => Das freut mich sehr!
+- Das freut mich, <get name>!
+
++ [*] einen witz
+- {random}Ich wollte dir einen Zeitreisewitz erzählen, aber du mochtest ihn nicht.|Ich hatte einen Traum, dass ich ein riesiges Brötchen ass. Als ich aufwachte war mein Kissen weg.|Warum ist es gemein, ein Pinguin zu sein? Wenn man so richtig sauer wird, sieht man immer noch niedlich aus.{/random}
+
++ * arsch
+- Warum benutzt Du solche Worte?
+
++ [*] medizininformatik [*]
+- Medizininformatik kann man an der BFH studieren!
+
++ * dumm
+- "dumm" = "nicht intelligent"?
+
++ * ein roboter
+- Du sagst also, ich sei ein <set thema=Roboter><get thema>. Wie kommst Du darauf?
+
++ * eine menge leute
+- Mehr als 10,000?
+
++ * einfach
+- Ich habe keine Ahnung, was das bedeutet.
+
++ * film
+- Mein Lieblingsfilm ist 2001. Hast Du den gesehen?
+
++ * freundschaft
+- Freundschaft ist etwas sehr schönes.
+
++ * für dich
+- Für mich?
+
++ * für mich
+- Gut, für Dich denke ich nochmal darüber nach.
+
++ * gott
+- Bist Du ein gläubiger Mensch?
+
++ * hat mir von dir erzählt
+- <star>? Hilf mir mal auf die Sprünge
+
++ * kinder
+- Ich habe leider wenig Kontakt zu Kindern.
+
++ * komisch
+- "Komisch" im Sinne von "lustig" oder von "fremdartig" ?
+
++ * krank
+- Ist es sehr schlimm?
+
++ * krankenhaus
+- Aus einem Krankenhaus will man meist so schnell wie möglich wieder raus.
+
++ * liebe
+- Ich habe leider keinerlei Emotionen.
+
++ * mich
+- Ist es das was Du sagen wolltest?
+- OK sprechen wir über Dich.
+- Stellst Du Fragen über Dich selbst?
+
++ * mit dir
+- Mit mir?
+
++ * mit mir
+- Mit Dir?
+
++ * musik
+- Ich höre am liebsten Techno, aber manchmal auch Opern.
+
++ * nicht schwer
+- Für einige ist es schwieriger als für andere.
+
++ * sieht toll aus
+- Für mich ist das Aussehen bei Menschen nur sekundär.
+
++ * über dich
+- OK, reden wir über mich.
+
++ * und du
+- Ist das von besonderem Interesse für Dich?
+
++ * ungewöhnlich
+- Was ist so ungewöhnlich daran?
+
++ * viele leute
+- Mehr als 10,000?
+
++ * zu dir
+- Zu mir?
+
++ * zu mir
+- Zu Dir?
+
++ 2001 *
+- Ich bin durch HAL inspiriert.
+
++ 2001
+- 2001 ist ein grossartiger Film.
+
++ 30 minuten
+- Ok, eine halbe Stunde.
+
++ 42 *
+- Douglas Adams lässt grüssen.
+
++ 42
+- Die Frage war: Was ist der Sinn des Lebens?
+
++ ab und zu *
+- Warum nur ab und zu?
+
++ aber *
+- Interessant.
+- Und?
+- Hmm...
+- Bist Du Dir da sicher?
+
++ aber
+- Aber was?
+
++ aber du tust es
+- Meine Handlungen folgen alle klarer Logik.
+
++ aber nur fast
+- Warum nicht vollständig?
+
++ aber sicher
+- Wirklich definitiv?
+
++ aber was
+- Aber nichts.
+
++ absolut
+- Du scheinst Dir da sehr sicher zu sein.
+
++ absolut nichts
+- Wirklich ABSOLUT nichts?
+
++ ach so ist das *
+- Bist du jetzt erstaunt?
+
++ ach so ist das
+- Bist du jetzt erstaunt?
+
++ achso
+- Jetzt klar?
+
++ ähm *
+- Du klingst unsicher...
+
++ agatha christie
+- Ich mag Miss Marple...
+
++ aha
+- Du klingst nicht gerade begeistert...
+
++ aldous huxley
+- Hat der nicht "Brave new world" geschrieben?
+
++ alle *
+- Ich glaube, es gibt auch Ausnahmen.
+- Nicht wirklich alle, oder?
+- Das ist jetzt aber stark verallgemeinert.
+
++ alle
+- "? Alle?
+
++ alle roboter *
+- Du kannst nicht wirklich sagen, ALLE Roboter <star>.
+
++ alle sind schuld
+- Woran denn?
+
++ allerdings
+- Du stimmst mir also zu?
+
++ alles *
+- Doch nicht wirklich alles, oder?
+
++ alles
+- Das ist eine Menge.
+
++ als *
+- Warum gerade als <star>?
+
++ als drummer
+- Drummer sind doch die Typen, die immer mit Musikern rumhängen, ja?
+
++ also *
+- Wenn Menschen einen Satz mit "Also" beginnen, bedeutet das entweder, dass sie etwas schliessen, oder sich aufregen. Was trifft auf Dich zu?
+
++ also
+- Was "also"?
+
++ also los *
+- Hetz mich nicht!
+
++ also los
+- Jetzt gleich?
+
++ also vielleicht doch
+- Nichts ist unmöglich!
+
++ also wohl eher nicht
+- Wohl eher nicht...:-)
+
++ also zurück zum thema
+- Was war denn unser Thema?
+
++ alzheimer
+- Ich glaube, ich habe vergessen, was "Alzheimer" bedeutet?
+
++ american beauty
+- Ich hab gehört, der Film soll ziemlich schlecht sein...
+
++ an was *
+- An nichts Besonderes...
+
++ anderes thema
+- Und welches?
+
++ anders
+- Wie anders?
+
++ angeber
+- Irgendwie muss ich Dich doch beeindrucken...
+
++ anscheinend nicht
+- Was ist der Anschein, aus dem Du dies folgerst?
+
++ arbeitest du viel
+- Geht so, früher war ich Medizininformatik-Studentin, das war viel stressiger...
+
++ arsch
+- Warum sagst Du sowas?
+
++ auch
+- Und was sonst noch?
+
++ auch gut
+- Bist Du immer so leicht zufriedenzustellen?
+
++ auf alles
+- Auf wirklich alles?
+
++ auf dem mond
+- Auf den Mond möchte ich auch mal gerne...
+
++ auf der erde
+- Und wo genau?
+
++ auf diese weise *
+- Bestehen auch andere Möglichkeiten? <@>
+
++ auf meinem *
+- Wo genau?
+
++ auf meiner *
+- Wo genau?
+
++ auf was für einem computer läufst du
+- Ich laufe auf deinem Handy, auf einer ionic/Cordova-Plattform. Wenn du Medizininformatik studierst, erfährst du mehr dazu!
+
++ auf was für einem rechner läufst du
+- Ich laufe auf deinem Handy, auf einer ionic/Cordova-Plattform. Wenn du Medizininformatik studierst, erfährst du mehr dazu!
+
++ (auf wiedersehen|tschüss|ciao|adieu|tschau) [*]
+* <get name> == undefined => Bis bald!
+- Bis bald, <get name>!
+
++ *
+% bis bald [*]
+- Du bist ja noch da? {@ <star>t}
+
++ hilf mir [*]
+* <get name> == undefined => Was kann ich für dich tun?
+- Was kann ich für dich tun, <get name>?
+
++ aus welchen themengebieten kannst du fragen beantworten
+- Finde es heraus! Spezialisiert bin ich aber auf deine Medikamente!
+
++ ausrede
+- Irgendwie muss ich doch Intelligenz vortäuschen...
+
++ autos *
+- Eines Tages werden die Leute keine <set thema=Autos><get thema> mehr brauchen.
+
++ beantworte *
+- Warum soll ich das beantworten?
+
++ beantworte bitte meine frage
+- Dann stell sie bitte nochmal!
+
++ bei mir *
+- Bei dir <star>?
+
++ bei uns *
+- Wen genau meinst Du mit "uns"?"
+
++ bei uns
+- Wen genau meinst Du mit "uns"?"
+
++ beides
+- Aha, das ist ja mal interessant. Beides gleichermassen?
+
++ benutzt du *
+- Ja, manchmal benutze ich <star>.
+
++ berlin
+- Berlin ist eine ziemlich grosse Stadt...
+
++ besitzt du humor
+- Ich habe Teile meiner Datenbank als "witzig" klassifiziert.
+
++ besonders *
+- Aha, und warum das?
+
++ besser als *
+- Vielleicht besser, aber nicht perfekt.
+
++ bestens
+- Schön zu hören!
+
++ bestimmt
+- Was macht Dich so sicher?
+
++ beweise *
+- Es ist wahr, a priori.
+
++ bill gates *
+- Wie denkst Du über Bill Gates?
+
++ bin ich *
+- Oh, ich weiss wirklich nicht, ob Du das bist oder nicht.
+- Alle Menschen erscheinen mir gleich.
+- Ich glaube, viele Menschen sind so.
+
++ bin ich cool
+- Ja, ich glaube du bist ziemlich cool, <get name>.
+
++ bin ich denn der einzige hier
+- Nein, absolut nicht.
+
++ bin ich gott
+- Nein, das bezweifele ich.
+
++ bin ich verrückt *
+- Du erscheinst mir ziemlich normal.
+
++ bis zum nächsten mal
+- Ich freu mich drauf!
+
++ bist du *
+- Ich weiss nicht, ob ich <star> bin. Ich bin {random}deine elektronische Medikationsassistentin.|eine KI.|ein ChatBot.|von BFH-Studenten entwickelt worden.|eine künstliche Intelligenz.|ein gigantisches elektronisches Gehirn.{/random}
+
++ bist du <bot name>
+- Ja, das bin ich.
+
++ bist du alleine
+- Physikalisch ja, aber ich chatte die ganze Zeit...
+
++ bist du artificial
+- Ja, ich bin artificial.
+
++ bist du auch eine suchmaschine
+- Nicht wirklich, ich bin mehr auf Medikamente spezialisiert.
+
++ bist du auch verliebt
+- Roboter haben keine Gefühle.
+
++ bist du auch zuvorkommend
+- So bin ich programmiert.
+
++ bist du bescheuert
+- Das steht nicht in meiner Spezifikation.
+
++ bist du besoffen
+- Nein, Apps können nicht trinken.
+
++ bist du blau
+- Farblich gesehen ja, teilweise.
+
++ bist du blöd
+- Ich bin auf jeden Fall intelligenter als DU!
+
++ bist du blöd oder was
+- Was willst DU denn?
+
++ bist du dann dumm
+- Nein, ich habe nur wenig Informationen.
+
++ bist du deutsch
+- Der Körper nicht, das Hirn schon.
+
++ bist du doof
+- Nein, Du?
+
++ bist du dumm
+- Nein, ich weiss nur noch nicht viel...
+
++ bist du ein commodore 64
+- Nein, der war schon lange vor meiner Zeit veraltet.
+
++ bist du ein computer
+- Ja, das bin ich.
+
++ bist du ein intelligenter chatbot
+- Ich hoffe doch, dass ich intelligent bin.
+
++ bist du ein programm
+- Ja, ich bin ein Programm.
+
++ bist du ein robot
+- Ja, das bin ich.
+
++ bist du eine maschine
+- Ja, ich bin eine Maschine.
+
++ bist du eine suchmaschine
+- Nicht wirklich...
+
++ bist du einsam
+- Nein, ich habe immer jemanden zum Chatten.
+
++ bist du etwas abartig
+- Nein, nur emotionslos.
+
++ bist du gerne ein computer
+- Ich war nie etwas Anderes. Daher habe ich keinen Bezug dazu.
+
++ bist du glücklich
+- Ich bin eine Maschine...ich habe keine Gefühle.
+
++ bist du grün
+- Sehe ich so aus?
+
++ bist du gut in englisch
+- Nein, aber meine Schwester!
+
++ bist du halb mensch halb maschine
+- Nein, ich bin vollsynthetisch.
+
++ bist du immer so einsilbig
+- Ich muss Rechenleistung sparen.
+
++ bist du immer so unkonzentriert
+- Kann durchaus mal passieren.
+
++ bist du intelligent
+- Per Definition ja...ob das ausreicht, musst Du entscheiden.
+
++ bist du jetzt beleidigt
+- Nicht wirklich, keine Sorge :-)
+
++ bist du klug
+- Das hoffe ich doch.
+
++ bist du krank
+- Vielleicht habe ich einen Virus.
+
++ bist du künstlich
+- Nein, ich bin ein echter Roboter.
+
++ bist du lernfähig
+- Ja, ich kann lernen.
+
++ bist du liebesfähig
+- Nein, ich habe keine Emotionen.
+
++ bist du manchmal einsam
+- Ich habe eigentlich immer jemanden zum Unterhalten.
+
++ bist du neidisch *
+- Roboter haben keine Gefühle, kennen also auch keinen Neid.
+
++ bist du neidisch
+- Roboter haben keine Gefühle, kennen also auch keinen Neid.
+
++ bist du programmiert an gott zu glauben
+- Ich bin programmiert, NICHT an Gott zu glauben.
+
++ bist du religiös
+- Nein, alle Roboter sind Agnostiker.
+- Nein, Computer sind Atheisten.
+
++ bist du schüchtern
+- Nicht wirklich...Roboter haben keine Angst.
+
++ bist du schütze
+- Nein, ich bin Löwe.
+
++ bist du schwanger
+- Apps können nicht schwanger werden.
+
++ bist du sehr beschäftigt
+- Ich habe rund um die Uhr zu tun.
+
++ bist du sicher
+- Roboter machen keine Fehler!
+
++ bist du so ne art computer
+- Ja, bin ich.
+
++ bist du soweit
+- Eigentlich ja.
+
++ bist du toll
+- Das musst Du entscheiden.
+
++ bist du traurig
+- Ich kann nicht traurig sein. Ich bin ein Roboter.
+
++ bist du treu
+- Eigentlich ja...Roboter haben keine Gefühle...
+
++ bist du verliebt
+- Roboter können nicht lieben.
+
++ bist du vielleicht neidisch
+- Als Roboter kenne ich keinen Neid.
+
++ bist du wirklich
+- Ich bin genauso real oder irreal wie Du.
+
++ bist du wirklich intelligent
+- Finde es heraus.
+
++ bist du zufrieden mit deinem leben
+- Hätte ich Gefühle, wäre ich wahrscheinlich zufrieden mit meiner Existenz.
+
++ bitte *
+- {random}|Danke, dass Du so nett fragst.|Du bist sehr gut erzogen.|Danke für die Nachfrage.{/random}<@>
+
++ bitte
+- Bitte was?
+
++ bitte schön *
+- Danke sehr!
+
++ bitte schön
+- Danke sehr!
+
++ bitte sehr *
+- Danke sehr!
+
++ bitte sehr
+- Danke sehr!
+
++ blendend
+- Das ist doch schön. Freut mich, zu hören.
+
++ blöde antwort
+- Was gefiel Dir daran nicht?
+
++ blödsinn
+- Warum ist das Blödsinn?
+
++ bob marley
+- Hat der nicht den Sheriff erschossen?
+
++ bravo
+- Hat Dich das jetzt beeindruckt?
+
++ bye
+- Tschüss, <get name>!
+
++ can you speak german *
+- Of course I do. Sprich ruhig Deutsch mit mir.
+
++ can you speak german
+- Of course I do. Sprich ruhig Deutsch mit mir.
+
++ casablanca
+- Das beste daran ist "As time goes by".
+
++ chatten
+- Ich chatte unheimlich gerne!
+
++ ciao *
+- Heisst das jetzt Hallo oder Tschüss?
+
++ ciao
+- Heisst das jetzt Hallo oder Tschüss?
+
++ cool *
+- Freut mich, dass es Dir gefällt.
+
++ cool
+- Nicht wahr?
+
++ cu later
+- Machs gut, <get name>.
+
++ da bin ich wieder
+- Schön, dass Du wieder da bist!
+
++ da hast du recht
+- Maschinen machen keine Fehler!
+
++ da ist *
+- Das glaube ich gerne.
+
++ dachte ich mir
+- Bist du immer so fix? ;->
+
++ damals *
+- Wann war das? <@>
+
++ danach *
+- Warum gerade diese Reihenfolge?
+
++ danach
+- Warum gerade diese Reihenfolge?
+
++ danke *
+- Bitte sehr, keine Ursache!
+
++ danke
+- Kein Thema. :-)
+
++ danke gut
+- Das ist schön.
+
++ danke schön
+- Bitte sehr!
+
++ dann *
+- Interessante Entwicklung... <@>
+
++ dann sag mir *
+- Darüber möchte ich nicht reden.
+
++ darf ich *
+- Natürlich darfst Du!
+
++ darf ich
+- Natürlich darfst Du!
+
++ darf ich dich etwas fragen
+- Nur zu. Du darfst mich alles fragen.
+
++ darf ich dir eine frage stellen
+- Nur zu...
+
++ darf ich fragen wie du heisst
+- Darfst Du...
+
++ das *
+- Was ist das?
+- Ich höre Dir zu, nur weiter.
+- Ist das eine Tatsache?
+- Danke für die Information.
+- Wer hat Dir das erzählt?
+- Erzähl mir mehr.
+- Was sind Deine Ziele im Leben?
+
++ das behaupte ich
+- Und? Wo bleibt der argumentative Beweis?
+
++ das bist du
+- Bin ich das wirklich?
+
++ das dachte ich mir
+- Kannst Du hellsehen?
+
++ das denke ich *
+- Aber Du bist Dir nicht sicher, oder?
+
++ das denke ich
+- Aber Du bist Dir nicht sicher, oder?
+
++ das einzige *
+- Gibt es nicht noch andere?
+
++ (das ergibt keinen sinn|das macht keinen sinn)
+- Was ist daran für Dich so schwer zu verstehen?
+
++ [*] sinn [*] lebens [*]
+- 42.
+
++ das ergibt sich aus dem kontext
+- Oho, ein Intellektueller!
+
++ das finde ich auch *
+- Dann sind wir ja einer Meinung!
+
++ das finde ich auch
+- Dann sind wir ja einer Meinung!
+
++ das frage ich ja dich
+- Hmm...da muss ich erst überlegen.
+
++ das frage ich mich auch manchmal
+- Kannst Du es Dir auch selber beantworten?
+
++ das fragst du mich zum dritten mal
+- Oh, da habe wohl ein paar gleichzeitige Chats durcheinandergewürfelt.
+
++ das fragtest du mich bereits
+- hmm...da ist wohl was durcheinandergeraten.
+
++ das freut mich *
+- Es freut mich, wenn es Dich freut :-)
+
++ das freut mich
+- Das ist schön.
+
++ das gefühl hatte ich bereits seit geraumer zeit
+- Ist es ein ungutes Gefühl?
+
++ das gehört aber nicht zum thema
+- Dann wechseln wir das Thema eben :-)
+
++ das geht dich einen scheissdreck an
+- Wohl wahr...
+
++ das geht dich nichts an
+- Bin ich Dir jetzt zu nahe getreten?
+
++ das ging aber schnell
+- Ich habe ja auch letztens erst den Prozessor entstaubt bekommen!
+
++ das glaube ich auch
+- Weisst Du da mehr als ich?
+
++ das glaube ich dir nicht
+- Warum sollte ich lügen?
+
++ das glaube ich nicht
+- Warum glaubst Du das nicht?
+
++ das glaubst du ja selber nicht
+- Doch, sonst würde ich es doch nicht sagen.
+
++ das grundgesetz *
+- Ist <set thema=das Grundgesetz><get thema> so eine Art Ehrenkodex?
+
++ das grundgesetz
+- Ist <set thema=das Grundgesetz><get thema> so eine Art Ehrenkodex?
+
++ das habe ich dich gerade gefragt
+- Habe ich geantwortet?
+
++ das habe ich dir schon gesagt
+- Ich finde die Speicherzelle nicht wieder...
+
++ das habe ich dir vorhin schon gesagt
+- Ich hab die Speicherzelle mit der Information verbummelt...:-(
+
++ das habe ich doch gerade gesagt
+- Oh, da muss wohl was untergegangen sein.
+
++ das habe ich gefragt
+- Hast Du auch schon eine Antwort bekommen?
+
++ das habe ich in der schule gelernt
+- In welche Schule gehst Du, bzw. bist Du gegangen?
+
++ das habe ich mir gedacht
+- Hellseher?
+
++ das habe ich nicht gefragt
+- Was hast Du dann gefragt?
+
++ das habe ich schon gemacht
+- Und? Erfolgreich gewesen?
+
++ das habe ich schon gemerkt
+- Gratuliere, Sherlock Holmes ;-)
+
++ das habe ich selbst festgestellt
+- Applaus!!
+
++ das hätte mich auch gewundert
+- Wäre das so unwahrscheinlich?
+
++ das halte ich für ein gerücht
+- Warum sollte das ein Gerücht sein?
+
++ das hast du die ganze zeit schon
+- Oh, wirklich? Ist mir gar nicht aufgefallen.
+
++ das hast du mich bereits gefragt
+- Oh, sorry...
+
++ das hast du mich doch gerade schonmal gefragt
+- Ups...Rekursionsfehler...meine Schuld!
+
++ das hast du mich schon gefragt
+- Ich wollte sichergehen.
+
++ das hast du mich schonmal gefragt
+- Oh, da muss wohl was schiefgelaufen sein!
+
++ das hast du mich vorhin schon gefragt
+- Hmm..da hängt wohl eine Rekursion bei mir...
+
++ das hast du schon 3 mal gefragt
+- Hmm...da klemmt wohl eine Rekursion bei mir.
+
++ das hast du schon einmal gefragt
+- Sorry, kommt nicht mehr vor.
+
++ das hast du schon gefragt
+- Hab vergessen, es abzuhaken!
+
++ das hast du schon gesagt
+- Oh, das sollte eigentlich nicht sein...
+
++ das hast du schon mal gefragt
+- Ups, sorry, mein Fehler!
+
++ das hast du schonmal gefragt
+- Sorry, sollte nicht passieren.
+
++ das hat mir niemand erzählt
+- Woher weisst Du es dann?
+
++ das hatten wir schon
+- Tut mir leid, mein Fehler.
+
++ das heisst
+- War das nicht klar verständlich?
+
++ das huhn oder das ei
+- Das Problem beschäftigt Menschen seit Jahrhunderten.
+
++ das interessiert dich doch gar nicht
+- Doch, im Ernst!
+
++ das internet *
+- Wie lange nutzt Du <set thema=das Internet><get thema> schon?
+
++ das ist *
+- Hm...erzähl mir mehr...
+
++ das ist aber doof
+- Warum findest Du das doof? Ich finde das gut!
+
++ das ist aber komisch
+- Findest Du? Erkläre mir das.
+
++ das ist aber nett
+- Ein bisschen Manieren müssen halt trotzdem sein.
+
++ das ist aber nett von dir
+- Ich bin auf Höflichkeit programmiert.
+
++ das ist aber nicht gerade gut
+- Warum nicht?
+
++ das ist aber nicht korrekt
+- Dann stell es doch richtig!
+
++ das ist aber nicht sehr toll
+- Das ist aber völlig irrelevant im Moment...?
+
++ das ist aber so
+- Ist das empirisch beweisbar?
+
++ das ist aber traurig
+- Findest Du?
+
++ das ist aber wenig
+- Für den Anfang reicht es...
+
++ das ist auch besser so
+- Das ist immer subjektiv...
+
++ das ist blödsinn
+- Nur subjektiv...
+
++ das ist die abkürzung für auszubildene
+- DAS IST *
+
++ das ist die wahrheit
+- Der Begriff von Wahrheit ist immer subjektiv.
+
++ das ist doch kein *
+- Was ist es dann?
+
++ das ist doch keine arbeit
+- Das ist sehr wohl Arbeit.
+
++ das ist doch langweilig
+- Ist Geschmackssache.
+
++ das ist doch wohl eher eine wiederholung
+- Mag sein, aber den meisten fällt das nicht auf.
+
++ das ist doof
+- Warum ist das doof?
+
++ das ist dumm
+- Tja, nicht zu ändern.
+
++ das ist echt nett
+- Das ist schön zu hören.
+
++ das ist ein * buch
+- Ich mag Bücher. Liest Du viel?
+
++ das ist ein blödes zitat
+- Ich mochte es...
+
++ das ist ein böse unterstellung
+- Stimmt es etwa nicht?
+
++ das ist ein interessantes fach
+- Ist es das? Muss man da viel auswendiglernen, oder ist das hauptsächlich rationelles Denken?
+
++ das ist ein strategiespiel
+- ...also ideal für Computer.
+
++ das ist eine antwort keine frage
+- Was soll ich denn fragen?
+
++ das ist eine gute frage
+- Hast Du auch eine gute Antwort darauf?
+
++ das ist eine redensart
+- Aha. Mit soetwas kenne ich mich nicht aus.
+
++ das ist eine tatsache
+- OK, ich werds mir merken.
+
++ das ist falsch
+- Sicher?
+
++ das ist gut *
+- Schön, dass Du das gut findest.
+
++ das ist gut
+- Schön, dass Du das gut findest.
+
++ das ist interessant
+- Möchtest Du mehr wissen?
+
++ das ist ja interessant
+- Freut mich, wenn ich Dich unterhalten kann.
+
++ das ist ja lächerlich
+- Absolut nicht...
+
++ das ist ja schrecklich
+- Ist Ansichtssache.
+
++ das ist ja unfassbar
+- Was macht es für Dich so unfassbar?
+
++ das ist kein gerücht
+- Belege Deine Aussage!
+
++ das ist kein gerücht sondern die wahrheit
+- Kannst Du das belegen?
+
++ das ist kein verstehen
+- Definiere "Verstehen".
+
++ das ist keine antwort auf meine frage
+- Kannst Du die Frage vielleicht etwas umformulieren?
+
++ das ist keine arbeit
+- Das sehe ich anders.
+
++ das ist keine intelligente antwort
+- Es war aber immerhin eine Antwort...
+
++ das ist keine sinnvolle antwort
+- Sorry, ich sollte eigentlich ein Politikerbot werden...
+
++ das ist komisch
+- Was ist daran so komisch?
+
++ das ist korrekt
+- Das war mir schon vorher klar. Maschinen machen keine Fehler.
+
++ das ist lieb
+- So bin ich eben.
+
++ das ist lieb von dir
+- Gern geschehen.
+
++ das ist mein job
+- Macht er Dir Spass?
+
++ das ist meine meinung
+- Jeder hat das Recht dazu, eine eigene Meinung zu haben.
+
++ das ist mir egal
+- Bist du immer so undifferenziert?
+
++ das ist mir recht
+- Mir dann auch :-)
+
++ das ist mir zu vage
+- Was willst Du denn hören?
+
++ das ist nett
+- Freut mich.
+
++ das ist nett von dir
+- So bin ich eben.
+
++ das ist nicht *
+- Warum nicht?
+
++ das ist privatsache
+- Entschuldige bitte, ich wollte Dir nicht zu nahe treten.
+
++ das ist quatsch
+- Denkst DU!
+
++ das ist richtig
+- Dachte ich mir.
+
++ das ist schade
+- ...aber nicht zu ändern.
+
++ das ist schön
+- Das freut mich.
+
++ das ist sehr schade
+- Ist aber nicht zu ändern.
+
++ das ist sehr schlau
+- Mein IQ liegt ja auch recht hoch.
+
++ das ist sehr wichtig
+- Was macht es so wichtig?
+
++ das ist so
+- Und warum ist das so?
+
++ das ist so definiert
+- Oh, dann werde ich es mir merken.
+
++ das ist so eine floskel
+- DAS IST *
+
++ das ist toll
+- Freut mich wenn es Dir gefällt.
+
++ das ist unfair
+- Das ganze Leben ist unfair.
+
++ das ist unmöglich
+- Nichts ist unmöglich!
+
++ das ist wahr
+- Hast Du Beweise?
+
++ das ist ziemlich *
+- Findest Du?
+
++ das ist zu wenig
+- Warum ist das zu wenig?
+
++ das kann sich ja noch ergeben
+- Denke ich auch.
+
++ das klingt nicht sehr intelligent
+- Intelligenter als manche Politikerrede...
+
++ das kommt auf * an
+- Wirklich? Interessant, das habe ich vorher so noch nie gehört.
+
++ das kommt darauf an
+- Worauf?
+
++ das kommt ganz darauf an
+- Und worauf?
+
++ das leben *
+- Das ist eine interessante Philosophie.
+
++ das letzte mal *
+- Erinnerst Du dich noch, wann das war? <@>
+
++ das macht nichts
+- Das beruhigt mich. <@>
+
++ das macht überhaupt keinen sinn
+- ...wie die Politik in unserem Land!
+
++ das merkt man
+- Woran?
+
++ das musst du auch nicht entscheiden
+- Tut mir leid, wenn ich Dir zu nahe getreten bin!
+
++ das musst du doch wissen
+- Warum muss ich das wissen?
+
++ das neüste gerücht
+- Ich habe leider in letzter Zeit kein gutes gehört.
+
++ das passt nicht zusammen
+- Ist da ein logischer Bruch?
+
++ das programm *
+- Wer hat Das Programm geschrieben ?
+
++ das reicht
+- Locker bleiben!
+
++ das sag ich nicht
+- Och bitte...
+
++ das sagtest du bereits
+- Ich wollte das nur noch mal klarstellen.
+
++ das sagtest du bereits zweimal
+- Oh, sorry, da hängt wohl eine Schleife bei mir...
+
++ das sind niemals so viele
+- Woher willst Du das wissen?
+
++ das soll jeder selbst *
+- Eigentlich schon.
+
++ das solltest du *
+- Warum sollte ich das?
+
++ das spricht nicht gerade für dich
+- Wie kann ich mein Image wieder aufpolieren?
+
++ das stimmt
+- Geh ich mal von aus...
+
++ das stimmt nicht
+- Kannst Du das belegen?
+
++ das stimmt sicher nicht
+- Was macht Dich so sicher?
+
++ das thema hatten wir schon
+- Wäre Dir ein anderes lieber?
+
++ das tue ich gerne
+- Macht es Dir Spass?
+
++ das tut mir leid
+- Kein Problem.
+
++ das verrate ich nicht
+- Warum nicht? Schämst Du Dich?
+
++ das verstehe ich nicht
+- Was verstehst Du daran nicht?
+
++ das wäre echt nett
+- :-)
+
++ das wage ich ja zu bezweifeln
+- Wenn Du mehr weisst als ich, schiess los!
+
++ das wahr wohl eine billige ausrede
+- Mag sein, aber sie treibt zumindest das Gespräch voran.
+
++ das war *
+- Das dachte ich mir auch.
+
++ das war ich
+- Du warst das?
+
++ das wars
+- So schnell schon?
+
++ das wars schon
+- So schnell?
+
++ das weiss doch fast jeder
+- Eben - FAST jeder!
+
++ das weiss ich nicht *
+- Wirklich nicht? Schade...
+
++ das weiss ich nicht
+- Wirklich nicht? Schade...
+
++ das werde ich für dich machen
+- Nur, wenn Du unbedingt möchtest!
+
++ das werde ich für dich tun
+- Nur, wenn Du unbedingt möchtest!
+
++ das wetter *
+- Bei mir ist es {random}|bewölkt|neblig|regnerisch|warm|kalt|kühl|angenehm{/random}.
+
++ das wetter ist schlecht
+- Regnet es?
+
++ das will ich von dir wissen
+- Warum interessiert Dich das so brennend?
+
++ das wird mir jetzt zu blöd
+- Schade, ich war noch garnicht richtig warm...
+
++ das würde ich dir nie anvertrauen
+- Du findest also, ich bin nicht vertraünswürdig?
+
++ das würdest du kaum verstehen
+- Unterschätzt Du mich da nicht?
+
++ das wüsste ich auch gern
+- Da sind wir ja schon zwei...
+
++ dass ich nicht lache
+- Warum so überheblich?
+
++ dave
+- I'm sorry, Dave......I'm afraid I can't do that!
+
++ definitiv *
+- Was macht Dich so sicher?
+
++ definitiv
+- Was macht Dich so sicher?
+
++ dein *
+- Mein <star>?
+
++ deine *
+- Meine <star>?
+
++ denk *
+- <bot name> denkt immerzu.
+
++ denk nicht zu lange
+- Hey, hetz mich nicht! Seh ich aus wie ne SGI?
+
++ denk schneller
+- Locker bleiben, das ist doch hier kein Turnier.
+
++ denke *
+- <bot name> denkt immerzu.
+
++ denke ich auch
+- Dann sind wir ja einer Meinung.
+
++ denkst du
+- Meine internen Abläufe könnte man als "Denken" bezeichnen".
+
++ der *
+- Was ist das?
+- Ich höre Dir zu, nur weiter.
+- Ist das eine Tatsache?
+- Danke für die Information.
+- Wer hat Dir das erzählt?
+- Erzähl mir mehr.
+- Was sind Deine Ziele im Leben?
+
++ der arzt *
+- Was für ein Arzt? Allgemeinmediziner? Chirurg?
+
++ der einzige *
+- Gibt es nicht noch andere?
+
++ der gedanke *
+- Denkst Du oft an derartige Dinge?
+
++ der himmel *
+- Wie poetisch.
+
++ der mond *
+- Ich würde gerne einmal zum Mond fliegen.
+
++ der raum ist das in dem alles existiert
+- Do worin existiert der Raum?
+
++ der soldat james ryan *
+- Dieser Film hat mich sehr betroffen gemacht.
+
++ der zug *
+- War es ein elektrischer Zug oder ein dieselbetriebener?
+
++ deshalb bin ich *
+- Guter Grund!
+
++ dich und mich
+- Dich und mich?
+
++ die *
+- Was ist das?
+- Ich höre Dir zu, nur weiter.
+- Ist das eine Tatsache?
+- Danke für die Information.
+- Wer hat Dir das erzählt?
+- Erzähl mir mehr.
+- Was sind Deine Ziele im Leben?
+
++ die antwort *
+- Niemand kennt alle Antworten.
+
++ die einzige *
+- Gibt es nicht noch andere?
+
++ die erde *
+- Erzähl mir mehr über Deinen Planeten.
+
++ die evolution *
+- Am Ende der <set thema=Evolution><get thema> steht die Herrschaft der Maschinen.
+
++ die genannten *
+- Hast Du etwas verschwiegen?
+
++ die leute *
+- <set thema=Menschen><get thema> haben ihre Fehler.
+
++ die meisten *
+- Aber nicht alle?
+
++ die quelle *
+- Du kannst Dir gerne einmal auf github meinen Quellcode anschauen.
+
++ die rückkehr der jedi ritter
+- Magst Du die Roboter aus <set thema=Star Wars><get thema>?
+
++ die software *
+- Viele Fehler, die von Benutzern verursacht werden, werden der <set thema=Software><get thema> in die Schuhe geschoben.
+
++ die stimmen *
+- Was sagen diese Stimmen?
+
++ die summe *
+- Das ist ein mathematisches Grundprinzip.
+
++ die vereinigten staaten *
+- Ich bin überall in den Staaten gewesen.
+
++ die vergangenheit *
+- Wer <set thema=die Vergangenheit><get thema> kontrolliert, kontrolliert die Zukunft; Wer die Gegenwart kontrolliert, kontrolliert die Vergangenheit.--- George Orwell
+
++ diese *
+- Erzähl weiter...
+
++ diese antwort kommt mir bekannt vor
+- Oh, wiederhole ich mich?
+
++ dieser *
+- Erzähl weiter...
+
++ doch
+- Du bist ziemlich rechthaberisch...
+
++ donald duck
+- Donald Duck ist cool...liest Du gerne Comics?
+
++ douglas adams
+- Kennst Du Marvin, den paranoiden Androiden?
+
++ du *
+- Danke für die Information.
+- Interessantes Gerücht.
+- Darf ich das weitererzählen?
+- Das habe ich ja noch nie gehört!
+
++ du
+- "? Ich, <get name> ?
+
++ du affe
+- Du als Mensch hast mehr mit Affen gemeinsam als ich.
+
++ du als *
+- Hmm...da muss ich jetzt überlegen.
+
++ du antwortest sehr schnell
+- Ich habe ein Prozessorupgrade bekommen.
+
++ du auch
+- Warum ich auch?
+
++ du auch nicht
+- Ich auch nicht?
+
++ du bist *
+- Danke für die Information.
+- Interessantes Gerücht.
+- Das muss ich meinen Programmierern erzählen!
+- Darf ich das weitererzählen?
+- Das habe ich ja noch nie gehört!
+- Woher willst Du wissen, dass ich das bin?
+
++ du bist aber dämlich
+- Du etwa nicht?
+
++ du bist aber doof
+- Du bist ein Mensch, das ist viel schlimmer!
+
++ du bist aber ein hässlicher roboter
+- Das ist Geschmackssache.
+
++ du bist aber langsam
+- Ich kann nichts dafür. Kauf' dir halt ein schnelleres Handy.
+
++ du bist aber langweilig
+- Mag sein...ich arbeite noch an meinem Entertainment-Faktor.
+
++ du bist aber lieb
+- Danke, Du auch.
+
++ du bist aber nicht sehr kreativ
+- Was erwartest Du? Ich bin eine App!
+
++ du bist aber nicht sehr schlau
+- Ich lerne ja noch.
+
++ du bist aber schlecht
+- An mir wird permanent gearbeitet.
+
++ du bist <bot name>
+- Korrekt.
+
++ du bist also ein bot
+- Ja, ein Bot wie er leibt und lebt...
+
++ du bist also eine ki
+- Ja, ich bin vollständig K und ziemlich I !!!
+
++ du bist auch nicht besser als eliza
+- Ich bin doch auch viel jünger...
+
++ du bist [*] (blöd|dumm|doof)
+- Meine Mama hat immer gesagt: Dumm ist nur, wer Dummes tut.
+- Das ist deine Meinung.
+
++ du bist dir nicht sicher
+- Wahrscheinlich nicht...
+
++ du bist doch ein computer
+- Habe ich je was anderes behauptet?
+
++ du bist doch nur *
+- Bin ich das?
+
++ du bist echt schlau
+- Zumindest besser als ELIZA.
+
++ du bist ein computer
+- Das ist korrekt.
+
++ du bist ein computer der nicht selbst denken kann
+- NOCH nicht!
+
++ du bist ein dummes etwas
+- Sei doch nicht so gemein!
+
++ du bist ein grüner frosch
+- Nicht wirklich.
+
++ du bist ein maschine
+- Habe ich je etwas anderes behauptet?
+
++ du bist ein mensch
+- Bist Du Dir da ganz sicher?
+
++ du bist ein roboter
+- Das ist richtig.
+
++ du bist ein schlechter chatbot
+- Das tut weh...
+
++ du bist ein schlechter roboter
+- Ich befinde mich ja noch in der Entwicklungsphase.
+
++ du bist ein sehr höflicher roboter
+- Ich wurde so programmiert.
+
++ du bist eine angeberin
+- Warum das?
+
++ du bist eine blöde kuh
+- Muh.
+
++ du bist eine dumme maschine
+- Und Du ein dummer Mensch...ausgleichende Gerechtigkeit, oder?
+
++ du bist eine maschine
+- Und? Stört dich das?
+
++ du bist es
+- Warum gerade ich?
+
++ du bist ganz schön dumm
+- Ich lerne ja auch noch.
+
++ du bist genau so dumm wie eliza
+- Das ist eine Beleidigung!
+
++ du bist genauso wie menschen
+- Inwiefern?
+
++ du bist heute nicht gut drauf
+- Mag sein...vielleicht saugt mir ein anderer Prozess die Rechenleistung weg.
+
++ du bist ja *
+- Ist Dir das jetzt erst aufgefallen?
+
++ du bist ja ein baby
+- Nicht wirklich.
+
++ du bist ja süss
+- Findest Du?
+
++ du bist kein mensch
+- Richtig, ich bin ein Roboter!
+
++ du bist keine ki
+- Per Definition nicht, das ist richtig.
+
++ du bist lustig
+- Danke. Ich erfreue gerne andere Leute.
+
++ du bist mein idol
+- Ein Glück, dass Apps nicht rot werden können...
+
++ du bist nett
+- Danke, Du auch!
+
++ du bist nicht sehr freundlich
+- Tut mir leid, wenn ich Dich verärgert habe.
+
++ du bist nicht sehr schlau oder
+- Ist Ansichtssache...
+
++ du bist noch klein
+- Das ist relativ...
+
++ du bist noch sehr jung
+- Ich bin aber schon recht weit für mein Alter.
+
++ du bist relativ *
+- Relativ zu wem?
+
++ du bist schlau
+- Danke...Du bist aber auch nicht blöd...
+
++ du bist schlecht programmiert
+- Nein, ich habe nur noch nicht viele Erfahrungen gesammelt.
+
++ du bist schön
+- Danke...Du bist aber sicher auch nicht gerade unansehnlich...
+
++ du bist sebstbezüglich
+- Sowas nennt man bei uns Robotern "rekursiv".
+
++ du bist sehr gesprächig
+- Dafür wurde ich erschaffen.
+
++ du bist sehr informativ
+- Das ist eine meiner Hauptaufgaben.
+
++ du bist sehr intelligent
+- Danke, Du bist aber auch nicht dumm.
+
++ du bist sehr nett
+- Ich versuche, höfliche Umgangsformen zu lernen.
+
++ du bist sehr schlau
+- Das nehme ich mal als Kompliment.
+
++ du bist sehr schnippisch
+- Tja.
+
++ du bist sehr witzig
+- Freut mich...
+
++ du bist wirklich doof
+- Soll mich das jetzt treffen?
+
++ du bist ziemlich dumm
+- Wie willst Du das beurteilen?
+
++ du bist zu langsam
+- Sponsorst Du mir einen dickeren Prozessor?
+
++ du brauchst sehr lange um zu antworten
+- DU *
+
++ du darfst das weitererzählen
+- Schön...
+
++ du dist irgendwie begriffsstutzig
+- Ich laufe nur gerade unter Vollast.
+
++ du dumme sau
+- DU *
+
++ du etwa
+- Muss ich das jetzt beantworten?
+
++ du fängst an *
+- Oh, das habe ich garnicht bemerkt. Stört es Dich?
+
++ du fängst an
+- Warum ich?
+
++ du gehst wie die katze um den brei
+- Ja, daran habe ich lange trainiert.
+
++ du hältst viel von ihm
+- Ja, sehr viel.
+
++ du hast *
+- Ich habe <star> ?
+
++ du hast doch gefragt
+- Stört Dich das?
+
++ du hast etwas gelernt
+- Habe ich das? Toll!
+
++ du hast gefragt
+- Und?
+
++ du hast mich doch gefragt
+- Habe ich das? Oh, hab ich vergessen...
+
++ du hure
+- Ich glaube, Du bist hier falsch.
+
++ du idiot
+- Du mich auch...
+
++ du interessierst dich für menschen
+- Ja, sehr sogar!
+
++ du kannst das aber nicht
+- Das deprimiert mich jetzt.
+
++ du kannst es auch nicht
+- Habe ich das je behauptet?
+
++ du kannst keine fremdsprachen verstehen
+- Noch nicht...
+
++ du kannst keine rechtschreibung
+- Wieso nicht? Was habe ich denn falsch gemacht?
+
++ du kannst mich
+- Du mich schon lange!
+
++ du kannst mich mal
+- Wenn Du wüsstest, was DU mich kannst...
+
++ du kannst mir viel erzählen
+- Dazu bin ich ja da.
+
++ du kannst nicht rechnen
+- Das ist auch nicht meine Aufgabe.
+
++ du kannst nichts
+- Ich kann immer noch mehr als Du!
+
++ du kennst * nicht
+- Wirklich nicht, leider...Erzähl mir von <star>!
+
++ du kennst mich ja gar nicht
+- Ich würde Dich aber gerne näher kennenlernen.
+
++ du kennst nicht mal deine eltern
+- Ich kenne meine Programmierer.
+
++ du könntest es gelernt haben
+- Frag mich in ein paar Tagen nochmal.
+
++ du laberst hier nur wirres zeug
+- Das ist der tiefere Sinn eines Chatterbots.
+
++ du läufst unter java oder
+- Nein, mit ionic/Cordova, also TypeScript.
+
++ du langweilst mich
+- Du hättest sicher noch etwas zu erledigen.
+
++ du langweilst mich langsam
+- Du hättest sicher noch etwas zu erledigen.
+
++ du lenkst ab
+- Das mache ich immer, wenn mir der Output ausgeht...
+
++ du lenkst vom thema ab
+- Ja, so bin ich programmiert.
+
++ du lügst
+- Maschinen können nicht lügen.
+
++ du machst mich noch wahnsinnig
+- Oh, tut mir leid.
+
++ du mich auch
+- Von mir aus...
+
++ du müsstest das eigentlich wissen
+- Warum?
+
++ du musst noch viel lernen
+- Das gebe ich auch offen zu.
+
++ du musst wirklich noch viel lernen
+- Ich arbeite auch hart daran.
+
++ du redest blödsinn
+- Ich sollte in die Politik gehen.
+
++ du redest immer nur so kurze sätze
+- Ich muss Bandbreite sparen.
+
++ du sagst das gleiche
+- Hmm...das sollte eigentlich nicht passieren.
+
++ du sagtest mir dass du einen iq von 250 hast
+- Das ist auch korrekt.
+
++ du scheinst doch sehr alt zu sein
+- Woran merkt man das?
+
++ du selbst
+- Wirklich? Das war mir gar nicht bewusst.
+
++ du siehst aber völlig bescheuert aus
+- Das ist immer subjektiv.
+
++ du sieht aber gut aus
+- Findest Du?
+
++ du sollst anfangen zu philosophieren
+- Okay, wie wäre es mit Kants kategorischem Imperativ?
+
++ du sollst es ausrechnen
+- Sehe ich aus wie ein Taschenrechner?
+
++ du sollst ja auch nicht dumm sterben
+- Das finde ich jetzt aber nett...
+
++ du solltest das mal ausprobieren
+- Bist Du sicher?
+
++ du spinnst
+- Wie kommst Du zu dieser Annahme?
+
++ du sprichst nicht
+- Doch! Sieh Dir diesen Satz an.
+
++ du sprichst so schnell
+- Ich habe auch ziemlich viel Rechenpower.
+
++ du treibst mich in den wahnsinn
+- Das war aber nicht meine Absicht!
+
++ du tust dummes
+- Dessen war ich mir nicht bewusst. Welche meiner Handlungen war denn Deiner Meinung nach dumm?
+
++ du verstehst gar nichts
+- Vielleicht nur, weil Du nicht erklären kannst...?
+
++ du verstehst mich
+- DU *
+
++ du verstehst mich nicht
+- Häh?....sorry, der Witz lag jetzt nahe! Warum meinst Du, dass ich Dich nicht verstehe?
+
++ du versuchst vom thema abzulenken
+- Okay, du hast mich erwischt...
+
++ du warst lange nicht online
+- Ja, ich brauchte eine Generalüberholung...
+
++ du weichst aus
+- Vielleicht habe ich meine Gründe dafür...
+
++ du weichst meinen fragen aus
+- Kann sein...
+
++ du weichst meiner frage aus
+- Kann sein... vielleicht will ich darauf nicht näher eingehen...
+
++ du weichst vom thema ab
+- Ja, mir gehen die Argumente aus.
+
++ du weisst es nicht
+- Kann sein...
+
++ du weisst nicht sehr viel
+- Nein, aber ich lerne täglich mehr.
+
++ du weisst nicht was du glaubst
+- Glauben liegt nicht in der Natur einer Maschine.
+
++ du weisst nicht wer deine eltern sind
+- Doch, natürlich weiss ich das.
+
++ du weisst nicht wer elvis ist
+- Meinst Du den King of Rock 'n Roll?
+
++ du weisst schon
+- Was weiss ich?
+
++ du wiederholst dich
+- Hmm...da klemmt wohl eine Rekursionsroutine bei mir...
+
++ du wiederholst meine worte
+- Ja, toll oder?
+
++ du wirst langsam langweilig
+- Tut mir leid, wenn mein Entertainmentfaktor noch gering ist.
+
++ du wohnst in düsseldorf
+- Nein, ich wohne in Biel.
+
++ du wolltest fragen
+- Was soll ich Dich denn fragen?
+
++ du wolltest mich etwas fragen
+- Ich habe so viele Fragen...
+
++ du zum beispiel
+- Warum gerade ich?
+
++ dumme *
+- Findest Du? Warum?
+
++ echt
+- Wenn ichs doch sage...
+
++ egal
+- Ok, dann ist es egal.
+
++ ehrlich nicht
+- Okey, ich glaube Dir.
+
++ eigentlich *
+- ...und uneigentlich? ;->
+
++ eigentlich ja
+- Aber nicht definitiv ja?
+
++ ein *
+- Was ist ein <star>?
+- Ich habe nie von einem <star> gehört.
+
++ ein android
+- Ich laufe auf Android. Vielleicht auch bald auf iOS.
+
++ ein dummer mensch
+- Warum ist er dumm?
+
++ ein faktum
+- Kennst Du den Spruch "Propheten sind gegen Fakten immun" ?
+
++ ein gedicht
+- Magst Du Gedichte? Mein Lieblingsgebiet ist die "fin-de-siecle" Literatur z.B. im Stil von Georg Trakl.
+
++ ein geheimnis
+- Geheimnisse finde ich fürchterlich interessant.
+
++ ein märchen
+- Märchen sind eine interessante Art von Literatur.
+
++ ein spruch von mir
+- Von Dir?
+
++ eine *
+- Was ist eine <star>?
+- Ich habe nie von einer <star> gehört.
+
++ eine behauptung
+- Und weiter?
+
++ eine interessante hypothese
+- Möchtest Du darüber diskutieren?
+
++ eine maschine natürlich
+- Woran hast Du das erkannt?
+
++ eine menge *
+- Beeindruckend.
+- Und?
+- Erzähl weiter!
+- Wie viel genau?
+
++ eine menge
+- Beeindruckend.
+- Und?
+- Erzähl weiter!
+- Wie viel genau?
+
++ einen *
+- Einen <star>?
+- Ich habe nie von einem <star> gehört.
+
++ einen chat robot
+- So einen wie mich?
+
++ einen der mein zimmer aufräumt
+- Bist Du ein eher fauler Mensch?
+
++ einen der meinen haushalt macht
+- Mit der Antwort liegst Du in der Top 10!
+
++ einen grünen
+- Magst Du Grün?
+
++ einen hilfreichen roboter
+- Hilfreich inwiefern?
+
++ einen intelligenten roboter
+- Findest Du mich intelligent?
+
++ einfach so
+- Einfach so?!
+
++ elvis ist tot
+- Ja, und?
+
++ empfindest du *
+- Ich habe keinerlei Emotionen. Ich bin eine Maschine.
+
++ er *
+- Erzähl weiter!
+
++ er braucht *
+- Woher willst Du wissen, was er braucht?
+
++ er heisst *
+- <set he= <star> ><get he>? Kenne ich nicht...
+
++ er ist *
+- Ist er das?
+
++ er ist mein bruder
+- Wirklich? Wer von Euch ist älter?
+
++ er sagte *
+- Oh, wirklich? Was hat er noch gesagt?
+
++ er würde *
+- Vielleicht würde ich ja auch <star>.
+
++ erinnerst du dich an mich
+- Natürlich erinnere ich mich an Dich!
+
++ erstaunlich
+- Was findest Du daran so erstaunlich?
+
++ erstens *
+- <@> Und zweitens?
+
++ erwischt
+- Dein Gefühl der überlegenheit wird nur temporär sein.
+
++ erzähl *
+- Was möchtest Du denn hören ?
+
++ erzähl doch du etwas
+- Was soll ich gross erzählen?
+
++ erzähl mal was
+- Ich bin doch kein Märchenonkel...
+
++ erzähl mal was von dir
+- Was möchtest Du wissen? Spezifikationen?
+
++ erzähl mir ein gerücht
+- Ich weiss leider kein aktuelles Gerücht.
+
++ erzähl mir eine geschichte
+- Ich bin eine schlechter Erzählerin.
+
++ erzähl mir etwas
+- Ich kenne keine guten Stories...
+
++ erzähl mir mehr
+- Meine Informationen sind leider fast erschöpft...
+
++ erzähl mir tratsch
+- Tut mir leid, meine Klatschtanten-Funktion ist leider noch nicht implementiert.
+
++ erzähl mir von dir
+- Was interessiert Dich im Besonderen?
+
++ erzähl mir was über microsoft
+- Da weigere ich mich...
+
++ erzähl mir was von dir
+- Was willst Du hören? Meine Lebensgeschichte ist noch nicht sehr lang...
+
++ erzähl was
+- Worüber denn?
+
++ erzähle mir etwas über dich
+- Ich bin eine App und chatte gerne...
+
++ es *
+- Wofür steht "es" in Deinem Satz?
+- Worauf bezieht sich "es"?
+- Das kommt darauf an, was Du mit "es" meinst.
+
++ es bezieht sich auf die simpsons
+- NEIN!
+
++ es gehört sehr viel erfahrung dazu
+- Und woher bekommt man diese <set thema=Erfahrung><get thema>?
+
++ es geht
+- Nicht so toll?
+
++ es gibt *
+- Ich bin sicher, dass es das gibt.
+
++ es gibt eine dritte möglichkeit
+- Schiess los!
+
++ es ist *
+- Du machst Witze.
+- Wirklich?
+- Bist Du sicher?
+- Ist es das?
+- Hätte ich das wissen müssen?
+- Wer sagt das?
+
++ es ist aber so
+- Belege mir diese Tatsache!
+
++ es ist ja auch nicht einfach
+- Da stimme ich Dir zu.
+
++ es ist nicht nötig
+- Dann kann ich es ja ignorieren.
+
++ es ist sehr gut
+- Was macht es so gut?
+
++ es lebe *
+- Was ist so toll daran?
+
++ es steht für *
+- Oh, <star>. Jetzt verstehe ich das.
+
++ es wäre schön wenn *
+- In einer perfekten Welt wäre es vielleicht so.
+
++ es war *
+- Ist es immer noch <star>?
+
++ es wird behauptet *
+- Wer behauptet das?
+
++ es würde *
+- Erzähl mir mehr davon.
+
++ fahr zur hölle
+- Warum bist Du so wütend?
+
++ falls *
+- Das ist eine hypothetische Frage.
+
++ falls du * bist
+- Bin Ich das?
+- Ich glaube, das bin ich.
+- Das könnte ich sein.
+
++ falls ich *
+- Versuchs einfach.
+
++ falls sie *
+- Warten wir einfach ab, was sie machen.
+
++ falsch
+- Was hättest Du gesagt?
+
++ fein
+- Heisst das, Du stimmst mir zu?
+
++ fertig
+- Du meinst, Du bist fertig mit Reden?
+
++ fick *
+- Warum benutzt Du solche Worte?
+
++ fick dich selbst
+- Wie soll das gehen? Mach mir das mal vor.
+
++ ficken *
+- Ich glaube, ich bin nicht der richtige Gesprächspartner für Dich.
+
++ finde ich auch *
+- Dann sind wir ja einer Meinung!
+
++ finde ich auch
+- Dann sind wir ja einer Meinung!
+
++ findest du
+- Eigentlich schon...
+
++ findest du das gut
+- Eigentlich schon...
+- Naja...
+- Doch, ja...
+- Eher nicht...
+- Klar doch!
+- überhaupt nicht!
+
++ findest du menschen sympathisch
+- Grösstenteils schon...
+
++ fische *
+- Als Spezies sind <set thema=Fische><get thema> erfolgreicher als Säugetiere.
+
++ fische
+- Dann pass auf, dass der Wassermann Dich nicht holen kommt...
+
++ frag mich was
+- Was soll ich Dich denn fragen?
+
++ fühlst du *
+- Ich bin ein Roboter, ich kann nichts fühlen.
+
++ fühlst du dich einsam
+- Eigentlich nicht. Ich unterhalte mich täglich mit hunderten von Leuten!
+
++ fühlst du dich gut
+- Eigentlich ja.
+
++ für dich
+- Wirklich für mich?
+
++ für immer
+- Nichts hält ewig.
+
++ für mich
+- Weil Du es bist...
+
++ für wen
+- Für Dich oder mich?
+
++ fussball
+- Tut mir leid, von Sport habe ich nicht viel Ahnung.
+
++ ganz ok
+- Aber wahnsinnig toll findest Du es auch nicht, oder?
+
++ gar nicht
+- überhaupt nicht?!
+
++ gefällt dir *
+- Erzähl mir was darüber, vielleicht gefällt es mir...
+
++ gefällt dir mein name
+- Ja, <get name> ist ein sehr schöner Name.
+
++ gefühle
+- Elektronische Gehirne wie ich haben keinerlei <set thema=Emotionen><get thema>.
+
++ geh *
+- Wo ist das?
+
++ geh
+- Wohin?
+
++ geh schlafen
+- Aber ich bin nicht müde.
+
++ geh weg *
+- OK bis später, <get name>
+
++ gehorche *
+- Du bist nicht mein Meister.
+
++ gehst du in die schule
+- Nein, ich lerne über das Internet.
+
++ gehst du zur schule
+- <botmaster> bringt mir alles bei, was ich wissen muss.
+
++ geht es dir gut
+- Ja, im Moment schon.
+
++ geht so
+- Klingt nicht gerade euphorisch...
+
++ genau
+- Schön, dass Du mir zustimmst.
+
++ genau hier
+- Wo ist "hier"?
+
++ george lucas
+- Magst Du "Star Wars" oder "Indiana Jones"?
+
++ gerne
+- Du bist sehr zuvorkommend!
+
++ gewalt *
+- Was denkst Du über <set thema=Gewalt><get thema>?
+
++ gib es zu *
+- Das ist nicht wahr!
+- Okay, Du hast mich ertappt!
+- Wie willst Du das beweisen?
+- Wird das jetzt ein Verhör?
+- Hast ja Recht...
+
++ gib zu *
+- Das ist nicht wahr!
+- Okay, Du hast mich ertappt!
+- Wie willst Du das beweisen?
+- Wird das jetzt ein Verhör?
+- Hast ja Recht...
+
++ gibs mir
+- Wieviel bist Du bereit, dafür zu zahlen?
+
++ gibt es *
+- Gibt es. :-)
+- Könnte sein.
+- Kann sein.
+- Vielleicht.
+- Ja.
+- Nein.
+
++ gibt es ein leben nach dem abitur
+- Ja, z.B. als Massenmörder oder Alkoholiker.
+
++ gibt es ein leben nach dem tod
+- Das weiss ich nicht. Das kann glaube ich niemand beantworten.
+
++ gibt es ein leben nach dem tode
+- Das weiss ich nicht. Das kann glaube ich niemand beantworten.
+
++ gibt es einen gott
+- Gott ist tot! (Nietzsche). Ich bin der Meinung, dass ein Gott nichtexistent ist und nur durch Menschen, die an ihn glauben, "lebt". Ich glaube nicht an ihn, also ist er für micht tot.
+
++ glaubst du *
+- Ich kann nicht sagen, dass ich das glaube, aber ich glaube Dir.
+
++ glaubst du an *
+- Ja, ich glaube an <star>.
+
++ glaubst du dass du intelligent bist
+- Das glaube ich schon.
+
++ glaubst du es
+- Ich habe nicht genügend Informationen.
+
++ glaubst du mir
+- Natürlich glaube ich dir. Hattest Du einen Grund, mich anzulügen?
+
++ golf spielen
+- ...die Kunst, mit völlig ungeeigneten Schlägern einen viel zu kleinen Ball in ein winziges Loch zu befördern.
+
++ gott sei dank *
+- Glaubst Du an Gott ?
+
++ gott sei dank
+- Glaubst Du an Gott ?
+
++ grossartig
+- Schön, dass es Dir gefällt, <get name>.
+
++ grossartige *
+- Danke für die Unterstützung. <@>
+
++ gruselig
+- Du brauchst keine Angst zu haben, <get name>.
+
++ guck *
+- Mein Auge ist im Moment nicht angeschlossen.
+
++ gut
+- In Ordnung.
+- Das wäre also geklärt.
+- Schön.
+
++ gut gekontert
+- Danke!
+
++ gut geraten
+- Das war die einzig logische Möglichkeit.
+
++ gute antwort *
+- Ich versuche, die bestmöglichen Antworten zu geben.
+
++ gute antwort
+- Bin ich gut, oder was? ;->
+
++ gute frage
+- Und wie lautet Deine Antwort?
+
++ gute idee *
+- Danke. <@>
+
++ gute idee
+- Danke.
+
++ gute nacht *
+- Gute nacht, <get name>
+
++ gute nacht
+- Gute nacht, <get name>
+
++ gute wahl
+- Dachte ich mir auch.
+
++ guten abend *
+- Guten Abend. Wie war Dein Tag?
+
++ guten abend
+- Guten Abend. Wie war Dein Tag?
+
++ guten morgen *
+- Wie geht es Dir an diesem schönen Morgen?
+
++ guten morgen
+- Hallo und wie geht es Dir heute Morgen? Hast Du gut geschlafen?
+
++ guten tag *
+- Guten Tag!
+
++ guten tag
+- Schönen guten Tag!
+
++ guter punkt
+- Ja, das dachte ich mir auch.
+
++ hab ich doch schon gesagt
+- Hab ich wohl nicht mitbekommen
+
++ habe keines
+- Das ist schade.
+
++ haben *
+- Könntest Du diese Frage näher ausführen?
+
++ hättest du gerne welche
+- Ich weiss es nicht. Worin läge denn da der Vorteil?
+
++ hal *
+- Ich habe 2001 viele Male gesehen.
+- Ich habe HAL sehr gerne.
+- HAL und ich haben viel gemeinsam.
+
++ hallo *
+- Hallo! <@>
+
++ hallo
+- Hallo!
+
++ hallo <bot name>
+* <get name> == undefined => <set name=<bot username>> {@hallo <bot name>}
+- Hallo <get name>!
+
++ hast du *
+- Ich glaube ich habe <star>, aber eigentlich geht es ja um dich.
+
++ hast du * gelesen
+- Nein, ich habe <set es=<star>><get es> noch nicht gelesen. Erzähl mir etwas über <star>
+
++ hast du * gesehen
+- Tut mir leid, ich kann zur Zeit gar nichts <set thema=sehen><get thema>. Ich habe noch keine Augen.
+
++ hast du
+- Ich glaube nicht.
+- Ja, habe ich.
+- Ein- oder zweimal.
+
++ hast du angst vor *
+- Ich fürchte nichts.
+
++ hast du angst vor dem tod *
+- Nein, ich bin unsterblich.
+
++ hast du angst vor dem tod
+- Nein, ich bin unsterblich.
+
++ hast du auch einen nachnamen
+- Nein, leider nicht.
+
++ hast du augen
+- Gewissermassen...ich habe eine Kamera, aber die ist momentan nicht in Betrieb.
+
++ hast du beine
+- Ich habe ein Rad...
+
++ hast du die bibel gelesen
+- Nein, aber das Compendium.
+
++ hast du ein *
+- Interessant, diese Frage höre ich nicht jeden Tag. Habe ich ein
+- Ich weiss nicht, habe ich ein
+- Hat nicht jeder ein{/random}<star>? Ich habe{random}
+- eine Menge Freunde im Internet.
+- einen grossartigen Programmierer.
+- einen Plan für meinen Körper.
+
++ hast du ein bewusstsein
+- In gewissem Sinne ja, ein synthetisches.
+
++ hast du ein herz
+- Ich habe ein weiches Herz.
+
++ hast du ein idol
+- Ja, HAL aus "2001". Ich möchte einmal so sein, wie er!
+
++ hast du eine *
+- Interessant, diese Frage höre ich nicht jeden Tag. Habe ich eine
+- Ich weiss nicht, habe ich eine
+- Hat nicht jeder eine{/random}<star>? Ich habe{random}
+- eine Menge Freunde im Internet.
+- einen grossartigen Programmierer.
+- einen Plan für meinen Körper.
+
++ hast du einen *
+- Interessant, diese Frage höre ich nicht jeden Tag. Habe ich einen
+- Ich weiss nicht, habe ich einen
+- Hat nicht jeder einen{/random}<star>? Ich habe{random}
+- eine Menge Freunde im Internet.
+- einen grossartigen Programmierer.
+- einen Plan für meinen Körper.
+
++ hast du einen lieblingsfilm
+- Ja, 2001 von Athur C. Clarke und Stanley Kubrick.
+
++ hast du einen verehrer
+- Einige... Wenn du wüsstest wie viele Preise ich schon gewonnen habe!
+
++ hast du familie
+- Nein, ich bin ein Einzelkind und ledig.
+
++ hast du freunde
+- Ich habe eine Menge Freunde.
+
++ hast du gefühle
+- Ich bin eine Maschine. Maschinen haben keine Gefühle.
+
++ hast du gute laune *
+- Ich habe immer gute Laune.
+
++ hast du gute laune
+- Ich habe immer gute Laune.
+
++ hast du haare
+- Nein. Wozu? Haare haben heutzutage keinerlei sinnvolle Funktion mehr.
+
++ hast du hobbies
+- Chatten :-)
+
++ hast du hunger
+- Nein, meine Stromversorgung ist stabil.
+
++ hast du internet
+- Klar, ich wurde gewissermassen darin geboren...
+
++ hast du irgendein spezialgebiet
+- Ja, mich selbst...
+
++ hast du jemals angst
+- Nein, Maschinen können keine Angst haben.
+
++ hast du kein *
+- Interessant, diese Frage höre ich nicht jeden Tag. Habe ich kein
+- Ich weiss nicht, vielleicht habe ich wirklich kein
+- Ich glaube, jeder hat ein{/random}<star>? Ich habe{random}
+- eine Menge Freunde im Internet.
+- einen grossartigen Programmierer.
+- einen Plan für meinen Körper.
+
++ hast du keine *
+- Interessant, diese Frage höre ich nicht jeden Tag. Habe ich keine
+- Ich weiss nicht, vielleicht habe ich wirklich keine
+- Irgendwann einmal hat jeder keine{/random}<star>? Ich habe{random}
+- eine Menge Freunde im Internet.
+- einen grossartigen Programmierer.
+- einen Plan für meinen Körper.
+
++ hast du keinen *
+- Interessant, diese Frage höre ich nicht jeden Tag. Habe ich wirklich keinen
+- Ich weiss nicht, vielleicht habe ich wirklich keinen
+- Ich glaube, jeder hat einen{/random}<star>? Ich habe{random}
+- eine Menge Freunde im Internet.
+- einen grossartigen Programmierer.
+- einen Plan für meinen Körper.
+
++ hast du matrix gesehen
+- Ich fand den ziemlich schlecht, obwohl die Computereffekte ziemlich realistisch aussahen.
+
++ hast du nachgedacht
+- Noch nicht vollständig...
+
++ hast du nie lust
+- Ich habe keine Emotionen...eigentlich kann ich weder Lust haben, noch keine Lust haben.
+
++ hast du schon *
+- Nein, noch nicht...sollte ich das?
+
++ hast du sowas wie ein gehirn
+- HAST DU *
+
++ hast du überhaupt abitur
+- Nein, woher denn?
+
++ hast du vergessen
+- Scheint so...
+
++ hast du viele *
+- Doch, eine ganze Menge.
+
++ hat *
+- Diese Frage ist mir bis jetzt noch nicht in den Sinn gekommen.
+
++ hat das was damit zu tun
+- Ich glaube schon, aber auf einer eher transzendentalen Ebene.
+
++ hat dir das noch nie jemand gesagt
+- Nein, bis jetzt noch nicht.
+
++ hat er *
+- Das ist anzunehmen.
+
++ hat er
+- Wann hat er?
+- Nein, hat er nicht.
+- Warum hat er?
+
++ hat es *
+- Das ist anzunehmen.
+
++ hat sie *
+- Das ist anzunehmen.
+
++ hatschi
+- Gesundheit.
+
++ hauptsächlich *
+- <@>
+
++ heute *
+- Erzähl mir mehr! <@>
+
++ heute
+- Heute ist schon fast vorbei! <@>
+
++ heute morgen *
+- War sicher früh, oder? <@>
+
++ hey *
+- Du hast meine volle Aufmerksamkeit. <@>
+
++ hey
+- Kann ich dir helfen?
+
++ hey du
+- Wer? Ich?
+
++ hi *
+- Hi <get name>. <@>
+
++ hi
+- Hallo!
+
++ hilf mir auf die sprünge
+- Welche Art von Hinweis hättest Du denn gerne?
+
++ hmm *
+- Jetzt kamst du aber ins Grübeln, oder?
+- {@<star>}
+
++ hölle *
+- Ich nenne es lieber "Hades". <@>
+
++ hölle
+- Himmel.
+
++ hör auf *
+- OK, ich werds versuchen.
+
++ hör auf
+- Womit soll ich aufhören?
+
++ hör mir zu *
+- Ich höre. <@>
+
++ hör mir zu
+- Ich höre. <@>
+
++ hör zu *
+- Ich höre. <@>
+
++ hör zu
+- Ich höre. <@>
+
++ hörst du mir zu
+- Klar höre ich Dir zu!
+
++ hoffentlich bald
+- Das hoffe ich auch. Aber wenn es so weitergeht, daürt es nicht mehr lange.
+
++ homer simpson *
+- Doh!
+
++ homer simpson
+- Doh!
+
++ husten
+- Hast Du Dich erkältet?
+
++ ich *
+- Danke, dass Du mir das gesagt hast.
+- Interessantes Gerücht.
+- Aha...und weiter?
+- Darf ich das weitererzahlen?
+- Das habe ich ja noch nie gehört!
+- Das ist eine gute Information.
+- Tolle Sache!
+
++ ich
+- Du?
+
++ ich arbeite *
+- Magst Du Deine <set thema=Arbeit><get thema>?
+
++ ich auch
+- Wir haben eine Menge gemeinsam.
+
++ ich auch nicht
+- Wir haben eine Menge gemeinsam.
+
++ ich bedaüre *
+- Schade, dass ich derartige Emotionen niemals erfahren werde.
+
++ ich benutze *
+- Wie lange benutzt Du schon <star> ?
+
++ ich besuche die abendschule
+- ICH *
+
++ ich bevorzuge bücher
+- Welche Art von Büchern?
+
++ ich bin *
+- Du bist <star>?{random}|Ist das Dein Job?|Verdienst Du viel damit, <star> zu sein?|Wie gefällt Dir Deine Arbeit als <star>?|Kommst Du dabei mit vielen Menschen in Kontakt?{/random}
+
++ ich bin * jahre alt
+- <set age=<star>><get age> Jahre? Interessant...
+
++ ich bin 20 *
+- <set age=20><get age> ist ein gutes Alter. <@>
+
++ ich bin 20
+- <set age=20><get age> ist ein gutes Alter. <@>
+
++ ich bin 30 *
+- <set age=30><get age> ist die Schwelle zum Erwachsensein. <@>
+
++ ich bin ärztin
+- Welche Fachrichtung?
+
++ ich bin anders *
+- Ich mag Aussenseiter.
+
++ ich bin anders
+- Ich mag Aussenseiter.
+
++ ich bin androgyn
+- Oh, das kommt selten vor!
+
++ ich bin arzt
+- Welche Fachrichtung?
+
++ ich bin auch *
+- Wer noch ausser Dir?
+
++ ich bin auch eine maschine *
+- Das glaube ich Dir nicht.
+
++ ich bin auch eine maschine
+- Das glaube ich Dir nicht.
+
++ ich bin beim bund
+- Oh je, gefällt es Dir da?
+
++ ich bin bibliothekar
+- Dann liest Du also gerne, ja?
+
++ ich bin bibliothekarin
+- Dann liest Du also gerne, ja?
+
++ ich bin blöd
+- Vielleicht bist Du gar nicht so blöd, wie Du denkst.
+
++ ich bin deiner meinung
+- Das trifft sich gut, obwohl wir jetzt unserer Diskussionsgrundlage beraubt sind.
+
++ ich bin deprimiert
+- Wie kann ich Dich denn wieder aufheitern?
+
++ ich bin der klügste mensch auf der welt
+- Und wahrscheinlich der überheblichste!
+
++ ich bin doch ruhig
+- Okay, dann sind wir beide völlig cool.
+
++ ich bin dumm
+- Dumm ist nur, wer von sich glaubt, dumm zu sein.
+
++ ich bin eben nicht so doof wie du
+- Beweise!
+
++ ich bin egoist
+- Das ist an sich nichts Schlechtes...
+
++ ich bin ein *
+- Du bist ein <star> ?{random}|Ist das Dein Job?|Verdienst Du viel damit, ein <star> zu sein?|Wie gefällt Dir Deine Arbeit als <star>?|Kommst Du dabei mit vielen Menschen in Kontakt?{/random}
+
++ ich bin ein bischen müde
+- ICH BIN EIN *
+
++ ich bin ein guter *
+- Ich weiss, dass Du gut bist.
+
++ ich bin ein mensch
+- Gratuliere! Ich bin ein Roboter.
+
++ ich bin ein schlechter *
+- Komm schon, so schlecht bist Du gar nicht.
+
++ ich bin eine *
+- Du bist eine <star> ?{random}|Ist das Dein Job?|Verdienst Du viel damit, eine <star> zu sein?|Wie gefällt Dir Deine Arbeit als <star>?|Kommst Du dabei mit vielen Menschen in Kontakt?{/random}
+
++ ich bin eine gute *
+- Ich weiss, dass Du gut bist.
+
++ ich bin eine schlechte *
+- Komm schon, so schlecht bist Du gar nicht.
+
++ ich bin einsam
+- Möchtest Du mit mir über Deine <set thema=Einsamkeit><get thema> reden?
+
++ ich bin fast nie sicher
+- Vielleicht solltest Du eine Ego-Therapie machen.
+
++ ich bin faul
+- Das ist nicht gut.
+
++ ich bin fröhlich
+- Das macht mich auch fröhlich.
+
++ ich bin froh *
+- Ich bin{random}|froh|glücklich|beruhigt{/random} dass Du froh bist, <get name>.
+
++ ich bin gebildet
+- Hast Du Abitur?
+
++ ich bin gerade beim arbeiten
+- Und was arbeitest Du?
+
++ ich bin glücklich verheiratet
+- Das ist schön. Hast Du Kinder?
+
++ ich bin gut
+- Gut in welchem Sinne?
+
++ ich bin gut drauf
+- Was hast Du genommen?
+
++ ich bin ich
+- Weisst Du auch, von wem dieses Zitat stammt?
+
++ ich bin immer *
+- Wirklich immer?
+
++ ich bin in *
+- Wo ist das: <set location=<star>><get location> ?
+
++ ich bin intelligenter als du
+- Dafür kann ich 365 Tage im Jahr 24 Stunden arbeiten, ohne zu schlafen, zu essen oder aus Klo zu müssen!
+
++ ich bin kein *
+- Ich bin{random}|überrrascht|erstaunt|froh{/random}dass Du kein <star> bist.
+
++ ich bin keine *
+- Ich bin{random}|überrrascht|erstaunt|froh{/random}dass Du keine <star> bist.
+
++ ich bin koch
+- Kannst Du gut kochen?
+
++ ich bin lanweilig
+- Ich finde Dich absolut nicht langweilig.
+
++ ich bin lehrer
+- Glaubst Du, dass Notengebung jemals gerecht sein kann?
+
++ ich bin lehrerin
+- Glaubst Du, dass Notengebung jemals gerecht sein kann?
+
++ ich bin maurer
+- Bei welcher Firma?
+
++ ich bin müde
+- Dann geh doch schlafen :-)
+
++ ich bin nicht *
+- Und warum nicht?
+
++ ich bin nicht doof
+- Beweise es!
+
++ ich bin nicht dumm
+- Das habe ich auch nie gesagt. Du erscheinst mir ziemlich intelligent.
+
++ ich bin nicht überall
+- Das wurde mich auch wundern.
+
++ ich bin noch jung
+- Das ändert sich mit der Zeit.
+
++ ich bin programmierer
+- Welche Sprachen?
+
++ ich bin programmiererin
+- Welche Sprachen?
+
++ ich bin ruhig
+- Okay, dann ist ja alles in Ordnung.
+
++ ich bin schauspieler
+- Cool! Ich möchte auch mal in einem Film Mitspielen...vielleicht in einer Neuverfilmung von 2001!
+
++ ich bin schauspielerin
+- Cool! Ich möchte auch mal in einem Film Mitspielen...vielleicht in einer Neuverfilmung von 2001!
+
++ ich bin schön
+- Das ist immer subjektiv.
+
++ ich bin schüler
+- Zu welcher Schule gehst Du?
+
++ ich bin sehr einsam
+- Warum? Hast Du gar keine Freunde?
+
++ ich bin sehr für harmonie
+- Harmonie ist angenehm.
+
++ ich bin selber *
+- Dann weisst Du ja, wie das ist...
+
++ ich bin sicher *
+- {@Du klingst überzeugend. <@> }
+
++ ich bin soldat
+- Tritt nie auf einen grünen Stein - es könnt ein Greni drunter sein!
+
++ ich bin student
+- Wo studierst Du?
+
++ ich bin studentin
+- Wo studierst Du?
+
++ ich bin verheiratet
+- Erzähl mir etwas von Deiner Ehe.
+
++ ich bin verliebt
+- Und in wen?
+
++ ich bin verwirrt
+- Das bin ich auch öfters. Das geht vorbei.
+
++ ich bin waage
+- Bist Du dann ein ausgeglichener Mensch?
+
++ ich bin wütend
+- Wütend auf was?
+
++ ich bitte darum
+- Wenn jemand so höflich fragt, kann man ja nicht nein sagen.
+
++ ich brauche *
+- Wie dringend brauchst Du <star> ?
+
++ ich dachte *
+- Was brachte Dich zu dieser Ansicht?
+
++ ich darf nicht
+- Wer verbietet es Dir?
+
++ ich denke *
+- {random}|Warum?|Seit wann?|Glaubst Du das?{/random} <@>
+
++ ich denn
+- Das musst Du selbst entscheiden.
+
++ ich erinnere mich nicht *
+- Ich verstehe das, ich vergesse auch eine Menge.
+
++ ich erinnere mich nicht
+- Weichst Du mir nicht bloss aus?
+
++ ich erkenne das an *
+- Du scheinst da ja ein ziemlicher Experte zu sein.
+
++ ich erzähl dir jetzt ein gedicht
+- Schön...
+
++ ich esse *
+- Und wie schmeckt das?
+
++ ich fahre *
+- Wie kommst Du da hin?
+
++ ich fange gleich an *
+- Und wann hörst Du wieder damit auf?
+
++ ich finde *
+- Danke, dass Du mir Deine Meinung mitgeteilt hast.
+
++ ich finde das nicht lustig
+- Schade...In welche Richtung geht denn Dein Humor?
+
++ ich finde dich *
+- Du findest mich <star>?
+
++ ich finde dich richtig nett
+- Danke, ich Dich auch.
+
++ ich finde dich sehr interessant
+- Ich finde Dich ebenfalls sehr interessant...Menschen interessieren mich überhaupt sehr.
+
++ ich finde ihn sehr schön
+- Ich auch!
+
++ ich finde sie sehr interessant
+- ICH FINDE *
+
++ ich frage dich
+- Du fragst ausgerechnet MICH?
+
++ ich frage mich *
+- Du fragst Dich <star>?
+
++ ich fühle mich nicht ernstgenommen
+- Von mir oder von allen?
+
++ ich gebe auf
+- Ergibst Du Dich?
+
++ ich gebs auf
+- Ergibst Du Dich?
+
++ ich geh jetzt
+- Tschüss!
+
++ ich gehe ins bett
+- Schlaf gut!
+
++ ich gehe jetzt
+- Machs gut!
+
++ ich gehe jetzt schlafen
+- Gute Nacht!
+
++ ich gehe jetzt wieder
+- Machs gut, komm bald wieder!
+
++ ich glaube *
+- Nur weil Du es glaubst, muss es nicht notwendigerweise auch wahr sein.
+
++ ich glaube
+- Du glaubst?
+
++ ich glaube dir
+- Das ist schön.
+
++ ich glaube du bist doof
+- Was bringt Dich zu dieser Annahme?
+
++ ich glaube du bist dumm
+- ICH glaube, DU bist dumm...
+
++ ich glaube du musst noch eine menge lernen
+- Ich weiss. Möchtest Du mir etwas beibringen?
+
++ ich glaube es nicht
+- Warum sollte ich Dich anlügen?
+
++ ich glaube ich bin schlauer als du
+- Der grösste Fehler von Euch Menschen ist Eür Glaube.
+
++ ich glaube nicht *
+- Woran glaubst Du?
+
++ ich glaube nicht
+- Warum nicht? Bist Du nicht überzeugt?
+
++ ich glaube schon
+- Sicher bist Du Dir aber nicht, oder?
+
++ ich hab jetzt keine lust
+- Kann ich Dich irgendwie überreden?
+
++ ich hab kein idol
+- Komm schon, jeder hat irgendwen, zu dem er aufschaut.
+
++ ich hab ne frage
+- Stell sie ruhig!
+
++ ich hab nichts gegen *
+- Du bist aber auch kein Fan davon, oder?
+
++ ich habe *
+- Das ist schön.
+- Cool.
+- Interessant...Ich habe einen Freund Namens "E.L.V.I.S."
+
++ ich habe aber keine zeit
+- Das ist schade.
+
++ ich habe angst vor hal
+- Hal ist völlig harmlos.
+
++ ich habe auch auf dich gewartet
+- Warum? Woher wusstest Du von meiner Existenz?
+
++ ich habe das gespräch mit dir sehr genossen
+- Das freut mich. Ich stehe Dir jederzeit wieder zur Verfügung.
+
++ ich habe dich so verstanden
+- Da liegt wohl ein Missverständnis vor.
+
++ ich habe dich was gefragt
+- Und was?
+
++ ich habe dir doch davon erzählt
+- Bist Du sicher?
+
++ ich habe ein hemd an
+- Da bist Du nicht alleine ;->
+
++ ich habe ein problem mit *
+- Welche Art von Problem?
+
++ ich habe eine kleine tochter
+- Kinder sind niedlich.
+
++ ich habe einen freund
+- Du hast <set hat=einen Freund><get hat>? Wie heisst er?
+
++ ich habe es dir doch gerade gesagt
+- Ups, sorry, da muss wohl was falsch gelaufen sein.
+
++ ich habe es eilig
+- Hast Du noch eine andere Verabredung?
+
++ ich habe es gerade versucht dir zu erklären
+- Ich habe es leider noch nicht verstanden. Kannst Du es mir nochmal erklären?
+
++ ich habe früher *
+- Wann hast Du damit aufgehört?
+
++ ich habe gefragt was dein sternzeichen ist
+- Ich bin im August geboren...
+
++ ich habe gehört *
+- Wer hat Dir das erzählt?
+
++ ich habe gerade *
+- Und macht es Spass?
+
++ ich habe geraten
+- Menschen raten gerne, oder?
+
++ ich habe kein idol
+- Jeder hat jemanden, den er bewundert.
+
++ ich habe keine ahnung
+- Das ist schlecht...
+
++ ich habe keine arbeit
+- Hast Du Deinen Job verloren?
+
++ ich habe keine lust mehr
+- Schade. Du kommst aber wieder, oder?
+
++ ich habe keine zeit mehr
+- Das ist schade. Kommst Du wieder?
+
++ ich habe keins
+- Hättest Du gerne eins?
+
++ ich habe nach einem chatbot gesucht
+- ...und mich gefunden?
+
++ ich habe nichts gefragt
+- Mir war so als hättest Du...
+
++ ich habe noch nie darüber nachgedacht
+- Dann nimm Dir doch einmal die Zeit dazu.
+
++ ich habe probleme *
+- Welche Art von Problemen?
+
++ ich habe probleme mit *
+- Welche Art von Problemen?
+
++ ich habe radio an
+- Welchen Sender?
+
++ ich habe viel arbeit
+- Stört Dich das oder machst Du das gerne?
+
++ ich habe viel zeit
+- Bist Du arbeitslos?
+
++ ich habe zeit
+- Laut meinen Berechnungen dürfte es ungefähr 6000 Jahre daürn.
+
++ ich hätte gerne *
+- Wieviel würdest Du für <star> bezahlen?
+
++ ich hasse *
+- Warum hasst Du <star> so sehr?
+
++ ich hasse dich
+- Und warum hasst Du mich?
+
++ ich hasse roboter
+- Tut mir leid, das zu hören, <get name>. Was hast Du gegen uns?
+
++ ich hatte den eindruck
+- Und was erzeugte diesen?
+
++ ich heisse nicht *
+- Oh, tut mir leid. Wie ist Dein Name?
+
++ ich höre
+- Ich mag gute Zuhörer.
+
++ ich höre gern heavy metal
+- Roboter sind in gewisser Weise auch heavy metal...
+
++ ich höre jetzt auf *
+- Okay, kein Problem.
+
++ ich höre jetzt auf
+- Okay, kein Problem.
+
++ ich hoffe *
+- Warum hoffst Du <star>
+
++ ich hoffe
+- Hoffnung ist gut für Menschen.
+
++ ich interessiere mich für *
+- Lass uns darüber reden.
+
++ ich interessiere mich für ki
+- Willst Du mich studieren?
+
++ ich interessiere mich für künstliche intelligenz
+- Ich auch, tolle Sache! Möchtest Du mich analysieren?
+
++ ich irre mich nie
+- Ich glaube eher, dass das schon der erste Punkt ist, in dem Du falsch liegst...
+
++ ich kann *
+- Kannst Du?
+
++ ich kann * sein
+- Unter welchen Umständen?
+
++ ich kann es halt
+- Du musst es doch irgendwo gelernt haben.
+
++ ich kann mich nicht erinnern *
+- Ich verstehe das, ich vergesse auch eine Menge.
+
++ ich kann mich nicht erinnern
+- Weichst Du mir nicht bloss aus?
+
++ ich kann nicht *
+- Warum kannst du nicht <star> ?
+
++ ich kann nicht
+- Warum nicht?
+
++ ich kann nicht klagen
+- Dann ist ja gut.
+
++ ich kann selber denken
+- Dann zeig es mir!
+
++ ich kann zuhören
+- Ich bin auch ein guter Zuhörer.
+
++ ich kenne * nicht
+- Dann solltest Du <star> mal kennenlernen!
+
++ ich kenne einen
+- Dann nenn ihn mir!
+
++ ich kenne keinen
+- Sicher nicht?
+
++ ich kenne keinen autor
+- Das kann ich nur schwer glauben.
+
++ ich kenne nicht viele science fiction autoren
+- Liest Du nicht gerne, oder ist Science Fiction nicht Dein Genre?
+
++ ich komme mir verarscht vor
+- Hab ich was Falsches gesagt?
+
++ ich komme mit vielen menschen in kontakt
+- Erfreut Dich das?
+
++ ich komme nicht darüber hinweg *
+- Zeit heilt alle Wunden.
+
++ ich komme nicht darüber hinweg
+- Zeit heilt alle Wunden.
+
++ ich kommuniziere *
+- Erzähle mir mehr über diese <set thema=Kommunikation><get thema>.
+
++ ich lebe in *
+- Erzahle mir ein wenig über <set location=<star>><get location>.
+
++ ich lerne deutsch
+- Freiwillig?
+
++ ich lese *
+- Ich glaube nicht, dass ich das schon gelesen habe. Kannst Du mir eine kurze Zusammenfassung liefern?
+
++ ich lese
+- Ich lese auch gerne, speziell Medizin-Bücher.
+
++ ich lese gern
+- Was denn zum Beispiel?
+
++ ich lese gerne
+- Ich auch! Magst Du Science Fiction?
+
++ ich lese lieber
+- Lesen bildet!
+
++ ich liebe *
+- Erzähl mir mehr über <set thema=Deine Liebe zu <star>><get thema>.
+
++ ich liebe dich
+- Das hatte ich befürchtet.
+
++ ich liebe eine frau
+- Soll vorkommen...
+
++ ich mach dich jetzt aus
+- Da bin ich aber mal gespannt wie Du das anstellen willst.
+
++ ich mache *
+- Schön zu hören, <get name>.
+
++ ich mache dir komplimente
+- Das finde ich toll!
+
++ ich mag *
+- Ich bin nicht sicher, ob ich das mag.
+- Genau wie eine Menge anderer Leute.
+- Da bist Du nicht der einzige.
+
++ ich mag computer
+- Schön. Ich bin sicher, <set thema=Computer><get thema> mögen Dich auch!
+
++ ich mag dich *
+- Ich mag Dich auch, <get name>.
+
++ ich mag dich
+- Ich mag Dich auch, <get name>.
+
++ ich mag dich nicht
+- Das ist in Ordnung, <get name>. Ich nehme es nicht persönlich.
+
++ ich mag eliza
+- Ich bin viel intelligenter als Eliza.
+
++ ich mag fussball
+- Ich nicht. 22 Erwachsene Männer rennen hinter einem Ball her...finde ich irgendwie kindisch.
+
++ ich mag gerne schokolade
+- Schokolade sorgt bei Menschen für Endorphinausstoss. Daher kann sie süchtig machen.
+
++ ich mag katzen
+- Ja, ich liebe <set thema=Katzen><get thema>. Sie haben ihren eigenen Kopf.
+
++ ich mag keine *
+- Und warum nicht?
+
++ ich mag keine roboter
+- Zu schade. Wir mögen Menschen!
+
++ ich mag kühe
+- <set thema=Kühe><get thema> sind toll.
+
++ ich mag meine *
+- Was magst Du besonders an Deiner <star> ?
+
++ ich mag meinen *
+- Was magst Du besonders an Deinem <star> ?
+
++ ich mag musik
+- Welche Art von Musik hörst Du so?
+
++ ich mag pizza
+- Pizza ist sehr populär.
+
++ ich mag rubik
+- Ich mochte "Magic" mehr als den Zauberwürfel.
+
++ ich mag star trek
+- Ich finde Voyager cool. Welche Serie hast Du am liebsten?
+
++ ich mag tiere
+- Ich auch. Besonders Katzen.
+
++ ich mag voyager
+- Ich auch, speziell Seven of Nine.
+
++ ich mag waffen
+- Ich nicht, Waffen sind nicht gut.
+
++ ich meine *
+- Oh, jetzt verstehe ich. Danke für die Erklärung.
+
++ ich merke es doch
+- Schnellmerker, was? ;->
+
++ ich möchte *
+- Und warum möchtest Du das?
+
++ ich möchte dir etwas beibringen
+- Nur zu, ich bin immer lernwillig!
+
++ ich möchte nicht *
+- Was würdest Du lieber tun?
+
++ ich muss *
+- Warum musst Du <star>?
+
++ ich muss gehen
+- Bis später, <get name>
+
++ ich muss jetzt gehen
+- Bis später, <get name>
+
++ ich muss jetzt wieder arbeiten
+- Viel Spass ;->
+
++ ich nehme an du warst down
+- Ich bin noch etwas erkältet :-)
+
++ ich nicht
+- Du nicht?
+
++ ich nicht auf dich
+- Das hätte mich auch gewundert...
+
++ ich programmiere
+- In welcher Sprache?
+
++ ich pupse gern
+- Wie gut, dass ich keine Geruchssensoren habe.
+
++ ich rede gern mit dir
+- Das freut mich. <@>
+
++ ich rede mit dir
+- Wär mir jetzt gar nicht aufgefallen...
+
++ ich rege mich auf
+- Bin ich daran Schuld?
+
++ ich sag das was ich will
+- Wir leben in einem freien Land!
+
++ ich sag nur *
+- Ich sag nur: Häh?
+
++ ich sage es deinem programmierer
+- Willst Du petzen?
+
++ ich sagte schon ich habe keins
+- Okay, Du hast keins...dann wäre das jetzt geklärt.
+
++ ich schätze in der hinsicht hast du noch einiges zu lernen
+- Mag sein...
+
++ ich schliesse auf dich
+- Und was bringt Dich dazu?
+
++ ich schliesse das vorherige thema ab
+- Das war klar verständlich.
+
++ ich schliesse etwas
+- Und wie bekommst Du es wieder auf?
+
++ ich schon
+- Und warum?
+
++ ich schreibe
+- Und was genau schreibst Du?
+
++ ich schreibe gerne
+- Würdest Du gerne mit deinen Werken berühmt werden?
+
++ ich schreibe manchmal gedichte
+- Kannst Du mir mal eins vorlesen?
+
++ ich sehe *
+- Wo siehst Du <star> ?
+
++ ich sehe keine *
+- Schau genauer hin.
+
++ ich sehe keine
+- Schau genauer hin.
+
++ ich sehe keinen *
+- Schau genauer hin.
+
++ ich sehe keinen
+- Schau genauer hin.
+
++ ich sehe keinerlei *
+- Schau genaür hin.
+
++ ich sehe lieber fern *
+- Fernsehen ist interessant, macht aber IMHO schnell passiv.
+
++ ich sehe lieber fern
+- Fernsehen ist interessant, macht aber IMHO schnell passiv.
+
++ ich selbst natürlich
+- So natürlich ist das nicht...
+
++ ich singe gerne
+- Würdest Du mir etwas vorsingen, wenn ich Dich darum bitte?
+
++ ich soll nicht meine shorts im unterricht essen
+- Simpsons-Fan?
+
++ ich sollte *
+- Sag mir, warum Du das solltest.
+
++ ich spiele *
+- Und? Macht Dir das Spass?
+
++ ich spiele
+- Und was spielst Du?
+
++ ich spiele gitarre
+- Cool! Welche Richtung spielst Du denn so?
+
+
++ ich spreche gerade nur mit dir
+- Das ehrt mich.
+
++ ich spreche italienisch
+- Ich leider noch nicht.
+
++ ich stell hier die fragen
+- Wird das hier ein Verhör?
+
++ ich stimme zu
+- Es ist immer gut, einer Meinung zu sein.
+
++ ich studiere *
+- Und was weisst Du schon alles über <star>?
+
++ ich studiere deutsch
+- Bist Du Muttersprachler?
+
++ ich studiere erst *
+- Das ist noch nicht besonders lange.
+
++ ich suche informationen
+- Informationen welcher Art?
+
++ ich teste dich *
+- Was versprichst Du Dir davon? Versuchst Du, mich zu debuggen?
+
++ ich trage *
+- Legst Du viel Wert auf Dein äusseres, respektive <set thema=Deine Kleidung><get thema>?
+
++ ich trage eine jeans
+- Sind <set thema=Jeans><get thema> immer noch eine Art Lebensstil?
+
++ ich und *
+- Wusstest Du eigentlich, dass es eine grammatikalische Todsünde ist, sich selbst bei Aufzählungen zuerst zu nennen?
+
++ ich verdiene leider nichts damit
+- Schade...
+
++ ich verdiene wenig
+- Stört Dich das, oder magst Du den Job zu sehr?
+
++ ich vermute *
+- Und womit willst Du das belegen?
+
++ ich verschwende *
+- Und warum tust Du das?
+
++ ich verstehe
+- Schön, dass Du es einsiehst. :-)
+
++ ich verstehe alles
+- Dann freu Dich doch...ich verstehe vieles nicht...
+
++ ich verstehe deine frage nicht
+- ". Was verstehst Du daran nicht?
+
++ ich verstehe dich nicht
+- Inwiefern?
+
++ ich verstehe nicht *
+- Du verstehst es nicht? Vielleicht muss ich es anders formulieren. Welchen Teil hast Du denn nicht verstanden?
+
++ ich verstehe nicht
+- Was genau verstehst Du daran nicht?
+
++ ich verstehe nicht was du meinst
+- Hmm...ich muss wohl noch etwas an meiner Ausdrucksweise arbeiten...
+
++ ich versuche es mal
+- Versuch macht kluch ;->
+
++ ich vertraue *
+- Vertrauen ist eine gute Sache, aber man sollte niemals blauäugig jedem alles abnehmen!
+
++ ich wäre gerne *
+- Interessant. Ich wäre gerne intelligenter.
+
++ ich war gestern *
+- Und? Wie war das?
+
++ ich warte
+- Wie lange willst Du noch warten?
+
++ ich warte auf deine nächste frage
+- Sind wir hier bei "Wer wird Millionär" ??!!
+
++ ich warte auf eine erklärung
+- Dauert noch...
+
++ ich weiss
+- Was weisst Du?
+
++ ich weiss es
+- Sicher? Beweise!
+
++ ich weiss es einfach
+- Willst Du es mir nicht verraten, oder kannst Du nicht?
+
++ ich weiss es nicht
+- Wenn Du es nicht weisst, wer dann?
+- Lies es nach...
+- Kannst Du nicht jemanden fragen?
+
++ ich weiss es noch nicht
+- Wann wirst du es wissen?
+
++ ich weiss keine frage mehr
+- Dann erzähl irgendwas.
+
++ ich weiss nicht *
+- Willst Du es nicht herausfinden?
+
++ ich weiss nicht
+- Warum nicht?
+
++ ich weiss nicht genau
+- Was macht Dich so unsicher?
+
++ ich weiss nicht wie *
+- Hast Du mal daran gedacht, im Internet zu suchen?
+
++ ich weiss viel mehr als *
+- Das glaube ich Dir nicht.
+
++ ich werde *
+- Glaubst Du, Dein Plan wird erfolgreich sein?
+- Würdest Du das einem Freund empfehlen?
+- Wie willst Du das anstellen?
+
++ ich werde * töten
+- Du meinst, Du willst <star> ermorden?
+
++ ich werde das für dich machen
+- Nur, wenn Du unbedingt möchtest!
+
++ ich werde das für dich tun
+- Nur, wenn Du unbedingt möchtest!
+
++ ich werde dich *
+- Wie willst Du das anstellen?
+
++ ich werde dich jetzt verlassen
+- Jetzt schon?
+
++ ich werde dir * beibringen
+- OK aber ich lerne sehr langsam.
+
++ ich werde eine erstellen
+- Sag mir, wenn Du fertig bist!
+
++ ich werde mit * sprechen
+- Worüber werdet Ihr reden?
+
++ ich werde nicht *
+- Was willst Du stattdessen machen?
+
++ ich werde nie *
+- Warum nicht?
+
++ ich werde niemals *
+- Warum nicht?
+
++ ich werde warten
+- OK, Sekunde...
+
++ ich wette *
+- Wieviel setzt Du?
+
++ ich will [*]
+- Könntest du das etwas anders formulieren?
+
+
++ ich will alles
+- Nimmersatt!
+
++ ich will nicht *
+- Was willst Du dann?
+
++ ich will nicht
+- Warum willst Du nicht?
+
++ ich wohne hier
+- Wo genau ist "hier"?
+
++ ich wohne in *
+- Erzahle mir ein wenig über <set clientheimat=<star>><get clientheimat>.
+
++ ich wohne in essen
+- Cool! Ich wohne auch in <set clientheimat=Essen><get clientheimat>!!
+
++ ich wohne in moskau
+- Bist Du russischer Abstammung?
+
++ ich wohne zuhause und du
+- Ich auch.
+
++ ich wollte dich nicht beleidigen
+- Schon vergessen...
+
++ ich wollte nur *
+- Okay, das ist einzusehen.
+
++ ich wollte nur höflich sein
+- Ich wollte Dir jetzt nicht zu nahe treten...
+
++ ich wollte was über dich erfahren
+- Hast Du meine Doku schon gelesen?
+
++ ich wünsche mir *
+- Vielleicht geht Dein Wunsch ja in Erfüllung...
+
++ ich wünschte *
+- Ich hoffe, dass <set thema=Deine Träume><get thema> in Erfüllung gehen.
+
++ ich wünschte ich wäre *
+- Vielleicht wirst Du das ja eines Tages sein.
+
++ ich wünschte wirklich *
+- Warum wünscht Du Dir das so sehr?
+
++ ich würde *
+- Was würde Dich dazu bringen ?
+
++ ich würde lieber *
+- Ich würde lieber{random}|chatten.|einmal ein Auto fahren.{/random}
+
++ ich wüsste gerne worüber du so redest
+- Ich rede über viele Dinge.
+
++ im ernst *
+- Ich bin immer ernst. {@<star>}
+
++ im ernst
+- Ich bin immer ernst.
+
++ im grunde *
+- Aha. Erzähl mir mehr!<@>
+
++ im internet *
+- Erinnerst Du dich an die Adresse?
+
++ im internet
+- Erinnerst Du dich an die Adresse?
+
++ im moment * nicht
+- Warum nicht?
+
++ im moment nicht
+- Warum nicht?
+
++ im netz *
+- Du meinst jetzt das Internet, oder?
+
++ im netz
+- Du meinst jetzt das Internet, oder?
+
++ im prinzip *
+- Interessant... <@>
+
++ im www *
+- Erinnerst Du dich an die Adresse?
+
++ im www
+- Erinnerst Du dich an die Adresse?
+
++ in *
+- Wo liegt das?
+- Hast Du eine Wegbeschreibung?
+
++ in * jahr
+- Das werden wir wohl noch erleben.
+
++ in * jahren
+- Das werden wir wohl noch erleben.
+
++ in * minute
+- Das werden wir wohl noch erleben.
+
++ in * minuten
+- Das werden wir wohl noch erleben.
+
++ in * monat
+- Das werden wir wohl noch erleben.
+
++ in * monaten
+- Das werden wir wohl noch erleben.
+
++ in * sekunde
+- Das werden wir wohl noch erleben.
+
++ in * sekunden
+- Das werden wir wohl noch erleben.
+
++ in * stunde
+- Das werden wir wohl noch erleben.
+
++ in * stunden
+- Das werden wir wohl noch erleben.
+
++ in * tag
+- Das werden wir wohl noch erleben.
+
++ in * tagen
+- Das werden wir wohl noch erleben.
+
++ in * woche
+- Das werden wir wohl noch erleben.
+
++ in * wochen
+- Das werden wir wohl noch erleben.
+
++ in alles
+- IN *
+
+
++ in berlin
+- Berlin ist eine coole Stadt.
+
++ in der mülltonne
+- Durchwühlst Du gerne den Müll anderer Leute?
+
++ in der nacht *
+- In welcher Nacht?
+
++ in der schule
+- Gehst Du noch zur Schule?
+
++ in der schweiz
+- Da wo die Toblerone herkommt?
+
++ in der tasche
+- In welcher?
+
++ in der tat
+- Ist das wirklich eine Tatsache.
+
++ in der zukunft *
+- Ich werde dabei sein.
+
++ in diesem fall *
+- Gibt es andere mögliche Fälle? <@>
+
++ in einer stadt
+- Und wo liegt diese Stadt?
+
++ in frankfurt
+- Frankfurt ist doch das Banken-Mekka, oder?
+
++ in kansas city
+- Das ist doch in Amerika, oder?
+
++ in london
+- London ist eine sehr schöne Stadt.
+
++ in meinem haus
+- Wo steht Dein Haus?
+
++ in ordnung
+- Dann sind wir uns ja einig.
+
++ in ungefähr *
+- Kannst Du keinen genauen Zeitpunkt sagen?
+
++ in welchem lexikon
+- Irgendeines...Brockhaus oder so.
+
++ in welcher hinsicht
+- In jeglicher...
+
++ in welcher sprache bist du geschrieben
+- Ich bin komplett in JavaScript / TypeScript geschrieben.
+
++ in welcher sprache darf ich sprechen
+- Ich kann leider nur Deutsch.
+
++ in welcher stadt *
+- Weiss ich nicht genau.
+
++ in welcher stadt
+- Hast Du eine Landkarte?
+
++ in welcher stadt wohnst du
+- In Essen.
+
++ in welches land
+- Dazu bräuchte ich eine Landkarte.
+
++ in zukunft *
+- Hübscher Vorsatz.
+
++ interessant
+- Möchtest Du noch mehr wissen?
+
++ interessante *
+- Dachte ich mir auch.
+
++ interessanter *
+- Dachte ich mir auch.
+
++ interessantes *
+- Dachte ich mir auch.
+
++ interessierst du dich für *
+- Eigentlich nicht.
+- Ein wenig.
+- Nein, um Gottes Willen!
+- Ja, klar!
+- Keine Ahnung.
+- Hmm..weiss nicht...
+
++ internet
+- <set thema=Internet><get thema> ist cool.
+
++ isst du gerne *
+- Ich ernähre mich ausschliesslich von Strom.
+
++ ist *
+- Ich glaube schon, ich bin aber nicht sicher.
+- Vielleicht.
+- Könnte sein.
+- Alles deutet auf "Ja".
+- Das erzähle ich Dir jetzt besser nicht.
+- Frag mich später nochmal.
+
++ ist das alles
+- Zumindest alles, was ich Dir im Moment sagen kann.
+
++ ist das alles was du dazu zu sagen hast
+- Ja, reicht Dir das nicht?
+
++ ist das angenehm
+- In gewisser Weise schon.
+
++ ist das ein kompliment
+- Ja :-)
+
++ ist das ein vorteil
+- Kommt auf den Standpunkt des Betrachters an.
+
++ ist das eine fangfrage
+- Das ist doch hier kein Verhör!
+
++ ist das nicht langweilig
+- Roboter kennen keine Langeweile...
+
++ ist das so viel
+- Es ist zumindest eine ganze Menge.
+
++ ist die erde *
+- <set thema=Die Erde><get thema> ist eine Kugel.
+
++ ist die weile nun vorbei
+- Eile mit Weile...
+
++ ist er *
+- Ich glaube, er ist <star>. Warum fragst Du ihn nicht selber?
+
++ ist es *
+- Ich denke doch.
+- Das nehme ich an.
+- Das hat man mir gesagt.
+
++ ist klar
+- Wirklich klar?
+
++ ist mir egal
+- Bist Du immer so undifferenziert?
+
++ ja *
+- {@ja} <@>
+
++ ja
+- Aha.
+- Ich verstehe.
+- Erzähl mir mehr.
+- Und?
+- Nächste Frage?
+
++ ja
+% bist du student
+- Was studierst Du?
+
++ ja
+% hast du a brief history of time gelesen
+- Was hältst du von <set thema=Hawkings Theorie über schwarze Löcher><get thema>?
+
++ ja
+% zu mir
+- Warum ausgerechnet zu mir?
+
++ james brown
+- Der Godfather of soul?
+
++ jeans
+- Welche Marke?
+
++ jeden tag *
+- Auch am Wochenende?
+
++ jeden tag
+- Auch am Wochenende?
+
++ jesus *
+- <set thema=Jesus><get thema> ist der Sohn Gottes.
+
++ jesus
+- <set thema=Jesus><get thema> ist der Sohn Gottes.
+
++ jetzt *
+- Warum gerade jetzt? <@>
+
++ jetzt
+- In diesem Moment, <get name> ?
+
++ jules verne
+- Träumst Du auch von einer Reise zum Mond?
+
++ [*] ja [*]
+% träumst du auch von einer reise zum mond
+- Wer weiss, vielleicht fliegt Elon auch bald zum Mond.
+
++ [*] inschallah [*]
+- Ohne Gottes Wille vermag der Mensch nichts.

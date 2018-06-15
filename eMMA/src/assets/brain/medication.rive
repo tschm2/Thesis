@@ -1,0 +1,24 @@
+! version = 2.0
+
+// this file is handwritten and only used as a fallback for testing
+// if cordova file native is not available
+// (e.g. on ionic serve)
+
+// Variables
+! array medication = bactrim dafalgan neocitran co-diovan sortis panadol // important: for use as trigger word medication has to be lower case
+
+! var username = Gabriel
+! var doctor = Dr. Wenger
+
+// the event triggering variables - have to be generated dynamically from the questionHandler messageEMMA object
+! var about = Du möchtest also etwas über eMMA wissen.
+! var selfmedication = Ich öffne die Selbstmedikation für dich.
+! var compliance = Gerne zeige ich dir dein Medikationstagebuch an.
+! var nutrition = Ich zeige dir, welche Nahrungsmittel du im Moment nicht essen darfst.
+! var informationquestion = Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein und die Frage die du dazu hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen musst.
+! var medicationview = Ich öffne die Medikationsansicht für dich.
+! var deleteStorage = OOOOPs: ich habe gerade den Speicher gelöscht, Sorry -.-
+! var reminderNight = Du möchtest also die Erinnerungsfunktion in der Nacht testen.
+! var reminderMorning = Du möchtest also die Erinnerungsfunktion am Morgen testen.
+! var reminderMidday = Du möchtest also die Erinnerungsfunktion am Mittag testen.
+! var reminderEvening = Du möchtest also die Erinnerungsfunktion am Abend testen.

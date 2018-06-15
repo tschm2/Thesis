@@ -90,11 +90,11 @@ export class MyMedicationPage {
   this.barcodeService.scanMediCode(this.drugList,this.morning,this.midday,this.evening,this.night,this.reason).then((res)=>{
     console.log(res)
     // Opens Alert to notifiy the User
-    let alert = this.alertCtrl.create({
-      title: 'Arztneimittel erfasst!',
-      subTitle: 'Das Arztneimittel wurde erfolgreich erfasst',
-      buttons: ['Ok']
-    });
+    // let alert = this.alertCtrl.create({
+    //   title: 'Arztneimittel erfasst!',
+    //   subTitle: 'Das Arztneimittel wurde erfolgreich erfasst',
+    //   buttons: ['Ok']
+    // });
     this.storage.ready().then(()=>{
       this.storage.get('mediPlan').then((res)=>{
         res.Dt = this.drugList[this.drugList.length-1].Pos["0"].DtFrom
@@ -104,7 +104,7 @@ export class MyMedicationPage {
           this.barcodeService.doChecksWithCurrentMedication();
         })
         this.storage.set("medicationData", this.drugList);
-        alert.present();
+        // alert.present();
         // Edits the ComplianceDataObject
         this.editComplianceData(res['Medicaments'][res['Medicaments'].length-1].title)
       })

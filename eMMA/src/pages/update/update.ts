@@ -110,7 +110,7 @@ export class UpdatePage {
 
       midata.search("Device").then((res)=>{
         console.log(res)
-        this.barcodeService.compareCHMED16Date((res[0].udi.name)).then((newMediplan)=>{
+        this.barcodeService.compareCHMED16Date((res[0])).then((newMediplan)=>{
             var tk = {
               resourceType: "Device",
               status: 'active',

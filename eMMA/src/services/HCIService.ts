@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
@@ -8,7 +9,7 @@ import { Http } from '@angular/http';
 /* tschm2
 /* This Class is used for the HCI Request
 /*----------------------------------------------------------------------------*/
-
+@Injectable()
 export class HCIService {
 apiURL:string;
 url:string;
@@ -30,6 +31,7 @@ http:Http
       var xhr = new XMLHttpRequest(),
       method = "GET",
       url = `https://index.hcisolutions.ch/index/current/get.aspx?schema=ARTICLE&keytype=${keyType}&key=${key}&index=${index}`;
+      //url = "https://index.hcisolutions.ch/index/current/get.aspx?schema=ARTICLE&keytype=phar&key=3365788&index=hospINDEX";
       xhr.open(method, url, true);
       var reqHeader = {'Authorization': 'Basic ' + btoa(`${username}:${password}`)};
 
@@ -39,10 +41,12 @@ http:Http
         });
       }
       xhr.onload = () => {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) { //<- debugging
+          // alert(url + "\nstatus: " + xhr.status); // <- debugging
           resolve(xhr.responseXML);
         } else {
           console.log("Error!");
+          reject(); // added hessg1 3.3.
         }
       };
 

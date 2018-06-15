@@ -1,178 +1,338 @@
 import { Storage } from '@ionic/storage';
+import { BotService } from '../../services/botService';
+import { barcodeService } from '../../services/barcodeService';
+import { ConversationPage} from '../../pages/conversation/conversation';
 
 export class questionHandler {
-  messageEMMA_Reminder_Morning = "Du möchtest also die Erinnerungsfunktion am Morgen testen"
-  messageEMMA_Reminder_Midday = "Du möchtest also die Erinnerungsfunktion am Mittag testen"
-  messageEMMA_Reminder_Eavening = "Du möchtest also die Erinnerungsfunktion am Abend testen"
-  messageEMMA_Reminder_Night = "Du möchtest also die Erinnerungsfunktion in der Nacht testen"
-  messageEMMA_Delete_Storage = "OOOOPs: ich habe gerade den Speicher gelöscht, Sorry -.-"
-  messageEMMA_About = "Du möchtest also etwas über eMMA wissen."
-  messageEMMA_Selfmedication = "Ich öffne die Selbstmedikation für dich"
-  messageEMMA_Medication = "Ich öffne die Medikationsansicht für dich"
-  messageEMMA_Compliance = "Gerne zeige ich dir dein Medikationstagebuch an"
-  messageEMMA_Nutrition = "Ich zeige dir, welche Nahrungsmittel du im Moment nicht essen darfst."
-  messageEMMA_InformationQuestion = "Wenn du Fragen zu einem Medikament hast, dann gib einfach den Namen ein + die Frage die du hast. Zum Beispiel Wie, Wann oder Wieso du es einnehmen must."
-  messageEMMA_TooMutchInformation = "Huch, das war etwas viel auf Einmal. Bitte versuche es mit einer kürzeren Frage"
+  /* Calling the barcodeService */
+  barcodeService: barcodeService;
 
+  drugList: any;
+  takingTime: string[];
+  convPage: ConversationPage;
+  emma: any;
 
-  messageEMMA_Not_Understand = [
-  "Entschuldigung, ich habe dich leider nicht verstanden",
-  "Sorry das habe ich verpasst. Bitte stelle eine andere Frage",
-  "Diese Frage verstehe ich leider nicht. Kannst du es mit einer anderen Frage versuchen",
-  "Ich verstehe das leider nicht",
-  "Diese Frage kann ich leider nicht beantworten"
-  ];
-  messageEMMA_Not_Understand_temp = new Array<any>();
-  messageEMMA_TakingTime = [ "morgens um ", "mittags um  ", "abends um ", "In der Nacht um "
-  ];
+  constructor(private storage: Storage, private botService: BotService, convPage: ConversationPage) {
+	  this.barcodeService = new barcodeService(storage);
+	  this.convPage = convPage;
+    this.emma = convPage.eMMA;
+  }
 
-  drugList:JSON;
-  takingTime:String[];
-  constructor(private storage:Storage){
+/*----------------------------------------------------------------------------*/
+/*  method finds a medicament from this.drugList and returns it as an Object
+/* @param name: the name of the medicament to find
+/* @return: the medicament as an object. null if not found.
+/* @author: hessg1
+/*----------------------------------------------------------------------------*/
+findMedicament(name: string): any {
+ var medi = null;
+  for(var pos in this.drugList){
+    if(this.drugList[pos].title.toUpperCase() == name.toUpperCase()){
+      medi = this.drugList[pos];
     }
-    /*----------------------------------------------------------------------------*/
-    /* This Methode handels the user input for the question Methode
-    /*
-    /*the question of the user is analysed and the return value is the awnser form eMMA
-    /*----------------------------------------------------------------------------*/
-    returnAnswer(question: String):any{
-      var retVal:any = "";
-      var list = new Array<any>()
-      question = question.toUpperCase();
-      //return
-        var l = this.storage.get('takingTime').then((takingtimes)=>{
-          this.takingTime = takingtimes;
-          //return getMediDataFromStorage
-        })
-        list.push(l) //raus
-        /*Ab it function und return not var*/
-        var l2 = this.storage.get('medicationData').then((res)=>{
-            this.drugList = res;
+  }
+  return medi;
+}
 
-            for(var pos in this.drugList){  //stepp thorught every drug in drug list
-              if(question.includes(this.drugList[pos].title)){  //if the question includes a medicaitons name
+/*----------------------------------------------------------------------------*/
+/* This method handles the user input for the question method
+/*
+/* the question of the user is analysed and the return value is the answer form eMMA
+/* original authors: dorner / tschanz
+/* refactoring author: hessg1
+/*----------------------------------------------------------------------------*/
+returnAnswer(question: string): any {
+  var retVal: any = "";
+  var list = new Array<any>() // i have no idea what this list does or if it is used anywhere... but don't change a running system :D 27.5. hessg1
 
-                if(question.includes("WANN")||question.includes("ZEIT")||question.includes("UHR")){//check if the user whatns to now soemting about the time
-                  retVal = retVal + "Du solltest " + this.drugList[pos].title +" an folgenden Uhrzeiten einnehmen:\n"
-                  for(var time in this.drugList[pos].Pos[0].D){
-                    if(this.drugList[pos].Pos[0].D[time]){
-                      retVal = retVal + this.messageEMMA_TakingTime[time]  + this.takingTime[time] + "Uhr, " + this.drugList[pos].Pos[0].D[time] + " "+ this.drugList[pos].Unit + "\n"
-                    }
-                  }
-                  //if the app insturctio has someting to do with "Essen" this information is also given to the user
-                  if(this.drugList[pos].AppInstr && this.drugList[pos].AppInstr.includes("Essen")){
-                    retVal = retVal + "jeweils" + this.drugList[pos].AppInstr + "\n"
-                  }
-                }
-                //if the user wants to know about his apply intstruction
-                if((question.includes("WIE ")&& !question.includes("LANGE"))||question.includes("EINNAHME")){
-                  if(this.drugList[pos].AppInstr){
-                      retVal = retVal + "Du solltest " + this.drugList[pos].title + " " + this.drugList[pos].AppInstr  + " einnehmen\n";
-                  }
-                  else{
-                    retVal = retVal + "Ich habe leider keine Informationen über die Einnahme von " + this.drugList[pos].title + "\n";
-                  }
-                }
-                //if the suer wants to know the reason why he shoudl take his drug
-                if(question.includes("WIESO")||question.includes("GRUND")){
-                  if(this.drugList[pos].TkgRsn){
-                    retVal = retVal + "Als Grund für die Einnahme von " + this.drugList[pos].title + " habe ich " + this.drugList[pos].TkgRsn  + " eingetragen\n";
-                  }
-                  else{
-                    retVal = retVal + "Ich habe leider keine Informationen über den Grund der einnahme von " + this.drugList[pos].title; "\n" + "soll ich für dich Googeln?\n"
-                  }
-                }
-                //if the user wants to knwo someting about the taking duration of his drugs
-                if(question.includes("LANGE")||question.includes("DAUER")){
-                  if(this.drugList[pos].Pos[0].DtFrom && this.drugList[pos].Pos[0].DtTo){
-                    retVal = retVal + "Du solltes " + this.drugList[pos].title + " an folgenden Daten einnehmen:\n" + "vom: " + this.drugList[pos].Pos[0].DtFrom + " bis " + this.drugList[pos].Pos[0].DtTo +"\n";
-                  }
-                  else{
-                    retVal = retVal + "Ich habe leider keine Informationen über die Einnahmedauer von: " + this.drugList[pos].title + "\n";
-                  }
-                }
-                //if knwo possible awnser was found about this drug
-                if(retVal == ""){
-                  retVal = retVal + "Was möchtest du über " + this.drugList[pos].title + " wissen?"
-                }
-              }
-            }
-            if(question === "?"){//if the user writes onyl an ?, give him information what he can ask
-              retVal = this.messageEMMA_InformationQuestion
-              }
-            else if(question.length > 60){//if there is too mutch information in the question
-              retVal = this.messageEMMA_TooMutchInformation
-            }
-            else if(retVal == ""){//if tthe return value is still empty
-              if(question.includes("NAHRUNG")||(question.includes("ESSEN")&&question.includes("NICHT"))){
-                retVal =  this.messageEMMA_Nutrition;
-              }
-              else if(question.includes("SELBSTMEDIKATION")||(question.includes("MEDIKAMENT")&&(question.includes("ZUSÄTZLICH")||(question.includes("ERFASSEN")))))
-              {
-                retVal = this.messageEMMA_Selfmedication;
-              }
-              else if(question.includes("MEINE")&&(question.includes("MEDI")))
-              {
-                retVal = this.messageEMMA_Medication;
-              }
-              else if(question.includes("REMINDER"))
-              {
-                if(question.includes("NACHT")){
-                  retVal = this.messageEMMA_Reminder_Night
-                }
-                else if(question.includes("MITTAG")){
-                  retVal = this.messageEMMA_Reminder_Midday
-                }
-                else if(question.includes("ABEND")){
-                  retVal = this.messageEMMA_Reminder_Eavening
-                }else{
-                  retVal = this.messageEMMA_Reminder_Morning
-                }
-              }
-              else if(question.includes("ÜBER"))
-              {
-                retVal = this.messageEMMA_About
-              }
-              else if(question.includes("DELETE"))
-              {
-                retVal = this.messageEMMA_Delete_Storage;
-              }
-              else if(question.includes("AUSWERTUNG")||(question.includes("WELCHE")&&question.includes("NICHT")&&question.includes("EINGENOMMEN")))
-              {
-                retVal = this.messageEMMA_Compliance;
-              }
-              else if(question.includes("HALLO")||question.includes("HUHU")||question.includes("GUGUS"))
-              {
-                retVal = "Hallo, was möchtest du wissen?"
-              }
-              else if(question.includes("WER") && question.includes("DU"))
-              {
-                retVal = "Ich bin eMMA. Deine Persöhliche elektronische Medikations Management Assistentin"
-              }
-              else if(question.includes("BEREITS")&&question.includes("GENOMMEN"))
-              {
-                retVal = "Ich verstehe. Ich werde dich also an die nächste Medikation nicht erinnern"
-              }
-              else if(question.includes("OK")||question.includes("DANKE")||question.includes("SUPER")||question.includes("TOLL")){
-                retVal = "Freut mich, dass ich dir helfen konnte"
-              }
-              else{ //if no possible awnser is found
-                if(this.messageEMMA_Not_Understand_temp.length == 0){ //if the ramdom array is empy
-                  for (var name in this.messageEMMA_Not_Understand) {
-                    this.messageEMMA_Not_Understand_temp[name] = this.messageEMMA_Not_Understand[name];//refill the array
-                  }
-                }
-                let random = Math.random()*this.messageEMMA_Not_Understand_temp.length; //get a random pos
-                retVal = this.messageEMMA_Not_Understand_temp.splice(random,1)//cut a string form the array at the random pos
-              }
-            }
-            })
-            list.push(l2) //To delete
- /* To delete*/
-          return Promise.all(list).then(()=>{//get the retun value if the calulation is finished
-            return retVal
-          })
+  var l = this.storage.get('takingTime').then((takingtimes) => {
+    this.takingTime = takingtimes;
+  })
+  list.push(l) //raus
+  /*Ab it function und return not var*/
+  var l2 = this.storage.get('medicationData').then((res) => {
+    this.drugList = res;
+    console.log("bot input: "+ question);
+    retVal = this.botService.retrieveBotAnswer(question);
+    console.log("raw bot output: " + retVal);
 
+    // check if there is an instruction coded in the return value
+
+    if(retVal.includes('inst#')){
+
+      var values = retVal.split("#"); // parse the instruction syntax
+      retVal = values[3]; // this is the answer we give to the user
+
+    // doing interpretation of given instructions
+
+    // setting the name
+    if(values[1] == 'name'){
+      this.storage.set('name', values[2]);
+    }
+
+    // answering question about WHEN to take the medication
+    else if(values[1] == 'medWhen'){
+      var medi = this.findMedicament(values[2]);
+      if(medi == null){
+        retVal = this.emma.messageEMMA.error;
       }
+    else{
+      for (var time in medi.Pos[0].D) {
+        if (medi.Pos[0].D[time]) {
+          var unit = (medi.Unit == null ? "" : " " + medi.Unit);
+          retVal = retVal + this.emma.messageEMMA.takingTime[time] + this.takingTime[time] + " Uhr: " + medi.Pos[0].D[time] + unit + "\n"
+        }
+      }
+      //if the application instrucion has someting to do with "Essen" this information is also given to the user
+      if (medi.AppInstr && medi.AppInstr.includes("Essen")) {
+        retVal = retVal + "(jeweils " + medi.AppInstr + ")";
+      }
+    }
+  }
 
+  // answering question about HOW to take medication
+  else if(values[1] == 'medHow'){
+    var medi = this.findMedicament(values[2]);
+      if(medi == null){
+        retVal = this.emma.messageEMMA.error;
+      }
+      else if(medi.AppInstr){
+        retVal += ' ' + medi.AppInstr + ' einnehmen.';
+      }
+      else {
+        retVal = 'Ich habe leider keine Informationen über die Einnahme von ' + values[2] + '.';
+      }
+  }
+
+  // answering question about WHY to take medication
+  else if(values[1] == 'medWhy'){
+    var medi = this.findMedicament(values[2]);
+    if(medi == null){
+      retVal = this.emma.messageEMMA.error;
+    }
+    else if (medi.TkgRsn) {
+      retVal += ' ' + medi.TkgRsn + '.';
+    }
+    else {
+      retVal =  'Ich habe leider keine Informationen über den Grund der Einnahme von ' + values[2] + ' erfasst.'; // TODO: include link to Compendium
+    }
+  }
+
+  // answering question concerning the duration of medication intake
+  else if(values[1] == 'medDuration'){
+    var medi = this.findMedicament(values[2]);
+    if(medi == null){
+      retVal = this.emma.messageEMMA.error;
+    }
+    else if (medi.Pos[0].DtFrom && medi.Pos[0].DtTo) {
+      retVal += ' Vom ' + medi.Pos[0].DtFrom + " bis zum " + medi.Pos[0].DtTo + '.';
+    }
+    else {
+      retVal = 'Ich habe leider keine konkreten Informationen über die Einnahmedauer von ' + values[2] + ' gespeichert.';
+    }
+  }
+
+  // opening a medicaments compendium page in browser
+  else if(values[1] == 'compendium'){
+      var medi = this.findMedicament(values[2]);
+      if(medi == null || medi.Id == undefined || medi.Id.toLowerCase() == values[2].toLowerCase()){
+        window.open("https://compendium.ch/search/" + values[2] + "/de", "_blank");
+      }
+      else{
+        window.open("http://compendium.ch/mpub/phc/" + medi.Id + "/html", "_blank");
+      }
+  }
+
+  // add a medication via barcode scan
+  else if(values[1] == 'scan'){
+  var params = values[2].split("|");
+  var reason = params[0];
+  var morning = params[1];
+  var midday = params[2];
+  var evening = params[3];
+  var night = params[4];
+
+  this.barcodeService.scanMediCode(this.drugList,morning,midday,evening,night,reason).then((res)=>{
+
+    this.storage.ready().then(()=>{
+      this.storage.get('mediPlan').then((res)=>{
+        res.Dt = this.drugList[this.drugList.length-1].Pos["0"].DtFrom
+        res['Medicaments'] = this.drugList
+        this.drugList[this.drugList.length-1].DtFrom
+        this.storage.set('mediPlan', res).then(()=>{
+          this.barcodeService.doChecksWithCurrentMedication();
+        })
+        this.storage.set("medicationData", this.drugList);
+        var name = res['Medicaments'][res['Medicaments'].length-1].title;
+
+        // edit the ComplianceDataObject
+
+        this.storage.get('ComplianceData').then((res)=>{
+          res.DrugList.push({
+            "Name":name,
+            "Compliance":[]
+          })
+          this.storage.set('ComplianceData',res);
+          this.botService.generateAndLoadFile();
+
+          // check for medication interactions (code adapted from emma1.0)
+          setTimeout(()=>{
+          this.storage.get("checks").then((checks) =>{
+            console.log(checks);
+            if(checks != null){
+              checks = checks.body.medicaments
+              var output:string = "";
+              // Creates an Object for each Check of each Medication
+              checks.forEach((item,index) => {
+                var nutrition:string;
+                var tempString = item.checks["1"].rem
+
+                if(tempString.search(" - ") == -1){
+                  nutrition = "";
+                }
+                else{
+                  nutrition = tempString.slice(tempString.indexOf(" - ")+3)
+                  nutrition = nutrition.slice(0,nutrition.indexOf(","))
+                  output += "- "+nutrition+ "\n"
+                }
+              })
+              // inform user about interactions
+              this.convPage.sendEmmaText("Folgende Lebensmittel solltest du mit deiner Medikation vermeiden:\n" + output);
+
+              }
+        })},1000);
+      })
+    })
+  })
+})
+}
+
+  // add a medication without barcode scan
+  else if(values[1] == 'addMed'){
+    var params = values[2].split("|");
+    var name = params[0]
+    var reason = params[1];
+    var morning = params[2];
+    var midday = params[3];
+    var evening = params[4];
+    var night = params[5];
+
+    if(morning=='true')morning=1
+    else morning = 0
+    if(midday=='true')midday=1
+    else midday = 0
+    if(evening=='true')evening=1
+    else evening = 0
+    if(night=='true')night=1
+    else night = 0
+
+    // Set the Date of the Medication to Today
+    var today:any = new Date();
+    var dd:any = today.getDate()
+    var mm:any = today.getMonth()+1; //January is 0!
+    var yyyy:any = today.getFullYear();
+    if(dd<10) {
+      dd='0'+dd
+    }
+
+    if(mm<10) {
+      mm='0'+mm
+    }
+    today = yyyy+'-'+mm+'-'+dd;
+    // Create Object of the Medication
+    var tempObj = ({
+      "AppInstr":"Arzt oder Apotheker fragen.",
+      "TkgRsn":reason,
+      "AutoMed":"1",
+      "Id":name,
+      "IdType":"1",
+      "Unit":"",
+      "description":name,
+      "title":name,
+      "PrscbBy":"mir als Patient",
+      "Pos":[{
+        "D":[
+          morning,
+          midday,
+          evening,
+          night
+        ],
+          "DtFrom":today
+        }]
+    })
+    if(this.drugList==null){
+      var newList:any[] = [];
+      console.log(newList)
+      console.log(tempObj)
+      newList.push(tempObj)
+      this.drugList = newList
+    }
+    else{
+      var tempList:any = this.drugList;
+      tempList.push(tempObj)
+    }
+
+    this.storage.ready().then(()=>{
+      this.storage.get('mediPlan').then((res)=>{
+        res.Dt = today
+        res['Medicaments'] = this.drugList
+        this.storage.set('mediPlan', res)
+        this.storage.set("medicationData", this.drugList);
+
+        // edit the ComplianceDataObject
+
+        this.storage.get('ComplianceData').then((res)=>{
+          res.DrugList.push({
+            "Name":name,
+            "Compliance":[]
+          })
+          this.storage.set('ComplianceData',res)
+        });
+        setTimeout(()=>{this.botService.generateAndLoadFile();},500);
+      })
+    })
+  }
+
+
+  // ask a question with two answering buttons
+  else if(values[1] == 'button'){
+    var first_button = values[2].split("|")[0];
+    var second_button = values[2].split("|")[1];
+    this.convPage.toggleObject = 0;
+    setTimeout(() => this.convPage.toggleObject = 2 , 500); // show buttons
+    this.convPage.preAnswers = [];
+    this.convPage.preAnswers.push({
+      text: first_button,
+      id: 1,
+      callFunction: null
+    });
+    this.convPage.preAnswers.push({
+      text: second_button,
+      id: 2,
+      callFunction: null
+    });
+  }
+
+
+
+  // persist hausarzt
+  else if(values[1] == 'doctor'){
+    this.storage.set('doctor', values[2]);
+  }
+
+
+  // this shouldn't be executed
+  else{
+    alert('Instruction ' + values[1] + ' not found.');
+    console.log('Instruction ' + values[1] + ' not found.');
+  }
+
+}
+})
+
+list.push(l2);
+return Promise.all(list).then(() => {//get the return value if the calulation is finished
+  return retVal
+})
+}
 }

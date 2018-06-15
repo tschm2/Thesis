@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { BarcodeScanner } from 'ionic-native';
 import myPako from "../../node_modules/pako"
 import { Storage } from '@ionic/storage';
@@ -15,6 +16,7 @@ import { Midata } from 'midata';
 /*
 /*----------------------------------------------------------------------------*/
 
+@Injectable()
 export class barcodeService {
 private list: Array<any>;
 private chmedHandler: chmedJsonHandler;
@@ -32,9 +34,12 @@ private chmedHandler: chmedJsonHandler;
   /*----------------------------------------------------------------------------*/
   scanQRcodeForJSON():any{
   return BarcodeScanner.scan().then((barcodeData) => {
-    this.saveMedicationInformation(barcodeData.text)
-    return true
+         this.saveMedicationInformation(barcodeData.text)
+     return true
       // Success! Barcode data is here
+      // für Tests wenn HCIquery nicht funktioniert: DummyDaten verwenden
+       // this.testDummyData();
+       // alert("Medikation wurde gespeichert.");
     }, (err) => {
       console.log("Woops falscher QR-Code, zu Testzwecken wurde DummyData gespeichert")
       alert("Woops falscher QR-Code, zu Testzwecken wurde DummyData gespeichert");
@@ -55,6 +60,7 @@ private chmedHandler: chmedJsonHandler;
     var hciS = new HCIService();
     for (let medi of medData['Medicaments']){
       if(Number(medi.Id)){
+
         var l = hciS.hciquery(medi.Id,"phar").then((responseXML)=>{
           var xml =  responseXML;
           var art = xml.getElementsByTagName("ART");
@@ -86,14 +92,15 @@ private chmedHandler: chmedJsonHandler;
   /*----------------------------------------------------------------------------*/
   scanMediCode(medData,morning,midday,evening,night,reason):Promise<any>{
 
-    if(morning==true)morning=1
+    if(morning==true || morning == 'true') morning=1
     else morning = 0
-    if(midday==true)midday=1
+    if(midday==true || midday == 'true') midday=1
     else midday = 0
-    if(evening==true)evening=1
+    if(evening==true || evening == 'true') evening=1
     else evening = 0
-    if(night==true)night=1
+    if(night==true || night == 'true') night=1
     else night = 0
+
 
     var hciS = new HCIService()
     return BarcodeScanner.scan().then((barcodeData) => {
@@ -117,11 +124,12 @@ private chmedHandler: chmedJsonHandler;
         today = yyyy+'-'+mm+'-'+dd;
 
         var tempObj = ({
-          "AppInstr":"Arzt oder Apotheker fragen.",
+          "AppInstr":"Arzt oder Apotheker fragen",
           "TkgRsn":reason,
           "AutoMed":"1",
           "Id":art[0].getElementsByTagName("PHAR")[0].textContent,
           "IdType":"3",
+          "Unit":"",
           "description":desc,
           "title":title,
           "PrscbBy":"mir als Patient",
@@ -226,19 +234,20 @@ private chmedHandler: chmedJsonHandler;
         this.doChecksWithCurrentMedication()
       });
       this.IdHCIQuery(mediPlan).then((res) => {
+         // fails as of today (3.4. hessg1)
           mediPlan['Medicaments'] = res
           this.storage.set("mediPlan", mediPlan);
           this.storage.set("medicationData", res);
           console.log(mediPlan);
-            var tempMedicationData = res;
-            var complianceObj = ({        //new object
-            "ID":"1",
-            "Date":"dateOfMediplan",
-            "DrugList":[]
-            })
-            for(var pos in tempMedicationData){ //new drug obj for every drug in the DrugList
-              complianceObj.DrugList.push({
-                "Name":tempMedicationData[pos].title,
+	        var tempMedicationData = res;
+	        var complianceObj = ({        //new object
+	        "ID":"1",
+	        "Date":"dateOfMediplan",
+	        "DrugList":[]
+	        })
+	        for(var pos in tempMedicationData){ //new drug obj for every drug in the DrugList
+	          complianceObj.DrugList.push({
+	            "Name":tempMedicationData[pos].title,
                 "Compliance":[]
               })
             }
@@ -260,7 +269,7 @@ private chmedHandler: chmedJsonHandler;
     midata.login(username,password).then((AuthToken)=>{
     console.log(AuthToken)
     midata.search("Device").then((res)=>{
-      this.compareCHMED16Date((res[0].udi.name)).then((newMediplan)=>{
+      this.compareCHMED16Date((res[0])).then((newMediplan)=>{
           var tk = {
             resourceType: "Device",
             status: 'active',

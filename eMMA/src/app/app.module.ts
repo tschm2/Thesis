@@ -9,8 +9,15 @@ import { MyMedicationPage } from '../pages/my-medication/my-medication';
 import { MedicationReminderViewPage } from '../pages/medication-reminder-view/medication-reminder-view';
 import { UpdatePage } from '../pages/update/update';
 import { Storage } from '@ionic/storage';
+import { File } from '@ionic-native/file';
 import { HttpModule } from '@angular/http';
 import { QRCodeModule } from 'angular2-qrcode';
+
+import { BotService } from '../services/botService';
+import { FileController } from '../services/fileController';
+import { barcodeService } from '../services/barcodeService';
+import { chmedJsonHandler } from '../services/chmedJsonHandler';
+import { HCIService } from '../services/HCIService';
 
 @NgModule({
   declarations: [
@@ -28,7 +35,9 @@ import { QRCodeModule } from 'angular2-qrcode';
     HttpModule,
     QRCodeModule
   ],
-  bootstrap: [IonicApp],
+  bootstrap: [
+	  IonicApp
+  ],
   entryComponents: [
     MyApp,
     NutritionPage,
@@ -39,6 +48,15 @@ import { QRCodeModule } from 'angular2-qrcode';
     UpdatePage,
     MedicationReminderViewPage
   ],
-  providers: [Storage,{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+	  Storage,
+	  File,
+	  BotService,
+	  FileController,
+	  barcodeService,
+	  chmedJsonHandler,
+	  HCIService,
+	  {provide: ErrorHandler, useClass: IonicErrorHandler},
+  ]
 })
 export class AppModule {}
